@@ -1,4 +1,6 @@
 module.exports = function (app) {
     var controller = require('../controllers/pong.controller');
-    app.get('/read', controller.read);
+    app.get('/welfares', controller.welfares);
+    app.get('/welfare/:id', controller.welById);
+    app.get('/employees', controller.employees);
 }
