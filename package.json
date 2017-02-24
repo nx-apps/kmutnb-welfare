@@ -1,0 +1,22 @@
+{
+  "name": "kmutnb-welfare",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nx-apps/kmutnb-welfare.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nx-apps/kmutnb-welfare/issues"
+  },
+  "homepage": "https://github.com/nx-apps/kmutnb-welfare#readme",
+  "dependencies": {
+    "xlsx": "^0.8.5"
+  }
+}
