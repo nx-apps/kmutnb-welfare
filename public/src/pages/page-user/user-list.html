@@ -1,0 +1,41 @@
+
+<dom-module id="user-list">
+    <style include="gl-styles">
+            :host {
+                display: block;
+            }
+        </style>
+    <template>
+        <table class="gl-table-default">
+          <thead class="table-head">
+            <tr>
+              <th>ลำดับ</th>
+              <th>คำนำหน้าชื่อ</th>
+              <th>ชื่อ</th>
+              <th>นามสกุล</th>
+              <th>วันที่เริ่มทำงาน</th>
+              <th>สถานนะภาพการทำงาน</th>
+            </tr>
+          </thead>
+          <tbody class="table-body">
+              <template is="dom-repeat" items=[[data]]>
+                <tr>
+                    <td>[[index]]</td>
+                    <td>[[item.prefixname]]</td>
+                    <td>[[item.name]]</td>
+                    <td>[[item.surname]]</td>
+                    <td>[[item.start_work_date]]</td>
+                    <td>[[item.active_name]]</td>
+                </tr>
+              </template>
+              
+            
+         </tbody>
+      </table>
+    </template>
+    <script>
+        Polymer({
+            is: 'user-list'
+        });
+    </script>
+</dom-module>

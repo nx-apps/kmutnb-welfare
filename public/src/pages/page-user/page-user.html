@@ -1,0 +1,72 @@
+<link rel="import" href="./../components/panel-right/panel-right.html">
+
+<link rel="import" href="./controller/g2gModelbehavior.html">
+
+<link rel="import" href="./user-list.html">
+
+<link rel="import" href="./user-panel.html">
+
+<dom-module id="page-user">
+      <style include="iron-flex iron-flex-factors iron-flex-alignment">
+    :host {
+      --paper-fab-background:var(--paper-light-blue-500);
+      --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+    }
+    *{
+      font-family: 'CSChatThaiUI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    paper-fab {
+         position: fixed;
+         right: 25px;
+         bottom: 25px;
+         color: #fff;
+    }
+    panel-right{
+      background-color: var(--gl-white-color);
+    }
+    
+  </style>
+    <template>
+        
+       <user-list data="[[listUser]]"></user-list>
+     <panel-right id="test" title="เพิ่มสมาชิก">
+         
+          <user-panel  data-for-selete="dataSelete"></user-panel>
+      </panel-right>
+<!--12121512-->
+      <paper-fab icon="add" title="เพิ่มสมาชิก" id="addQuota" on-tap="btn_openPanelRight"></paper-fab>
+      <paper-tooltip for="addQuota" offset="0">เพิ่มสมาชิก</paper-tooltip>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-user',
+            behaviors: [
+                g2gModelBehavior,
+            ],
+            properties:{
+                listUser:{
+                    type:Object,
+                }
+            },
+            listeners: {
+                'get-user-list': 'listUserFN',
+            },
+            ready(){
+            this.listUserFN()
+            },
+            listUserFN(){
+                this.read('./user/list',(data)=>{
+                    this.set('listUser',data)
+                    console.log(this.listUser)
+                });
+            },
+            btn_openPanelRight(){
+                // this.dispatchAction('APP_CLEAR_SELECT');
+                // console.log(this.$$('panel-right'))
+                // Polymer.dom(this.root).querySelector('#test').open();
+                this.$$('panel-right').open();
+            }
+        });
+    </script>
+</dom-module>
