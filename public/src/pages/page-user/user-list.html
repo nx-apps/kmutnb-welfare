@@ -19,7 +19,7 @@
           </thead>
           <tbody class="table-body">
               <template is="dom-repeat" items=[[data]]>
-                <tr>
+                <tr data=[[item]] on-tap="userClick">
                     <td>[[index]]</td>
                     <td>[[item.prefixname]]</td>
                     <td>[[item.name]]</td>
@@ -35,7 +35,11 @@
     </template>
     <script>
         Polymer({
-            is: 'user-list'
+            is: 'user-list',
+            userClick(e){
+                this.fire('_get-user',e.currentTarget.data)
+                // console.log(e.currentTarget.data)
+            }
         });
     </script>
 </dom-module>

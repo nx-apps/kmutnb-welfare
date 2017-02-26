@@ -3,6 +3,11 @@ exports.list = function(req,res){
   //  res.json({user:'1'});
     var r = req.r;
     r.db('welfare').table('employee')
+        .merge(function(f){
+        return {
+          start_work_date:f('start_work_date').split('T')(0)
+        }
+      })
       .eqJoin('academic_id', r.db('welfare').table('academic')).without({right: 'id'}).zip()
       .eqJoin('active_id', r.db('welfare').table('active')).without({right: 'id'}).zip()
       .eqJoin('department_id', r.db('welfare').table('department')).without({right: 'id'}).zip()

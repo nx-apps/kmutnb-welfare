@@ -25,7 +25,9 @@
     panel-right{
       background-color: var(--gl-white-color);
     }
-    
+    user-list {
+        margin-top: 30px;
+    }
   </style>
     <template>
         
@@ -51,6 +53,7 @@
             },
             listeners: {
                 'get-user-list': 'listUserFN',
+                '_get-user':'_getUser'
             },
             ready(){
             this.listUserFN()
@@ -60,6 +63,9 @@
                     this.set('listUser',data)
                     console.log(this.listUser)
                 });
+            },
+            _getUser(e){
+                console.log(e.detail)
             },
             btn_openPanelRight(){
                 // this.dispatchAction('APP_CLEAR_SELECT');
