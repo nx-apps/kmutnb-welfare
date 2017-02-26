@@ -12,7 +12,9 @@
        // [[data.name]]//
         <user-manage data="{{data}}" ></user-manage>
             <div class="horizontal end-justified layout btn">
-                <paper-button class="gl-btn-success" on-tap="sendData" raised>บันทึก</paper-button>
+                <paper-button class="gl-btn-danger" on-tap="deleteData" raised>ลบ</paper-button>
+                 <paper-button class="gl-btn-success" on-tap="saveData" raised>บันทึก</paper-button>
+                <paper-button class="gl-btn-primary" on-tap="insertata" raised>เพิ่ม</paper-button>
             </div>
     </template>
     <script>
@@ -26,7 +28,7 @@
                     type:Object,
                 }
             },
-            sendData(){
+            insertata(){
                 let data = this.data;
                 data.start_work_date = new Date (data.start_work_date).toISOString();
                 console.log(data)
@@ -38,6 +40,13 @@
                 },(data) => {
                     console.log(data)
                     
+                 });
+            },
+            deleteData(){
+                this.delete('./user/delete/',this.data.id, () => {
+                    this.fire('get-user-list');
+                    this.fire('_close-panel');
+                    // console.log(1)
                  });
             }
         });

@@ -26,9 +26,31 @@ exports.list = function(req,res){
         })
 }
 exports.insert = function(req,res){
-  console.log(req.body)
+  // console.log(req.body)
     var r = req.r;
     r.db('welfare').table('employee').insert(req.body)
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.delete = function(req,res){
+  console.log(req.body)
+    var r = req.r;
+    // r.db('welfare').table('employee').insert(req.body)
+    //     .run()
+    //     .then(function (result) {
+    //         res.json(result);
+    //     })
+    //     .catch(function (err) {
+    //         res.status(500).json(err);
+    //     })
+   r.db('welfare').table('employee')
+        .get(req.params.id)
+        .delete()
         .run()
         .then(function (result) {
             res.json(result);

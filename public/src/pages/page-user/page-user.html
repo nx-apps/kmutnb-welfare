@@ -71,9 +71,10 @@
             _getUser(e){
                 this.set('dataSelete',e.detail)
                 console.log(e.detail)
-                this.btn_openPanelRight()
+                this.$$('panel-right').open();
             },
             btn_openPanelRight(){
+                this.set('dataSelete',{})
                 // this.dispatchAction('APP_CLEAR_SELECT');
                 // console.log(this.$$('panel-right'))
                 // Polymer.dom(this.root).querySelector('#test').open();
