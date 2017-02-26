@@ -34,7 +34,7 @@
        <user-list data="[[listUser]]"></user-list>
      <panel-right id="test" title="เพิ่มสมาชิก">
          
-          <user-panel  data-for-selete="dataSelete"></user-panel>
+          <user-panel  data="[[dataSelete]]"></user-panel>
       </panel-right>
 <!--12121512-->
       <paper-fab icon="add" title="เพิ่มสมาชิก" id="addQuota" on-tap="btn_openPanelRight"></paper-fab>
@@ -49,11 +49,15 @@
             properties:{
                 listUser:{
                     type:Object,
-                }
+                },
+                dataSelete:{
+                    type:Object,
+                },
             },
             listeners: {
                 'get-user-list': 'listUserFN',
-                '_get-user':'_getUser'
+                '_get-user':'_getUser',
+                '_close-panel':'btn_closePanelRight'
             },
             ready(){
             this.listUserFN()
@@ -65,13 +69,18 @@
                 });
             },
             _getUser(e){
+                this.set('dataSelete',e.detail)
                 console.log(e.detail)
+                this.btn_openPanelRight()
             },
             btn_openPanelRight(){
                 // this.dispatchAction('APP_CLEAR_SELECT');
                 // console.log(this.$$('panel-right'))
                 // Polymer.dom(this.root).querySelector('#test').open();
                 this.$$('panel-right').open();
+            },
+            btn_closePanelRight(){
+                this.$$('panel-right').close();
             }
         });
     </script>

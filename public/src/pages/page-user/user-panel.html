@@ -9,6 +9,7 @@
         </style>
     <template>
         <!--user-panel dsfgdfds-->
+       // [[data.name]]//
         <user-manage data="{{data}}" ></user-manage>
             <div class="horizontal end-justified layout btn">
                 <paper-button class="gl-btn-success" on-tap="sendData" raised>บันทึก</paper-button>
@@ -32,6 +33,7 @@
                 
                 this.insert('./user/insert',data, () => {
                     this.fire('get-user-list');
+                    this.fire('_close-panel')
                     console.log(1)
                 },(data) => {
                     console.log(data)
