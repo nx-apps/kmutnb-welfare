@@ -6,7 +6,17 @@ const initialState = {
     select:{},
     disable:false
 }
+const clearData = (data,callback)=>{
 
+    let {prefixname_id,name,surname,gender_id,start_work_date,birthday,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id}=data;
+    let newData={prefixname_id,name,surname,gender_id,start_work_date,birthday,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id};
+    // newData.period = new Array();
+    // data.period.map((tag)=>{
+    //     newData.period.push({no:tag.no,quality:tag.quality});
+    // });
+        callback(newData)
+    // callback(data)
+}
 export function usersReducer(state = initialState,action){
 
     switch (action.type) {
@@ -58,20 +68,23 @@ export function usersAction(store){
             },
             USER_EDIT:function(data){
                 console.log(data)
-            this.fire('toast',{status:'load'});
-
-                axios.put(`/user/update`,data)
-                .then(res=>{
-                    this.USERS_LIST();
-                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                        callback:()=>{
-                            this.$$('panel-right').close();
-                        }
-                    });
+                clearData(data,(newData)=>{
+                    this.fire('toast',{status:'load'});
+                    newData.id = data.id
+                    axios.put(`/user/update`,newData)
+                    .then(res=>{
+                        this.USERS_LIST();
+                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                            callback:()=>{
+                                this.$$('panel-right').close();
+                            }
+                        });
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    })
                 })
-                .catch(err=>{
-                    console.log(err);
-                })
+            
             },
             USER_DELETED:function(id){
                 console.log(id)
