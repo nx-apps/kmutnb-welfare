@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     auth:authReducer,
     provider:providerReducer,
     commonData:commonDataReducer,
-    usersData:usersReducer
+    users:usersReducer
 });
 const storeApp = createStore(
     rootReducer,

@@ -38,8 +38,8 @@
                     <th>สถานนะภาพการทำงาน</th>
                     </tr>
                 </thead>
-                <tbody class="table-body">[[list]]//
-                    <template is="dom-repeat" items=[[list]]>
+                <tbody class="table-body">
+                    <template is="dom-repeat" items=[[lists]]>
                         <tr data=[[item]] on-tap="userClick">
                             <td>[[index]]</td>
                             <td>[[item.prefixname]]</td>
@@ -60,8 +60,8 @@
             is: 'user-list',
             behaviors:[ReduxBehavior],
             properties:{
-                list:{
-                    statePath:'users.list'
+                lists:{
+                    statePath:'users.lists'
                 },
             },
             userClick(e){

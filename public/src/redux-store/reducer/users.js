@@ -2,7 +2,7 @@ import axios from '../axios'
 import {commonAction} from '../config'
 
 const initialState = {
-    list:[{x:1}],
+    lists:[],
     select:{}
 }
 
@@ -10,8 +10,8 @@ export function usersReducer(state = initialState,action){
 
     switch (action.type) {
         case 'USERS_LIST':
-        console.log(1)
-            return Object.assign({},state,{list:action.payload});
+        // console.log(1)
+            return Object.assign({},state,{lists:action.payload});
         case 'USERS_SELECT':
             return Object.assign({},state,{select:action.payload});
         default:
@@ -25,9 +25,10 @@ export function usersAction(store){
     return [commonAction(),
         {
             USERS_LIST:function(){
-                console.log(1)
+                // console.log(1)
                 axios.get('./user/list')
                 .then(res=>{
+                    console.log(res.data)
                     store.dispatch({type:'USERS_LIST',payload:res.data})
                 })
                 .catch(err=>{
