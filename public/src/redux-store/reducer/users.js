@@ -53,6 +53,10 @@ export function usersAction(store){
             USER_SELECT:function(data){
                store.dispatch({type:'USER_SELECT',payload:data})
             },
+            USER_EDIT:function(data){
+                console.log(data)
+            //    store.dispatch({type:'USER_SELECT',payload:data})
+            },
             USER_DELETED:function(id){
                 console.log(id)
                 axios.delete(`./user/delete/${id}`)
@@ -64,7 +68,6 @@ export function usersAction(store){
                         }
                     });
                 })
-            //    store.dispatch({type:'USER_SELECT',payload:data})
             }
         }
     ]
