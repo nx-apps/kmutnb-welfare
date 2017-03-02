@@ -49,8 +49,9 @@ export function usersAction(store){
                 })
             },
             USER_INSERT(data){
+                clearData(data,(newData)=>{
                  this.fire('toast',{status:'load'});
-                    axios.post(`./user/insert`,data)
+                    axios.post(`./user/insert`,newData)
                     .then(res=>{
                         this.USERS_LIST();
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -61,6 +62,7 @@ export function usersAction(store){
                     })
                     .catch(err=>{
                         console.log(err);
+                    })
                     })
             },
             USER_SELECT:function(data){
