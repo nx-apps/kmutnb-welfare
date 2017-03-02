@@ -1,0 +1,98 @@
+<link rel="import" href="./../components/panel-right/panel-right.html">
+
+<link rel="import" href="./user-list.html">
+
+<link rel="import" href="./user-panel.html">
+
+<dom-module id="page-user">
+      <style include="iron-flex iron-flex-factors iron-flex-alignment">
+    :host {
+      --paper-fab-background:var(--paper-light-blue-500);
+      --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+    }
+    *{
+      font-family: 'CSChatThaiUI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    paper-fab {
+         position: fixed;
+         right: 25px;
+         bottom: 25px;
+         color: #fff;
+    }
+    panel-right{
+      background-color: var(--gl-white-color);
+    }
+    .user-list {
+        margin-top: 30px;
+        /*width: 80%;*/
+    }
+    user-list {
+        width: 80%;
+    }
+  </style>
+    <template>
+        <div class="user-list horizontal center-justified layout">
+            <user-list class="flex"></user-list>
+        </div>
+     <panel-right id="test" title="เพิ่มสมาชิก">
+         
+          <user-panel  data="[[dataSelete]]"></user-panel>
+      </panel-right>
+<!--12121512-->
+      <paper-fab icon="add" title="เพิ่มสมาชิก" id="addQuota" on-tap="btn_openPanelRight"></paper-fab>
+      <paper-tooltip for="addQuota" offset="0">เพิ่มสมาชิก</paper-tooltip>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-user',
+            behaviors: [
+                nylonBehavior,ReduxBehavior,commonDataAction,usersAction
+            ],
+            nylonPageActive:function(){
+                this.dispatchAction('COMMONDATA_LIST');
+                this.dispatchAction('USERS_LIST');
+                this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
+                this.dispatchAction('COMMONDATA_DATA_ACTIVE');
+                this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
+                this.dispatchAction('COMMONDATA_DATA_EMPLOYEE');
+                this.dispatchAction('COMMONDATA_DATA_FACULTY');
+                this.dispatchAction('COMMONDATA_DATA_GENDER');
+                this.dispatchAction('COMMONDATA_DATA_MATIER');
+                this.dispatchAction('COMMONDATA_DATA_POSITION');
+                this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
+                this.dispatchAction('COMMONDATA_DATA_RELATION');
+                this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
+            },
+            listeners: {
+                // 'get-user-list': 'listUserFN',
+                '_get-user':'_getUser',
+                // '_close-panel':'btn_closePanelRight'
+            },
+            // ready(){
+            //     console.log(11)
+            // },
+            // listUserFN(){
+            //     this.read('./user/list',(data)=>{
+            //         this.set('listUser',data)
+            //         console.log(this.listUser)
+            //     });
+            // },
+            _getUser(e){
+                this.dispatchAction('USER_SELECT',e.detail);
+                this.dispatchAction('USER_BTN',true);
+                // this.set('dataSelete',e.detail)
+                console.log(e.detail)
+                this.$$('panel-right').open();
+            },
+            btn_openPanelRight(){
+                this.set('dataSelete',{})
+                this.$$('panel-right').open();
+            },
+            btn_closePanelRight(){
+                this.set('dataSelete',{})
+                this.$$('panel-right').close();
+            }
+        });
+    </script>
+</dom-module>

@@ -6,12 +6,15 @@ import {commonSystemReducer,commonSystemAction} from './reducer/commonSystem'
 import {authReducer,authAction} from './reducer/auth'
 import {providerReducer,providerAction} from './reducer/provider'
 import {welfareReducer,welfareAction} from './reducer/welfare'
-
+import {commonDataReducer,commonDataAction} from './reducer/commonData'
+import {usersReducer,usersAction} from './reducer/users'
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
     auth:authReducer,
     provider:providerReducer,
     welfare:welfareReducer
+    commonData:commonDataReducer,
+    users:usersReducer
 });
 const storeApp = createStore(
     rootReducer,
@@ -25,3 +28,5 @@ window.commonSystemAction = commonSystemAction(storeApp);
 window.authAction = authAction(storeApp);
 window.providerAction = providerAction(storeApp);
 window.welfareAction = welfareAction(storeApp);
+window.commonDataAction = commonDataAction(storeApp); 
+window.usersAction = usersAction(storeApp);
