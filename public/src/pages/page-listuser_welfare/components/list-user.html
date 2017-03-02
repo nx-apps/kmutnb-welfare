@@ -1,0 +1,68 @@
+<dom-module id="list-user">
+    <template>
+        <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
+            /*div.container {
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+                @apply(--layout-wrap);
+            }*/
+
+
+
+
+            paper-material {
+                margin: 10px;
+                background-color: var(--gl-white-color);
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+
+
+
+            .table-detail {
+                margin: 20px;
+            }
+
+
+
+            table.gl-table-default {
+                border: 1px solid #ddd;
+            }
+        </style>
+        <div class="container">
+            <paper-material elevation="1">
+                <div class="table-detail">
+                    <table class="gl-table-default">
+                        <thead class="table-head">
+                            <tr>
+                                <th>รหัสพนักงาน</th>
+                                <th>คำนำหน้า</th>
+                                <th>ชื่อ</th>
+                                <th>นามสกุล</th>
+                                <th>ตำแหน่ง</th>
+                                <th>ประเภท</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            <tr>
+                                <td>1</td>
+                                <td>นาย</td>
+                                <td>ไอซ์</td>
+                                <td>นะจ๊ะ</td>
+                                <td>ผู้อำนวยการ</td>
+                                <td>ข้าราชการ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </paper-material>
+        </div>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'list-user',
+            behaviors:[ReduxBehavior]
+        });
+    </script>
+</dom-module>
