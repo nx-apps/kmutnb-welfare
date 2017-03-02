@@ -12,7 +12,7 @@ export function usersReducer(state = initialState,action){
         case 'USERS_LIST':
         // console.log(1)
             return Object.assign({},state,{lists:action.payload});
-        case 'USERS_SELECT':
+        case 'USER_SELECT':
             return Object.assign({},state,{select:action.payload});
         default:
             return state
@@ -58,17 +58,12 @@ export function usersAction(store){
                     .catch(err=>{
                         console.log(err);
                     })
+            },
+            USER_SELECT:function(data){
+                
+               store.dispatch({type:'USER_SELECT',payload:data})
+                // console.log(id);
             }
-            // COMMONDATA_SELECT:function(id){
-            //     axios.get(`/providers/provider/${id}`)
-            //     .then(res=>{
-            //         store.dispatch({type:'COMMONDATA_SELECT',payload:res.data})
-            //     })
-            //     .catch(err=>{
-
-            //     })
-            //     console.log(id);
-            // }
         }
     ]
 

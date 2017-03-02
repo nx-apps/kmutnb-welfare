@@ -64,11 +64,11 @@
                 this.dispatchAction('COMMONDATA_DATA_RELATION');
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             },
-            // listeners: {
-            //     'get-user-list': 'listUserFN',
-            //     '_get-user':'_getUser',
-            //     '_close-panel':'btn_closePanelRight'
-            // },
+            listeners: {
+                // 'get-user-list': 'listUserFN',
+                '_get-user':'_getUser',
+                // '_close-panel':'btn_closePanelRight'
+            },
             // ready(){
             //     console.log(11)
             // },
@@ -78,11 +78,12 @@
             //         console.log(this.listUser)
             //     });
             // },
-            // _getUser(e){
-            //     this.set('dataSelete',e.detail)
-            //     console.log(e.detail)
-            //     this.$$('panel-right').open();
-            // },
+            _getUser(e){
+                this.dispatchAction('USER_SELECT',e.detail);
+                // this.set('dataSelete',e.detail)
+                console.log(e.detail)
+                this.$$('panel-right').open();
+            },
             btn_openPanelRight(){
                 this.set('dataSelete',{})
                 this.$$('panel-right').open();
