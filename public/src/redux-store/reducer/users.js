@@ -3,7 +3,8 @@ import {commonAction} from '../config'
 
 const initialState = {
     lists:[],
-    select:{}
+    select:{},
+    disable:false
 }
 
 export function usersReducer(state = initialState,action){
@@ -14,6 +15,8 @@ export function usersReducer(state = initialState,action){
             return Object.assign({},state,{lists:action.payload});
         case 'USER_SELECT':
             return Object.assign({},state,{select:action.payload});
+        case 'USER_BTN' :
+            return Object.assign({},state,{disable:action.payload});
         default:
             return state
     }
@@ -81,6 +84,9 @@ export function usersAction(store){
                         }
                     });
                 })
+            },
+            USER_BTN(data){
+                store.dispatch({type:'USER_BTN',payload:data})
             }
         }
     ]

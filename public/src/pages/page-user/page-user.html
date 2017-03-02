@@ -80,6 +80,7 @@
             // },
             _getUser(e){
                 this.dispatchAction('USER_SELECT',e.detail);
+                this.dispatchAction('USER_BTN',true);
                 // this.set('dataSelete',e.detail)
                 console.log(e.detail)
                 this.$$('panel-right').open();
