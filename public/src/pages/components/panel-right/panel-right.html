@@ -20,7 +20,7 @@
                 border-radius: 100%;
             }
             app-toolbar{
-                background-color: #f7941e;
+                background-color: #95bf31;
                 color: white;
                 font-size: 20px;
                 padding-left: 20px;
@@ -39,20 +39,27 @@
                 opacity: 0.5;
                 z-index: 1;
             }
+            paper-tab{
+                font-size: 18px;
+            }
         </style>
         <div id="bgPanel" hidden$="[[!opened]]" on-tap="close"></div>
         <app-drawer align="right" persistent opened="{{opened}}" on-tap="closeBgAppDrawer">
             <div>
+            <paper-material elevation="1">
             <app-toolbar>
                 <div>
-                    {{title}}
+                    <!--<iron-image src="/images/icon/white/app-icon-32.png">
+                    </iron-image>-->
+                    <div main-title>{{title}}</div>
                 </div>
                 <div class="iconLeft">
                     <paper-icon-button icon="close" on-tap="close"></paper-icon-button>
                 </div>
 		    </app-toolbar>
+            </paper-material>
             </div>
-            <div style="height:90%; overflow: auto;">
+            <div style="height:90%; overflow: auto; background-color: #efefef;">
                 <content></content>
             </div>
         </app-drawer>
@@ -67,7 +74,7 @@
                 },
                 setWidth:{
                     type: String,
-                    value: '80%'
+                    value: '95%'
                 },
                 stat:{
                     type: String,

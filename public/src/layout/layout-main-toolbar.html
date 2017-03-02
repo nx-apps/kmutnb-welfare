@@ -8,7 +8,7 @@
 	<template>
         <style is="custom-style">
 			app-toolbar {
-				background-color: #f7941e;
+				background-color: #FF753F;
 				color: white;
 				font-family: 'rsuregular', sans-serif;
        			-webkit-font-smoothing: antialiased;
@@ -32,23 +32,61 @@
 			paper-button{
 				font-size: 16px;
 			}
+			.icon {
+				display: inline-block;
+				width: 1em;
+				height: 1em;
+				stroke-width: 0;
+				stroke: currentColor;
+				fill: currentColor;
+			}
+
+
+			.mymask {
+				width: 32px;
+				height: 32px;
+				mask: url(#mymask);
+				-webkit-mask-box-image: url(/images/icon/default/app-icon-32.png);
+			}
 		</style>
 		<app-toolbar>
 				<paper-icon-button icon="menu" on-tap="toggleDrawer"></paper-icon-button>
-				<iron-image src="./../../images/manifest/icon-32.png"></iron-image>
-				<div main-title>ระบบจัดการโควตาข้าวภายใต้โควตาภาษีสหภาพยุโรป</div>
-				<paper-button on-tap="changeLanguage">{{localize('Meg')}}</paper-button>
-				<!--<div class="sectionContent" bottom-item>
-					<iron-icon icon="chevron-right"></iron-icon>
-					รายการจัดสรรปีโควตา
-				</div>-->
+				<div style="background-color:#FFFFFF;margin-left: 20px;margin-top:3px;margin-right: 20px;" class="mymask"></div>
+				<svg height="0" width="0">
+					<mask id="mymask">
+						<image id="img" xlink:href="/images/icon/default/app-icon-32.png" x="0" y="0" height="50px" width="50px" />
+					</mask>
+				</svg>
+				<div main-title>OAUTH</div>
+				[[user.name]]
+				<div style="cursor: pointer" on-tap="logout" hidden="{{hidden}}">
+					<paper-icon-button icon="exit-to-app"></paper-icon-button>Logout
+				</div>
+				<div style="cursor: pointer" on-tap="logout" hidden="{{!hidden}}">
+					<paper-icon-button icon="power-settings-new"></paper-icon-button>
+					Log-in
+				</div>
 		</app-toolbar>
-		
 	</template>
 	<script>
         Polymer({
             is: 'layout-main-toolbar',
-			behaviors:[nylonLocalizeBehavior],
+			behaviors: [nylonLocalizeBehavior,ReduxBehavior],
+			properties:{
+				user:{
+					 statePath:'auth.user',
+					 observer:'check'
+				}
+			},
+			check:function(){
+				if(this.user.id){
+					this.hidden = false;	
+				}
+				else {
+					// this.fire('nylon-change-page',{path:'/login'})
+					this.hidden = true;
+				}
+			},
 			attached:function(){
 				 this.nylonLocalizeImport('/i18n-page1.json');
 			},
@@ -62,6 +100,17 @@
                 this.nylonLocalizeChange('th');
               } 
             },
+			logout:function(){
+				this.hidden = true;
+				localStorage.removeItem('token');
+				if(this.user.role=="none"){
+					this.fire('nylon-change-page',{path:'/login'})
+				}else{
+					window.location = "/login"
+				}
+				//this.fire('nylon-change-page',{path:'/login'})
+				//  this.AUTH_LOGOUT();
+			}
         });
     </script>
 </dom-module>

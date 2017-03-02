@@ -23,7 +23,11 @@
     <script>
         Polymer({
             is:'nylon-app',
+            behaviors:[ReduxBehavior],
             properties:{
+                user:{
+                    statePath:'auth.user'
+                },
                 page: {
                     type: String,
                     reflectToAttribute: true,
@@ -55,24 +59,81 @@
                 '_routePageChanged(routeData.page)'
             ],
             _routePageChanged: function(page) {
-                this.page = page || 'user';
+                this.page = page;
             },
             _pageChanged: function(page, oldPage) {
-                console.log(page);
                 if (page != null) {
-                    this.importHref(
-                        this.resolveUrl('/src/pages/page-' + page + '/page-' + page + '.html'),
-                        ()=>{
-                            if(this.elementLayoutMainDrawer){
-                                this.elementLayoutMainDrawer._loaded();
+
+                    const loadPage = (page) => {
+                        this.importHref(
+                            this.resolveUrl('/src/pages/page-' + page + '/page-' + page + '.html'),
+                            ()=>{
+                                if(this.elementLayoutMainDrawer){
+                                    this.elementLayoutMainDrawer._loaded();
+                                }
+                            },
+                            ()=>{
+                                //console.log('ok');
+                                this._routePageChanged('404');
                             }
-                        },
-                        ()=>{
-                            console.log('ok');
-                            this._routePageChanged('404');
+                            , true
+                        );
+
+                    }
+
+                    
+                    setTimeout(()=>{
+                        
+                        if(this.page==""){
+                            if(typeof this.user !== "undefined"){
+                                if(this.user.role=="teacher"){
+                                    this.page = 'examRoom';
+                                }else if(this.user.role=="learner"){
+                                    this.page = 'examHistory';
+                                }else{
+                                    this._routePageChanged('login');
+                                }
+                            }else{
+                                this._routePageChanged('login');
+                            }
+                            
                         }
-                        , true
-                    );
+
+
+                        //console.log(this.user);
+                        // var pageRole = {
+                        //     question:['teacher'],
+                        //     examination:['teacher'],
+                        //     examHistory:['learner']
+                        // }
+
+                        var pageRole = {};
+
+                        if(this.user){
+                            if(pageRole[page]){
+                                var pass = false;
+                                pageRole[page].map((row)=>{
+                                    if(row==this.user.role)
+                                    pass = true;
+                                })
+                                if(pass){
+                                    loadPage(this.page);
+                                }else{
+                                    this._routePageChanged('403');
+                                }
+                            }else{
+                                loadPage(this.page);
+                            }
+                        }else{
+                            if(pageRole[page]){
+                                if(pageRole[page].length != 0)
+                                this._routePageChanged('401');
+                            }else{
+                                loadPage(this.page);
+                            }
+                        }
+
+                    },100)
                 }
             },
             _changePage:function(e){

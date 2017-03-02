@@ -5,25 +5,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-  <title>ระบบสวัสดิการ</title>
-
-  <link rel="shortcut icon" sizes="32x32" href="/images/app-icon-32.png">
+  <title>OAUTH</title>
+  
+  <link rel="shortcut icon" sizes="32x32" href="/images/icon/default/app-icon-32.png">
   <link rel="manifest" href="/manifest.json">
+  <link rel="import" href="/api/push/import">
 
-  <script mqtt></script>
-
-  <script src="/bower_components/axios/dist/axios.min.js"></script>
-  <script>axios.defaults.baseURL = 'api'</script>
-
+  <script>Polymer = {lazyRegister: true, dom: 'shadow'};</script>
+  <link rel="import" href="/bower_components/polymer/polymer.html">
+  
+  
+  
   <link rel="import" href="/src/nylon-app.html" async>
   
   <style>
+
+    @font-face {
+        font-family: 'CSChatThaiUI';
+        src: url('/bower_components/gl-font/fonts/csChatThai/CSChatThaiUI.ttf');
+    }
+
     body {
       margin: 0;
+      background: #efefef;
     }
     
     #toolbar {
-      background-color: #f7941e;
+      background-color: #FF753F;
       color: white;
       font-family: 'rsuregular', sans-serif;
       -webkit-font-smoothing: antialiased;
@@ -71,14 +79,54 @@
       display: -webkit-flex;
       display: flex;
     }
+
+    *{
+      font-family: 'CSChatThaiUI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #toolbar > .icon{
+      margin-left:76px;
+      padding-top:18px;
+      float: left;
+    }
+
+    #toolbar > .title{
+      line-height: 62px;
+      margin-left: 20px;
+      
+      font-size: 16px;
+      font-weight:590;
+      float: left;
+      
+    }
+    .mymask {
+      width: 32px;
+      height: 32px;
+      mask: url(#mymask);
+      -webkit-mask-box-image: url(/images/icon/default/app-icon-32.png);
+    }
+
+    
   </style>
 
 </head>
 
 <body>
-
   <nylon-app unresolved>
-    <div id="toolbar"></div>
+    <div id="toolbar">
+      <div class="icon">
+        <div style="background-color:#FFFFFF;" class="mymask"></div>
+        <svg height="0" width="0">
+          <mask id="mymask">
+            <image id="img" xlink:href="/images/icon/default/app-icon-32.png" x="0" y="0" height="50px" width="50px" />
+          </mask>
+        </svg>
+      </div>
+      <div class="title">
+        OAUTH
+      </div>
+    </div>
     <div class="middle">
       <div class="loader"></div>
     </div>
@@ -87,8 +135,6 @@
 
   <script>
     window.performance && performance.mark && performance.mark('index.html');
-
-    Polymer = {lazyRegister: true, dom: 'shadow'};
 
     (function() {
       if ('registerElement' in document

@@ -12,7 +12,7 @@
         }
         app-toolbar{
             color: white;
-            background-color: orange;
+            background-color: #FF753F;
             font-size: 22px;
             /*user-drag: none; 
             user-select: none;
@@ -23,6 +23,9 @@
         }
         iron-image,iron-icon{
             padding-right: 10px;
+        }
+        paper-icon-item{
+            font-family: 'CSChatThaiUI', sans-serif;
         }
         paper-icon-item:hover{
             background-color: #F1F1F1;
@@ -38,24 +41,39 @@
         paper-icon-item[selected]{
             background-color: #DDD;
         }
+
+        .mymask {
+            width: 32px;
+            height: 32px;
+            mask: url(#mymask);
+            -webkit-mask-box-image: url(/images/icon/default/app-icon-32.png);
+        }
     </style>
         <div class="menu">
-				<app-toolbar>
-                     <iron-image src="./../../images/manifest/icon-32.png">
-                     </iron-image>
-                     <!--<iron-icon icon="home" item-icon></iron-icon>-->
-                        Menu
-                     </app-toolbar>
+                
+                <paper-material elevation="1">
+                    <app-toolbar>
+
+                        <div style="background-color:#FFFFFF; margin-right: 10px" class="mymask"></div>
+                        <svg height="0" width="0">
+                        <mask id="mymask">
+                            <image id="img" xlink:href="/images/icon/default/app-icon-32.png" x="0" y="0" height="50px" width="50px" />
+                        </mask>
+                        </svg>
+                        <!--<iron-icon icon="home" item-icon></iron-icon>-->
+                            OAUTH
+                    </app-toolbar>
+                </paper-material>
 				<div role="listbox">
                     
-                    <template is="dom-repeat" items="{{listMenu}}">
-                            <paper-icon-item on-tap="selectPage" path$="{{item.path}}" focused  index="{{index}}" selected$="{{_checkSelect(path,item.path)}}">
-                                <iron-icon icon="chevron-right" item-icon></iron-icon>
-                                {{item.name}}
-                                <div hidden$="{{!item.loading}}">
-                                    <paper-spinner active></paper-spinner>
-                                </div>
-                            </paper-icon-item>
+                    <template is="dom-repeat" items="{{listMenu}}" filter="{{menuFilter(user.role)}}">
+                        <paper-icon-item on-tap="selectPage" path$="{{item.path}}" focused  index="{{index}}" selected$="{{_checkSelect(path,item.path)}}">
+                            <iron-icon icon="chevron-right" item-icon></iron-icon>
+                            [[item.name]]
+                            <div hidden$="{{!item.loading}}">
+                                <paper-spinner active></paper-spinner>
+                            </div>
+                        </paper-icon-item>
                     </template>
                     
 				</div>
@@ -64,38 +82,44 @@
     <script>
         Polymer({
             is: 'layout-main-drawer',
+            behaviors:[ReduxBehavior],
             properties:{
+                user:{
+                    statePath:'auth.user'
+                },
                 listMenu:{
                     type:Array,
                     value:[
                         {
-                            name: 'รายชื่อพนักงาน',
-                            path: '/user'
+                            name: 'จัดการคำถาม',
+                            path: '/question',
+                            role: 'teacher'
                         },
-                        // {
-                        //     name: 'การคำนวณส่วนจัดสรร',
-                        //     path: '/calculate'
-                        // },
-                        // {
-                        //     name: 'ปริมาณส่วนจัดสรรข้าวภายใต้โควตาสหภาพยุโรปรายบริษัท',
-                        //     path: '/amount'
-                        // },
-                        // {
-                        //     name: 'ยืนยันส่วนจัดสรร',
-                        //     path: '/confirm'
-                        // },
-                        // {
-                        //     name: 'รับชำระเงินและออกใบเสร็จ',
-                        //     path: '/fee'
-                        // },
-                        // {
-                        //     name: 'นำเข้ารายงาน',
-                        //     path: '/report'
-                        // },
-                        // {
-                        //     name: 'testPage',
-                        //     path : '/401'
-                        // }
+                        {
+                            name: 'จัดการข้อสอบ',
+                            path: '/examination',
+                            role: 'teacher'
+                        },
+                        {
+                            name: 'จัดการห้องสอบ',
+                            path: '/examRoom',
+                            role: 'teacher'
+                        },
+                        {
+                            name: 'จัดการข้อมูลผู้ใช้งาน',
+                            path: '/userManage',
+                            role: 'teacher'
+                        },
+                        {
+                            name: 'จัดการ Module',
+                            path: '/module',
+                            role: 'teacher'
+                        },
+                        {
+                            name: 'รายการสอบ',
+                            path: '/examHistory',
+                            role: 'learner'
+                        }
                     ]
                 },
                 sendElement:{
@@ -103,7 +127,15 @@
                     value: false
                 }
             },
-            
+            menuFilter:function(role){
+                if (!role) {
+                    return null;
+                }else{
+                    return function(listMenu) {
+                        return (listMenu.role==role) 
+                    };
+                }
+            },
             selectPage:function(e){
                 if((('/'+this.path) != e.currentTarget.getAttribute('path')) && (e.currentTarget.getAttribute('path')!='')){
                     this.set('listMenu.'+e.currentTarget.index+'.loading',true);
@@ -117,6 +149,13 @@
                 }else{
                     this.fire('close-drawer');
                 }
+
+                this.async(
+                    ()=>{
+                        this.fire('close-drawer');
+                        this._loaded();
+                    }
+                ,'500')
                 
             },
             _loaded:function(){
