@@ -29,16 +29,7 @@
             insertata(){
                 let data = this.data;
                 data.start_work_date = new Date (data.start_work_date).toISOString();
-                console.log(data)
-                
-                this.insert('./user/insert',data, () => {
-                    this.fire('get-user-list');
-                    this.fire('_close-panel')
-                    console.log(1)
-                },(data) => {
-                    console.log(data)
-                    
-                 });
+                this.dispatchAction('USER_INSERT',data);
             },
             deleteData(){
                 this.delete('./user/delete/',this.data.id, () => {

@@ -38,8 +38,8 @@
                     <th>สถานนะภาพการทำงาน</th>
                     </tr>
                 </thead>
-                <tbody class="table-body">
-                    <!--<template is="dom-repeat" items=[[data]]>-->
+                <tbody class="table-body">[[list]]//
+                    <template is="dom-repeat" items=[[list]]>
                         <tr data=[[item]] on-tap="userClick">
                             <td>[[index]]</td>
                             <td>[[item.prefixname]]</td>
@@ -48,7 +48,7 @@
                             <td>[[item.start_work_date]]</td>
                             <td>[[item.active_name]]</td>
                         </tr>
-                    <!--</template>-->
+                    </template>
                 </tbody>
             </table>
         </div>
@@ -58,6 +58,12 @@
     <script>
         Polymer({
             is: 'user-list',
+            behaviors:[ReduxBehavior],
+            properties:{
+                list:{
+                    statePath:'users.list'
+                },
+            },
             userClick(e){
                 // this.fire('_get-user',e.currentTarget.data)
                 // console.log(e.currentTarget.data)

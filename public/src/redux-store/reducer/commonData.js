@@ -4,17 +4,17 @@ import {commonAction} from '../config'
 const initialState = {
     list:[],
     select:{},
-    academic:{},
-    active:{},
-    department:{},
-    employee:{},
-    faculty:{},
-    gender:{},
-    matier:{},
-    position:{},
-    prefixname:{},
-    relation:{},
-    type_employee:{},
+    academic:[{id:0,academic:''}],
+    active:[{id:0,active:''}],
+    department:[{id:0,department:''}],
+    employee:[{id:0,employee:''}],
+    faculty:[{id:0,faculty:''}],
+    gender:[{id:0,gender:''}],
+    matier:[{id:0,matier:''}],
+    position:[{id:0,position:''}],
+    prefixname:[{id:0,prefixname:''}],
+    relation:[{id:0,relation:''}],
+    type_employee:[{id:0,type_employee:''}],
 }
 
 export function commonDataReducer(state = initialState,action){
@@ -27,9 +27,9 @@ export function commonDataReducer(state = initialState,action){
         case  'COMMONDATA_DATA_ACADEMIC':
             return Object.assign({},state,{academic:action.payload});
         case  'COMMONDATA_DATA_DEPARTMENT':
-            return Object.assign({},state,{active:action.payload});
-        case  'COMMONDATA_DATA_ACTIVE':
             return Object.assign({},state,{department:action.payload});
+        case  'COMMONDATA_DATA_ACTIVE':
+            return Object.assign({},state,{active:action.payload});
         case  'COMMONDATA_DATA_EMPLOYEE':
             return Object.assign({},state,{employee:action.payload});
         case  'COMMONDATA_DATA_FACULTY':

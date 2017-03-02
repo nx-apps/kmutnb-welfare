@@ -35,7 +35,7 @@
         <div class="user-list horizontal center-justified layout">
             <user-list class="flex"></user-list>
         </div>
-       
+        [[list]]//
      <panel-right id="test" title="เพิ่มสมาชิก">
          
           <user-panel  data="[[dataSelete]]"></user-panel>
@@ -50,14 +50,14 @@
             behaviors: [
                 nylonBehavior,ReduxBehavior,commonDataAction,usersAction
             ],
-            // properties:{
-            //     listUser:{
-            //         type:Object,
-            //     },
-            //     dataSelete:{
-            //         type:Object,
-            //     },
-            // },
+            properties:{
+                prefixname:{
+                    statePath:'commonData.prefixname'
+                },
+                list:{
+                    statePath:'users.list'
+                },
+            },
             nylonPageActive:function(){
                 this.dispatchAction('COMMONDATA_LIST');
                 this.dispatchAction('USERS_LIST');
