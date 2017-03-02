@@ -40,17 +40,24 @@ exports.insert = function(req,res){
 exports.delete = function(req,res){
   console.log(req.body)
     var r = req.r;
-    // r.db('welfare').table('employee').insert(req.body)
-    //     .run()
-    //     .then(function (result) {
-    //         res.json(result);
-    //     })
-    //     .catch(function (err) {
-    //         res.status(500).json(err);
-    //     })
    r.db('welfare').table('employee')
         .get(req.params.id)
         .delete()
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.update = function(req,res){
+  var r = req.r;
+    // console.log(req.body)
+    // req.body = Object.assign(req.body, { year: req.body.year - 543 });
+    r.db('welfare').table('employee')
+        .get(req.body.id)
+        .update(req.body)
         .run()
         .then(function (result) {
             res.json(result);

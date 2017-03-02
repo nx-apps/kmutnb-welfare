@@ -55,7 +55,20 @@ export function usersAction(store){
             },
             USER_EDIT:function(data){
                 console.log(data)
-            //    store.dispatch({type:'USER_SELECT',payload:data})
+            this.fire('toast',{status:'load'});
+
+                axios.put(`/user/update`,data)
+                .then(res=>{
+                    this.USERS_LIST();
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                        callback:()=>{
+                            this.$$('panel-right').close();
+                        }
+                    });
+                })
+                .catch(err=>{
+                    console.log(err);
+                })
             },
             USER_DELETED:function(id){
                 console.log(id)
