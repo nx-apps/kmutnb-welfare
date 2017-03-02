@@ -32,11 +32,8 @@
                 this.dispatchAction('USER_INSERT',data);
             },
             deleteData(){
-                this.delete('./user/delete/',this.data.id, () => {
-                    this.fire('get-user-list');
-                    this.fire('_close-panel');
-                    // console.log(1)
-                 });
+                this.dispatchAction('USER_DELETED',this.data.id);
+               
             }
         });
     </script>

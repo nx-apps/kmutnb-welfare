@@ -36,19 +36,10 @@ export function usersAction(store){
                 })
             },
             USER_INSERT(data){
-                // his.insert('./user/insert',data, () => {
-                //     this.fire('get-user-list');
-                //     this.fire('_close-panel')
-                //     console.log(1)
-                // },(data) => {
-                //     console.log(data)
-                    
-                //  });
                  this.fire('toast',{status:'load'});
                     axios.post(`./user/insert`,data)
                     .then(res=>{
                         this.USERS_LIST();
-                        console.log(res)
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                             callback:()=>{
                                 this.$$('panel-right').close();
@@ -60,9 +51,20 @@ export function usersAction(store){
                     })
             },
             USER_SELECT:function(data){
-                
                store.dispatch({type:'USER_SELECT',payload:data})
-                // console.log(id);
+            },
+            USER_DELETED:function(id){
+                console.log(id)
+                axios.delete(`./user/delete/${id}`)
+                .then(res=>{
+                    this.USERS_LIST();
+                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                        callback:()=>{
+                            this.$$('panel-right').close();
+                        }
+                    });
+                })
+            //    store.dispatch({type:'USER_SELECT',payload:data})
             }
         }
     ]
