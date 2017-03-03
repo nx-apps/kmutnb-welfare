@@ -6,17 +6,33 @@
                 margin-bottom: 30px;
                 margin-right: 30px;
             }
+            paper-material {
+                background-color: #FFFFFF;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                /*width: 98%;*/
+            }
+            paper-material > div.head {
+                padding: 10px;
+                font-size: 35px;
+                /*margin-bottom: 25px;*/
+                text-align: center;
+                @apply(--layout-flex);
+            }
         </style>
     <template>
-        <!--user-panel dsfgdfds-->
-       <!--// [[data.name]]//-->
-        <user-manage data="{{data}}" ></user-manage>
+        
+        <paper-material elevation="1">
+            <user-manage data="{{data}}" ></user-manage>
             <div class="horizontal end-justified layout btn">
                  <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไข</paper-button>
                 <paper-button class="gl-btn-danger" on-tap="deleteData" raised>ลบ</paper-button>
                  <paper-button class="gl-btn-success" on-tap="saveData" raised>บันทึก</paper-button>
                 <paper-button class="gl-btn-primary" on-tap="insertata" raised>เพิ่ม</paper-button>
             </div>
+        </paper-material>
+        
+        
     </template>
     <script>
         Polymer({
