@@ -1,0 +1,51 @@
+
+<dom-module id="user-welfare">
+    <style include="gl-styles iron-flex iron-flex-factors iron-flex-alignment">
+            :host {
+                display: block;
+            }
+            paper-material {
+                background-color: #FFFFFF;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                /*width: 98%;*/
+            }
+            paper-material > div.head {
+                padding: 10px;
+                font-size: 35px;
+                /*margin-bottom: 25px;*/
+                text-align: center;
+                @apply(--layout-flex);
+            }
+        </style>
+    <template>
+        
+        
+        <paper-material elevation="1">
+            <table class="gl-table-default">
+          <thead class="table-head">
+            <tr>
+              <th>1</th>
+            </tr>
+          </thead>
+          <tfoot class="table-foot">
+            <tr>
+              <td></td>
+            </tr>
+          </tfoot>
+          <tbody class="table-body">
+            <tr>
+             <td>1</td>
+           </tr>
+         </tbody>
+      </table>
+        </paper-material>
+        
+        
+    </template>
+    <script>
+        Polymer({
+            is: 'user-welfare'
+        });
+    </script>
+</dom-module>

@@ -1,8 +1,8 @@
 <link rel="import" href="./../components/panel-right/panel-right.html">
-
 <link rel="import" href="./user-list.html">
-
 <link rel="import" href="./user-panel.html">
+<link rel="import" href="./user-welfare.html">
+
 
 <dom-module id="page-user">
       <style include="iron-flex iron-flex-factors iron-flex-alignment">
@@ -30,26 +30,53 @@
     user-list {
         width: 80%;
     }
+    .sub-component {
+        margin: 15px;
+        width: 100%;
+    }
   </style>
     <template>
         <div class="user-list horizontal center-justified layout">
             <user-list class="flex"></user-list>
         </div>
-     <panel-right id="test" title="เพิ่มสมาชิก">
+
+        <div class="horizontal center-justified layout">
+            <div >end-justified</div>
+        </div>
+
+
+     <panel-right id="test" title="{{title}}" >
+         <iron-pages selected="{{page}}">
+             <div class="horizontal center-justified layout">
+                <user-panel class="sub-component" data="[[dataSelete]]"></user-panel>
+             </div>
+             <div class="horizontal center-justified layout">
+                <user-welfare class="sub-component"></user-welfare>
+             </div>
+                <section></section>
+            </iron-pages>
          
-          <user-panel  data="[[dataSelete]]"></user-panel>
       </panel-right>
-<!--12121512-->
-      <paper-fab icon="add" title="เพิ่มสมาชิก" id="addQuota" on-tap="btn_openPanelRight"></paper-fab>
+      <paper-fab icon="add" title="เพิ่มสมาชิก" id="addQuota" on-tap="addUser"></paper-fab>
       <paper-tooltip for="addQuota" offset="0">เพิ่มสมาชิก</paper-tooltip>
     </template>
     <script>
         Polymer({
             is: 'page-user',
+            properties:{
+                page:{
+                    type:Number,
+                    value:0
+                },
+                title:{
+                    type:String,
+                    value:'เพิ่มสมาชิก'
+                }
+            },
             behaviors: [
-                nylonBehavior,ReduxBehavior,commonDataAction,usersAction
+                ReduxBehavior,nylonBehavior,commonDataAction,usersAction
             ],
-            nylonPageActive:function(){
+            nylonPageActive(){
                 this.dispatchAction('COMMONDATA_LIST');
                 this.dispatchAction('USERS_LIST');
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
@@ -69,6 +96,12 @@
                 '_get-user':'_getUser',
                 // '_close-panel':'btn_closePanelRight'
             },
+            addUser(){
+                this.set('page',0)
+                this.set('title','เพิ่มสมาชิก')
+                this.dispatchAction('USER_BTN',false);
+                this.btn_openPanelRight()
+            },
             // ready(){
             //     console.log(11)
             // },
@@ -79,6 +112,8 @@
             //     });
             // },
             _getUser(e){
+                this.set('page',1)
+                this.set('title','ข้อมูลสมาชิก')
                 this.dispatchAction('USER_SELECT',e.detail);
                 this.dispatchAction('USER_BTN',true);
                 // this.set('dataSelete',e.detail)
