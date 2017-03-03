@@ -17,28 +17,79 @@
                 text-align: center;
                 @apply(--layout-flex);
             }
+            .head-text{
+                font-size: var(--font-size-h4);
+                margin: 15px 15px 15px 15px;
+            }
+            table.gl-table-default {
+                width: 98%;
+                border: 1px solid #ddd;
+            /*margin: 15px;*/
+            }
+            .label,.inpit  {
+                font-size: var(--font-size-h5)
+            }
+            .label {
+                text-align: right;
+                padding-right: 5px;
+            }
+            .left {
+               text-align: left; 
+            }
         </style>
     <template>
         
         
-        <paper-material elevation="1">
-            <table class="gl-table-default">
-          <thead class="table-head">
-            <tr>
-              <th>1</th>
-            </tr>
-          </thead>
-          <tfoot class="table-foot">
-            <tr>
-              <td></td>
-            </tr>
-          </tfoot>
-          <tbody class="table-body">
-            <tr>
-             <td>1</td>
-           </tr>
-         </tbody>
-      </table>
+        <paper-material elevation="1" class="vertical">
+            <div class="content horizontal start-justified layout">
+                <div class="flex label">ชื่อพนักงาน</div>
+                <div class="flex inpit">นาย ต้นสาย</div>
+                <div class="flex label">นามสกุล</div>
+                <div class="flex inpit">จอมพันธ์</div>
+                <div class="flex label">อายุ</div>
+                <div class="flex inpit">24</div>
+                <div class="flex label left">ปี</div>
+                <!--<div class="flex-3"></div>-->
+                <div class="flex label">เพศ</div>
+                <div class="flex inpit">ชาย</div>
+                <!--<div class="flex">สถานภาพ</div>
+                <div class="flex">โสด</div><br>-->
+                <!--สถานภาพการทำงาน ยังทำอยู่  ตำแหน่งงาน โปรแกรเมอร์  <br>
+                ภาควิชาคุรุศาตร์คอมพิวเตอร์ คณะคุรุศาตร์อุตสาหกรรม <br>-->
+            </div>
+            <div class="content horizontal start-justified layout">
+                <div class="flex label">สถานภาพ</div>
+                <div class="flex inpit">โสด</div>
+                <div class="flex label">สถานภาพการทำงาน</div>
+                <div class="flex inpit">ยังทำอยู่</div>
+                <div class="flex label">ตำแหน่งงาน</div>
+                <div class="flex inpit">โปรแกรเมอร์</div>
+            </div>
+            <div class="content horizontal start-justified layout">
+                <div class="flex label">ภาควิชาคุรุศาตร์คอมพิวเตอร์</div>
+                <div class="flex inpit">คณะคุรุศาตร์อุตสาหกรรม</div>
+            </div>
+            <div class="head-text">
+             สวัสดิการ์ณที่มี
+            </div>
+                <div class="content horizontal center-justified layout">
+                    <table class="gl-table-default">
+                        <thead class="table-head">
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>ชื่อสวัสดิการที่สามารถใช้งานได้</th>
+                                <th>เงือนไข</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            <tr>
+                                <td>1</td>
+                                <td>ตัดแว่น</td>
+                                <td>เงือนไข</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
         </paper-material>
         
         
