@@ -78,15 +78,20 @@
                             <tr>
                                 <th>ลำดับ</th>
                                 <th>ชื่อสวัสดิการที่สามารถใช้งานได้</th>
-                                <th>เงือนไข</th>
+                                <th>จำนวนเงิน</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">
-                            <tr>
-                                <td>1</td>
-                                <td>ตัดแว่น</td>
-                                <td>เงือนไข</td>
-                            </tr>
+                            
+                            <template is="dom-repeat" items={{selectWelefares.welfare}} >
+                                <tr>
+                                    <td>[[index]]</td>
+                                    <td>[[item.name]]</td>
+                                    <td>[[item.bugget]]</td>
+                                </tr>
+                            </template>
+                            
+                            
                         </tbody>
                     </table>
             </div>
@@ -96,7 +101,13 @@
     </template>
     <script>
         Polymer({
-            is: 'user-welfare'
+            is: 'user-welfare',
+            behaviors:[ReduxBehavior],
+            properties:{
+                selectWelefares:{
+                    statePath:'users.select_welefares'
+                },
+            },
         });
     </script>
 </dom-module>

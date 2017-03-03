@@ -4,12 +4,13 @@ import {commonAction} from '../config'
 const initialState = {
     lists:[],
     select:{},
+    select_welefares:{},
     disabled:false
 }
 const clearData = (data,callback)=>{
 
-    let {prefixname_id,name,surname,gender_id,start_work_date,birthday,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id}=data;
-    let newData={prefixname_id,name,surname,gender_id,start_work_date,birthday,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id};
+    let {prefixname_id,name,surname,gender_id,start_work_date,birthday,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id,emp_id,personal_id}=data;
+    let newData={prefixname_id,name,surname,gender_id,start_work_date,birthday,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id,emp_id,personal_id};
     // newData.period = new Array();
     // data.period.map((tag)=>{
     //     newData.period.push({no:tag.no,quality:tag.quality});
@@ -25,6 +26,8 @@ export function usersReducer(state = initialState,action){
             return Object.assign({},state,{lists:action.payload});
         case 'USER_SELECT':
             return Object.assign({},state,{select:action.payload});
+        case 'USER_GET_WELFARES':
+            return Object.assign({},state,{select_welefares:action.payload});
         case 'USER_BTN' :
             return Object.assign({},state,{disabled:action.payload});
         default:
@@ -103,7 +106,25 @@ export function usersAction(store){
             USER_BTN(data){
                 console.log(data)
                 store.dispatch({type:'USER_BTN',payload:data})
-            }
+            },
+            USER_GET_WELFARES(id){
+                console.log(0)
+                 this.fire('toast',{status:'load'});
+                    axios.get(`./user/welfares/id/${id}`)
+                    .then(res=>{
+                        console.log(res)
+                        this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
+                            callback:()=>{
+                                store.dispatch({type:'USER_GET_WELFARES',payload:res.data})
+                                this.$$('panel-right').open();
+                            }
+                        });
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    })
+                    // })
+            },
         }
     ]
 

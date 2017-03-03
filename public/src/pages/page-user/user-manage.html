@@ -36,6 +36,18 @@
                 </div>
             </div>
             <div class="from layout horizontal">
+                <div class="label flex">รหัสพนักงาน</div>
+                <div class="input flex-2">
+                    <gl-form-input no-label-float value="{{data.emp_id}}" disabled="[[disabled]]"></gl-form-input>
+                </div>
+            </div>
+            <div class="from layout horizontal">
+                <div class="label flex">รหัสบัตรประชาชน</div>
+                <div class="input flex-2">
+                    <gl-form-input no-label-float value="{{data.personal_id}}" disabled="[[disabled]]"></gl-form-input>
+                </div>
+            </div>
+            <div class="from layout horizontal">
                 <div class="label flex">เพศ</div>
                 <div class="input flex-2">
                     <gl-combo-box no-label-float items="{{gender}}" value="{{data.gender_id}}" 

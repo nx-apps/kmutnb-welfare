@@ -75,6 +75,20 @@ exports.welfares = function(req,res) {
               gender: r.db('welfare').table('gender').get(emp('gender_id')).getField('gender')
             }}
    )
+    .merge(function(f){
+        return {
+          start_work_date:f('start_work_date').split('T')(0),
+          academic_name :r.db('welfare').table('academic').get(f('academic_id')).getField('academic_name'),
+          active_name :r.db('welfare').table('active').get(f('active_id')).getField('active_name'),
+          department_name :r.db('welfare').table('department').get(f('department_id')).getField('department_name'),
+          faculty_name :r.db('welfare').table('faculty').get(f('faculty_id')).getField('faculty_name'),
+          gender_name :r.db('welfare').table('gender').get(f('gender_id')).getField('gender_name'),
+          matier_name :r.db('welfare').table('matier').get(f('matier_id')).getField('matier_name'),
+          position_name :r.db('welfare').table('position').get(f('position_id')).getField('position_name'),
+          prefixname_name :r.db('welfare').table('prefixname').get(f('prefixname_id')).getField('prefixname'),
+          type_emp_name :r.db('welfare').table('type_employee').get(f('type_employee_id')).getField('type_emp_name'),
+        }
+      })
  .merge(function (welfare) {
             return {
               welfare: r.db('welfare').table('welfare')
@@ -115,8 +129,11 @@ exports.welfares = function(req,res) {
                count_pass_status:status('countpass_total').eq(status('count'))
                   }
                 })
+            .merge((chengeidname)=>{
+                return {welfare_id : chengeidname('id')}
+            })
                  .filter({"count_pass_status": true})
-                   .without('condition','countpass')
+                   .without('condition','countpass','id')
               .coerceTo('array')
             }}
    ) 

@@ -109,11 +109,13 @@
             _getUser(e){
                 this.set('page',1)
                 this.set('title','ข้อมูลสมาชิก')
-                this.dispatchAction('USER_SELECT',e.detail);
-                this.dispatchAction('USER_BTN',true);
+                this.dispatchAction('USER_GET_WELFARES',e.detail.id);
+                // this.dispatchAction('USER_SELECT',e.detail);
+                // this.dispatchAction('USER_BTN',true);
                 // this.set('dataSelete',e.detail)
                 console.log(e.detail)
-                this.$$('panel-right').open();
+                
+                
             },
             btn_openPanelRight(){
                 this.set('dataSelete',{})
