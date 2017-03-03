@@ -69,6 +69,10 @@
                 <div class="flex label">[[data.department_name]]</div>
                 <div class="flex inpit">[[data.faculty_name]]</div>
             </div>
+
+            <div class="horizontal end-justified layout btn">
+                 <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
+            </div>
             <div class="head-text">
              สวัสดิการ์ณที่มี
             </div>
@@ -108,6 +112,10 @@
                     statePath:'users.select_welefares'
                 },
             },
+            editData(){
+                this.fire('_get-user-edit',this.data)
+                // this.dispatchAction('USER_SELECT',e.detail);
+            }
         });
     </script>
 </dom-module>

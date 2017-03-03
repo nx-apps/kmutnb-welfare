@@ -87,7 +87,7 @@
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             },
             listeners: {
-                // 'get-user-list': 'listUserFN',
+                '_get-user-edit': '_getUserEdit',
                 '_get-user':'_getUser',
                 // '_close-panel':'btn_closePanelRight'
             },
@@ -110,12 +110,13 @@
                 this.set('page',1)
                 this.set('title','ข้อมูลสมาชิก')
                 this.dispatchAction('USER_GET_WELFARES',e.detail.id);
-                // this.dispatchAction('USER_SELECT',e.detail);
-                // this.dispatchAction('USER_BTN',true);
-                // this.set('dataSelete',e.detail)
                 console.log(e.detail)
-                
-                
+            },
+            _getUserEdit(e){
+                this.set('page',0)
+                this.dispatchAction('USER_SELECT',e.detail);
+                this.dispatchAction('USER_BTN',true);
+                this.$$('panel-right').open();
             },
             btn_openPanelRight(){
                 this.set('dataSelete',{})
