@@ -74,7 +74,7 @@
                  <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
             </div>
             <div class="head-text">
-             สวัสดิการ์ณที่มี
+             สวัสดิการที่ได้รับสิทธิ์
             </div>
                 <div class="content horizontal center-justified layout">
                     <table class="gl-table-default">
@@ -89,7 +89,7 @@
                             
                             <template is="dom-repeat" items={{data.welfare}} >
                                 <tr>
-                                    <td>[[index]]</td>
+                                    <td>[[_Obindex(index)]]</td>
                                     <td>[[item.name]]</td>
                                     <td>[[item.bugget]]</td>
                                 </tr>
@@ -115,6 +115,9 @@
             editData(){
                 this.fire('_get-user-edit',this.data)
                 // this.dispatchAction('USER_SELECT',e.detail);
+            },
+            _Obindex(index){
+                return index+1
             }
         });
     </script>

@@ -42,7 +42,7 @@
                 <tbody class="table-body">
                     <template is="dom-repeat" items=[[lists]]>
                         <tr data=[[item]] on-tap="userClick">
-                            <td>[[index]]</td>
+                            <td>[[_Obindex(index)]]</td>
                             <td>[[item.emp_id]]</td>
                             <!--<td>[[item.prefixname]]</td>-->
                             <td>[[item.prefixname]] [[item.name]]</td>
@@ -71,6 +71,9 @@
                 // this.dispatchAction('USER_GET_WELFARES',e.currentTarget.data.id);
                 
                 // console.log(e.currentTarget.data.id)
+            },
+            _Obindex(index){
+                return index+1
             }
         });
     </script>
