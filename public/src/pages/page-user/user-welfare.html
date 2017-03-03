@@ -36,11 +36,6 @@
             .left {
                text-align: left; 
             }
-            th {
-                font-weight:400;
-                padding-left: 5px;
-                width:20%;
-            }
             fieldset {
                 margin: 15px;
             }
@@ -49,40 +44,25 @@
         
         
         <paper-material elevation="1" class="vertical">
-            <div class="flex content horizontal start-justified layout">
-                <fieldset>
-                <legend>ข้อมูลส่วนตัว :</legend>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>
-                                รหัสพนักงาน : [[data.emp_id]]
-                            </th>
-                            <th>
-                                ชื่อ : [[data.prefixname_name]] [[data.name]] [[data.surname]]
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                สถานภาพการทำงาน : [[data.active_name]]
-                            </th>
-                            <th>
-                                ตำแหน่ง : [[data.position_name]]
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                ภาควิชา : [[data.department_name]]
-                            </th>
-                            <th>
-                                คณะ : [[data.faculty_name]]
-                            </th>
-                        </tr>
-                    </thead>
-                </table>
-            </fieldset>
+             <div class="horizontal end-justified layout btn">
+                 <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
             </div>
+            <fieldset>
+                <legend>ข้อมูลส่วนตัว :</legend>
+                <div class="flex content horizontal start-justified layout">
+                        <div class="flex">ชื่อ : [[data.prefixname_name]] [[data.name]] [[data.surname]]</div>
+                        <div class="flex">รหัสพนักงาน : [[data.emp_id]]</div>
+                    </div>
+                    <div class="flex content horizontal start-justified layout">
+                        <div class="flex">สถานภาพการทำงาน : [[data.active_name]]</div>
+                        <div class="flex">ตำแหน่ง : [[data.position_name]]</div>
+                    </div>
+                    <div class="flex content horizontal start-justified layout">
+                        <div class="flex">ภาควิชา : [[data.department_name]]</div>
+                        <div class="flex">คณะ : [[data.faculty_name]]</div>
+                </div>
+            </fieldset>
+           
             <!--<div class="flex content horizontal start-justified layout">
                 <div class="flex label">รหัสพนักงาน :</div>
                 <div class="flex inpit">
@@ -135,9 +115,7 @@
                 <div class="flex inpit">[[data.faculty_name]]</div>
             </div>-->
 
-            <div class="horizontal end-justified layout btn">
-                 <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
-            </div>
+           
             <div class="head-text">
              สวัสดิการที่ได้รับสิทธิ์
             </div>
