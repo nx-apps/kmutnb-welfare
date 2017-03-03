@@ -39,7 +39,7 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.bugget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
@@ -61,10 +61,10 @@
                             <gl-combo-box items="[[field]]" item-label-path="name" item-value-path="id" value="{{item.field}}"></gl-combobox>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box items="[[logic]]" item-label-path="name" item-value-path="logic" value="{{item.logic}}"></gl-combobox>
+                            <gl-combo-box items="[[logic]]" item-label-path="name" item-value-path="logic" value="{{item.logic_show}}"></gl-combobox>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-form-input value="{{item.value}}"></gl-form-input>
+                            <gl-form-input value="{{item.value_show}}"></gl-form-input>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
                             <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
@@ -78,6 +78,7 @@
                 <div class="horizontal end-justified layout btn-bottom">
                     <paper-button raised class="gl-btn-danger">ยกเลิก</paper-button>
                     <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                    <paper-button raised class="gl-btn-success" on-tap="clearData">กๅก</paper-button>
                 </div>
 
             </paper-material>
@@ -130,8 +131,23 @@
                 this.push('data.condition', { field: '', logic: '', value: '' })
             },
             save: function () {
-                this.dispatchAction('WELFARE_INSERT', this.data);
+                for (var i = 0; i < this.data.condition.length; i++) {
+                    // console.log(this.data.condition[i].logic.search("<"))
+                    if (this.data.condition[i].logic_show.search(">") >= 0) {
+                        var d = this.data.start_date.split("-");
+                        this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
+                        this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
+                    } else if (this.data.condition[i].logic_show.search("<") >= 0) {
+                        var d = this.data.end_date.split("-");
+                        this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
+                        this.data.condition[i].logic = this.data.condition[i].logic_show.replace("<", ">");
+                    } else {
+                        this.data.condition[i].value = this.data.condition[i].value_show;
+                        this.data.condition[i].logic = this.data.condition[i].logic_show;
+                    }
+                }
                 // console.log(this.data);
+                this.dispatchAction('WELFARE_INSERT', this.data)
             },
             delete_condition: function (e) {
                 // console.log(e.target.index);

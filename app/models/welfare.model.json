@@ -4,7 +4,7 @@
         "name": {
             "type": "string"
         },
-        "bugget": {
+        "budget": {
             "type": "number"
         },
         "start_date": {
@@ -17,5 +17,5 @@
             "type": "number"
         }
     },
-    "required": ["name", "bugget", "start_date", "end_date", "year"]
+    "required": ["name", "budget", "start_date", "end_date", "year"]
 }

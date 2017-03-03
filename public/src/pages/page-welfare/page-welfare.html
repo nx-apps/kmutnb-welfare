@@ -7,11 +7,13 @@
             paper-material {
                 background-color: var(--gl-white-color);
             }
+
             .table-detail {
                 margin: auto;
                 width: 50%;
                 padding: 20px;
             }
+
             table.gl-table-default {
                 border: 1px solid #ddd;
             }
@@ -26,12 +28,14 @@
                     <table class="gl-table-default">
                         <thead class="table-head">
                             <tr>
+                                <th style="text-align: center">ปี</th>
                                 <th>ชื่อสวัสดิการ</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">
                             <template is="dom-repeat" items="{{list}}">
                                 <tr data="[[item]]" on-tap="select_welfare">
+                                    <td style="text-align: center">{{item.year}}</td>
                                     <td>{{item.name}}</td>
                                 </tr>
                             </template>
@@ -44,7 +48,7 @@
         <panel-right title="{{title}}">
             <iron-pages selected="{{pages}}">
                 <div>
-                    <welfare-panel></welfare-panel>
+                    <welfare-panel data="{{data}}"></welfare-panel>
                 </div>
                 <div>
                     <welfare-manage data="{{dataSelect}}"></welfare-manage>
@@ -78,6 +82,7 @@
                 this.$$('panel-right').open();
                 this.pages = 0;
                 this.set('title', this.title = "เพิ่มสวัสดิการ");
+                // this.CLEAR_DATA();
             },
             select_welfare: function (e) {
                 this.$$('panel-right').open();
@@ -88,6 +93,13 @@
             },
             close_panel: function () {
                 this.$$('panel-right').close();
+            },
+            clearData: function () {
+                this.data = {
+                    year: '',
+                    name: '',
+                    condition: []
+                };
             }
         });
     </script>

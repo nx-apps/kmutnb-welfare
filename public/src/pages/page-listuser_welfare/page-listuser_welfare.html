@@ -3,15 +3,15 @@
 <dom-module id="page-listuser_welfare">
     <template>
         <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
-            gl-combo-box{
-                margin:20px 0px 20px 0px;
+            gl-combo-box {
+                margin: 20px 0px 20px 0px;
             }
         </style>
         <gl-grid-row width="{{getWidth}}">
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                 <gl-combo-box label="เลือกสวัสดิการ" placeholder="ทั้งหมด" item-label-path="name" 
-                item-value-path="id" items="{{list}}" value="{{dataSelected}}">
+                item-value-path="id" items="[[list]]" value="{{dataSelected}}">
                 </gl-combo-box>
             </gl-grid-col>
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
@@ -27,19 +27,32 @@
     <script>
         Polymer({
             is: 'page-listuser_welfare',
-            behaviors:[ReduxBehavior, nylonBehavior, welfareAction],
-            properties:{
-                list:{
-                    statePath:'welfare.list',
+            behaviors: [ReduxBehavior, nylonBehavior, welfareAction],
+            properties: {
+                list: {
+                    statePath: 'welfare.list',
+                },
+                dataSelected: {
+                    type: Object,
+                    value: {}
                 }
             },
-            nylonPageActive:function(){
+            nylonPageActive: function () {
                 // this.dispatchAction('WELFARE_LIST');
                 this.WELFARE_LIST();
+                this.WELFARE_LIST_ID('');
 
             },
-            _search:function(){
-               console.log(this.dataSelected)
+            _search: function () {
+                if (this.dataSelected != '') {
+                    // console.log(this.dataSelected)
+                    this.dispatchAction('WELFARE_LIST_ID',this.dataSelected);
+                }
+                else {
+                    // console.log('eiei');
+                    this.WELFARE_LIST_ID('');
+                    // this.dispatchAction('WELFARE_LIST');
+                }
             }
         });
     </script>
