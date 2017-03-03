@@ -1,0 +1,21 @@
+{
+    "name":"welfare",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "bugget": {
+            "type": "number"
+        },
+        "start_date": {
+            "type": "string"
+        },
+        "end_date": {
+            "type": "string"
+        },
+        "year": {
+            "type": "number"
+        }
+    },
+    "required": ["name", "bugget", "start_date", "end_date", "year"]
+}

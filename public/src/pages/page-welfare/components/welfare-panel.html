@@ -15,55 +15,73 @@
             .btn-bottom {
                 margin: 30px;
             }
+            paper-material {
+                background-color: var(--gl-white-color);
+            }
         </style>
-        <gl-grid-row width="{{getWidth}}">
-            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
-            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                <gl-form-input label="ชื่อสวัสดิการ" value="{{dataSelected.welfare_name}}"></gl-form-input>
-            </gl-grid-col>
-        </gl-grid-row>
-        <gl-grid-row>
-            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
-            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                <gl-form-input label="จำนวนเงิน" format-number="on" value="{{dataSelected.bugget}}"></gl-form-input>
-            </gl-grid-col>
-        </gl-grid-row>
-        <gl-grid-row>
-            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
-            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                <vaadin-date-picker label="วันที่เริ่มใช้ :" value="{{dataSelected.start_date}}"></vaadin-date-picker>
-            </gl-grid-col>
-            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                <vaadin-date-picker label="วันที่ยกเลิกใช้ :" value="{{dataSelected.start_end}}"></vaadin-date-picker>
-            </gl-grid-col>
-        </gl-grid-row>
-        <template is="dom-repeat" items="{{dataSelected.condition}}">
-            <gl-grid-row>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                    <div class="label_condition">เงื่อนไข</div>
-                </gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                    <gl-combo-box items="[[field]]" item-label-path="name" item-value-path="id" value="{{item.field}}"></gl-combobox>
-                </gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                    <gl-combo-box items="[[logic]]" item-label-path="name" item-value-path="logic" value="{{item.logic}}"></gl-combobox>
-                </gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                    <gl-form-input value="{{item.value}}"></gl-form-input>
-                </gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                    <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
-                </gl-grid-col>
-            </gl-grid-row>
-        </template>
-        <div class="horizontal center-justified layout">
-            <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
-        </div>
 
-        <div class="horizontal end-justified layout btn-bottom">
-            <paper-button raised class="gl-btn-danger">ยกเลิก</paper-button>
-            <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+        <div style="padding:20px;">
+
+            <paper-material elevation="1">
+
+                <gl-grid-row width="{{getWidth}}">
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <gl-form-input label="ปี" value="{{data.year}}" placeholder="กรุณากรอกปี"></gl-form-input>
+                    </gl-grid-col>
+                </gl-grid-row>
+                <gl-grid-row>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <gl-form-input label="ชื่อสวัสดิการ" value="{{data.name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
+                    </gl-grid-col>
+                </gl-grid-row>
+                <gl-grid-row>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.bugget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                    </gl-grid-col>
+                </gl-grid-row>
+                <gl-grid-row>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                        <vaadin-date-picker label="วันที่เริ่มใช้ :" value="{{data.start_date}}"></vaadin-date-picker>
+                    </gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                        <vaadin-date-picker label="วันที่ยกเลิกใช้ :" value="{{data.end_date}}"></vaadin-date-picker>
+                    </gl-grid-col>
+                </gl-grid-row>
+                <template is="dom-repeat" items="{{data.condition}}">
+                    <gl-grid-row>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
+                            <div class="label_condition">เงื่อนไข</div>
+                        </gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                            <gl-combo-box items="[[field]]" item-label-path="name" item-value-path="id" value="{{item.field}}"></gl-combobox>
+                        </gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                            <gl-combo-box items="[[logic]]" item-label-path="name" item-value-path="logic" value="{{item.logic}}"></gl-combobox>
+                        </gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                            <gl-form-input value="{{item.value}}"></gl-form-input>
+                        </gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
+                            <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
+                        </gl-grid-col>
+                    </gl-grid-row>
+                </template>
+                <div class="horizontal center-justified layout">
+                    <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
+                </div>
+
+                <div class="horizontal end-justified layout btn-bottom">
+                    <paper-button raised class="gl-btn-danger">ยกเลิก</paper-button>
+                    <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                </div>
+
+            </paper-material>
+
         </div>
 
     </template>
@@ -72,14 +90,15 @@
             is: 'welfare-panel',
             behaviors: [ReduxBehavior],
             properties: {
-                dataSelected: {
+                data: {
                     type: Object,
                     value:
-                        {
-                            condition:[
-                                { field: '', logic: '', value: '' }
-                            ] 
-                        }
+                    {
+                        condition: [
+                            { field: '', logic: '', value: '' }
+                        ]
+                    },
+                    notify: true
                 },
                 field: {
                     type: Array,
@@ -94,12 +113,12 @@
                 logic: {
                     type: Array,
                     value: [
-                        { logic: '>' , name:'มากกว่า'},
-                        { logic: '>=' , name:'มากกว่าเท่ากับ'},
-                        { logic: '=' , name:'เท่ากับ'},
-                        { logic: '!=' , name:'ไม่เท่ากับ'},
-                        { logic: '<' , name:'น้อยกว่า'},
-                        { logic: '<=' , name:'น้อยกว่าเท่ากับ'},
+                        { logic: '>', name: 'มากกว่า' },
+                        { logic: '>=', name: 'มากกว่าเท่ากับ' },
+                        { logic: '=', name: 'เท่ากับ' },
+                        { logic: '!=', name: 'ไม่เท่ากับ' },
+                        { logic: '<', name: 'น้อยกว่า' },
+                        { logic: '<=', name: 'น้อยกว่าเท่ากับ' },
                     ]
                 },
                 value: {
@@ -108,14 +127,15 @@
                 }
             },
             add_condition: function () {
-                this.push('dataSelected.condition', { field: '', logic: '', value: '' })
+                this.push('data.condition', { field: '', logic: '', value: '' })
             },
             save: function () {
-                console.log(this.dataSelected);
+                this.dispatchAction('WELFARE_INSERT', this.data);
+                // console.log(this.data);
             },
-            delete_condition:function(e){
+            delete_condition: function (e) {
                 // console.log(e.target.index);
-                this.splice('dataSelected.condition', e.target.index, 1);
+                this.splice('data.condition', e.target.index, 1);
             }
         });
     </script>

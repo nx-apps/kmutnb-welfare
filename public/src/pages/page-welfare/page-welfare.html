@@ -1,4 +1,5 @@
 <link rel="import" href="components/welfare-panel.html">
+<link rel="import" href="components/welfare-manage.html">
 
 <dom-module id="page-welfare">
     <template>
@@ -16,7 +17,8 @@
             }
         </style>
         <div class="horizontal end-justified layout">
-            <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert"><iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการ</paper-button>
+            <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
+                <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการ</paper-button>
         </div>
         <div class="container">
             <div class="table-detail">
@@ -28,19 +30,28 @@
                             </tr>
                         </thead>
                         <tbody class="table-body">
-                            <tr>
-                                <td>1</td>
-                            </tr>
+                            <template is="dom-repeat" items="{{list}}">
+                                <tr data="[[item]]" on-tap="select_welfare">
+                                    <td>{{item.name}}</td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </paper-material>
             </div>
         </div>
 
-        <panel-right title="เพิ่มสวัสดิการ">
-          <welfare-panel></welfare-panel>
+        <panel-right title="{{title}}">
+            <iron-pages selected="{{pages}}">
+                <div>
+                    <welfare-panel></welfare-panel>
+                </div>
+                <div>
+                    <welfare-manage data="{{dataSelect}}"></welfare-manage>
+                </div>
+            </iron-pages>
         </panel-right>
-        
+
 
     </template>
     <script>
@@ -50,15 +61,33 @@
             properties: {
                 list: {
                     statePath: 'welfare.list',
+                },
+                pages: {
+                    type: Number,
+                    value: 0
                 }
             },
+            listners:
+            { 'closePanel': 'close_panel' }
+            ,
             nylonPageActive: function () {
                 // this.dispatchAction('WELFARE_LIST');
                 this.WELFARE_LIST();
-
             },
             _insert: function () {
                 this.$$('panel-right').open();
+                this.pages = 0;
+                this.set('title', this.title = "เพิ่มสวัสดิการ");
+            },
+            select_welfare: function (e) {
+                this.$$('panel-right').open();
+                this.dataSelect = e.currentTarget.data;
+                this.pages = 1;
+                this.set('title', this.title = "ข้อมูลสวัสดิการ");
+                // console.log(e.currentTarget.data);
+            },
+            close_panel: function () {
+                this.$$('panel-right').close();
             }
         });
     </script>

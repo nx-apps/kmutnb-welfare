@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
     auth:authReducer,
     provider:providerReducer,
-    welfare:welfareReducer
+    welfare:welfareReducer,
     commonData:commonDataReducer,
     users:usersReducer
 });
