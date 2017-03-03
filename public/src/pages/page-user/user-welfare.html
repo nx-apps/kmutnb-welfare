@@ -36,12 +36,84 @@
             .left {
                text-align: left; 
             }
+            th {
+                font-weight:400;
+                padding-left: 5px;
+                width:20%;
+            }
+            fieldset {
+                margin: 15px;
+            }
         </style>
     <template>
         
         
         <paper-material elevation="1" class="vertical">
-            <div class="content horizontal start-justified layout">
+            <div class="flex content horizontal start-justified layout">
+                <fieldset>
+                <legend>ข้อมูลส่วนตัว :</legend>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>
+                                รหัสพนักงาน : [[data.emp_id]]
+                            </th>
+                            <th>
+                                ชื่อ : [[data.prefixname_name]] [[data.name]] [[data.surname]]
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                สถานภาพการทำงาน : [[data.active_name]]
+                            </th>
+                            <th>
+                                ตำแหน่ง : [[data.position_name]]
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                ภาควิชา : [[data.department_name]]
+                            </th>
+                            <th>
+                                คณะ : [[data.faculty_name]]
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </fieldset>
+            </div>
+            <!--<div class="flex content horizontal start-justified layout">
+                <div class="flex label">รหัสพนักงาน :</div>
+                <div class="flex inpit">
+                    <input type="text" value="[[data.emp_id]]" disabled>
+                </div>
+                <div class="flex label">เพศ :</div>
+                <div class="flex-5 inpit">[[data.gender_name]]</div>
+            </div>
+            <div class="flex content horizontal start-justified layout">
+                <div class="flex label">คำนำหน้าชื่อ :</div>
+                <div class="flex inpit">[[data.prefixname_name]]</div>
+                <div class="flex label">ชื่อพนักงาน :</div>
+                <div class="flex inpit">[[data.name]]</div>
+                <div class="flex label">นามสกุล :</div>
+                <div class="flex-3 inpit">[[data.surname]]</div>
+            </div>
+            <div class="flex content horizontal start-justified layout">
+                <div class="flex label">สถานภาพการทำงาน :</div>
+                <div class="flex inpit">[[data.active_name]]</div>
+                <div class="flex label">ตำแหน่ง :</div>
+                <div class="flex inpit">[[data.position_name]]</div>
+                <div class="flex label">ภาค :</div>
+                <div class="flex-4 inpit">[[data.department_name]]</div>
+            </div>
+            <div class="flex content horizontal start-justified layout">
+                <div class="flex label">ภาควิชา :</div>
+                <div class="flex-3 inpit">[[data.department_name]]</div>
+                <div class="flex label">คณะ/สำนักงาน :</div>
+                <div class="flex-3 inpit">[[data.faculty_name]]</div>
+            </div>-->
+            <!--<div class="content horizontal start-justified layout">
                 <div class="flex label">ชื่อพนักงาน</div>
                 <div class="flex inpit">[[data.prefixname_name]]  [[data.name]]</div>
                 <div class="flex label">นามสกุล</div>
@@ -49,17 +121,10 @@
                 <div class="flex label">อายุ</div>
                 <div class="flex inpit">xx</div>
                 <div class="flex label left">ปี</div>
-                <!--<div class="flex-3"></div>-->
                 <div class="flex label">เพศ</div>
                 <div class="flex inpit">[[data.gender_name]]</div>
-                <!--<div class="flex">สถานภาพ</div>
-                <div class="flex">โสด</div><br>-->
-                <!--สถานภาพการทำงาน ยังทำอยู่  ตำแหน่งงาน โปรแกรเมอร์  <br>
-                ภาควิชาคุรุศาตร์คอมพิวเตอร์ คณะคุรุศาตร์อุตสาหกรรม <br>-->
             </div>
             <div class="content horizontal start-justified layout">
-                <div class="flex label">สถานภาพ</div>
-                <div class="flex inpit">xx</div>
                 <div class="flex label">สถานภาพการทำงาน</div>
                 <div class="flex inpit">[[data.active_name]]</div>
                 <div class="flex label">ตำแหน่งงาน</div>
@@ -68,7 +133,7 @@
             <div class="content horizontal start-justified layout">
                 <div class="flex label">[[data.department_name]]</div>
                 <div class="flex inpit">[[data.faculty_name]]</div>
-            </div>
+            </div>-->
 
             <div class="horizontal end-justified layout btn">
                  <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
@@ -80,9 +145,10 @@
                     <table class="gl-table-default">
                         <thead class="table-head">
                             <tr>
-                                <th>ลำดับ</th>
-                                <th>ชื่อสวัสดิการที่สามารถใช้งานได้</th>
-                                <th>จำนวนเงิน</th>
+                                <th style="width: 5%">ลำดับ</th>
+                                <th style="width: 50%">ชื่อสวัสดิการที่สามารถใช้งานได้</th>
+                                <th style="width: 30%">จำนวนเงิน</th>
+                                <th style="width: 15%">ขอใช้</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">
@@ -91,7 +157,8 @@
                                 <tr>
                                     <td>[[_Obindex(index)]]</td>
                                     <td>[[item.name]]</td>
-                                    <td>[[item.bugget]]</td>
+                                    <td>[[item.budget]]</td>
+                                    <td> <paper-button class="gl-btn-primary"raised>ขอใช้</paper-button></td>
                                 </tr>
                             </template>
                             
