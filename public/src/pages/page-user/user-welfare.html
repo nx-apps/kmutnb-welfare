@@ -43,15 +43,15 @@
         <paper-material elevation="1" class="vertical">
             <div class="content horizontal start-justified layout">
                 <div class="flex label">ชื่อพนักงาน</div>
-                <div class="flex inpit">นาย ต้นสาย</div>
+                <div class="flex inpit">[[data.prefixname_name]]  [[data.name]]</div>
                 <div class="flex label">นามสกุล</div>
-                <div class="flex inpit">จอมพันธ์</div>
+                <div class="flex inpit">[[data.surname]]</div>
                 <div class="flex label">อายุ</div>
-                <div class="flex inpit">24</div>
+                <div class="flex inpit">xx</div>
                 <div class="flex label left">ปี</div>
                 <!--<div class="flex-3"></div>-->
                 <div class="flex label">เพศ</div>
-                <div class="flex inpit">ชาย</div>
+                <div class="flex inpit">[[data.gender_name]]</div>
                 <!--<div class="flex">สถานภาพ</div>
                 <div class="flex">โสด</div><br>-->
                 <!--สถานภาพการทำงาน ยังทำอยู่  ตำแหน่งงาน โปรแกรเมอร์  <br>
@@ -59,15 +59,15 @@
             </div>
             <div class="content horizontal start-justified layout">
                 <div class="flex label">สถานภาพ</div>
-                <div class="flex inpit">โสด</div>
+                <div class="flex inpit">xx</div>
                 <div class="flex label">สถานภาพการทำงาน</div>
-                <div class="flex inpit">ยังทำอยู่</div>
+                <div class="flex inpit">[[data.active_name]]</div>
                 <div class="flex label">ตำแหน่งงาน</div>
-                <div class="flex inpit">โปรแกรเมอร์</div>
+                <div class="flex inpit">[[data.position_name]]</div>
             </div>
             <div class="content horizontal start-justified layout">
-                <div class="flex label">ภาควิชาคุรุศาตร์คอมพิวเตอร์</div>
-                <div class="flex inpit">คณะคุรุศาตร์อุตสาหกรรม</div>
+                <div class="flex label">[[data.department_name]]</div>
+                <div class="flex inpit">[[data.faculty_name]]</div>
             </div>
             <div class="head-text">
              สวัสดิการ์ณที่มี
@@ -83,7 +83,7 @@
                         </thead>
                         <tbody class="table-body">
                             
-                            <template is="dom-repeat" items={{selectWelefares.welfare}} >
+                            <template is="dom-repeat" items={{data.welfare}} >
                                 <tr>
                                     <td>[[index]]</td>
                                     <td>[[item.name]]</td>
@@ -104,7 +104,7 @@
             is: 'user-welfare',
             behaviors:[ReduxBehavior],
             properties:{
-                selectWelefares:{
+                data:{
                     statePath:'users.select_welefares'
                 },
             },
