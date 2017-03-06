@@ -18,7 +18,7 @@ exports.read = function (req, res) {
                 } else {
                     if (temp.col[str2CharOnly(key)].indexOf("primary_id") > -1) {
                         row["id"] = sha1(file[sheet][key].v);
-                    } if (temp.col[str2CharOnly(key)].indexOf("date") > -1) {
+                    }else if (temp.col[str2CharOnly(key)].indexOf("date") > -1) {
                         row[temp.col[str2CharOnly(key)]] = new Date(file[sheet][key].w).toISOString();
                     } else {
                         row[temp.col[str2CharOnly(key)]] = file[sheet][key].v;
