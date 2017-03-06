@@ -22,10 +22,10 @@
             }
         </style>
     <template>
-        <paper-material elevation="1">
+        <!--<paper-material elevation="1">-->
             <!--[[insertView]]//[[disabled]]-->
-            <user-manage data="{{data}}" disabled="[[disabled]]"></user-manage>
-            <div class="horizontal end-justified layout btn">
+            <!--<user-manage data="{{data}}" disabled="[[disabled]]"></user-manage>-->
+            <!--<div class="horizontal end-justified layout btn">
 
                 <template is="dom-if" if={{!insertView}}>
                     <paper-button class="gl-btn-info" on-tap="editData" raised hidden="[[!disabled]]">แก้ไข</paper-button>
@@ -38,8 +38,29 @@
                 </template>
                  
                 
-            </div>
-        </paper-material>
+            </div>-->
+             <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
+        <gl-form-panel-head label="" set-padding="10px" set-border="1px">
+            <template is="dom-if" if={{!insertView}}>
+                    <paper-button class="gl-btn-info" on-tap="editData" raised hidden="[[!disabled]]">แก้ไข</paper-button>
+                    <paper-button class="gl-btn-danger" on-tap="deleteData" raised hidden="[[!disabled]]">ลบ</paper-button>
+                </template>
+        </gl-form-panel-head>
+        <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+            <user-manage data="{{data}}" disabled="[[disabled]]"></user-manage>
+        </gl-form-panel-body>
+        <gl-form-panel-footer label="" set-padding="10px">
+           <template is="dom-if" if={{!insertView}}>
+                    
+                    <paper-button class="gl-btn-success" on-tap="saveData" raised hidden="[[disabled]]">บันทึก</paper-button>
+                </template>
+                
+                <template is="dom-if" if={{insertView}}>
+                    <paper-button class="gl-btn-primary" on-tap="insertata" raised >เพิ่ม</paper-button>
+                </template>
+        </gl-form-panel-footer>
+    </gl-form-panel>
+        <!--</paper-material>-->
         
         
     </template>
