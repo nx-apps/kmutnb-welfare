@@ -28,7 +28,7 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input label="ปี" allowed-pattern="[0-9]" value="{{data.year}}" placeholder="กรุณากรอกปี พ.ศ."></gl-form-input>
+                        <gl-form-input label="ปี" allowed-pattern="[0-9]" maxlength="4" value="{{data.year}}" placeholder="กรุณากรอกปี พ.ศ."></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
@@ -149,7 +149,7 @@
                 this.data.budget = this.unFormat(this.data.budget);
                 this.data.year = this.unFormat(this.data.year);
                 // console.log(this.data);
-                this.dispatchAction('WELFARE_INSERT', this.data)
+                this.dispatchAction('INSERT_WELFARE', this.data)
             },
             delete_condition: function (e) {
                 // console.log(e.target.index);

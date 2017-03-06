@@ -6,6 +6,7 @@ import {commonSystemReducer,commonSystemAction} from './reducer/commonSystem'
 import {authReducer,authAction} from './reducer/auth'
 import {providerReducer,providerAction} from './reducer/provider'
 import {welfareReducer,welfareAction} from './reducer/welfare'
+import {listWelfareReducer,listWelfareAction} from './reducer/listWelfare'
 import {commonDataReducer,commonDataAction} from './reducer/commonData'
 import {usersReducer,usersAction} from './reducer/users'
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     auth:authReducer,
     provider:providerReducer,
     welfare:welfareReducer,
+    listWelfare:listWelfareReducer,
     commonData:commonDataReducer,
     users:usersReducer
 });
@@ -28,5 +30,6 @@ window.commonSystemAction = commonSystemAction(storeApp);
 window.authAction = authAction(storeApp);
 window.providerAction = providerAction(storeApp);
 window.welfareAction = welfareAction(storeApp);
+window.listWelfareAction = listWelfareAction(storeApp);
 window.commonDataAction = commonDataAction(storeApp); 
 window.usersAction = usersAction(storeApp);

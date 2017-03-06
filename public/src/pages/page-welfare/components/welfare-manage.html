@@ -35,7 +35,7 @@
             <gl-grid-row width="{{getWidth}}">
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-input label="ปี" allowed-pattern="[0-9]" value="{{data.year}}" disabled="{{active}}" max-length="4"></gl-form-input>
+                    <gl-form-input label="ปี" allowed-pattern="[0-9]" value="{{data.year}}" disabled="{{active}}" maxlength="4"></gl-form-input>
                 </gl-grid-col>
             </gl-grid-row>
             <gl-grid-row>
@@ -103,7 +103,7 @@
             behaviors: [ReduxBehavior, FormatNumberBehavior],
             properties: {
                 data:{
-                    statePath : 'welfare.dataSelect'
+                    statePath : 'listWelfare.dataSelect'
                 },
                 field: {
                     type: Array,
@@ -147,7 +147,7 @@
             },
             _confirm: function (result, detail) {
                 if (result == true) {
-                    this.dispatchAction('WELFARE_DELETE', this.data.id);
+                    this.dispatchAction('DELETE_WELFARE', this.data.id);
                 }
             },
             _edit:function(){
@@ -172,7 +172,7 @@
                 this.data.budget = this.unFormat(this.data.budget);
                 this.data.year = this.unFormat(this.data.year);
                 console.log(this.data);
-                this.dispatchAction('WELFARE_EDIT', this.data);
+                this.dispatchAction('EDIT_WELFARE', this.data);
                 this.active = true;
             },
             delete_condition: function (e) {
@@ -181,7 +181,7 @@
             },
             cancle:function(){
                 var id = this.data.id;
-                this.dispatchAction('WELFARE_DATA_SELECT', id);
+                this.dispatchAction('DATA_WELFARE_SELECT', id);
                 this.active = true;
             }
         });

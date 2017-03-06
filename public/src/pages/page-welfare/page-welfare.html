@@ -61,10 +61,10 @@
     <script>
         Polymer({
             is: 'page-welfare',
-            behaviors: [ReduxBehavior, nylonBehavior, welfareAction],
+            behaviors: [ReduxBehavior, nylonBehavior, listWelfareAction],
             properties: {
                 list: {
-                    statePath: 'welfare.list',
+                    statePath: 'listWelfare.list',
                 },
                 pages: {
                     type: Number,
@@ -73,13 +73,12 @@
             },
             listeners:
             { 
-                'closePanel': 'close_panel' ,
-                // 'reset-data': 'select_welfare'
+                'closePanel': 'close_panel' 
             }
             ,
             nylonPageActive: function () {
-                // this.dispatchAction('WELFARE_LIST');
-                this.WELFARE_LIST();
+                // this.dispatchAction('LIST_WELFARE');
+                this.LIST_WELFARE();
             },
             _insert: function () {
                 this.$$('panel-right').open();
@@ -89,11 +88,12 @@
             },
             select_welfare: function (e) {
                 // console.log(e.currentTarget.data.id);
-                var id = e.currentTarget.data.id;
-                this.WELFARE_DATA_SELECT(id);
                 this.$$('panel-right').open();
                 this.pages = 1;
                 this.set('title', this.title = "ข้อมูลสวัสดิการ");
+                var id = e.currentTarget.data.id;
+                // console.log(id);
+                this.DATA_WELFARE_SELECT(id);
             },
             close_panel: function () {
                 this.$$('panel-right').close();
