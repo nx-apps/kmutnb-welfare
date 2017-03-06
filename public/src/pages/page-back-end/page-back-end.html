@@ -63,6 +63,7 @@
                 this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW',true);
             },
             _editDataCondition(e){
+                this.set('title','แก้ไขฟิลด์')
               this.dispatchAction('CONDITIONREADWELFARE_BTN',true);
               this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW',false);
               this.dispatchAction('CONDITIONREADWELFARE_SELECT',e.detail); 

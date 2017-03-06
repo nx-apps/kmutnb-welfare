@@ -1,4 +1,5 @@
 
+<link rel="import" href="../../components/common-logic.html">
 <dom-module id="logic-manage">
     <style include="gl-styles iron-flex iron-flex-factors iron-flex-alignment">
         fieldset {
@@ -10,6 +11,9 @@
                 padding-right: 15px;
                 padding-left: 5px;
                 /*padding-top: 17px;*/
+            }
+            .title{
+                margin: 10px 15px;
             }
             gl-form-input,
             gl-combo-box,
@@ -25,7 +29,7 @@
                 <div class="from layout horizontal">
                     <div class="flex layout horizontal">
                         <div class="flex label">
-                            <label for="name_label">ชื่อ Label :</label>
+                            <label for="name_label">ชื่อที่แสดง :</label>
                         </div>
                         <div class="flex-2">
                             <gl-form-input id="name_label" no-label-float value="{{data.label}}" disabled="[[disabled]]"></gl-form-input>
@@ -33,7 +37,7 @@
                     </div>
                     <div class="flex layout horizontal">
                         <div class="flex label">
-                            <label for="name_field" >ชื่อ field :</label>
+                            <label for="name_field" >ชื่อตารางในฐานข้อมูล :</label>
                         </div>
                         <div class="flex-2">
                         <gl-form-input id="name_field" no-label-float value="{{data.field}}" disabled="[[disabled]]"></gl-form-input>
@@ -59,10 +63,46 @@
                         </div>    -->
                     </div>
                 </div>
-                <div>
-                    เงือนไข 
+                <div class="from layout horizontal">
+                    <div class="title">
+                        เงือนไข
+                    </div> 
                 </div>
-                <template is="dom-repeat" items={{data.conditions}} >
+                <div class="from layout horizontal">
+                    <table class="gl-table-default">
+                        <thead class="table-head">
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>ชื่อที่แสดง</th>
+                                <th>เครื่องหมาย</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            
+                            <template is="dom-repeat" items={{data.conditions}}>
+                                <tr>
+                                    <td>[[_Obindex(index)]]</td>
+                                    <td><gl-form-input id="personal_id" no-label-float value="{{item.name}}" disabled="[[disabled]]"></gl-form-input></td>
+                                    <td>
+                                        <gl-form-dropdown-menu no-label-float  placeholder="" disabled="[[disabled]]">
+                                                <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{item.symbol}}">
+                                                    <paper-item value=">" >></paper-item>
+                                                    <paper-item value=">=" >>=</paper-item>
+                                                    <paper-item value="==" >==</paper-item>
+                                                    <paper-item value="!=" >!=</paper-item>
+                                                    <paper-item value="<=" ><=</paper-item>
+                                                    <paper-item value="<" ><</paper-item>
+                                                </paper-menu>
+                                    </gl-form-dropdown-menu>
+                                    </td>
+                                </tr>
+                            </template>
+                            
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <!--<template is="dom-repeat" items={{data.conditions}} >
                     <div class="from layout horizontal">
                         <div class="flex layout horizontal">
                             <div class="flex label">
@@ -90,10 +130,15 @@
                             </div>    
                         </div>
                     </div>
-                </template>
-                <div class="horizontal end-justified layout btn">
+                </template>-->
+                
+                <template is="dom-if" if={{!disabled}}>
+                    <div class="horizontal end-justified layout btn">
                     <paper-button class="gl-btn-primary" on-tap="insertCondition" raised >เพิ่มเงือนไข</paper-button>
                 </div>
+                </template>
+                
+                
 
 
         </div>
@@ -102,7 +147,7 @@
     <script>
         Polymer({
             is: 'logic-manage',
-            behaviors:[ReduxBehavior],
+            behaviors:[ReduxBehavior,commonLogic],
             properties:{
                 data:{
                     type:Object,
