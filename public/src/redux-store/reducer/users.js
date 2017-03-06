@@ -75,36 +75,55 @@ export function usersAction(store){
                store.dispatch({type:'USER_SELECT',payload:data})
             },
             USER_EDIT:function(data){
-                console.log(data)
-                clearData(data,(newData)=>{
-                    this.fire('toast',{status:'load'});
-                    newData.id = data.id
-                    axios.put(`/user/update`,newData)
-                    .then(res=>{
-                        this.USERS_LIST();
-                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                            callback:()=>{
-                                this.$$('panel-right').close();
-                            }
-                        });
-                    })
-                    .catch(err=>{
-                        console.log(err);
-                    })
+                // console.log(data)
+                this.fire('toast',{
+                    status:'openDialog',
+                    text:'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
+                    confirmed:(result)=>{
+                        if(result == true){
+                            this.fire('toast',{status:'load'})
+                            clearData(data,(newData)=>{
+                                this.fire('toast',{status:'load'});
+                                newData.id = data.id
+                                axios.put(`/user/update`,newData)
+                                .then(res=>{
+                                    this.USERS_LIST();
+                                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                                        callback:()=>{
+                                            this.$$('panel-right').close();
+                                        }
+                                    });
+                                })
+                                .catch(err=>{
+                                    console.log(err);
+                                })
+                            })
+                        }
+                    }
                 })
+                
             
             },
             USER_DELETED:function(id){
-                console.log(id)
-                axios.delete(`./user/delete/${id}`)
-                .then(res=>{
-                    this.USERS_LIST();
-                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
-                        callback:()=>{
-                            this.$$('panel-right').close();
+                // console.log(id)
+                this.fire('toast',{
+                    status:'openDialog',
+                    text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                    confirmed:(result)=>{
+                        if(result == true){
+                            axios.delete(`./user/delete/${id}`)
+                            .then(res=>{
+                                this.USERS_LIST();
+                                this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                                    callback:()=>{
+                                        this.$$('panel-right').close();
+                                    }
+                                });
+                            })
                         }
-                    });
+                    }
                 })
+                
             },
             USER_BTN(data){
                 // console.log(data)
