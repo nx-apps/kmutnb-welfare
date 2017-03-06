@@ -34,9 +34,9 @@
                         </thead>
                         <tbody class="table-body">
                             <template is="dom-repeat" items="{{list}}">
-                                <tr data="[[item]]" on-tap="select_welfare">
-                                    <td style="text-align: center">{{item.year}}</td>
-                                    <td>{{item.name}}</td>
+                                <tr data="[[item]]" on-tap="select_welfare" style="cursor:pointer;">
+                                    <td style="text-align: center">[[changeYear(item.year)]]</td>
+                                    <td>[[item.name]]</td>
                                 </tr>
                             </template>
                         </tbody>
@@ -71,8 +71,11 @@
                     value: 0
                 }
             },
-            listners:
-            { 'closePanel': 'close_panel' }
+            listeners:
+            { 
+                'closePanel': 'close_panel' ,
+                // 'reset-data': 'select_welfare'
+            }
             ,
             nylonPageActive: function () {
                 // this.dispatchAction('WELFARE_LIST');
@@ -85,11 +88,12 @@
                 // this.CLEAR_DATA();
             },
             select_welfare: function (e) {
+                // console.log(e.currentTarget.data.id);
+                var id = e.currentTarget.data.id;
+                this.WELFARE_DATA_SELECT(id);
                 this.$$('panel-right').open();
-                this.dataSelect = e.currentTarget.data;
                 this.pages = 1;
                 this.set('title', this.title = "ข้อมูลสวัสดิการ");
-                // console.log(e.currentTarget.data);
             },
             close_panel: function () {
                 this.$$('panel-right').close();
@@ -100,6 +104,9 @@
                     name: '',
                     condition: []
                 };
+            },
+            changeYear: function(year){
+                return year+543;
             }
         });
     </script>

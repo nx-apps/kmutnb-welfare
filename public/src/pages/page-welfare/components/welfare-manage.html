@@ -1,3 +1,4 @@
+<link rel="import" href="../../components/format-number-behavior.html">
 <dom-module id="welfare-manage">
     <template>
         <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
@@ -34,7 +35,7 @@
             <gl-grid-row width="{{getWidth}}">
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-input label="ปี" value="{{data.year}}" disabled="{{active}}"></gl-form-input>
+                    <gl-form-input label="ปี" allowed-pattern="[0-9]" value="{{data.year}}" disabled="{{active}}" max-length="4"></gl-form-input>
                 </gl-grid-col>
             </gl-grid-row>
             <gl-grid-row>
@@ -86,7 +87,7 @@
 
             <div class="horizontal end-justified layout btn-bottom">
                 <div hidden="{{active}}">
-                    <paper-button raised class="gl-btn-danger">ยกเลิก</paper-button>
+                    <paper-button raised class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
                     <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
                 </div>
             </div>
@@ -99,17 +100,10 @@
     <script>
         Polymer({
             is: 'welfare-manage',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior],
             properties: {
-                data: {
-                    type: Object,
-                    value:
-                    {
-                        condition: [
-                            { field: '', logic: '', value: '' }
-                        ]
-                    },
-                    notify: true
+                data:{
+                    statePath : 'welfare.dataSelect'
                 },
                 field: {
                     type: Array,
@@ -175,7 +169,19 @@
                         this.data.condition[i].logic = this.data.condition[i].logic_show;
                     }
                 }
+                this.data.budget = this.unFormat(this.data.budget);
+                this.data.year = this.unFormat(this.data.year);
+                console.log(this.data);
                 this.dispatchAction('WELFARE_EDIT', this.data);
+                this.active = true;
+            },
+            delete_condition: function (e) {
+                // console.log(e.target.index);
+                this.splice('data.condition', e.target.index, 1);
+            },
+            cancle:function(){
+                var id = this.data.id;
+                this.dispatchAction('WELFARE_DATA_SELECT', id);
                 this.active = true;
             }
         });

@@ -4,7 +4,8 @@ import { commonAction } from '../config'
 const initialState = {
     list: [],
     select: {},
-    list_id: []
+    list_id: [],
+    dataSelect: {}
 }
 
 export function welfareReducer(state = initialState, action) {
@@ -16,6 +17,8 @@ export function welfareReducer(state = initialState, action) {
             return Object.assign({}, state, { list_id: action.payload });
         case 'CLEAR_DATA':
             return Object.assign({}, state, { select: {} });
+        case 'WELFARE_DATA_SELECT':
+            return Object.assign({}, state, { dataSelect: action.payload });
         default:
             return state
     }
@@ -49,8 +52,8 @@ export function welfareAction(store) {
         WELFARE_INSERT: function (data) {
             // console.log(data);
             var datas = {
-                budget: parseFloat(data.budget),
-                year: parseInt(data.year),
+                budget: data.budget,
+                year: data.year,
                 condition: data.condition,
                 start_date: new Date(data.start_date).toISOString(),
                 end_date: new Date(data.end_date).toISOString(),
@@ -63,7 +66,7 @@ export function welfareAction(store) {
                     console.log(result);
                     this.WELFARE_LIST();
                     this.fire('toast', {
-                        status: 'success', text: 'บันทึกสำเร็จ', callback: ()=> {
+                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             console.log('success');
                             this.clearData();
                         }
@@ -94,8 +97,8 @@ export function welfareAction(store) {
             // console.log(data);
             var datas = {
                 id: data.id,
-                budget: parseFloat(data.budget),
-                year: parseInt(data.year),
+                budget: data.budget,
+                year: data.year,
                 condition: data.condition,
                 start_date: new Date(data.start_date).toISOString(),
                 end_date: new Date(data.end_date).toISOString(),
@@ -119,6 +122,17 @@ export function welfareAction(store) {
         },
         CLEAR_DATA: function () {
             store.dispatch({ type: 'CLEAR_DATA' });
+        },
+        WELFARE_DATA_SELECT: function (val) {
+            // console.log(val);
+            axios.get('/list_welfare/' + val)
+                .then(function (result) {
+                    // console.log(result.data);
+                    store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: result.data })
+                })
+                .catch(err => {
+
+                })
         }
     }
     ]

@@ -31,10 +31,6 @@
             properties: {
                 list: {
                     statePath: 'welfare.list',
-                },
-                dataSelected: {
-                    type: Object,
-                    value: {}
                 }
             },
             nylonPageActive: function () {
@@ -49,7 +45,6 @@
                     this.dispatchAction('WELFARE_LIST_ID',this.dataSelected);
                 }
                 else {
-                    // console.log('eiei');
                     this.WELFARE_LIST_ID('');
                     // this.dispatchAction('WELFARE_LIST');
                 }

@@ -15,42 +15,50 @@
             table.gl-table-default {
                 border: 1px solid #ddd;
             }
+            .text-head{
+                margin-left: 20px;
+                font-weight: bold;
+            }
         </style>
         <div class="container">
             <paper-material elevation="1">
-                <div class="table-detail">
-                    <table class="gl-table-default">
-                        <thead class="table-head">
-                            <tr>
-                                <th style="width:10%;">รหัสพนักงาน</th>
-                                <th style="width:10%;">คำนำหน้า</th>
-                                <th style="width:20%;">ชื่อ</th>
-                                <th style="width:20%;">นามสกุล</th>
-                                <th style="width:10%;">เพศ</th>
-                                <th style="width:20%;">ตำแหน่ง</th>
-                                <th style="width:10%;">ตำแหน่งวิชาการ</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-body">
-                            <template is="dom-repeat" items={{list.0.employee}}>
+                <template is="dom-repeat" items={{list}}>
+                    <div class="text-head">สวัสดิการ : [[item.name]] ปี : {{changeYear(item.year)}}</div>
+                    <div class="table-detail">
+                        <table class="gl-table-default">
+                            <thead class="table-head">
                                 <tr>
-                                    <td>[[item.emp_id]]</td>
-                                    <td>[[item.prefixname]]</td>
-                                    <td>[[item.name]]</td>
-                                    <td>[[item.surname]]</td>
-                                    <td>[[item.gender_name]]</td>
-                                    <td>[[item.position_name]]</td>
-                                    <td>[[item.academic_name]]</td>
+                                    <th style="width:10%;">รหัสพนักงาน</th>
+                                    <th style="width:10%;">คำนำหน้า</th>
+                                    <th style="width:15%;">ชื่อ</th>
+                                    <th style="width:15%;">นามสกุล</th>
+                                    <th style="width:10%;">เพศ</th>
+                                    <th style="width:25%;">ตำแหน่ง</th>
+                                    <th style="width:15%;">ตำแหน่งวิชาการ</th>
                                 </tr>
-                            </template>
-                            <template is="dom-if" if={{checkData(list.0.employee)}}>
-                                <tr>
-                                    <td colspan="7" style="text-align: center;">ไม่มีข้อมูล</td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody class="table-body">
+                                <template is="dom-repeat" items={{item.employee}}>
+                                    <tr>
+                                        <td>[[item.emp_id]]</td>
+                                        <td>[[item.prefixname]]</td>
+                                        <td>[[item.name]]</td>
+                                        <td>[[item.surname]]</td>
+                                        <td>[[item.gender_name]]</td>
+                                        <td>[[item.position_name]]</td>
+                                        <td>[[item.academic_name]]</td>
+                                    </tr>
+                                </template>
+                                <template is="dom-if" if={{checkData(item.employee)}}>
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">ไม่มีข้อมูล</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </template>
             </paper-material>
         </div>
 
@@ -74,7 +82,9 @@
                     }
                     // console.log(data.length);
                 }
-                
+            },
+            changeYear:function(year){
+                return year+543;
             }
         });
     </script>
