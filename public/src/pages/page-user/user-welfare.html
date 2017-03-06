@@ -1,8 +1,16 @@
 
 <dom-module id="user-welfare">
-    <style include="gl-styles iron-flex iron-flex-factors iron-flex-alignment">
+    <style include="gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
             :host {
                 display: block;
+            }
+            /*paper-button {
+                padding: 0px;
+            }*/
+            .gl-small {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                font-size: var(--font-size-h5);
             }
             paper-material {
                 background-color: #FFFFFF;
@@ -52,12 +60,12 @@
                 <div class="flex content horizontal start-justified layout">
                         <div class="flex">ชื่อ : [[data.prefixname_name]] [[data.name]] [[data.surname]]</div>
                         <div class="flex">รหัสพนักงาน : [[data.emp_id]]</div>
-                    </div>
-                    <div class="flex content horizontal start-justified layout">
+                </div>
+                <div class="flex content horizontal start-justified layout">
                         <div class="flex">สถานภาพการทำงาน : [[data.active_name]]</div>
                         <div class="flex">ตำแหน่ง : [[data.position_name]]</div>
-                    </div>
-                    <div class="flex content horizontal start-justified layout">
+                </div>
+                <div class="flex content horizontal start-justified layout">
                         <div class="flex">ภาควิชา : [[data.department_name]]</div>
                         <div class="flex">คณะ : [[data.faculty_name]]</div>
                 </div>
@@ -136,7 +144,7 @@
                                     <td>[[_Obindex(index)]]</td>
                                     <td>[[item.name]]</td>
                                     <td>[[item.budget]]</td>
-                                    <td> <paper-button class="gl-btn-primary"raised>ขอใช้</paper-button></td>
+                                    <td> <paper-button class="gl-btn-primary gl-small"raised>ขอใช้</paper-button></td>
                                 </tr>
                             </template>
                             

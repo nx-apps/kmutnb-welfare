@@ -5,7 +5,8 @@ const initialState = {
     lists:[],
     select:{},
     select_welefares:{},
-    disabled:false
+    disabled:true,
+    insert_view:true
 }
 const clearData = (data,callback)=>{
 
@@ -30,6 +31,8 @@ export function usersReducer(state = initialState,action){
             return Object.assign({},state,{select_welefares:action.payload});
         case 'USER_BTN' :
             return Object.assign({},state,{disabled:action.payload});
+        case 'USER_INSERT_VIEW' : 
+            return Object.assign({},state,{insert_view:action.payload});
         default:
             return state
     }
@@ -104,8 +107,12 @@ export function usersAction(store){
                 })
             },
             USER_BTN(data){
-                console.log(data)
+                // console.log(data)
                 store.dispatch({type:'USER_BTN',payload:data})
+            },
+            USER_INSERT_VIEW(data){
+                // console.log(data)
+                store.dispatch({type:'USER_INSERT_VIEW',payload:data})
             },
             USER_GET_WELFARES(id){
                 console.log(0)
