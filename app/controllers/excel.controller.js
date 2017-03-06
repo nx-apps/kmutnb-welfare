@@ -1,3 +1,4 @@
+sha1 = require('js-sha1');
 exports.read = function (req, res) {
     //Read file here.
     var XLSX = require('xlsx');
@@ -15,7 +16,9 @@ exports.read = function (req, res) {
                     temp.col[str2CharOnly(key)] = file[sheet][key].v;
                     temp.maxCol = str2CharOnly(key);
                 } else {
-                    if (temp.col[str2CharOnly(key)].indexOf("date") > -1) {
+                    if (temp.col[str2CharOnly(key)].indexOf("primary_id") > -1) {
+                        row["id"] = sha1(file[sheet][key].v);
+                    } if (temp.col[str2CharOnly(key)].indexOf("date") > -1) {
                         row[temp.col[str2CharOnly(key)]] = new Date(file[sheet][key].w).toISOString();
                     } else {
                         row[temp.col[str2CharOnly(key)]] = file[sheet][key].v;
