@@ -35,7 +35,7 @@
                         <tbody class="table-body">
                             <template is="dom-repeat" items="{{list}}">
                                 <tr data="[[item]]" on-tap="select_welfare" style="cursor:pointer;">
-                                    <td style="text-align: center">[[changeYear(item.year)]]</td>
+                                    <td style="text-align: center">[[item.year]]</td>
                                     <td>[[item.name]]</td>
                                 </tr>
                             </template>
@@ -104,9 +104,6 @@
                     name: '',
                     condition: []
                 };
-            },
-            changeYear: function(year){
-                return year+543;
             }
         });
     </script>

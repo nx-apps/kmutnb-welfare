@@ -1,6 +1,11 @@
 exports.listWelfare = function (req, res) {
     var r = req.r
     r.db('welfare').table('welfare')
+        .merge(function (m) {
+            return {
+                year: m('year').add(543)
+            }
+        })
         .run()
         .then(function (result) {
             res.json(result);
@@ -12,6 +17,7 @@ exports.listWelfareId = function (req, res) {
         .get(req.params.id)
         .merge(function (m) {
             return {
+                year: m('year').add(543),
                 start_date: m('start_date').split('T')(0),
                 end_date: m('end_date').split('T')(0)
             }
@@ -53,7 +59,11 @@ exports.insert = function (req, res) {
 exports.update = function (req, res) {
     var r = req.r;
     // console.log(req.body)
-    req.body = Object.assign(req.body);
+    req.body = Object.assign(req.body,
+        {
+            year: req.body.year - 543
+        }
+    );
     r.db('welfare').table('welfare')
         .get(req.body.id)
         .update(req.body)
