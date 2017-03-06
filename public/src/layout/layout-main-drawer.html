@@ -61,11 +61,10 @@
                         </mask>
                         </svg>
                         <!--<iron-icon icon="home" item-icon></iron-icon>-->
-                            OAUTH
+                            ระบบสวัสดิการ
                     </app-toolbar>
                 </paper-material>
 				<div role="listbox">
-                    
                     <template is="dom-repeat" items="{{listMenu}}" filter="{{menuFilter(user.role)}}">
                         <paper-icon-item on-tap="selectPage" path$="{{item.path}}" focused  index="{{index}}" selected$="{{_checkSelect(path,item.path)}}">
                             <iron-icon icon="chevron-right" item-icon></iron-icon>
@@ -93,33 +92,38 @@
                         {
                             name: 'หน้าผู้ใช้งาน',
                             path: '/user',
-                            role: 'teacher'
+                            // role: 'teacher'
                         },
-                        {
-                            name: 'จัดการข้อสอบ',
-                            path: '/examination',
-                            role: 'teacher'
-                        },
-                        {
-                            name: 'จัดการห้องสอบ',
-                            path: '/examRoom',
-                            role: 'teacher'
-                        },
-                        {
-                            name: 'จัดการข้อมูลผู้ใช้งาน',
-                            path: '/userManage',
-                            role: 'teacher'
-                        },
-                        {
-                            name: 'จัดการ Module',
-                            path: '/module',
-                            role: 'teacher'
-                        },
-                        {
-                            name: 'รายการสอบ',
-                            path: '/examHistory',
-                            role: 'learner'
-                        }
+                        // {
+                        //     name: 'หน้าผู้ใช้งาน',
+                        //     path: '/user',
+                        //     role: 'teacher'
+                        // },
+                        // {
+                        //     name: 'จัดการข้อสอบ',
+                        //     path: '/examination',
+                        //     role: 'teacher'
+                        // },
+                        // {
+                        //     name: 'จัดการห้องสอบ',
+                        //     path: '/examRoom',
+                        //     role: 'teacher'
+                        // },
+                        // {
+                        //     name: 'จัดการข้อมูลผู้ใช้งาน',
+                        //     path: '/userManage',
+                        //     role: 'teacher'
+                        // },
+                        // {
+                        //     name: 'จัดการ Module',
+                        //     path: '/module',
+                        //     role: 'teacher'
+                        // },
+                        // {
+                        //     name: 'รายการสอบ',
+                        //     path: '/examHistory',
+                        //     role: 'learner'
+                        // }
                     ]
                 },
                 sendElement:{
