@@ -95,6 +95,7 @@
                 this.set('page',0)
                 this.set('title','เพิ่มสมาชิก')
                 this.dispatchAction('USER_BTN',false);
+                this.dispatchAction('USER_INSERT_VIEW',true);
                 this.btn_openPanelRight()
             },
             // ready(){
@@ -116,6 +117,7 @@
                 this.set('page',0)
                 this.dispatchAction('USER_SELECT',e.detail);
                 this.dispatchAction('USER_BTN',true);
+                this.dispatchAction('USER_INSERT_VIEW',false);
                 this.$$('panel-right').open();
             },
             btn_openPanelRight(){

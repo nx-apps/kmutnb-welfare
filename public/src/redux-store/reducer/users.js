@@ -5,7 +5,8 @@ const initialState = {
     lists:[],
     select:{},
     select_welefares:{},
-    disabled:false
+    disabled:true,
+    insert_view:true
 }
 const clearData = (data,callback)=>{
 
@@ -30,6 +31,8 @@ export function usersReducer(state = initialState,action){
             return Object.assign({},state,{select_welefares:action.payload});
         case 'USER_BTN' :
             return Object.assign({},state,{disabled:action.payload});
+        case 'USER_INSERT_VIEW' : 
+            return Object.assign({},state,{insert_view:action.payload});
         default:
             return state
     }
@@ -72,40 +75,63 @@ export function usersAction(store){
                store.dispatch({type:'USER_SELECT',payload:data})
             },
             USER_EDIT:function(data){
-                console.log(data)
-                clearData(data,(newData)=>{
-                    this.fire('toast',{status:'load'});
-                    newData.id = data.id
-                    axios.put(`/user/update`,newData)
-                    .then(res=>{
-                        this.USERS_LIST();
-                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                            callback:()=>{
-                                this.$$('panel-right').close();
-                            }
-                        });
-                    })
-                    .catch(err=>{
-                        console.log(err);
-                    })
+                // console.log(data)
+                this.fire('toast',{
+                    status:'openDialog',
+                    text:'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
+                    confirmed:(result)=>{
+                        if(result == true){
+                            this.fire('toast',{status:'load'})
+                            clearData(data,(newData)=>{
+                                this.fire('toast',{status:'load'});
+                                newData.id = data.id
+                                axios.put(`/user/update`,newData)
+                                .then(res=>{
+                                    this.USERS_LIST();
+                                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                                        callback:()=>{
+                                            this.$$('panel-right').close();
+                                        }
+                                    });
+                                })
+                                .catch(err=>{
+                                    console.log(err);
+                                })
+                            })
+                        }
+                    }
                 })
+                
             
             },
             USER_DELETED:function(id){
-                console.log(id)
-                axios.delete(`./user/delete/${id}`)
-                .then(res=>{
-                    this.USERS_LIST();
-                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
-                        callback:()=>{
-                            this.$$('panel-right').close();
+                // console.log(id)
+                this.fire('toast',{
+                    status:'openDialog',
+                    text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                    confirmed:(result)=>{
+                        if(result == true){
+                            axios.delete(`./user/delete/${id}`)
+                            .then(res=>{
+                                this.USERS_LIST();
+                                this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                                    callback:()=>{
+                                        this.$$('panel-right').close();
+                                    }
+                                });
+                            })
                         }
-                    });
+                    }
                 })
+                
             },
             USER_BTN(data){
-                console.log(data)
+                // console.log(data)
                 store.dispatch({type:'USER_BTN',payload:data})
+            },
+            USER_INSERT_VIEW(data){
+                // console.log(data)
+                store.dispatch({type:'USER_INSERT_VIEW',payload:data})
             },
             USER_GET_WELFARES(id){
                 console.log(0)
