@@ -1,0 +1,124 @@
+
+<dom-module id="logic-manage">
+    <style include="gl-styles iron-flex iron-flex-factors iron-flex-alignment">
+        fieldset {
+            margin: 15px 5px ;
+        }
+            .label {
+                text-align :left;
+                padding-top: 14px;
+                padding-right: 15px;
+                padding-left: 5px;
+                /*padding-top: 17px;*/
+            }
+            gl-form-input,
+            gl-combo-box,
+            vaadin-date-picker {
+                width: 90%;
+            }
+            vaadin-date-picker {
+                margin-top: -19px;
+            }
+        </style>
+    <template>
+        <div class="container layout vertical ">
+                <div class="from layout horizontal">
+                    <div class="flex layout horizontal">
+                        <div class="flex label">
+                            <label for="name_label">ชื่อ Label :</label>
+                        </div>
+                        <div class="flex-2">
+                            <gl-form-input id="name_label" no-label-float value="{{data.label}}" disabled="[[disabled]]"></gl-form-input>
+                        </div>    
+                    </div>
+                    <div class="flex layout horizontal">
+                        <div class="flex label">
+                            <label for="name_field" >ชื่อ field :</label>
+                        </div>
+                        <div class="flex-2">
+                        <gl-form-input id="name_field" no-label-float value="{{data.field}}" disabled="[[disabled]]"></gl-form-input>
+                        </div>    
+                    </div>
+                </div>
+                <div class="from layout horizontal">
+                    <div class="flex layout horizontal">
+                        <div class="flex label">
+                            <label for="listTable">แหล่งที่มาของข้อมูล :</label>
+                        </div>
+                        <div class="flex-2">
+                            <gl-combo-box id="listTable" no-label-float items='[[listTable]]' value="{{data.data_source}}" 
+                            disabled="[[disabled]]"></gl-combo-box>
+                        </div>    
+                    </div>
+                    <div class="flex layout horizontal">
+                        <!--<div class="flex label">
+                            <label for="personal_id" >ชื่อ field :</label>
+                        </div>
+                        <div class="flex-2">
+                        <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]"></gl-form-input>
+                        </div>    -->
+                    </div>
+                </div>
+                <div>
+                    เงือนไข 
+                </div>
+                <template is="dom-repeat" items={{data.conditions}} >
+                    <div class="from layout horizontal">
+                        <div class="flex layout horizontal">
+                            <div class="flex label">
+                                <label for="emp_id">ชื่อ [[index]]:</label>
+                            </div>
+                            <div class="flex-2">
+                                <gl-form-input id="personal_id" no-label-float value="{{item.name}}" disabled="[[disabled]]"></gl-form-input>
+                            </div>    
+                        </div>
+                        <div class="flex layout horizontal">
+                            <div class="flex label">
+                                <label for="personal_id" >เครื่องหมาย :</label>
+                            </div>
+                            <div class="flex-2">
+                                <gl-form-dropdown-menu no-label-float  placeholder="" disabled="[[disabled]]">
+                                    <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{item.symbol}}">
+                                        <paper-item value=">" >></paper-item>
+                                        <paper-item value=">=" >>=</paper-item>
+                                        <paper-item value="==" >==</paper-item>
+                                        <paper-item value="!=" >!=</paper-item>
+                                        <paper-item value="<=" ><=</paper-item>
+                                        <paper-item value="<" ><</paper-item>
+                                    </paper-menu>
+                          </gl-form-dropdown-menu>
+                            </div>    
+                        </div>
+                    </div>
+                </template>
+                <div class="horizontal end-justified layout btn">
+                    <paper-button class="gl-btn-primary" on-tap="insertCondition" raised >เพิ่มเงือนไข</paper-button>
+                </div>
+
+
+        </div>
+        
+    </template>
+    <script>
+        Polymer({
+            is: 'logic-manage',
+            behaviors:[ReduxBehavior],
+            properties:{
+                data:{
+                    type:Object,
+                    value:{},
+                    notify:true
+                },
+                listTable:{
+                    statePath:'conditionReadWelfare.listTable'
+                },
+                
+            },
+            insertCondition(){
+                this.push('data.conditions',{name:'',symbol:''})
+            }
+            
+        });
+    </script>
+</dom-module>
+

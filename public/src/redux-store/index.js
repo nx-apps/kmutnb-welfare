@@ -9,6 +9,8 @@ import {welfareReducer,welfareAction} from './reducer/welfare'
 import {listWelfareReducer,listWelfareAction} from './reducer/listWelfare'
 import {commonDataReducer,commonDataAction} from './reducer/commonData'
 import {usersReducer,usersAction} from './reducer/users'
+import {conditionReadWelfareReducer,conditionReadWelfareAction} from './reducer/conditionReadWelfare'
+
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
     auth:authReducer,
@@ -16,8 +18,10 @@ const rootReducer = combineReducers({
     welfare:welfareReducer,
     listWelfare:listWelfareReducer,
     commonData:commonDataReducer,
-    users:usersReducer
+    users:usersReducer,
+    conditionReadWelfare:conditionReadWelfareReducer
 });
+
 const storeApp = createStore(
     rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
@@ -33,3 +37,4 @@ window.welfareAction = welfareAction(storeApp);
 window.listWelfareAction = listWelfareAction(storeApp);
 window.commonDataAction = commonDataAction(storeApp); 
 window.usersAction = usersAction(storeApp);
+window.conditionReadWelfareAction = conditionReadWelfareAction(storeApp);

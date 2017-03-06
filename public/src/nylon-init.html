@@ -83,7 +83,7 @@
 		</div>
 		<layout-main path="[[selected]]">
 			<iron-pages role="main" selected="[[selected]]" attr-for-selected="path" selected-attribute="visible" on-pull-year="onPullYear">
-				
+				<page-back-end path="back-end" current-path="[[selected]]"></page-back-end>
 				<page-login path="login" current-path="[[selected]]"></page-login>
 				<page-list-user path="list-user" current-path="[[selected]]"></page-list-user>
 				<page-provider path="provider" current-path="[[selected]]"></page-provider>

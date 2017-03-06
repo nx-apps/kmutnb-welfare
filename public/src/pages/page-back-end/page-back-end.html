@@ -1,0 +1,74 @@
+<link rel="import" href="./../components/panel-right/panel-right.html">
+
+<link rel="import" href="components/logic-panel.html">
+
+<link rel="import" href="components/list-of-logic.html">
+
+<dom-module id="page-back-end">
+      <style include="iron-flex iron-flex-factors iron-flex-alignment">
+    :host {
+      --paper-fab-background:var(--paper-light-blue-500);
+      --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+    }
+    *{
+      font-family: 'CSChatThaiUI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    paper-fab {
+         position: fixed;
+         right: 25px;
+         bottom: 25px;
+         color: #fff;
+    }
+    list-of-logic {
+        width: 80%;
+    }
+        </style>
+    <template>
+        <div class="list horizontal center-justified layout">
+            <list-of-logic></list-of-logic>
+        </div>
+         <panel-right id="test" title="{{title}}" >
+             <logic-panel></logic-panel>
+         <!--<iron-pages selected="{{page}}">
+             <div class="horizontal center-justified layout">
+                <user-panel class="sub-component" data="[[dataSelete]]"></user-panel>
+        </iron-pages>-->
+         </panel-right>
+         
+    </template>
+    <script>
+        Polymer({
+            is: 'page-back-end',
+            behaviors:[nylonBehavior,ReduxBehavior,conditionReadWelfareAction],
+            properties:{
+                data:{
+                    statePath:'conditionReadWelfare.select'
+                },
+            },
+            nylonPageActive:function(){
+                this.dispatchAction('CONDITIONREADWELFARE_LIST');
+                this.dispatchAction('CONDITIONREADWELFARE_TABLE_LIST');
+            },
+            listeners:{
+                '_get-field':'_getField',
+                '_edit-data-condition':'_editDataCondition'
+            },
+            _getField(){
+                // this.set('dataSelete',{})
+                this.$$('panel-right').open();
+                this.set('title','เพิ่มฟิลด์')
+                this.dispatchAction('CONDITIONREADWELFARE_SET'); 
+                this.dispatchAction('CONDITIONREADWELFARE_BTN',false);
+                this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW',true);
+            },
+            _editDataCondition(e){
+              this.dispatchAction('CONDITIONREADWELFARE_BTN',true);
+              this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW',false);
+              this.dispatchAction('CONDITIONREADWELFARE_SELECT',e.detail); 
+              this.$$('panel-right').open(); 
+            }
+            
+        });
+    </script>
+</dom-module>

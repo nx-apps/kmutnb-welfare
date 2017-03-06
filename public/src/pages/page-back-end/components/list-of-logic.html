@@ -1,0 +1,94 @@
+
+<link rel="import" href="../../components/common-logic.html">
+
+<dom-module id="list-of-logic">
+    <style include="gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
+            :host {
+                display: block;
+            }
+            .gl-small {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                font-size: var(--font-size-h5);
+            }
+            paper-material {
+                background-color: #FFFFFF;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+            paper-material > div.head {
+                padding: 10px;
+                font-size: 35px;
+                /*margin-bottom: 25px;*/
+                text-align: center;
+                @apply(--layout-flex);
+            }
+            table.gl-table-default {
+            width: 98%;
+            border: 1px solid #ddd;
+            /*margin: 15px;*/
+            }
+        </style>
+    <template>
+        
+        <paper-material elevation="1">
+            <div class="head">รายการฟิลด์เงือนไข</div>
+            <div class="content horizontal center-justified layout">
+            <table class="gl-table-default">
+                <thead class="table-head">
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อ</th>
+                        <th>แหล่งที่มาของข้อมูล</th>
+                        <th>กระทำ</th>
+                    </tr>
+                </thead>
+                <tfoot class="table-foot">
+                    <tr>
+                        <td colspan="4">
+                            <div class="horizontal end-justified layout">
+                                <paper-button raised class="gl-btn-primary" on-tap="addlogic">เพิ่ม</paper-button>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody class="table-body">
+                    
+                    <template is="dom-repeat" items={{lists}} >
+                        <tr>
+                            <td>[[_Obindex(index)]]</td>
+                            <td>[[item.label]]</td>
+                            <td>[[item.data_source]]</td>
+                            <td>
+                                <paper-button class="gl-btn-info gl-small"raised on-tap="editData" data="[[item]]">แก้ไข</paper-button>
+                            </td>
+                        </tr>
+                    </template>
+                    
+                    
+                </tbody>
+            </table>
+        </div>
+        </paper-material>
+        
+        
+    </template>
+    <script>
+        Polymer({
+            is: 'list-of-logic',
+            behaviors:[ReduxBehavior,commonLogic],
+            properties:{
+                lists:{
+                    statePath:'conditionReadWelfare.listConditions'
+                },
+            },
+            addlogic(){
+                this.fire('_get-field')
+            },
+            editData(e){
+               this.fire('_edit-data-condition',e.currentTarget.data) 
+            }
+
+        });
+    </script>
+</dom-module>

@@ -49,13 +49,13 @@ exports.read = function (req, res) {
     //res.json(dataSheet);
     var r = req.r;
     r.expr(dataSheet).forEach(function (row) {
-        return r.db('welfare').tableList().contains(row('table'))
+        return r.db('welfare_common').tableList().contains(row('table'))
             .do(function (tbExists) {
                 return r.branch(tbExists,
-                    r.db('welfare').table(row('table')).delete(),
-                    r.db('welfare').tableCreate(row('table'))
+                    r.db('welfare_common').table(row('table')).delete(),
+                    r.db('welfare_common').tableCreate(row('table'))
                 ).do(function (tbInsert) {
-                    return r.db('welfare').table(row('table')).insert(row('data'))
+                    return r.db('welfare_common').table(row('table')).insert(row('data'))
                 })
             })
     })
