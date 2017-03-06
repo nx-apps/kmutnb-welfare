@@ -1,0 +1,126 @@
+
+<dom-module id="user-welfare">
+    <style include="gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
+            :host {
+                display: block;
+            }
+            /*paper-button {
+                padding: 0px;
+            }*/
+            .gl-small {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                font-size: var(--font-size-h5);
+            }
+            paper-material {
+                background-color: #FFFFFF;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                /*width: 98%;*/
+            }
+            paper-material > div.head {
+                padding: 10px;
+                font-size: 35px;
+                /*margin-bottom: 25px;*/
+                text-align: center;
+                @apply(--layout-flex);
+            }
+            .head-text{
+                font-size: var(--font-size-h4);
+                margin: 15px 15px 15px 15px;
+            }
+            table.gl-table-default {
+                width: 98%;
+                border: 1px solid #ddd;
+            /*margin: 15px;*/
+            }
+            .label,.inpit  {
+                font-size: var(--font-size-h5)
+            }
+            .label {
+                text-align: right;
+                padding-right: 5px;
+            }
+            .left {
+               text-align: left; 
+            }
+            fieldset {
+                margin: 15px;
+            }
+        </style>
+    <template>
+        
+        
+        <paper-material elevation="1" class="vertical">
+             <div class="horizontal end-justified layout btn">
+                 <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
+            </div>
+            <fieldset>
+                <legend>ข้อมูลพนักงาน :</legend>
+                <div class="flex content horizontal start-justified layout">
+                        <div class="flex">ชื่อ : [[data.prefixname_name]] [[data.name]] [[data.surname]]</div>
+                        <div class="flex">รหัสพนักงาน : [[data.emp_id]]</div>
+                </div>
+                <div class="flex content horizontal start-justified layout">
+                        <div class="flex">สถานภาพการทำงาน : [[data.active_name]]</div>
+                        <div class="flex">ตำแหน่ง : [[data.position_name]]</div>
+                </div>
+                <div class="flex content horizontal start-justified layout">
+                        <div class="flex">ภาควิชา : [[data.department_name]]</div>
+                        <div class="flex">คณะ : [[data.faculty_name]]</div>
+                </div>
+            </fieldset>
+         
+
+           
+            <div class="head-text">
+             สวัสดิการที่ได้รับสิทธิ์
+            </div>
+                <div class="content horizontal center-justified layout">
+                    <table class="gl-table-default">
+                        <thead class="table-head">
+                            <tr>
+                                <th style="width: 5%">ลำดับ</th>
+                                <th style="width: 50%">ชื่อสวัสดิการที่สามารถใช้งานได้</th>
+                                <th style="width: 30%">จำนวนเงิน</th>
+                                <th style="width: 15%">ขอใช้</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            
+                            <template is="dom-repeat" items={{data.welfare}} >
+                                <tr>
+                                    <td>[[_Obindex(index)]]</td>
+                                    <td>[[item.name]]</td>
+                                    <td>[[item.budget]]</td>
+                                    <td> <paper-button class="gl-btn-primary gl-small"raised>ขอใช้</paper-button></td>
+                                </tr>
+                            </template>
+                            
+                            
+                        </tbody>
+                    </table>
+            </div>
+        </paper-material>
+        
+        
+    </template>
+    <script>
+        Polymer({
+            is: 'user-welfare',
+            behaviors:[ReduxBehavior],
+            properties:{
+                data:{
+                    statePath:'users.select_welefares'
+                },
+            },
+            editData(){
+                this.fire('_get-user-edit',this.data)
+                // this.dispatchAction('USER_SELECT',e.detail);
+            },
+            _Obindex(index){
+                return index+1
+            }
+        });
+    </script>
+</dom-module>

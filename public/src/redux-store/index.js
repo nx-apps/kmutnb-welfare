@@ -5,14 +5,18 @@ import {dispatchActionBehavior} from './config'
 import {commonSystemReducer,commonSystemAction} from './reducer/commonSystem'
 import {authReducer,authAction} from './reducer/auth'
 import {providerReducer,providerAction} from './reducer/provider'
+import {welfareReducer,welfareAction} from './reducer/welfare'
+import {listWelfareReducer,listWelfareAction} from './reducer/listWelfare'
 import {commonDataReducer,commonDataAction} from './reducer/commonData'
 import {usersReducer,usersAction} from './reducer/users'
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
     auth:authReducer,
     provider:providerReducer,
+    welfare:welfareReducer,
+    listWelfare:listWelfareReducer,
     commonData:commonDataReducer,
-    usersData:usersReducer
+    users:usersReducer
 });
 const storeApp = createStore(
     rootReducer,
@@ -25,5 +29,7 @@ window.dispatchActionBehavior = dispatchActionBehavior();
 window.commonSystemAction = commonSystemAction(storeApp);
 window.authAction = authAction(storeApp);
 window.providerAction = providerAction(storeApp);
+window.welfareAction = welfareAction(storeApp);
+window.listWelfareAction = listWelfareAction(storeApp);
 window.commonDataAction = commonDataAction(storeApp); 
-window.usersAction = usersAction(storeApp); 
+window.usersAction = usersAction(storeApp);
