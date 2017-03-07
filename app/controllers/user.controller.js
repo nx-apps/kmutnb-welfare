@@ -2,9 +2,9 @@ exports.list = function(req,res){
     // https://localhost:3000/api/user/list
   // console.log('1111111')
   //  res.json({user:'1'});
-  var crypto = require('crypto');
-  var sha1 = crypto.createHash('sha1').update('Apple').digest("hex");
-  console.log('>>>>>>>',sha1);
+//   var crypto = require('crypto');
+//   var sha1 = crypto.createHash('sha1').update('Apple').digest("hex");
+//   console.log('>>>>>>>',sha1);
     var r = req.r;
     r.db('welfare').table('employee')
         .merge(function(f){
@@ -13,15 +13,21 @@ exports.list = function(req,res){
           birthday:f('birthday').split('T')(0)
         }
       })
-      .eqJoin('academic_id', r.db('welfare').table('academic')).without({right: 'id'}).zip()
-      .eqJoin('active_id', r.db('welfare').table('active')).without({right: 'id'}).zip()
-      .eqJoin('department_id', r.db('welfare').table('department')).without({right: 'id'}).zip()
-      .eqJoin('faculty_id', r.db('welfare').table('faculty')).without({right: 'id'}).zip()
-      .eqJoin('gender_id', r.db('welfare').table('gender')).without({right: 'id'}).zip()
-      .eqJoin('matier_id', r.db('welfare').table('matier')).without({right: 'id'}).zip()
-      .eqJoin('position_id', r.db('welfare').table('position')).without({right: 'id'}).zip()
-      .eqJoin('prefixname_id', r.db('welfare').table('prefixname')).without({right: 'id'}).zip()
-      .eqJoin('type_employee_id', r.db('welfare').table('type_employee')).without({right: 'id'}).zip()
+      .merge(function(f){
+        return {
+          start_work_date:f('start_work_date').split('T')(0),
+         birthday:f('birthday').split('T')(0),
+          academic_name :r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
+          active_name :r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
+          department_name :r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
+          faculty_name :r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
+          gender_name :r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
+          matier_name :r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
+          position_name :r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
+          prefixname_name :r.db('welfare_common').table('prefixname').get(f('prefixname_id')).getField('prefixname'),
+          type_emp_name :r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_emp_name'),
+        }
+      })
         .run()
         .then(function (result) {
             res.json(result);
@@ -81,6 +87,7 @@ exports.update = function(req,res){
 }
 exports.welfares = function(req,res) {
    var r = req.r;
+   //แก้ด้วย
 // https://localhost:3000/api/user/welfares/id/875932f9-a308-4802-980e-247f82f4fb1c
    r.db('welfare').table('employee').get(req.params.id)
    .merge(function (emp) {
@@ -91,16 +98,16 @@ exports.welfares = function(req,res) {
     .merge(function(f){
         return {
           start_work_date:f('start_work_date').split('T')(0),
-          birthday:f('birthday').split('T')(0),
-          academic_name :r.db('welfare').table('academic').get(f('academic_id')).getField('academic_name'),
-          active_name :r.db('welfare').table('active').get(f('active_id')).getField('active_name'),
-          department_name :r.db('welfare').table('department').get(f('department_id')).getField('department_name'),
-          faculty_name :r.db('welfare').table('faculty').get(f('faculty_id')).getField('faculty_name'),
-          gender_name :r.db('welfare').table('gender').get(f('gender_id')).getField('gender_name'),
-          matier_name :r.db('welfare').table('matier').get(f('matier_id')).getField('matier_name'),
-          position_name :r.db('welfare').table('position').get(f('position_id')).getField('position_name'),
-          prefixname_name :r.db('welfare').table('prefixname').get(f('prefixname_id')).getField('prefixname'),
-          type_emp_name :r.db('welfare').table('type_employee').get(f('type_employee_id')).getField('type_emp_name'),
+         birthday:f('birthday').split('T')(0),
+          academic_name :r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
+          active_name :r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
+          department_name :r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
+            faculty_name :r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
+          gender_name :r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
+          matier_name :r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
+          position_name :r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
+          prefixname_name :r.db('welfare_common').table('prefixname').get(f('prefixname_id')).getField('prefixname'),
+          type_emp_name :r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_emp_name'),
         }
       })
  .merge(function (welfare) {
@@ -211,6 +218,20 @@ console.log(req.body);
             res.status(500).json(err);
         })
 },
+exports.editWelfare = function (req,res) {
+    var r = req.r;
+    // console.log(req.params.id);
+    r.db('welfare').table('history_welfare')
+        .get(req.body.id)
+        .update(req.body)
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
 exports.deleteWelfare = function (req,res) {
     var r = req.r;
     // console.log(req.params.id);

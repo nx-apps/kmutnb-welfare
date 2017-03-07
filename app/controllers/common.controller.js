@@ -1,7 +1,7 @@
 // var r = req.r;
 exports.academic = function(req,res){
   var r = req.r;
-    r.db('welfare').table('academic')
+    r.db('welfare_common').table('academic')
         .run()
         .then(function (result) {
             res.json(result);
@@ -12,7 +12,7 @@ exports.academic = function(req,res){
 }
 exports.active = function(req,res){
   var r = req.r;
-    r.db('welfare').table('active')
+    r.db('welfare_common').table('active')
         .run()
         .then(function (result) {
             res.json(result);
@@ -23,7 +23,7 @@ exports.active = function(req,res){
 }
 exports.department = function(req,res){
   var r = req.r;
-    r.db('welfare').table('department')
+    r.db('welfare_common').table('department')
         .run()
         .then(function (result) {
             res.json(result);
@@ -34,7 +34,7 @@ exports.department = function(req,res){
 }
 exports.employee = function(req,res){
   var r = req.r;
-    r.db('welfare').table('employee')
+    r.db('welfare_common').table('employee')
         .run()
         .then(function (result) {
             res.json(result);
@@ -45,7 +45,7 @@ exports.employee = function(req,res){
 }
 exports.faculty = function(req,res){
   var r = req.r;
-    r.db('welfare').table('faculty')
+    r.db('welfare_common').table('faculty')
         .run()
         .then(function (result) {
             res.json(result);
@@ -56,7 +56,7 @@ exports.faculty = function(req,res){
 }
 exports.gender = function(req,res){
   var r = req.r;
-    r.db('welfare').table('gender')
+    r.db('welfare_common').table('gender')
         .run()
         .then(function (result) {
             res.json(result);
@@ -67,7 +67,7 @@ exports.gender = function(req,res){
 }
 exports.matier = function(req,res){
   var r = req.r;
-    r.db('welfare').table('matier')
+    r.db('welfare_common').table('matier')
         .run()
         .then(function (result) {
             res.json(result);
@@ -78,7 +78,7 @@ exports.matier = function(req,res){
 }
 exports.position = function(req,res){
   var r = req.r;
-    r.db('welfare').table('position')
+    r.db('welfare_common').table('position')
         .run()
         .then(function (result) {
             res.json(result);
@@ -89,7 +89,7 @@ exports.position = function(req,res){
 }
 exports.prefixname = function(req,res){
   var r = req.r;
-    r.db('welfare').table('prefixname')
+    r.db('welfare_common').table('prefixname')
         .run()
         .then(function (result) {
             res.json(result);
@@ -100,7 +100,7 @@ exports.prefixname = function(req,res){
 }
 exports.relation = function(req,res){
   var r = req.r;
-    r.db('welfare').table('relation')
+    r.db('welfare_common').table('relation')
         .run()
         .then(function (result) {
             res.json(result);
@@ -111,7 +111,7 @@ exports.relation = function(req,res){
 }
 exports.type_employee = function(req,res){
   var r = req.r;
-    r.db('welfare').table('type_employee')
+    r.db('welfare_common').table('type_employee')
         .run()
         .then(function (result) {
             res.json(result);

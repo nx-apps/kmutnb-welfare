@@ -1,5 +1,5 @@
 exports.read = function(req,res){
-  // https://localhost:3000/api/user/list
+  // https://localhost:3000/api/condition_read_welfare/list
   //  res.json({user:'1'});
 //   var crypto = require('crypto');
 //   var sha1 = crypto.createHash('sha1').update('Apple').digest("hex");
@@ -26,9 +26,6 @@ exports.listTable = function (req,res) {
 }
 exports.insert = function(req,res){
   // console.log(req.body)
-//   var crypto = require('crypto');
-//   var sha1 = crypto.createHash('sha1').update('Apple').digest("hex");
-//   console.log('>>>',req.body)
 //  for (let prop in req.body) {
 //      console.log(typeof prop);
 //     //  req.body[prop] = req.body[prop].replace(/ /g,'').trim()
