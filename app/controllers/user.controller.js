@@ -9,7 +9,8 @@ exports.list = function(req,res){
     r.db('welfare').table('employee')
         .merge(function(f){
         return {
-          start_work_date:f('start_work_date').split('T')(0)
+          start_work_date:f('start_work_date').split('T')(0),
+          birthday:f('birthday').split('T')(0)
         }
       })
       .eqJoin('academic_id', r.db('welfare').table('academic')).without({right: 'id'}).zip()
@@ -30,7 +31,12 @@ exports.list = function(req,res){
         })
 }
 exports.insert = function(req,res){
-  // console.log(req.body)
+//   console.log('>>>>>>>>',req.body)
+// let newData = new Object()
+  for (let prop in req.body) {
+     req.body[prop] = req.body[prop].replace(/ /g,'').trim()
+  }   
+// console.log(req.body);
     var r = req.r;
     r.db('welfare').table('employee').insert(req.body)
         .run()
@@ -59,6 +65,9 @@ exports.update = function(req,res){
   var r = req.r;
     // console.log(req.body)
     // req.body = Object.assign(req.body, { year: req.body.year - 543 });
+    for (let prop in req.body) {
+     req.body[prop] = req.body[prop].replace(/ /g,'').trim()
+  }  
     r.db('welfare').table('employee')
         .get(req.body.id)
         .update(req.body)
@@ -82,6 +91,7 @@ exports.welfares = function(req,res) {
     .merge(function(f){
         return {
           start_work_date:f('start_work_date').split('T')(0),
+          birthday:f('birthday').split('T')(0),
           academic_name :r.db('welfare').table('academic').get(f('academic_id')).getField('academic_name'),
           active_name :r.db('welfare').table('active').get(f('active_id')).getField('active_name'),
           department_name :r.db('welfare').table('department').get(f('department_id')).getField('department_name'),

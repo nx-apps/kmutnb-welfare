@@ -1,4 +1,6 @@
 
+<link rel="import" href="../components/common-logic.html">
+
 <dom-module id="user-list">
     <style include="gl-styles iron-flex iron-flex-factors iron-flex-alignment">
             :host {
@@ -51,6 +53,13 @@
                             <td>[[item.active_name]]</td>
                         </tr>
                     </template>
+                    
+                    <template is="dom-if" if={{_ObIsHave(lists)}}>
+                        <tr>
+                            <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
+                        </tr>
+                    </template>
+                    
                 </tbody>
             </table>
         </div>
@@ -60,7 +69,7 @@
     <script>
         Polymer({
             is: 'user-list',
-            behaviors:[ReduxBehavior],
+            behaviors:[ReduxBehavior,commonLogic],
             properties:{
                 lists:{
                     statePath:'users.lists'

@@ -10,12 +10,14 @@ const initialState = {
 }
 const clearData = (data,callback)=>{
 
-    let {prefixname_id,name,surname,gender_id,start_work_date,birthday,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id,emp_id,personal_id}=data;
-    let newData={prefixname_id,name,surname,gender_id,start_work_date,birthday,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id,emp_id,personal_id};
+    let {prefixname_id,name,surname,gender_id,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id,emp_id,personal_id}=data;
+    let newData={prefixname_id,name,surname,gender_id,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id,emp_id,personal_id};
     // newData.period = new Array();
     // data.period.map((tag)=>{
     //     newData.period.push({no:tag.no,quality:tag.quality});
     // });
+    newData.start_work_date = new Date (data.start_work_date).toISOString();
+    newData.birthday = new Date (data.birthday).toISOString();
         callback(newData)
     // callback(data)
 }

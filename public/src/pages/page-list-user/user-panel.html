@@ -80,9 +80,7 @@
                 },
             },
             insertata(){
-                let data = this.data;
-                data.start_work_date = new Date (data.start_work_date).toISOString();
-                this.dispatchAction('USER_INSERT',data);
+                this.dispatchAction('USER_INSERT',this.data);
             },
             saveData(){
                 this.dispatchAction('USER_EDIT',this.data);

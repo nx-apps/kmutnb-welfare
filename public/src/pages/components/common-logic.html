@@ -5,7 +5,18 @@
         },
         _Obindex(index){
                 return index+1
+        },
+        _ObIsHave: function (data) {
+            if ((typeof data == 'object') && (data !== null)) {
+              if (data.length < 1) {
+                return true;
+              } else {
+                return false
+              }
+            } else {
+              return true
             }
+        }
          
     }
   
