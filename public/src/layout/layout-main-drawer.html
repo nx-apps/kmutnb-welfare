@@ -91,14 +91,14 @@
                     value:[
                         {
                             name: 'หน้าผู้ใช้งาน',
+                            path: '/user',
+                            role: ''
+                        },
+                        {
+                            name: 'หน้าจัดการพนักงาน',
                             path: '/list-user',
                             role: ''
                         },
-                        // {
-                        //     name: 'หน้าผู้ใช้งาน',
-                        //     path: '/user',
-                        //     role: 'teacher'
-                        // },
                         // {
                         //     name: 'จัดการข้อสอบ',
                         //     path: '/examination',
@@ -119,11 +119,11 @@
                         //     path: '/module',
                         //     role: 'teacher'
                         // },
-                        // {
-                        //     name: 'รายการสอบ',
-                        //     path: '/examHistory',
-                        //     role: 'learner'
-                        // }
+                        {
+                            name: 'หน้าจัดการข้อมูล',
+                            path: '/back-end',
+                            role: ''
+                        }
                     ]
                 },
                 sendElement:{
@@ -132,6 +132,7 @@
                 }
             },
             menuFilter:function(role){
+                console.log(!role);
                 if (!role) {
                     return null;
                 }else{

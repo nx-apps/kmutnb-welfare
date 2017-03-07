@@ -85,11 +85,29 @@
                         </div> 
                     </div>
                     <div class="flex layout horizontal">
+                        <!--<div class="flex label">
+                            <label for="relation" >ความสัมพัธ์ :</label>
+                        </div>
+                        <div class="flex-2">
+                            <gl-combo-box id="relation" no-label-float items="{{relation}}" value="{{data.relation_id}}" item-label-path="relation_name" item-value-path="id" disabled="[[disabled]]"></gl-combo-box>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="from layout horizontal">  
+                    <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="relation" >ความสัมพัธ์ :</label>
                         </div>
                         <div class="flex-2">
                             <gl-combo-box id="relation" no-label-float items="{{relation}}" value="{{data.relation_id}}" item-label-path="relation_name" item-value-path="id" disabled="[[disabled]]"></gl-combo-box>
+                        </div> 
+                    </div>
+                    <div class="flex layout horizontal">
+                        <div class="flex label">
+                            <label for="name" >รหัสพนักงาน :</label>
+                        </div>
+                        <div class="flex-2">
+                        <gl-form-input id="name" no-label-float value="{{data.surname}}" disabled="[[disabled]]"></gl-form-input>
                         </div> 
                     </div>
                 </div>
