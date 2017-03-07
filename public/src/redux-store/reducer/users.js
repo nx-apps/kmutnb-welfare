@@ -143,8 +143,8 @@ export function usersAction(store){
                 // console.log(data)
                 store.dispatch({type:'USER_INSERT_VIEW',payload:data})
             },
-            USER_GET_WELFARES(id){
-                console.log(0)
+            USER_GET_WELFARES(id,otherFunction=false){
+                console.log('otherFunction',otherFunction)
                  this.fire('toast',{status:'load'});
                     axios.get(`./user/welfares/id/${id}`)
                     .then(res=>{
@@ -152,7 +152,8 @@ export function usersAction(store){
                         this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
                             callback:()=>{
                                 store.dispatch({type:'USER_GET_WELFARES',payload:res.data})
-                                this.$$('panel-right').open();
+                                if(!otherFunction)
+                                    this.$$('panel-right').open();
                             }
                         });
                     })
@@ -162,15 +163,15 @@ export function usersAction(store){
                     // })
             },
             USER_USE_WELFARE(data){
-            console.log(data);
+            // console.log(data);
             clearDataWalfare(data,(newData)=>{
                 this.fire('toast',{status:'load'});
                     axios.post(`./user/use_welfare/`,newData)
                     .then(res=>{
-                        this.USER_GET_WELFARES(newData.emp_id);
+                        this.USER_GET_WELFARES(newData.emp_id,true);
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                             callback:()=>{
-                                this.$$('panel-right').close();
+                                // this.$$('panel-right').close();
                                 // this.$$('#walfare_budget').close()
                             }
                         });
@@ -189,10 +190,10 @@ export function usersAction(store){
                         if(result == true){
                             axios.delete(`./user/use_welfare/delete/id/${data.history_welfare_id}`)
                             .then(res=>{
-                                this.USER_GET_WELFARES(data.emp_id);
+                                this.USER_GET_WELFARES(data.emp_id,true);
                                 this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
                                     callback:()=>{
-                                        this.$$('panel-right').close();
+                                        // this.$$('panel-right').close();
                                     }
                                 });
                             })
