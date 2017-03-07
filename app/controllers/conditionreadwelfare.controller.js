@@ -78,14 +78,14 @@ exports.conditions = function(req,res) {
                 .merge((data_source)=>{
                    return{
                     name: data_source.hasFields('department_name').eq(true).branch(data_source('department_name'),
-                               data_source.hasFields('faculty_name').eq(true).branch(data_source('faculty_name'),
-                  						 data_source.hasFields('gender_name').eq(true).branch(data_source('gender_name'),
-                                data_source.hasFields('academic_name').eq(true).branch(data_source('academic_name'),
-                                  data_source.hasFields('matier_name').eq(true).branch(data_source('matier_name'),
-                                   data_source.hasFields('active_name').eq(true).branch(data_source('active_name'),
-                                 data_source.hasFields('position_name').eq(true).branch(data_source('position_name'),
-                                 data_source.hasFields('relation_name').eq(true).branch(data_source('relation_name'),
-                                  data_source.hasFields('prefixname').eq(true).branch(data_source('prefixname'),
+                          data_source.hasFields('faculty_name').eq(true).branch(data_source('faculty_name'),
+                  		  data_source.hasFields('gender_name').eq(true).branch(data_source('gender_name'),
+                          data_source.hasFields('academic_name').eq(true).branch(data_source('academic_name'),
+                          data_source.hasFields('matier_name').eq(true).branch(data_source('matier_name'),
+                          data_source.hasFields('active_name').eq(true).branch(data_source('active_name'),
+                          data_source.hasFields('position_name').eq(true).branch(data_source('position_name'),
+                          data_source.hasFields('relation_name').eq(true).branch(data_source('relation_name'),
+                          data_source.hasFields('prefixname').eq(true).branch(data_source('prefixname'),
                                 '1')))))))))
                    } 
                 })
