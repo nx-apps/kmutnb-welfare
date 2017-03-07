@@ -29,6 +29,10 @@ exports.insert = function(req,res){
 //   var crypto = require('crypto');
 //   var sha1 = crypto.createHash('sha1').update('Apple').digest("hex");
 //   console.log('>>>',req.body)
+//  for (let prop in req.body) {
+//      console.log(typeof prop);
+//     //  req.body[prop] = req.body[prop].replace(/ /g,'').trim()
+//   }  
     var r = req.r;
     r.db('welfare').table('condition_2').insert(req.body)
         .run()

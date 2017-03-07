@@ -14,8 +14,12 @@ const clearData = (data,callback)=>{
     let {label,field,data_source}=data;
     let newData={label,field,data_source};
     newData.conditions = new Array();
+    // for (let prop in newData) {
+    //    newData[prop] = newData[prop].replace(/ /g,'').trim()
+    // }  
     data.conditions.map((tag)=>{
-        newData.conditions.push({name:tag.name,symbol:tag.symbol});
+        newData.conditions.push({name:tag.name//.replace(/ /g,'').trim()
+        ,symbol:tag.symbol});
     });
         callback(newData)
     // callback(data)

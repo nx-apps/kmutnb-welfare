@@ -64,7 +64,11 @@
                             </td>
                         </tr>
                     </template>
-                    
+                     <template is="dom-if" if={{_ObIsHave(lists)}}>
+                                <tr>
+                                    <td colspan="4" style="text-align: center">ไม่มีข้อมูล</td>
+                                </tr>
+                            </template>
                     
                 </tbody>
             </table>

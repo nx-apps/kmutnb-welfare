@@ -1,7 +1,7 @@
 
 <link rel="import" href="../../components/common-logic.html">
 <dom-module id="logic-manage">
-    <style include="gl-styles iron-flex iron-flex-factors iron-flex-alignment">
+    <style include="gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
         fieldset {
             margin: 15px 5px ;
         }
@@ -11,6 +11,11 @@
                 padding-right: 15px;
                 padding-left: 5px;
                 /*padding-top: 17px;*/
+            }
+            .gl-small{
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                font-size: var(--font-size-h5);
             }
             .title{
                 margin: 10px 15px;
@@ -73,8 +78,9 @@
                         <thead class="table-head">
                             <tr>
                                 <th>ลำดับ</th>
-                                <th>ชื่อที่แสดง</th>
+                                <th>ชื่อเงื่อนไขที่แสดง</th>
                                 <th>เครื่องหมาย</th>
+                                <th>ดำเนินการ</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">
@@ -95,6 +101,16 @@
                                                 </paper-menu>
                                     </gl-form-dropdown-menu>
                                     </td>
+                                    <td>
+                                        <template is="dom-if" if={{!disabled}}>
+                                            <paper-button id="[[index]]" class="gl-btn-danger gl-small" on-tap="deleteCondition" raised >ลบเงือนไข</paper-button>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template is="dom-if" if={{_ObIsHave(data.conditions)}}>
+                                <tr>
+                                    <td colspan="4" style="text-align: center">ไม่มีเงือนไข</td>
                                 </tr>
                             </template>
                             
@@ -102,36 +118,6 @@
                         </tbody>
                     </table>
                 </div>
-                <!--<template is="dom-repeat" items={{data.conditions}} >
-                    <div class="from layout horizontal">
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="emp_id">ชื่อ [[index]]:</label>
-                            </div>
-                            <div class="flex-2">
-                                <gl-form-input id="personal_id" no-label-float value="{{item.name}}" disabled="[[disabled]]"></gl-form-input>
-                            </div>    
-                        </div>
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="personal_id" >เครื่องหมาย :</label>
-                            </div>
-                            <div class="flex-2">
-                                <gl-form-dropdown-menu no-label-float  placeholder="" disabled="[[disabled]]">
-                                    <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{item.symbol}}">
-                                        <paper-item value=">" >></paper-item>
-                                        <paper-item value=">=" >>=</paper-item>
-                                        <paper-item value="==" >==</paper-item>
-                                        <paper-item value="!=" >!=</paper-item>
-                                        <paper-item value="<=" ><=</paper-item>
-                                        <paper-item value="<" ><</paper-item>
-                                    </paper-menu>
-                          </gl-form-dropdown-menu>
-                            </div>    
-                        </div>
-                    </div>
-                </template>-->
-                
                 <template is="dom-if" if={{!disabled}}>
                     <div class="horizontal end-justified layout btn">
                     <paper-button class="gl-btn-primary" on-tap="insertCondition" raised >เพิ่มเงือนไข</paper-button>
@@ -161,6 +147,10 @@
             },
             insertCondition(){
                 this.push('data.conditions',{name:'',symbol:''})
+            },
+            deleteCondition(e){
+                // console.log(e.currentTarget.id);
+                this.splice('data.conditions', e.currentTarget.id, 1);
             }
             
         });
