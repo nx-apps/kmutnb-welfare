@@ -146,11 +146,76 @@ exports.welfares = function(req,res) {
             .merge((chengeidname)=>{
                 return {welfare_id : chengeidname('id')}
             })
-                 .filter({"count_pass_status": true})
-                   .without('condition','countpass','id')
+            .filter({"count_pass_status": true})
+            .merge((use_his)=>{
+                    return {
+                    budget_use : r.db('welfare').table('history_welfare')
+                            .filter(
+                                { emp_id:welfare('id'),
+                                 welfare_id:use_his('id')}
+                                )
+                            .sum('use_budget')
+                    }
+                })
+                .merge((balance)=>{
+                    return {
+                        budget_balance : balance('budget').sub(balance('budget_use')),
+                        budget_balance_check : balance('budget').sub(balance('budget_use')).le(0).branch(true,false)
+                    }
+                })
+                //เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
+               .filter({"budget_balance_check": false})
+               .without('condition','countpass','id','count','count_pass_status','countpass_total','budget_balance_check','year','start_date','end_date')
               .coerceTo('array')
             }}
-   ) 
+        )
+        .merge((use_his)=>{
+                    return {
+                    
+                    history_welfare : r.db('welfare').table('history_welfare')
+                                    .getAll(use_his('id'), {index:'emp_id'})
+                                    .merge((name_welfare)=>{
+                                        return {
+                                            date_use:name_welfare('date_use').split('T')(0),
+                                            name : r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('name'),
+                                            history_welfare_id : name_welfare('id')
+                                        }
+                                    })
+                                    .without('id')
+                                    .coerceTo('array')
+                    }
+                }) 
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.useWelfare = function (req,res) {
+    // https://localhost:3000/api/user/use_welfare/
+//     for (let prop in req.body) {
+//      req.body[prop] = req.body[prop].replace(/ /g,'').trim()
+//   }   
+console.log(req.body);
+
+    var r = req.r;
+    r.db('welfare').table('history_welfare').insert(req.body)
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+},
+exports.deleteWelfare = function (req,res) {
+    var r = req.r;
+    // console.log(req.params.id);
+    r.db('welfare').table('history_welfare')
+        .get(req.params.id)
+        .delete()
         .run()
         .then(function (result) {
             res.json(result);

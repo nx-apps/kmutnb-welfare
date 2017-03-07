@@ -21,6 +21,14 @@ const clearData = (data,callback)=>{
         callback(newData)
     // callback(data)
 }
+const clearDataWalfare = (data,callback)=>{
+    
+    let {emp_id,welfare_id,use_budget}=data;
+    let newData={emp_id,welfare_id,use_budget};
+
+    newData.date_use = new Date (data.date_use).toISOString();
+        callback(newData)
+}
 export function usersReducer(state = initialState,action){
 
     switch (action.type) {
@@ -153,7 +161,49 @@ export function usersAction(store){
                     })
                     // })
             },
-        }
+            USER_USE_WELFARE(data){
+            console.log(data);
+            clearDataWalfare(data,(newData)=>{
+                this.fire('toast',{status:'load'});
+                    axios.post(`./user/use_welfare/`,newData)
+                    .then(res=>{
+                        this.USER_GET_WELFARES(newData.emp_id);
+                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                            callback:()=>{
+                                this.$$('panel-right').close();
+                                // this.$$('#walfare_budget').close()
+                            }
+                        });
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    })
+                    })
+            },
+            USER_DELETE_USE_WELFARE(data){
+                console.log(data);
+                 this.fire('toast',{
+                    status:'openDialog',
+                    text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                    confirmed:(result)=>{
+                        if(result == true){
+                            axios.delete(`./user/use_welfare/delete/id/${data.history_welfare_id}`)
+                            .then(res=>{
+                                this.USER_GET_WELFARES(data.emp_id);
+                                this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                                    callback:()=>{
+                                        this.$$('panel-right').close();
+                                    }
+                                });
+                            })
+                        }
+                    }
+                })
+            }
+            
+            
+        },
+        
     ]
 
 }
