@@ -32,17 +32,17 @@ exports.department = function(req,res){
             res.status(500).json(err);
         })
 }
-exports.employee = function(req,res){
-  var r = req.r;
-    r.db('welfare_common').table('employee')
-        .run()
-        .then(function (result) {
-            res.json(result);
-        })
-        .catch(function (err) {
-            res.status(500).json(err);
-        })
-}
+// exports.employee = function(req,res){
+//   var r = req.r;
+//     r.db('welfare_common').table('employee')
+//         .run()
+//         .then(function (result) {
+//             res.json(result);
+//         })
+//         .catch(function (err) {
+//             res.status(500).json(err);
+//         })
+// }
 exports.faculty = function(req,res){
   var r = req.r;
     r.db('welfare_common').table('faculty')
