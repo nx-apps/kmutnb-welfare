@@ -182,6 +182,7 @@ exports.welfares = function(req,res) {
                                         }
                                     })
                                     .without('id')
+                                    .orderBy('date_use')
                                     .coerceTo('array')
                     }
                 }) 
