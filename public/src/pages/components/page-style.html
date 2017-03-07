@@ -1,85 +1,34 @@
 
 <dom-module id="page-style">
     <template>
-        <style include="gl-size gl-color gl-table gl-panel iron-flex iron-flex-alignment">
-            .header{
-                padding-top:20px;
-                text-align: left;
-                color:#7B7D7D;
+        <style include="gl-size gl-font gl-styles gl-color gl-table gl-panel iron-flex iron-flex-factors iron-flex-alignment">
+        table.gl-table-default > thead.table-head > tr > th,
+        table.gl-table-default > tbody.table-body > tr > td {
+            text-align: center;
+        }
+        table.gl-table-default {
+                width: 98% ;
+                border: 1px solid #ddd;
+                /*margin: 15px;*/
             }
-            .hideBorder{
-                border-bottom: 2px solid white;
+        paper-button.gl-small{
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                font-size: var(--font-size-h5);
+       }
+        paper-material {
+                background-color: #FFFFFF;
+                padding-top: 15px;
+                padding-bottom: 15px;
             }
-            .headPanel{
-                font-weight: bold;
-            }
-            paper-button,.header,table,span,.question,.headPanel,paper-card,.fontCSC,paper-checkbox{
-                font-family: var(--page-font-csc);
-            }
-            .left{
-                text-align: left;
-            }
-            .right{
-                text-align: right;
-            }
-            paper-input,paper-tags-input,gl-form-textarea,paper-tags-dropdown{
-                --paper-input-container-label:{
-                     font-family: var(--page-font-csc);
-                }
-                --paper-input-container-input:{
-                    font-family: var(--page-font-csc);
-                }
-            }
-            .container{
-                padding:20px;
-            }
-             .searchBorder {
-                border: 1px solid var(--gl-gray-lighter-color);
-                margin: 15px;
-                border-radius: 3px
-            }
-            .searchBox {
+            paper-material > div.head {
                 padding: 10px;
-                background-color: var(--gl-gray-lighter-color);
+                font-size: 35px;
+                /*margin-bottom: 25px;*/
+                text-align: center;
+                @apply(--layout-flex);
             }
-            table{
-                border:1px solid #ddd;
-                color:#555;
-            }
-            th,.footer,.gl-panel-default-content,.bgWhite{
-                background-color: white !important;
-            }
-            thead>tr{
-                border-bottom: 2px solid #ccc 
-            }
-            .footer>tr{
-                border-top: 2px solid #555;
-                border-bottom: 0px solid white;
-            }
-            tbody>tr>td{
-                background-color: #fff;
-            }
-            paper-fab{
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                --paper-fab-background: #337ab7;
-            }
-            .xcontainer{
-                margin: auto;
-            }
-            @media screen and (min-width: 1275px) {
-                .xcontainer {
-                    width:80%;
-                }
-    	    }
-            .tag{
-                font-size: 12px;
-                padding: 2px 5px 2px 5px;
-                background-color: #F5B041;
-                color: white;
-                border-radius: 4px;
-            }
+              
         </style>
     </template>
     <script>
