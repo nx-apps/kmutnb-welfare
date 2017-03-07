@@ -1,4 +1,5 @@
 exports.list = function(req,res){
+    // https://localhost:3000/api/user/list
   // console.log('1111111')
   //  res.json({user:'1'});
   var crypto = require('crypto');
@@ -71,11 +72,11 @@ exports.update = function(req,res){
 }
 exports.welfares = function(req,res) {
    var r = req.r;
-
+// https://localhost:3000/api/user/welfares/id/875932f9-a308-4802-980e-247f82f4fb1c
    r.db('welfare').table('employee').get(req.params.id)
    .merge(function (emp) {
             return {
-              gender: r.db('welfare').table('gender').get(emp('gender_id')).getField('gender')
+              gender: r.db('welfare').table('gender').get(emp('gender_id')).getField('gender_name')
             }}
    )
     .merge(function(f){

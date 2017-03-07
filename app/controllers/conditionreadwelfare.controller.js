@@ -1,5 +1,5 @@
 exports.read = function(req,res){
-  // console.log('1111111')
+  // https://localhost:3000/api/user/list
   //  res.json({user:'1'});
 //   var crypto = require('crypto');
 //   var sha1 = crypto.createHash('sha1').update('Apple').digest("hex");
@@ -69,6 +69,7 @@ exports.update = function(req,res){
         })
 }
 exports.conditions = function(req,res) {
+    //https://localhost:3000/api/condition_read_welfare/list/conditions
    var r = req.r;
 
         r.db('welfare').table('condition_2')
