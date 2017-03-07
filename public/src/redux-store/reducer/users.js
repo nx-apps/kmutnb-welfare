@@ -5,6 +5,7 @@ const initialState = {
     lists:[],
     select:{},
     select_welefares:{},
+    select_use_welefares:{date_use:new Date().toISOString().split('T')[0]},
     disabled:true,
     insert_view:true
 }
@@ -25,8 +26,12 @@ const clearDataWalfare = (data,callback)=>{
     
     let {emp_id,welfare_id,use_budget}=data;
     let newData={emp_id,welfare_id,use_budget};
-
-    newData.date_use = new Date (data.date_use).toISOString();
+    console.log(data.date_use == '');
+    if (data.date_use == '') {
+        newData.date_use = new Date().toISOString();
+    } else {
+        newData.date_use = new Date (data.date_use).toISOString();
+    }
         callback(newData)
 }
 export function usersReducer(state = initialState,action){
@@ -43,6 +48,8 @@ export function usersReducer(state = initialState,action){
             return Object.assign({},state,{disabled:action.payload});
         case 'USER_INSERT_VIEW' : 
             return Object.assign({},state,{insert_view:action.payload});
+        case 'USER_USE_SELETE_WELFARE' :
+            return Object.assign({},state,{select_use_welefares:action.payload});      
         default:
             return state
     }
@@ -200,9 +207,10 @@ export function usersAction(store){
                         }
                     }
                 })
+            },
+            USER_USE_SELETE_WELFARE(data){
+                store.dispatch({type:'USER_USE_SELETE_WELFARE',payload:data})
             }
-            
-            
         },
         
     ]

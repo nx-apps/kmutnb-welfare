@@ -1,5 +1,8 @@
 <link rel="import" href="./../components/format-number-behavior.html">
 <link rel="import" href="./../components/common-logic.html">
+
+<link rel="import" href="./components/dialog-use-walfare.html">
+
 <dom-module id="user-welfare">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
             :host {
@@ -131,44 +134,7 @@
             </gl-form-panel>
         <!--</paper-material>-->
 <paper-dialog id="walfare_budget" >
-         <div class="flex">
-             <h2 id="walfare_name">Dialog Title</h2>
-        </div>
-        <div class="flex horizontal start-justified layout">
-            <div class="flex-2 label">
-                <label for="total_budget">จำนวนเงินคงเหลือ :</label>
-            </div>
-            <div class="flex-2">
-                 <gl-form-input id="total_budget" no-label-float disabled format-number="on" value="[[dataSelete.budget]]">
-                     <div suffix>บาท</div>
-                 </gl-form-input>
-            </div> 
-            <div class="flex label">
-                <label for="emp_id">ใช้จำนวน :</label>
-            </div>
-            <div class="flex-2">
-                [[changeString2Num(useWalfareProp.*,'use_budget')]]
-                [[checkBudget(useWalfareProp.*)]]
-                 <gl-form-input id="emp_id" no-label-float allowed-pattern="[0-9||,||.]" format-number="on" value="{{useWalfareProp.use_budget}}"  ><div suffix>บาท</div></gl-form-input>
-            </div> 
-        </div>
-        <div class="flex horizontal start-justified layout">
-            <div class="flex-2 label">
-                <label for="total_budget">วันที่ใช้งาน :</label>
-            </div>
-            <div class="flex-2">
-                 <vaadin-date-picker always-float-label  value="{{useWalfareProp.date_use}}"></vaadin-date-picker>
-                 </gl-form-input>
-            </div> 
-            <div class="flex label">
-                <!--<label for="emp_id">ใช้จำนวน :</label>-->
-            </div>
-            <div class="flex-2">
-            </div> 
-        </div>
-        <div class="flex horizontal start-justified layout">
-            *ใช้เงินได้มากสุดตามจำนวนที่คงเหลือ
-        </div>
+        <dialog-use-walfare data="{{useWalfareProp}}"></dialog-use-walfare>
         <div class="flex horizontal end-justified layout">
             <paper-button raised class="gl-btn-primary" on-tap="getWalfare">ใช้งาน</paper-button>
         </div>
@@ -184,8 +150,8 @@
                     statePath:'users.select_welefares'
                 },
                 useWalfareProp:{
+                    statePath:'users.select_use_welefares',
                     type:Object,
-                    value:{}
                 },
                 dataSelete:{
                     type:Object,
@@ -200,14 +166,13 @@
                 return index+1
             },
             useWalfare(e){
-                // console.log(this.data.id);
-                // console.log(e.currentTarget.data);
-                this.set('useWalfareProp.emp_id',this.data.id)
-                this.set('useWalfareProp.welfare_id',e.currentTarget.data.welfare_id)
+                let data = new Object();
+                data.title = e.currentTarget.data.name
+                data.emp_id = this.data.id
+                data.welfare_id = e.currentTarget.data.welfare_id
+                data.budget_cover = e.currentTarget.data.budget_balance
                 this.$$('#walfare_budget').open()
-                // console.log(this.$$('#walfare_name').innerHTML=e.currentTarget.data.name);
-                this.set('dataSelete.budget',e.currentTarget.data.budget)
-                // this.$$('#total_budget').value=this.formatNumber(e.currentTarget.data.budget)
+                this.dispatchAction('USER_USE_SELETE_WELFARE',data);
             },
             getWalfare(){
                 // console.log(this.useWalfareProp);
@@ -215,19 +180,9 @@
                 this.dispatchAction('USER_USE_WELFARE',this.useWalfareProp);
                 
             },
-            checkBudget(e){
-                try {
-                        if(this.useWalfareProp.use_budget > this.dataSelete.budget)
-                            this.set('useWalfareProp.use_budget',this.dataSelete.budget)
-                            // console.log(this.useWalfareProp.use_budget);
-                            //  console.log(this.dataSelete.budget);
-                    }
-                    catch(err) {
-                        // document.getElementById("demo").innerHTML = err.message;
-                    } 
-            },
+            
             deleteHistoryWelfare(e){
-                console.log(e.currentTarget.data);
+                // console.log(e.currentTarget.data);
                 this.dispatchAction('USER_DELETE_USE_WELFARE',e.currentTarget.data);
             }
         });
