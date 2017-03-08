@@ -1,0 +1,12 @@
+{
+    "name":"list_welfare",
+    "properties": {
+        "welfare_name": {
+            "type": "string"
+        },
+        "budget": {
+            "type": "number"
+        }
+    },
+    "required": ["welfare_name", "budget"]
+}

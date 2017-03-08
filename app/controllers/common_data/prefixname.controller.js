@@ -11,8 +11,8 @@ exports.prefixname = function(req,res){
 }
 exports.prefixnameInsert = function(req,res){
     let data = new Object()
-    data.prefixname_name = req.body.prefixname_name
-    data.id = sha1(req.body.prefixname_name)
+    data.prefixname = req.body.prefixname
+    data.id = sha1(req.body.prefixname)
     var r = req.r;
     r.db('welfare_common').table('prefixname').insert(data)
         .run()
@@ -28,8 +28,8 @@ exports.prefixnameUpdate = function(req,res){
     // console.log(req.body)
     let data = new Object()
     let old_id = req.body.old_id
-    data.prefixname_name = req.body.prefixname_name
-    data.id = sha1(req.body.prefixname_name)
+    data.prefixname = req.body.prefixname
+    data.id = sha1(req.body.prefixname)
     r.expr(data)
         .merge((int)=>{
             return {
