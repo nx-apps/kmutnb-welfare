@@ -11,6 +11,7 @@ import {commonDataReducer,commonDataAction} from './reducer/commonData'
 import {usersReducer,usersAction} from './reducer/users'
 import {conditionReadWelfareReducer,conditionReadWelfareAction} from './reducer/conditionReadWelfare'
 
+
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
     auth:authReducer,
@@ -38,3 +39,4 @@ window.listWelfareAction = listWelfareAction(storeApp);
 window.commonDataAction = commonDataAction(storeApp); 
 window.usersAction = usersAction(storeApp);
 window.conditionReadWelfareAction = conditionReadWelfareAction(storeApp);
+// 1111
