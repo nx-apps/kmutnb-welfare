@@ -3,7 +3,7 @@ import {commonAction} from '../config'
 
 const initialState = {
     module:[],
-    select:{conditions:[{name:'',symbol:''}]},
+    select:{data_source:'',conditions:[{name:'',symbol:''}]},
     listConditions:[],
     listTable:[],
     disabled:true,
@@ -14,6 +14,9 @@ const clearData = (data,callback)=>{
     let {label,field,data_source}=data;
     let newData={label,field,data_source};
     newData.conditions = new Array();
+    console.log(typeof newData.data_source == 'undefined');
+    if(typeof newData.data_source == 'undefined')
+        newData.data_source = ''
     // for (let prop in newData) {
     //    newData[prop] = newData[prop].replace(/ /g,'').trim()
     // }  
@@ -78,8 +81,9 @@ export function conditionReadWelfareAction(store){
             },
             CONDITIONREADWELFARE_INSERT(data){
                 console.log(data);
+                clearData(data,(newData)=>{
                 this.fire('toast',{status:'load'});
-                axios.post(`./condition_read_welfare/insert`,data)
+                axios.post(`./condition_read_welfare/insert`,newData)
                     .then(res=>{
                         this.CONDITIONREADWELFARE_LIST();
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -90,6 +94,7 @@ export function conditionReadWelfareAction(store){
                     })
                     .catch(err=>{
                         console.log(err);
+                    })
                     })
             },
             CONDITIONREADWELFARE_SELECT:function(data){
