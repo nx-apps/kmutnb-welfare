@@ -10,6 +10,7 @@
 <link rel="import" href="./components/common-components/gender-manage.html">
 <link rel="import" href="./components/common-components/matier-manage.html">
 <link rel="import" href="./components/common-components/position-manage.html">
+<link rel="import" href="./components/common-components/prefixname-manage.html">
 
 
 <dom-module id="page-back-end">
@@ -66,7 +67,10 @@
                      <matier-manage></matier-manage>
                  </section>
                 <section>
-                     <position-manage></position-manage>
+                    <position-manage></position-manage>
+                 </section>
+                 <section>
+                    <prefixname-manage></prefixname-manage>
                  </section>
              </iron-pages>
              
@@ -148,6 +152,11 @@
                     case 'position':
                         this.selected = 7;
                         this.COMMONDATA_DATA_POSITION();
+                        this.$$('panel-right').open();
+                        break;
+                    case 'prefixname':
+                        this.selected = 8;
+                        this.COMMONDATA_DATA_PREFIXNAME();
                         this.$$('panel-right').open();
                         break;
                     default:

@@ -500,6 +500,11 @@ export function commonDataAction(store){
             COMMONDATA_DATA_PREFIXNAME:function(id){
                 axios.get(`/common/prefixname`)
                 .then(res=>{
+                    var newData = res.data.map((item)=>{
+                        item.check = true;
+                        item.status = false;
+                        return item;
+                    })
                     store.dispatch({type:'COMMONDATA_DATA_PREFIXNAME',payload:res.data})
                 })
                 .catch(err=>{
