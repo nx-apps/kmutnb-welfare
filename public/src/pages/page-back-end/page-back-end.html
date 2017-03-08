@@ -6,6 +6,7 @@
 <link rel="import" href="./components/common-components/academic-manage.html">
 <link rel="import" href="./components/common-components/active-manage.html">
 <link rel="import" href="./components/common-components/department-manage.html">
+<link rel="import" href="./components/common-components/faculty-manage.html">
 
 
 <dom-module id="page-back-end">
@@ -51,6 +52,9 @@
                  </section>
                  <section>
                     <department-manage></department-manage>
+                 </section>
+                 <section>
+                     <faculty-manage></faculty-manage>
                  </section>
              </iron-pages>
              
@@ -109,9 +113,14 @@
                         this.COMMONDATA_DATA_ACTIVE();
                         this.$$('panel-right').open();
                         break;
-                     case 'department':
+                    case 'department':
                         this.selected = 3;
                         this.COMMONDATA_DATA_DEPARTMENT();
+                        this.$$('panel-right').open();
+                        break;
+                     case 'faculty':
+                        this.selected = 4;
+                        this.COMMONDATA_DATA_FACULTY();
                         this.$$('panel-right').open();
                         break;
                     default:

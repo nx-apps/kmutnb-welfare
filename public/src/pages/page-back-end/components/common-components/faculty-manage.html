@@ -58,7 +58,6 @@
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
                                 <th>faculty_code</th>
-                                <th>faculty</th>
                                 <th>faculty_name</th>
                                 <th style="width: 20%">กระทำ</th>
                             </tr>
@@ -114,7 +113,7 @@
             behaviors:[ReduxBehavior,ValidateFormBehavior],
             properties:{
                 dataList:{
-                    statePath:'commonData.department'
+                    statePath:'commonData.faculty'
                 },
                 data:{
                     type:Object,
@@ -139,15 +138,15 @@
             },
             close:function(e){
                 var index = e.target.index;
-                this.dispatchAction('COMMONDATA_DATA_DEPARTMENT')
+                this.dispatchAction('COMMONDATA_DATA_FACULTY')
                 this.set('dataList.'+index+'.check',true);
                 // this.dataList.map((item,num)=>{
                 //     this.set('dataList.'+num+'.status',false);
                 // })
             },
             getForm:function(){
-                console.log(this.data)
-                // this.dispatchAction('COMMONDATA_DATA_DEPARTMENT_INSERT',this.data);
+                // console.log(this.data)
+                this.dispatchAction('COMMONDATA_DATA_FACULTY_INSERT',this.data);
             },
             update:function(e){
                 var getForm = e.target.item;
@@ -156,7 +155,8 @@
                     faculty_code: getForm.faculty_code,
                     faculty_name:getForm.faculty_name
                 }
-                // this.dispatchAction('COMMONDATA_DATA_DEPARTMENT_UPDATE',newItem);
+                // console.log(newItem);
+                this.dispatchAction('COMMONDATA_DATA_FACULTY_UPDATE',newItem);
             },
             confirmDelete:function(e){
                 var id = e.target.item.id;
@@ -171,7 +171,7 @@
                 if(check == true){
                     // console.log(id.data);
                     var id = id.data;
-                    // this.dispatchAction('COMMONDATA_DATA_DEPARTMENT_DELETE',id);
+                    this.dispatchAction('COMMONDATA_DATA_FACULTY_DELETE',id);
                 }
             }
             
