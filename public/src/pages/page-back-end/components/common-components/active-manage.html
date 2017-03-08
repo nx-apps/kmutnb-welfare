@@ -1,7 +1,6 @@
+<!--<link rel="import" href="./../../../components/validateFormBehaviors.html"-->
 
-<link rel="import" href="./../../../components/validateFormBehaviors.html">
-
-<dom-module id="academic-manage">
+<dom-module id="active-manage">
     <style include="gl-table gl-color flex-style">
         .container {
             padding: 20px
@@ -27,7 +26,7 @@
                         <div class="container flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="academic_name" placeholder="กรอกข้อมูล" value="{{data.academic_name}}"></gl-form-input>
+                                <gl-form-input label="active_name" placeholder="กรอกข้อมูล" value="{{data.active_name}}"></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center">
                                 <paper-button class="gl-btn-success" on-tap="getForm" raised>save</paper-button>
@@ -43,7 +42,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
-                                <th>academic_name</th>
+                                <th>active_name</th>
                                 <th style="width: 20%">กระทำ</th>
                             </tr>
                         </thead>
@@ -54,12 +53,12 @@
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
-                                            {{item.academic_name}} 
+                                            {{item.active_name}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
-                                            <paper-input no-label-float value="{{item.academic_name}}"></paper-input>
+                                            <paper-input no-label-float value="{{item.active_name}}"></paper-input>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
@@ -71,7 +70,7 @@
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
                                             <paper-icon-button on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
-                                            <paper-icon-button on-tap="close" item=[[item.academic_name]] index="[[index]]" icon="clear"></paper-icon-button>
+                                            <paper-icon-button on-tap="close" item=[[item.active_name]] index="[[index]]" icon="clear"></paper-icon-button>
                                         </td>
                                     </template>
                                 </tr>
@@ -84,11 +83,11 @@
     </template>
     <script>
         Polymer({
-            is: 'academic-manage',
+            is: 'active-manage',
             behaviors:[ReduxBehavior,ValidateFormBehavior],
             properties:{
                 dataList:{
-                    statePath:'commonData.academic'
+                    statePath:'commonData.active'
                 },
                 data:{
                     type:Object,
@@ -101,6 +100,7 @@
             // update table function 
             edit:function(e){
                 var index = e.target.index;
+               
                 this.dataList.map((item,num)=>{
                     if(num != index){
                         this.set('dataList.'+num+'.check',true);
@@ -114,22 +114,20 @@
             },
             close:function(e){
                 var index = e.target.index;
-                this.dispatchAction('COMMONDATA_DATA_ACADEMIC')
+                this.dispatchAction('COMMONDATA_DATA_ACTIVE')
                 this.set('dataList.'+index+'.check',true);
-                // this.dataList.map((item,num)=>{
-                //     this.set('dataList.'+num+'.status',false);
-                // })
             },
             getForm:function(){
-                this.dispatchAction('COMMONDATA_DATA_ACADEMIC_INSERT',this.data);
+                // console.log(this.data);
+                this.dispatchAction('COMMONDATA_DATA_ACTIVE_INSERT',this.data);
             },
             update:function(e){
                 var getForm = e.target.item;
                 var newItem = {
                     old_id: getForm.id,
-                    academic_name: getForm.academic_name
+                    active_name: getForm.active_name
                 }
-                this.dispatchAction('COMMONDATA_DATA_ACADEMIC_UPDATE',newItem);
+                this.dispatchAction('COMMONDATA_DATA_ACTIVE_UPDATE',newItem);
             },
             confirmDelete:function(e){
                 var id = e.target.item.id;
@@ -144,7 +142,7 @@
                 if(check == true){
                     // console.log(id.data);
                     var id = id.data;
-                    this.dispatchAction('COMMONDATA_DATA_ACADEMIC_DELETE',id);
+                    this.dispatchAction('COMMONDATA_DATA_ACTIVE_DELETE',id);
                 }
             }
             

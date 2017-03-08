@@ -4,6 +4,7 @@
 <link rel="import" href="components/list-of-logic.html">
 <link rel="import" href="./components/list-welfare-common.html">
 <link rel="import" href="./components/common-components/academic-manage.html">
+<link rel="import" href="./components/common-components/active-manage.html">
 
 
 <dom-module id="page-back-end">
@@ -45,7 +46,7 @@
                     <academic-manage></academic-manage>
                  </section>
                  <section>
-
+                    <active-manage></active-manage>
                  </section>
              </iron-pages>
              
@@ -97,6 +98,11 @@
                     case 'academic':
                         this.selected = 1;
                         this.COMMONDATA_DATA_ACADEMIC();
+                        this.$$('panel-right').open();
+                        break;
+                    case 'active':
+                        this.selected = 2;
+                        this.COMMONDATA_DATA_ACTIVE();
                         this.$$('panel-right').open();
                         break;
                     default:
