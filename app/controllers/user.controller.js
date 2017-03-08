@@ -113,6 +113,45 @@ exports.welfares = function(req,res) {
  .merge(function (welfare) {
             return {
               welfare: r.db('welfare').table('welfare')
+              .merge((group_name)=>{
+                  return {
+                      group_name: r.db('welfare').table('group_welfare').get(group_name('group_id')).getField('group_welfare_name')
+                  }
+              })
+              .merge((name_field)=>{
+                  return {condition:
+                       name_field('condition').map((con_map)=>{
+                      return  {
+                          field:r.db('welfare').table('condition_2').get(con_map('field')).getField('field'),
+                          logic:con_map('logic'),
+                          logic_show:con_map('logic_show'),
+                          value:con_map('value'),
+                          value_show:con_map('value_show')
+                        }
+                      }
+                    )
+                  }
+              })
+              .merge((value_field)=>{
+                  return {condition:
+                       value_field('condition').map((con_map)=>{
+                      return  {
+                          field:con_map('field'),
+                          logic:con_map('logic'),
+                          logic_show:con_map('logic_show'),
+                          value:con_map.getField('field').eq('gender').branch(
+                              r.db('welfare_common').table('gender').get(con_map('value')).getField('gender_name')
+                              //.coerceTo('array')
+                          ,con_map('value'))
+                          
+                        //   con_map('value')
+                          ,
+                        //   value_show:con_map('value_show')
+                        }
+                      }
+                    )
+                  }
+              })
               .merge(function(we_m){
                 return {
                   count:we_m('condition').count(),
@@ -127,7 +166,7 @@ exports.welfares = function(req,res) {
                                                     d.le(con_map('value')),
                                                     r.branch(con_map('logic').eq("<"),
                                                         d.lt(con_map('value')),
-                                                        r.branch(con_map('logic').eq("="),
+                                                        r.branch(con_map('logic').eq("=="),
                                                             d.eq(con_map('value')),
                                                             d.ne(con_map('value'))
                                                         )
@@ -181,15 +220,15 @@ exports.welfares = function(req,res) {
                     
                     history_welfare : r.db('welfare').table('history_welfare')
                                     .getAll(use_his('id'), {index:'emp_id'})
-                                    .merge((name_welfare)=>{
-                                        return {
-                                            date_use:name_welfare('date_use').split('T')(0),
-                                            name : r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('name'),
-                                            history_welfare_id : name_welfare('id')
-                                        }
-                                    })
-                                    .without('id')
-                                    .orderBy('date_use')
+                                    // .merge((name_welfare)=>{
+                                    //     return {
+                                    //         date_use:name_welfare('date_use').split('T')(0),
+                                    //         name : r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('name'),
+                                    //         history_welfare_id : name_welfare('id')
+                                    //     }
+                                    // })
+                                    // .without('id')
+                                    // .orderBy('date_use')
                                     .coerceTo('array')
                     }
                 }) 

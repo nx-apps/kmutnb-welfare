@@ -196,3 +196,45 @@ exports.employees = function (req, res) {
             res.json(data);
         })
 }
+
+exports.test = function (req, res) {
+    var r = req.r;
+    r.db('welfare').table('welfare').filter(function (f) {
+        return f('condition').contains(function (ff) {
+            return ff('value').eq('563da7685e034a0fd60f3781289388e2c7dfdfa1')
+        })
+    })
+        .merge(function (m) {
+            return {
+                condition1: m('condition').filter(function (f) {
+                    return f('value').eq('563da7685e034a0fd60f3781289388e2c7dfdfa1')
+                })
+            }
+        })
+        .merge(function (m) {
+            return {
+                condition2: m('condition1').merge(function (mm) {
+                    return {
+                        value: 'aaa',
+                        value_show: 'aaa'
+                    }
+                })
+            }
+        })
+        .merge(function (m) {
+            return {
+                condition3: m('condition').filter(function (f) {
+                    return f('value').eq('563da7685e034a0fd60f3781289388e2c7dfdfa1').not()
+                })
+            }
+        })
+        .merge(function (m) {
+            return {
+                condition4: m('condition3').union(m('condition2'))
+            }
+        })
+        .run()
+        .then(function (data) {
+            res.json(data)
+        })
+}
