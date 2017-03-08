@@ -368,10 +368,6 @@ export function commonDataAction(store){
                 });
             },
             COMMONDATA_DATA_EMPLOYEE:function(id){
-                // this.read('./common/employee',(data)=>{
-                //     this.set('dataSelete.employee',data)
-                // });
-                
                 axios.get(`/common/employee`)
                 .then(res=>{
                     store.dispatch({type:'COMMONDATA_DATA_EMPLOYEE',payload:res.data})
@@ -380,12 +376,8 @@ export function commonDataAction(store){
                     console.log(err)
                 })
             },
-        
+            // COMMONDATA_DATA_MATIER
             COMMONDATA_DATA_MATIER:function(id){
-                // this.read('./common/matier',(data)=>{
-                //     this.set('dataSelete.matier',data)
-                // });
-                
                 axios.get(`/common/matier`)
                 .then(res=>{
                     store.dispatch({type:'COMMONDATA_DATA_MATIER',payload:res.data})
@@ -394,11 +386,53 @@ export function commonDataAction(store){
                     console.log(err)
                 })
             },
+            COMMONDATA_DATA_MATIER_INSERT:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.post(`/common/matier/insert`,data)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_MATIER()
+                      }
+                     });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_MATIER_UPDATE:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.put('/common/matier/update',data)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_MATIER()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_MATIER_DELETE:function(del){
+                this.fire('toast',{status:'load'});
+                axios.delete('/common/matier/delete/id/'+del)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_MATIER()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            // COMMONDATA_DATA_POSITION
             COMMONDATA_DATA_POSITION:function(id){
-                // this.read('./common/position',(data)=>{
-                //     this.set('dataSelete.position',data)
-                // });
-                
                 axios.get(`/common/position`)
                 .then(res=>{
                     store.dispatch({type:'COMMONDATA_DATA_POSITION',payload:res.data})
@@ -407,11 +441,53 @@ export function commonDataAction(store){
                     console.log(err)
                 })
             },
+            COMMONDATA_DATA_POSITION_INSERT:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.post(`/common/position/insert`,data)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_POSITION()
+                      }
+                     });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_POSITION_UPDATE:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.put('/common/position/update',data)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_POSITION()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_POSITION_DELETE:function(del){
+                this.fire('toast',{status:'load'});
+                axios.delete('/common/position/delete/id/'+del)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_POSITION()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            // COMMONDATA_DATA_PREFIXNAME
             COMMONDATA_DATA_PREFIXNAME:function(id){
-                // this.read('./common/prefixname',(data)=>{
-                //     this.set('dataSelete.prefixname',data)
-                // });
-                
                 axios.get(`/common/prefixname`)
                 .then(res=>{
                     store.dispatch({type:'COMMONDATA_DATA_PREFIXNAME',payload:res.data})
@@ -420,11 +496,53 @@ export function commonDataAction(store){
                     console.log(err)
                 })
             },
+            COMMONDATA_DATA_PREFIXNAME_INSERT:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.post(`/common/prefixname/insert`,data)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_PREFIXNAME()
+                      }
+                     });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_PREFIXNAME_UPDATE:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.put('/common/prefixname/update',data)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_PREFIXNAME()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_PREFIXNAME_DELETE:function(del){
+                this.fire('toast',{status:'load'});
+                axios.delete('/common/prefixname/delete/id/'+del)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_PREFIXNAME()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            // COMMONDATA_DATA_RELATION
             COMMONDATA_DATA_RELATION:function(id){
-                // this.read('./common/relation',(data)=>{
-                //     this.set('dataSelete.relation',data)
-                // });
-                
                 axios.get(`/common/relation`)
                 .then(res=>{
                     store.dispatch({type:'COMMONDATA_DATA_RELATION',payload:res.data})
@@ -433,11 +551,53 @@ export function commonDataAction(store){
                     console.log(err)
                 })
             },
+            COMMONDATA_DATA_RELATION_INSERT:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.post(`/common/relation/insert`,data)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_RELATION()
+                      }
+                     });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_RELATION_UPDATE:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.put('/common/relation/update',data)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_RELATION()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_RELATION_DELETE:function(del){
+                this.fire('toast',{status:'load'});
+                axios.delete('/common/relation/delete/id/'+del)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_RELATION()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            // COMMONDATA_DATA_TYPE_EMPLOYEE
             COMMONDATA_DATA_TYPE_EMPLOYEE:function(id){
-                // this.read('./common/type_employee',(data)=>{
-                //     this.set('dataSelete.type_employee',data)
-                //     // console.log(this.dataSelete)
-                // });
                 axios.get(`/common/type_employee`)
                 .then(res=>{
                     store.dispatch({type:'COMMONDATA_DATA_TYPE_EMPLOYEE',payload:res.data})
@@ -446,7 +606,51 @@ export function commonDataAction(store){
                     console.log(err)
                 })
             },
-            
+            COMMONDATA_DATA_TYPE_EMPLOYEE_INSERT:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.post(`/common/type_employee/insert`,data)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_TYPE_EMPLOYEE()
+                      }
+                     });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_TYPE_EMPLOYEE_UPDATE:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.put('/common/type_employee/update',data)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_TYPE_EMPLOYEE()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_TYPE_EMPLOYEE_DELETE:function(del){
+                this.fire('toast',{status:'load'});
+                axios.delete('/common/type_employee/delete/id/'+del)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_TYPE_EMPLOYEE()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            }
             // COMMONDATA_SELECT:function(id){
             //     axios.get(`/providers/provider/${id}`)
             //     .then(res=>{
