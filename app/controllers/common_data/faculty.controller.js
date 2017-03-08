@@ -12,6 +12,7 @@ exports.faculty = function(req,res){
 exports.facultyInsert = function(req,res){
     let data = new Object()
     data.faculty_name = req.body.faculty_name
+    data.faculty_code = req.body.faculty_code
     data.id = sha1(req.body.faculty_name)
     var r = req.r;
     r.db('welfare_common').table('faculty').insert(data)
@@ -29,6 +30,7 @@ exports.facultyUpdate = function(req,res){
     let data = new Object()
     let old_id = req.body.old_id
     data.faculty_name = req.body.faculty_name
+    data.faculty_code = req.body.faculty_code
     data.id = sha1(req.body.faculty_name)
     r.expr(data)
         .merge((int)=>{
