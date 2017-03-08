@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
     listWelfare:listWelfareReducer,
     commonData:commonDataReducer,
     users:usersReducer,
-    conditionReadWelfare:conditionReadWelfareReducer
+    conditionReadWelfare:conditionReadWelfareReducer,
 });
 
 const storeApp = createStore(
