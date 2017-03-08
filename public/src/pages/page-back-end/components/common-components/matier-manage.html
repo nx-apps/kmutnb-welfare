@@ -27,7 +27,7 @@
                         <div class="container flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="gender_name" placeholder="กรอกข้อมูล" value="{{data.gender_name}}"></gl-form-input>
+                                <gl-form-input label="matier_name" placeholder="กรอกข้อมูล" value="{{data.matier_name}}"></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center">
                                 <paper-button class="gl-btn-success" on-tap="getForm" raised>save</paper-button>
@@ -43,7 +43,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
-                                <th>gender_name</th>
+                                <th>matier_name</th>
                                 <th style="width: 20%">กระทำ</th>
                             </tr>
                         </thead>
@@ -54,12 +54,12 @@
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
-                                            {{item.gender_name}} 
+                                            {{item.matier_name}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
-                                            <paper-input no-label-float value="{{item.gender_name}}"></paper-input>
+                                            <paper-input no-label-float value="{{item.matier_name}}"></paper-input>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
@@ -71,7 +71,7 @@
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
                                             <paper-icon-button on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
-                                            <paper-icon-button on-tap="close" item=[[item.gender_name]] index="[[index]]" icon="clear"></paper-icon-button>
+                                            <paper-icon-button on-tap="close" item=[[item.matier_name]] index="[[index]]" icon="clear"></paper-icon-button>
                                         </td>
                                     </template>
                                 </tr>
@@ -114,22 +114,22 @@
             },
             close:function(e){
                 var index = e.target.index;
-                this.dispatchAction('COMMONDATA_DATA_GENDER')
+                this.dispatchAction('COMMONDATA_DATA_MATIER')
                 this.set('dataList.'+index+'.check',true);
                 // this.dataList.map((item,num)=>{
                 //     this.set('dataList.'+num+'.status',false);
                 // })
             },
             getForm:function(){
-                this.dispatchAction('COMMONDATA_DATA_GENDER_INSERT',this.data);
+                this.dispatchAction('COMMONDATA_DATA_MATIER_INSERT',this.data);
             },
             update:function(e){
                 var getForm = e.target.item;
                 var newItem = {
                     old_id: getForm.id,
-                    gender_name: getForm.gender_name
+                    matier_name: getForm.matier_name
                 }
-                this.dispatchAction('COMMONDATA_DATA_GENDER_UPDATE',newItem);
+                this.dispatchAction('COMMONDATA_DATA_MATIER_UPDATE',newItem);
             },
             confirmDelete:function(e){
                 var id = e.target.item.id;
@@ -144,7 +144,7 @@
                 if(check == true){
                     // console.log(id.data);
                     var id = id.data;
-                    this.dispatchAction('COMMONDATA_DATA_GENDER_DELETE',id);
+                    this.dispatchAction('COMMONDATA_DATA_MATIER_DELETE',id);
                 }
             }
             

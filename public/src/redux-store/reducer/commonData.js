@@ -380,6 +380,11 @@ export function commonDataAction(store){
             COMMONDATA_DATA_MATIER:function(id){
                 axios.get(`/common/matier`)
                 .then(res=>{
+                     var newData = res.data.map((item)=>{
+                        item.check = true;
+                        item.status = false;
+                        return item;
+                    })
                     store.dispatch({type:'COMMONDATA_DATA_MATIER',payload:res.data})
                 })
                 .catch(err=>{
@@ -435,6 +440,11 @@ export function commonDataAction(store){
             COMMONDATA_DATA_POSITION:function(id){
                 axios.get(`/common/position`)
                 .then(res=>{
+                    var newData = res.data.map((item)=>{
+                        item.check = true;
+                        item.status = false;
+                        return item;
+                    })
                     store.dispatch({type:'COMMONDATA_DATA_POSITION',payload:res.data})
                 })
                 .catch(err=>{
