@@ -27,10 +27,10 @@
     <script>
         Polymer({
             is: 'page-listuser_welfare',
-            behaviors: [ReduxBehavior, nylonBehavior, welfareAction],
+            behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction],
             properties: {
                 list: {
-                    statePath: 'welfare.list',
+                    statePath: 'userWelfare.list',
                 }
             },
             nylonPageActive: function () {
