@@ -7,7 +7,7 @@
 <link rel="import" href="./components/common-components/active-manage.html">
 <link rel="import" href="./components/common-components/department-manage.html">
 <link rel="import" href="./components/common-components/faculty-manage.html">
-
+<link rel="import" href="./components/common-components/gender-manage.html">
 
 <dom-module id="page-back-end">
       <style include="iron-flex iron-flex-factors iron-flex-alignment page-style">
@@ -55,6 +55,9 @@
                  </section>
                  <section>
                      <faculty-manage></faculty-manage>
+                 </section>
+                  <section>
+                     <gender-manage></gender-manage>
                  </section>
              </iron-pages>
              
@@ -123,10 +126,15 @@
                         this.COMMONDATA_DATA_FACULTY();
                         this.$$('panel-right').open();
                         break;
+                      case 'gender':
+                        this.selected = 5;
+                        this.COMMONDATA_DATA_GENDER();
+                        this.$$('panel-right').open();
+                        break;
                     default:
                         break;
                 }
-                // this.$$('panel-right').open();department
+                // this.$$('panel-right').open();department gender
             }
             
         });
