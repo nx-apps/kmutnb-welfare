@@ -5,6 +5,7 @@
 <link rel="import" href="./components/list-welfare-common.html">
 <link rel="import" href="./components/common-components/academic-manage.html">
 <link rel="import" href="./components/common-components/active-manage.html">
+<link rel="import" href="./components/common-components/department-manage.html">
 
 
 <dom-module id="page-back-end">
@@ -47,6 +48,9 @@
                  </section>
                  <section>
                     <active-manage></active-manage>
+                 </section>
+                 <section>
+                    <department-manage></department-manage>
                  </section>
              </iron-pages>
              
@@ -105,10 +109,15 @@
                         this.COMMONDATA_DATA_ACTIVE();
                         this.$$('panel-right').open();
                         break;
+                     case 'department':
+                        this.selected = 3;
+                        this.COMMONDATA_DATA_DEPARTMENT();
+                        this.$$('panel-right').open();
+                        break;
                     default:
                         break;
                 }
-                // this.$$('panel-right').open();
+                // this.$$('panel-right').open();department
             }
             
         });

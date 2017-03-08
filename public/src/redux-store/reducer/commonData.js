@@ -188,18 +188,66 @@ export function commonDataAction(store){
                     console.log(error);
                 });
             },
+            // COMMONDATA_DATA_DEPARTMENT 
             COMMONDATA_DATA_DEPARTMENT:function(id){
-                // this.read('./common/department',(data)=>{
-                //     this.set('dataSelete.department',data)
-                // });
-                
                 axios.get(`/common/department`)
                 .then(res=>{
-                    store.dispatch({type:'COMMONDATA_DATA_DEPARTMENT',payload:res.data})
+                    var newData = res.data.map((item)=>{
+                        item.check = true;
+                        item.status = false;
+                        return item;
+                    })
+                    store.dispatch({type:'COMMONDATA_DATA_DEPARTMENT',payload:newData})
                 })
                 .catch(err=>{
                     console.log(err)
                 })
+            },
+            COMMONDATA_DATA_DEPARTMENT_INSERT:function(data){
+                // console.log(data)
+                this.fire('toast',{status:'load'}); 
+                axios.post(`/common/department/insert`,data)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_DEPARTMENT()
+                      }
+                     });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_DEPARTMENT_UPDATE:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.put('/common/department/update',data)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_DEPARTMENT()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_DEPARTMENT_DELETE:function(del){
+                this.fire('toast',{status:'load'});
+                axios.delete('/common/department/delete/id/'+del)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_DEPARTMENT()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
             },
             COMMONDATA_DATA_EMPLOYEE:function(id){
                 // this.read('./common/employee',(data)=>{
