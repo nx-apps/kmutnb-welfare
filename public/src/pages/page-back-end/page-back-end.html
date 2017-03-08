@@ -2,9 +2,12 @@
 <link rel="import" href="./../components/page-style.html">
 <link rel="import" href="components/logic-panel.html">
 <link rel="import" href="components/list-of-logic.html">
+<link rel="import" href="./components/list-welfare-common.html">
+<link rel="import" href="./components/common-components/academic-manage.html">
+
 
 <dom-module id="page-back-end">
-      <style include="iron-flex iron-flex-factors iron-flex-alignment">
+      <style include="iron-flex iron-flex-factors iron-flex-alignment page-style">
     :host {
       --paper-fab-background:var(--paper-light-blue-500);
       --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
@@ -26,9 +29,26 @@
     <template>
         <div class="list horizontal center-justified layout">
             <list-of-logic></list-of-logic>
+           
         </div>
+
+        <div class="xcontainer">
+             <list-welfare-common></list-welfare-common>
+        </div>
+        
          <panel-right id="test" title="{{title}}" >
-             <logic-panel></logic-panel>
+             <iron-pages selected="{{selected}}">
+                 <section>
+                    <logic-panel></logic-panel>
+                 </section>
+                 <section>
+                    <academic-manage></academic-manage>
+                 </section>
+                 <section>
+
+                 </section>
+             </iron-pages>
+             
          <!--<iron-pages selected="{{page}}">
              <div class="horizontal center-justified layout">
                 <user-panel class="sub-component" data="[[dataSelete]]"></user-panel>
@@ -39,22 +59,24 @@
     <script>
         Polymer({
             is: 'page-back-end',
-            behaviors:[nylonBehavior,ReduxBehavior,conditionReadWelfareAction],
+            behaviors:[nylonBehavior,ReduxBehavior,conditionReadWelfareAction,commonDataAction],
             properties:{
                 data:{
                     statePath:'conditionReadWelfare.select'
-                },
+                }
             },
             nylonPageActive:function(){
                 this.dispatchAction('CONDITIONREADWELFARE_LIST');
                 this.dispatchAction('CONDITIONREADWELFARE_TABLE_LIST');
             },
             listeners:{
+                'open-panel':'openPanel',
                 '_get-field':'_getField',
                 '_edit-data-condition':'_editDataCondition'
             },
             _getField(){
                 // this.set('dataSelete',{})
+                this.selected = 0;
                 this.$$('panel-right').open();
                 this.set('title','เพิ่มฟิลด์')
                 this.dispatchAction('CONDITIONREADWELFARE_SET'); 
@@ -62,11 +84,25 @@
                 this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW',true);
             },
             _editDataCondition(e){
+                this.selected = 0;
                 this.set('title','แก้ไขฟิลด์')
-              this.dispatchAction('CONDITIONREADWELFARE_BTN',true);
-              this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW',false);
-              this.dispatchAction('CONDITIONREADWELFARE_SELECT',e.detail); 
-              this.$$('panel-right').open(); 
+                this.dispatchAction('CONDITIONREADWELFARE_BTN',true);
+                this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW',false);
+                this.dispatchAction('CONDITIONREADWELFARE_SELECT',e.detail); 
+                this.$$('panel-right').open(); 
+            },
+            openPanel:function(e){    
+                var item = e.detail;
+                switch (item) {
+                    case 'academic':
+                        this.selected = 1;
+                        this.COMMONDATA_DATA_ACADEMIC();
+                        this.$$('panel-right').open();
+                        break;
+                    default:
+                        break;
+                }
+                // this.$$('panel-right').open();
             }
             
         });

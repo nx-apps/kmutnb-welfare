@@ -66,19 +66,67 @@ export function commonDataAction(store){
 
                 // })
             },
+            //  COMMONDATA_DATA_ACADEMIC
             COMMONDATA_DATA_ACADEMIC:function(){
-                // this.read('./common/academic',(data)=>{
-                //     this.set('dataSelete.academic',data)
-                // });
                 axios.get(`/common/academic`)
                 .then(res=>{
-                    store.dispatch({type:'COMMONDATA_DATA_ACADEMIC',payload:res.data})
+                    var newData = res.data.map((item)=>{
+                        item.check = true;
+                        item.status = false;
+                        return item;
+                    })
+                    store.dispatch({type:'COMMONDATA_DATA_ACADEMIC',payload:newData})
                 })
                 .catch(err=>{
                     console.log(err)
                 })
-                
             },
+            COMMONDATA_DATA_ACADEMIC_INSERT:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.post(`/common/academic/insert`,data)
+                .then((response)=>{
+                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_ACADEMIC()
+                      }
+                     });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_ACADEMIC_UPDATE:function(data){
+                this.fire('toast',{status:'load'}); 
+                axios.put('/common/academic/update',data)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_ACADEMIC()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+            COMMONDATA_DATA_ACADEMIC_DELETE:function(del){
+                this.fire('toast',{status:'load'});
+                axios.delete('/common/academic/delete/id/'+del)
+                .then((response)=>{
+                   this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                      callback:()=>{
+                         this.COMMONDATA_DATA_ACADEMIC()
+                      }
+                    });
+                })
+                .catch((error)=>{
+                    console.log('error');
+                    console.log(error);
+                });
+            },
+
             COMMONDATA_DATA_ACTIVE:function(id){
                 // this.read('./common/active',(data)=>{
                 //     this.set('dataSelete.active',data)
@@ -86,6 +134,7 @@ export function commonDataAction(store){
                 
                 axios.get(`/common/active`)
                 .then(res=>{
+                    console.log(res.data);
                     store.dispatch({type:'COMMONDATA_DATA_ACTIVE',payload:res.data})
                 })
                 .catch(err=>{
