@@ -9,6 +9,8 @@
 <link rel="import" href="./components/common-components/faculty-manage.html">
 <link rel="import" href="./components/common-components/gender-manage.html">
 <link rel="import" href="./components/common-components/matier-manage.html">
+<link rel="import" href="./components/common-components/position-manage.html">
+
 
 <dom-module id="page-back-end">
       <style include="iron-flex iron-flex-factors iron-flex-alignment page-style">
@@ -62,6 +64,9 @@
                  </section>
                 <section>
                      <matier-manage></matier-manage>
+                 </section>
+                <section>
+                     <position-manage></position-manage>
                  </section>
              </iron-pages>
              
@@ -138,6 +143,11 @@
                     case 'matier':
                         this.selected = 6;
                         this.COMMONDATA_DATA_MATIER();
+                        this.$$('panel-right').open();
+                        break;
+                    case 'position':
+                        this.selected = 7;
+                        this.COMMONDATA_DATA_POSITION();
                         this.$$('panel-right').open();
                         break;
                     default:
