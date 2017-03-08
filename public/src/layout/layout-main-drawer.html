@@ -65,7 +65,7 @@
                     </app-toolbar>
                 </paper-material>
 				<div role="listbox">
-                    <template is="dom-repeat" items="{{listMenu}}" filter="{{menuFilter(user.role)}}">
+                    <template is="dom-repeat" items="{{listMenu}}">
                         <paper-icon-item on-tap="selectPage" path$="{{item.path}}" focused  index="{{index}}" selected$="{{_checkSelect(path,item.path)}}">
                             <iron-icon icon="chevron-right" item-icon></iron-icon>
                             [[item.name]]
@@ -131,16 +131,16 @@
                     value: false
                 }
             },
-            menuFilter:function(role){
-                console.log(!role);
-                if (!role) {
-                    return null;
-                }else{
-                    return function(listMenu) {
-                        return (listMenu.role==role) 
-                    };
-                }
-            },
+            // menuFilter:function(role){
+            //     console.log(!role);
+            //     if (!role) {
+            //         return null;
+            //     }else{
+            //         return function(listMenu) {
+            //             return (listMenu.role==role) 
+            //         };
+            //     }
+            // },
             selectPage:function(e){
                 if((('/'+this.path) != e.currentTarget.getAttribute('path')) && (e.currentTarget.getAttribute('path')!='')){
                     this.set('listMenu.'+e.currentTarget.index+'.loading',true);
