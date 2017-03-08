@@ -11,7 +11,8 @@
 <link rel="import" href="./components/common-components/matier-manage.html">
 <link rel="import" href="./components/common-components/position-manage.html">
 <link rel="import" href="./components/common-components/prefixname-manage.html">
-
+<link rel="import" href="./components/common-components/relation-manage.html">
+<link rel="import" href="./components/common-components/TypeEmployee-manage.html">
 
 <dom-module id="page-back-end">
       <style include="iron-flex iron-flex-factors iron-flex-alignment page-style">
@@ -72,6 +73,12 @@
                  <section>
                     <prefixname-manage></prefixname-manage>
                  </section>
+                  <section>
+                    <relation-manage></relation-manage>
+                 </section>
+                <section>
+                    <TypeEmployee-manage></TypeEmployee-manage>
+                </section>
              </iron-pages>
              
          <!--<iron-pages selected="{{page}}">
@@ -157,6 +164,16 @@
                     case 'prefixname':
                         this.selected = 8;
                         this.COMMONDATA_DATA_PREFIXNAME();
+                        this.$$('panel-right').open();
+                        break;
+                    case 'relation':
+                        this.selected = 9;
+                        this.COMMONDATA_DATA_RELATION();
+                        this.$$('panel-right').open();
+                        break;
+                    case 'type_employee':
+                        this.selected = 10;
+                        this.COMMONDATA_DATA_TYPE_EMPLOYEE();
                         this.$$('panel-right').open();
                         break;
                     default:

@@ -11,8 +11,8 @@ exports.type_employee = function(req,res){
 }
 exports.type_employeeInsert = function(req,res){
     let data = new Object()
-    data.type_employee_name = req.body.type_employee_name
-    data.id = sha1(req.body.type_employee_name)
+    data.type_emp_name = req.body.type_emp_name
+    data.id = sha1(req.body.type_emp_name)
     var r = req.r;
     r.db('welfare_common').table('type_employee').insert(data)
         .run()
@@ -28,8 +28,8 @@ exports.type_employeeUpdate = function(req,res){
     // console.log(req.body)
     let data = new Object()
     let old_id = req.body.old_id
-    data.type_employee_name = req.body.type_employee_name
-    data.id = sha1(req.body.type_employee_name)
+    data.type_emp_name = req.body.type_emp_name
+    data.id = sha1(req.body.type_emp_name)
     r.expr(data)
         .merge((int)=>{
             return {

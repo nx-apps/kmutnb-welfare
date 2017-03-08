@@ -560,6 +560,11 @@ export function commonDataAction(store){
             COMMONDATA_DATA_RELATION:function(id){
                 axios.get(`/common/relation`)
                 .then(res=>{
+                    var newData = res.data.map((item)=>{
+                        item.check = true;
+                        item.status = false;
+                        return item;
+                    })
                     store.dispatch({type:'COMMONDATA_DATA_RELATION',payload:res.data})
                 })
                 .catch(err=>{
@@ -615,6 +620,11 @@ export function commonDataAction(store){
             COMMONDATA_DATA_TYPE_EMPLOYEE:function(id){
                 axios.get(`/common/type_employee`)
                 .then(res=>{
+                    var newData = res.data.map((item)=>{
+                        item.check = true;
+                        item.status = false;
+                        return item;
+                    })
                     store.dispatch({type:'COMMONDATA_DATA_TYPE_EMPLOYEE',payload:res.data})
                 })
                 .catch(err=>{
