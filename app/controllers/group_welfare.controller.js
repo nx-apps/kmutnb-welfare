@@ -1,9 +1,12 @@
-exports.listWelfare = function (req, res) {
+exports.list = function (req, res) {
     var r = req.r
-    r.db('welfare').table('welfare')
+    r.db('welfare').table('group_welfare')
         .merge(function (m) {
             return {
-                year: m('year').add(543)
+                year: m('year').add(543),
+                start_date: m('start_date').split('T')(0),
+                end_date: m('end_date').split('T')(0),
+                welfare : r.db('welfare').table('welfare').getAll(m('id'), {index:'group_id'}).coerceTo('array')
             }
         })
         .run()
@@ -11,15 +14,16 @@ exports.listWelfare = function (req, res) {
             res.json(result);
         })
 }
-exports.listWelfareId = function (req, res) {
+exports.listId = function (req, res) {
     var r = req.r
-    r.db('welfare').table('welfare')
+    r.db('welfare').table('group_welfare')
         .get(req.params.id)
         .merge(function (m) {
             return {
                 year: m('year').add(543),
                 start_date: m('start_date').split('T')(0),
-                end_date: m('end_date').split('T')(0)
+                end_date: m('end_date').split('T')(0),
+                welfare : r.db('welfare').table('welfare').getAll(m('id'), {index:'group_id'}).coerceTo('array')
             }
         })
         .run()
@@ -29,24 +33,28 @@ exports.listWelfareId = function (req, res) {
 }
 exports.insert = function (req, res) {
     var r = req.r;
-    var valid = req.ajv.validate('list_welfare', req.body);
+    var valid = req.ajv.validate('welfare', req.body);
     var result = { result: false, message: null, id: null };
     if (valid) {
-    console.log(req.body);
-    r.db('welfare').table('welfare').insert(req.body)
-        .run()
-        .then((response) => {
-            result.message = response;
-            if (response.errors == 0) {
-                result.result = true;
-                result.id = response.generated_keys;
+        req.body = Object.assign(req.body,
+            {
+                year: req.body.year - 543
             }
-            res.json(result);
-        })
-        .error((err) => {
-            result.message = err;
-            res.json(result);
-        })
+        );
+        r.db('welfare').table('group_welfare').insert(req.body)
+            .run()
+            .then((response) => {
+                result.message = response;
+                if (response.errors == 0) {
+                    result.result = true;
+                    result.id = response.generated_keys;
+                }
+                res.json(result);
+            })
+            .error((err) => {
+                result.message = err;
+                res.json(result);
+            })
     } else {
         result.message = req.ajv.errorsText()
         res.json(result);
@@ -60,7 +68,7 @@ exports.update = function (req, res) {
             year: req.body.year - 543
         }
     );
-    r.db('welfare').table('welfare')
+    r.db('welfare').table('group_welfare')
         .get(req.body.id)
         .update(req.body)
         .run()
@@ -73,7 +81,7 @@ exports.update = function (req, res) {
 }
 exports.delete = function (req, res) {
     var r = req.r;
-    r.db('welfare').table('welfare')
+    r.db('welfare').table('group_welfare')
         .get(req.params.id)
         .delete()
         .run()

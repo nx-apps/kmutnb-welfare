@@ -5,20 +5,21 @@ const initialState = {
     list: [],
     select: {},
     list_id: [],
-    dataSelect: {}
+    dataSelect: {},
+    condition: []
 }
 
 export function listWelfareReducer(state = initialState, action) {
 
     switch (action.type) {
-        case 'LIST_WELFARE':
+        case 'WELFARE_LIST':
             return Object.assign({}, state, { list: action.payload });
-        case 'LIST_WELFARE_ID':
+        case 'WELFARE_LIST_ID':
             return Object.assign({}, state, { list_id: action.payload });
-        case 'CLEAR_DATA':
-            return Object.assign({}, state, { select: {} });
-        case 'DATA_WELFARE_SELECT':
+        case 'WELFARE_DATA_SELECT':
             return Object.assign({}, state, { dataSelect: action.payload });
+        case 'CONDITION_LIST':
+            return Object.assign({}, state, { condition: action.payload });
         default:
             return state
     }
@@ -29,42 +30,33 @@ export function listWelfareAction(store) {
 
     return [commonAction(),
     {
-        LIST_WELFARE: function () {
+        WELFARE_LIST: function () {
             axios.get('/list_welfare')
                 .then(function (result) {
                     // console.log(result.data);
-                    store.dispatch({ type: 'LIST_WELFARE', payload: result.data })
+                    store.dispatch({ type: 'WELFARE_LIST', payload: result.data })
                 })
                 .catch(err => {
 
                 })
         },
-        LIST_WELFARE_ID: function (data) {
+        WELFARE_LIST_ID: function (data) {
             axios.get('/list_welfare/' + data)
                 .then(function (result) {
                     // console.log(result);
-                    store.dispatch({ type: 'LIST_WELFARE_ID', payload: result.data })
+                    store.dispatch({ type: 'WELFARE_LIST_ID', payload: result.data })
                 })
                 .catch(err => {
 
                 })
         },
-        INSERT_WELFARE: function (data) {
+        WELFARE_INSERT: function (data) {
             // console.log(data);
-            var datas = {
-                budget: data.budget,
-                year: data.year,
-                condition: data.condition,
-                start_date: new Date(data.start_date).toISOString(),
-                end_date: new Date(data.end_date).toISOString(),
-                name: data.name
-            }
-            // console.log(datas);
             this.fire('toast', { status: 'load' });
-            axios.post(`./list_welfare/insert`, datas)
+            axios.post(`./list_welfare/insert`, data)
                 .then((result) => {
                     console.log(result);
-                    this.LIST_WELFARE();
+                    this.WELFARE_LIST();
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             console.log('success');
@@ -76,7 +68,7 @@ export function listWelfareAction(store) {
                     console.log(err);
                 })
         },
-        DELETE_WELFARE: function (data) {
+        WELFARE_DELETE: function (data) {
             // console.log(data);
             axios.delete(`./list_welfare/delete/id/` + data)
                 .then((result) => {
@@ -93,7 +85,7 @@ export function listWelfareAction(store) {
                     console.log(err);
                 })
         },
-        EDIT_WELFARE: function (data) {
+        WELFARE_EDIT: function (data) {
             // console.log(data);
             var datas = {
                 id: data.id,
@@ -120,15 +112,22 @@ export function listWelfareAction(store) {
                     console.log(err);
                 })
         },
-        CLEAR_DATA: function () {
-            store.dispatch({ type: 'CLEAR_DATA' });
-        },
-        DATA_WELFARE_SELECT: function (val) {
+        WELFARE_DATA_SELECT: function (val) {
             // console.log(val);
             axios.get('/list_welfare/' + val)
                 .then(function (result) {
                     // console.log(result.data);
-                    store.dispatch({ type: 'DATA_WELFARE_SELECT', payload: result.data })
+                    store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: result.data })
+                })
+                .catch(err => {
+
+                })
+        },
+        CONDITION_LIST: function(){
+            axios.get('/condition_read_welfare/list/conditions')
+                .then(function (result) {
+                    // console.log(result.data);
+                    store.dispatch({ type: 'CONDITION_LIST', payload: result.data })
                 })
                 .catch(err => {
 

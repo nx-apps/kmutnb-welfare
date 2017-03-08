@@ -26,7 +26,7 @@
         <paper-material elevation="1">
 
             <div class="horizontal end-justified layout">
-                <div style="margin:20px 20px 0px 0px;">
+                <div style="margin:20px 20px 0px 0px;" hidden="{{!active}}">
                     <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
                     <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
                 </div>
@@ -41,13 +41,7 @@
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-input label="ชื่อสวัสดิการ" value="{{data.name}}" disabled="{{active}}"></gl-form-input>
-                </gl-grid-col>
-            </gl-grid-row>
-            <gl-grid-row>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.budget}}" disabled="{{active}}"></gl-form-input>
+                    <gl-form-input label="ชื่อสวัสดิการ" value="{{data.group_welfare_name}}" disabled="{{active}}"></gl-form-input>
                 </gl-grid-col>
             </gl-grid-row>
             <gl-grid-row>
@@ -59,31 +53,6 @@
                     <vaadin-date-picker label="วันที่ยกเลิกใช้ :" value="{{data.end_date}}" disabled="{{active}}"></vaadin-date-picker>
                 </gl-grid-col>
             </gl-grid-row>
-            <template is="dom-repeat" items="{{data.condition}}">
-                <gl-grid-row>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                        <div class="label_condition">เงื่อนไข</div>
-                    </gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <gl-combo-box items="[[field]]" item-label-path="name" item-value-path="id" value="{{item.field}}" disabled="{{active}}"></gl-combobox>
-                    </gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <gl-combo-box items="[[logic]]" item-label-path="name" item-value-path="logic" value="{{item.logic_show}}" disabled="{{active}}"></gl-combobox>
-                    </gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <gl-form-input value="{{item.value_show}}" disabled="{{active}}"></gl-form-input>
-                    </gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                        <div hidden="{{active}}"><paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button></div>
-                    </gl-grid-col>
-                </gl-grid-row>
-            </template>
-            <div class="horizontal center-justified layout">
-                <div hidden="{{active}}">
-                    <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
-                </div>
-            </div>
 
             <div class="horizontal end-justified layout btn-bottom">
                 <div hidden="{{active}}">
@@ -103,32 +72,7 @@
             behaviors: [ReduxBehavior, FormatNumberBehavior],
             properties: {
                 data:{
-                    statePath : 'listWelfare.dataSelect'
-                },
-                field: {
-                    type: Array,
-                    value: [
-                        { id: 'birth_day', name: 'อายุคน' },
-                        { id: 'start_work_date', name: 'อายุงาน' },
-                        { id: 'position', name: 'ตำแหน่งงาน' },
-                        { id: 'matier', name: 'ตำแหน่งทางวิชาการ' },
-                        { id: 'gender', name: 'เพศ' },
-                    ]
-                },
-                logic: {
-                    type: Array,
-                    value: [
-                        { logic: '>', name: 'มากกว่า' },
-                        { logic: '>=', name: 'มากกว่าเท่ากับ' },
-                        { logic: '=', name: 'เท่ากับ' },
-                        { logic: '!=', name: 'ไม่เท่ากับ' },
-                        { logic: '<', name: 'น้อยกว่า' },
-                        { logic: '<=', name: 'น้อยกว่าเท่ากับ' },
-                    ]
-                },
-                value: {
-                    type: Array,
-                    value: [{}]
+                    statePath : 'welfare.select'
                 },
                 active:{
                     type:Boolean,
@@ -154,22 +98,6 @@
                 this.set('disabled', this.active = false);
             },
             save:function(){
-                for (var i = 0; i < this.data.condition.length; i++) {
-                    // console.log(this.data.condition[i].logic.search("<"))
-                    if (this.data.condition[i].logic_show.search(">") >= 0) {
-                        var d = this.data.start_date.split("-");
-                        this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
-                        this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
-                    } else if (this.data.condition[i].logic_show.search("<") >= 0) {
-                        var d = this.data.end_date.split("-");
-                        this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
-                        this.data.condition[i].logic = this.data.condition[i].logic_show.replace("<", ">");
-                    } else {
-                        this.data.condition[i].value = this.data.condition[i].value_show;
-                        this.data.condition[i].logic = this.data.condition[i].logic_show;
-                    }
-                }
-                this.data.budget = this.unFormat(this.data.budget);
                 this.data.year = this.unFormat(this.data.year);
                 // console.log(this.data);
                 this.dispatchAction('EDIT_WELFARE', this.data);

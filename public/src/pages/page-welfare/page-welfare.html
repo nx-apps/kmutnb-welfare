@@ -1,5 +1,6 @@
 <link rel="import" href="components/welfare-panel.html">
 <link rel="import" href="components/welfare-manage.html">
+<link rel="import" href="components/welfare-detail.html">
 
 <dom-module id="page-welfare">
     <template>
@@ -30,13 +31,17 @@
                             <tr>
                                 <th style="text-align: center">ปี</th>
                                 <th>ชื่อสวัสดิการ</th>
+                                <th style="text-align:center;">เครื่องมือ</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">
                             <template is="dom-repeat" items="{{list}}">
-                                <tr data="[[item]]" on-tap="select_welfare" style="cursor:pointer;">
-                                    <td style="text-align: center">[[item.year]]</td>
-                                    <td>[[item.name]]</td>
+                                <tr style="cursor:pointer;">
+                                    <td style="text-align: center" data="[[item]]" on-tap="select_welfare" >[[item.year]]</td>
+                                    <td data="[[item]]" on-tap="select_welfare" >[[item.group_welfare_name]]</td>
+                                    <td style="width:10%;">
+                                        <paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info" on-tap="_edit">แก้ไข</paper-button>
+                                    </td>
                                 </tr>
                             </template>
                         </tbody>
@@ -51,7 +56,10 @@
                     <welfare-panel data="{{data}}"></welfare-panel>
                 </div>
                 <div>
-                    <welfare-manage data="{{dataSelect}}"></welfare-manage>
+                    <welfare-detail data="{{dataSelect}}"></welfare-detail>
+                </div>
+                <div>
+                    <welfare-manage></welfare-manage>
                 </div>
             </iron-pages>
         </panel-right>
@@ -61,10 +69,10 @@
     <script>
         Polymer({
             is: 'page-welfare',
-            behaviors: [ReduxBehavior, nylonBehavior, listWelfareAction],
+            behaviors: [ReduxBehavior, nylonBehavior, welfareAction, listWelfareAction],
             properties: {
                 list: {
-                    statePath: 'listWelfare.list',
+                    statePath: 'welfare.list',
                 },
                 pages: {
                     type: Number,
@@ -79,21 +87,21 @@
             nylonPageActive: function () {
                 // this.dispatchAction('LIST_WELFARE');
                 this.LIST_WELFARE();
+                this.WELFARE_LIST();
             },
             _insert: function () {
                 this.$$('panel-right').open();
                 this.pages = 0;
                 this.set('title', this.title = "เพิ่มสวัสดิการ");
-                // this.CLEAR_DATA();
             },
             select_welfare: function (e) {
-                // console.log(e.currentTarget.data.id);
+                // console.log(e.currentTarget.data);
                 this.$$('panel-right').open();
                 this.pages = 1;
                 this.set('title', this.title = "ข้อมูลสวัสดิการ");
+                this.dataSelect = e.currentTarget.data;
                 var id = e.currentTarget.data.id;
-                // console.log(id);
-                this.DATA_WELFARE_SELECT(id);
+                this.LIST_WELFARE_ID(id);
             },
             close_panel: function () {
                 this.$$('panel-right').close();
@@ -104,6 +112,14 @@
                     name: '',
                     condition: []
                 };
+            },
+            _edit:function(e){
+                // console.log(e.currentTarget.data);
+                var id = e.currentTarget.data.id;
+                this.SELECT_DATA(id);
+                this.$$('panel-right').open();
+                this.pages = 2;
+                this.set('title', this.title = "แก้ไข");
             }
         });
     </script>

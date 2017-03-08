@@ -26,25 +26,19 @@
             <paper-material elevation="1">
 
                 <gl-grid-row width="{{getWidth}}">
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                         <gl-form-input label="ปี" allowed-pattern="[0-9]" maxlength="4" value="{{data.year}}" placeholder="กรุณากรอกปี พ.ศ."></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input label="ชื่อสวัสดิการ" value="{{data.name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
+                        <gl-form-input label="ชื่อสวัสดิการ" value="{{data.group_welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
-                    </gl-grid-col>
-                </gl-grid-row>
-                <gl-grid-row>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                         <vaadin-date-picker label="วันที่เริ่มใช้ :" value="{{data.start_date}}"></vaadin-date-picker>
                     </gl-grid-col>
@@ -52,29 +46,6 @@
                         <vaadin-date-picker label="วันที่ยกเลิกใช้ :" value="{{data.end_date}}"></vaadin-date-picker>
                     </gl-grid-col>
                 </gl-grid-row>
-                <template is="dom-repeat" items="{{data.condition}}">
-                    <gl-grid-row>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                            <div class="label_condition">เงื่อนไข</div>
-                        </gl-grid-col>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box items="[[field]]" item-label-path="name" item-value-path="id" value="{{item.field}}"></gl-combobox>
-                        </gl-grid-col>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box items="[[logic]]" item-label-path="name" item-value-path="logic" value="{{item.logic_show}}"></gl-combobox>
-                        </gl-grid-col>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-form-input value="{{item.value_show}}"></gl-form-input>
-                        </gl-grid-col>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                            <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
-                        </gl-grid-col>
-                    </gl-grid-row>
-                </template>
-                <div class="horizontal center-justified layout">
-                    <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
-                </div>
 
                 <div class="horizontal end-justified layout btn-bottom">
                     <paper-button raised class="gl-btn-danger" on-tap="close">ยกเลิก</paper-button>
@@ -93,60 +64,11 @@
             properties: {
                 data: {
                     type: Object,
-                    value:
-                    {
-                        condition: [
-                            { field: '', logic: '', value: '' }
-                        ]
-                    },
+                    value:{},
                     notify: true
                 },
-                field: {
-                    type: Array,
-                    value: [
-                        { id: 'birth_day', name: 'อายุคน' },
-                        { id: 'start_work_date', name: 'อายุงาน' },
-                        { id: 'position', name: 'ตำแหน่งงาน' },
-                        { id: 'matier', name: 'ตำแหน่งทางวิชาการ' },
-                        { id: 'gender', name: 'เพศ' },
-                    ]
-                },
-                logic: {
-                    type: Array,
-                    value: [
-                        { logic: '>', name: 'มากกว่า' },
-                        { logic: '>=', name: 'มากกว่าเท่ากับ' },
-                        { logic: '=', name: 'เท่ากับ' },
-                        { logic: '!=', name: 'ไม่เท่ากับ' },
-                        { logic: '<', name: 'น้อยกว่า' },
-                        { logic: '<=', name: 'น้อยกว่าเท่ากับ' },
-                    ]
-                },
-                value: {
-                    type: Array,
-                    value: [{}]
-                }
-            },
-            add_condition: function () {
-                this.push('data.condition', { field: '', logic: '', value: '' })
             },
             save: function () {
-                for (var i = 0; i < this.data.condition.length; i++) {
-                    // console.log(this.data.condition[i].logic.search("<"))
-                    if (this.data.condition[i].logic_show.search(">") >= 0) {
-                        var d = this.data.start_date.split("-");
-                        this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
-                        this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
-                    } else if (this.data.condition[i].logic_show.search("<") >= 0) {
-                        var d = this.data.end_date.split("-");
-                        this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
-                        this.data.condition[i].logic = this.data.condition[i].logic_show.replace("<", ">");
-                    } else {
-                        this.data.condition[i].value = this.data.condition[i].value_show;
-                        this.data.condition[i].logic = this.data.condition[i].logic_show;
-                    }
-                }
-                this.data.budget = this.unFormat(this.data.budget);
                 this.data.year = this.unFormat(this.data.year);
                 // console.log(this.data);
                 this.dispatchAction('INSERT_WELFARE', this.data)

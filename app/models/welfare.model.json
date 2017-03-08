@@ -1,11 +1,8 @@
 {
     "name":"welfare",
     "properties": {
-        "name": {
+        "group_welfare_name": {
             "type": "string"
-        },
-        "budget": {
-            "type": "number"
         },
         "start_date": {
             "type": "string"
@@ -17,5 +14,5 @@
             "type": "number"
         }
     },
-    "required": ["name", "budget", "start_date", "end_date", "year"]
+    "required": ["group_welfare_name", "start_date", "end_date", "year"]
 }
