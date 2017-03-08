@@ -1,4 +1,5 @@
 
+<link rel="import" href="../../components/validateFormBehaviors.html">
 <link rel="import" href="logic-manage.html">
 
 <dom-module id="logic-panel">
@@ -31,7 +32,7 @@
                 </template>
         </gl-form-panel-head>
         <gl-form-panel-body label="" set-padding="10px" set-border="1px">
-            <logic-manage data="{{data}}" disabled="[[disabled]]"></logic-manage>
+            <logic-manage id="logic-manage" data="{{data}}" disabled="[[disabled]]"></logic-manage>
             <!--<user-manage data="{{data}}" disabled="[[disabled]]"></user-manage>-->
         </gl-form-panel-body>
         <gl-form-panel-footer label="" set-padding="10px">
@@ -65,18 +66,20 @@
             },
             insertata(){
                 // let data = this.data;
-                // data.start_work_date = new Date (data.start_work_date).toISOString();
-                this.dispatchAction('CONDITIONREADWELFARE_INSERT',this.data);
+                if(this.$$('#logic-manage').validateForm('.required'))
+                   this.dispatchAction('CONDITIONREADWELFARE_INSERT',this.data);
             },
             saveData(){
-                this.dispatchAction('CONDITIONREADWELFARE_EDIT',this.data);
+                if(this.$$('#logic-manage').validateForm('.required'))
+                   this.dispatchAction('CONDITIONREADWELFARE_EDIT',this.data);
             },
             deleteData(){
                 this.dispatchAction('CONDITIONREADWELFARE_DELETED',this.data.id);
                
             },
             editData(){
-                this.dispatchAction('CONDITIONREADWELFARE_BTN',false);
+                if(this.$$('#logic-manage').validateForm('.required'))
+                   this.dispatchAction('CONDITIONREADWELFARE_BTN',false);
                 
                 // this.cc()
             }

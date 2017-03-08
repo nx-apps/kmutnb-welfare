@@ -33,7 +33,7 @@
                             <label for="name_label">ชื่อที่แสดง :</label>
                         </div>
                         <div class="flex-2">
-                            <gl-form-input id="name_label" no-label-float value="{{data.label}}" disabled="[[disabled]]"></gl-form-input>
+                            <gl-form-input id="name_label" no-label-float value="{{data.label}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                         </div>    
                     </div>
                     <div class="flex layout horizontal">
@@ -41,7 +41,7 @@
                             <label for="name_field" >ชื่อตารางในฐานข้อมูล :</label>
                         </div>
                         <div class="flex-2">
-                        <gl-form-input id="name_field" no-label-float value="{{data.field}}" disabled="[[disabled]]"></gl-form-input>
+                        <gl-form-input id="name_field" no-label-float value="{{data.field}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                         </div>    
                     </div>
                 </div>
@@ -129,7 +129,7 @@
     <script>
         Polymer({
             is: 'logic-manage',
-            behaviors:[ReduxBehavior,commonLogic],
+            behaviors:[ReduxBehavior,commonLogic,ValidateFormBehavior],
             properties:{
                 data:{
                     type:Object,
