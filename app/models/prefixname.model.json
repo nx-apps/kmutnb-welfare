@@ -1,0 +1,9 @@
+{
+    "name":"prefixname",
+    "properties": {
+        "prefixname": {
+            "type": "string"
+        }
+    },
+    "required": ["prefixname"]
+}

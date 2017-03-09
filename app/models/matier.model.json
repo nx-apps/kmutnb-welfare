@@ -1,0 +1,9 @@
+{
+    "name":"matier",
+    "properties": {
+        "matier_name": {
+            "type": "string"
+        }
+    },
+    "required": ["matier_name"]
+}

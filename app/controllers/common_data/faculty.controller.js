@@ -11,6 +11,9 @@ exports.faculty = function(req,res){
 }
 exports.facultyInsert = function(req,res){
     var r = req.r;
+     var valid = req.ajv.validate('faculty', req.body);
+    var result = { result: false, message: null, id: null };
+    if (valid) {
     r.db('welfare_common').table('faculty')
         .insert(req.body)
         .run()
@@ -20,9 +23,16 @@ exports.facultyInsert = function(req,res){
         .catch(function (err) {
             res.status(500).json(err);
         })
+         } else {
+        result.message = req.ajv.errorsText()
+        res.json(result);
+    } 
 }
 exports.facultyUpdate = function(req,res){
   var r = req.r;
+   var valid = req.ajv.validate('faculty', req.body);
+    var result = { result: false, message: null, id: null };
+    if (valid) {
     
     r.db('welfare_common').table('faculty')
         .get(req.body.id)
@@ -34,6 +44,10 @@ exports.facultyUpdate = function(req,res){
         .catch(function (err) {
             res.status(500).json(err);
         })
+         } else {
+        result.message = req.ajv.errorsText()
+        res.json(result);
+    } 
 }
 exports.facultyDelete = function(req,res){
 //   console.log(req.body)

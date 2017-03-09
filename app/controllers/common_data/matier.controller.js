@@ -11,6 +11,9 @@ exports.matier = function(req,res){
 }
 exports.matierInsert = function(req,res){
     var r = req.r;
+    var valid = req.ajv.validate('matier', req.body);
+    var result = { result: false, message: null, id: null };
+    if (valid) {
     r.db('welfare_common').table('matier').insert(req.body)
         .run()
         .then(function (result) {
@@ -19,10 +22,17 @@ exports.matierInsert = function(req,res){
         .catch(function (err) {
             res.status(500).json(err);
         })
+     } else {
+        result.message = req.ajv.errorsText()
+        res.json(result);
+    } 
 }
 exports.matierUpdate = function(req,res){
   var r = req.r;
     
+    var valid = req.ajv.validate('matier', req.body);
+    var result = { result: false, message: null, id: null };
+    if (valid) {
      r.db('welfare_common').table('matier')
         .get(req.body.id)
         .update(req.body)
@@ -33,6 +43,10 @@ exports.matierUpdate = function(req,res){
         .catch(function (err) {
             res.status(500).json(err);
         })
+     } else {
+        result.message = req.ajv.errorsText()
+        res.json(result);
+    } 
 }
 exports.matierDelete = function(req,res){
 //   console.log(req.body)

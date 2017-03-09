@@ -1,0 +1,9 @@
+{
+    "name":"gender",
+    "properties": {
+        "gender_name": {
+            "type": "string"
+        }
+    },
+    "required": ["gender_name"]
+}

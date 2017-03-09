@@ -11,6 +11,9 @@ exports.position = function(req,res){
 }
 exports.positionInsert = function(req,res){
     var r = req.r;
+    var valid = req.ajv.validate('position', req.body);
+    var result = { result: false, message: null, id: null };
+    if (valid) {
     r.db('welfare_common').table('position')
     .insert(req.body)
         .run()
@@ -20,10 +23,17 @@ exports.positionInsert = function(req,res){
         .catch(function (err) {
             res.status(500).json(err);
         })
+     } else {
+        result.message = req.ajv.errorsText()
+        res.json(result);
+    } 
 }
 exports.positionUpdate = function(req,res){
   var r = req.r;
     
+    var valid = req.ajv.validate('academic', req.body);
+    var result = { result: false, message: null, id: null };
+    if (valid) {
       r.db('welfare_common').table('position')
         .get(req.body.id)
         .update(req.body)
@@ -34,6 +44,10 @@ exports.positionUpdate = function(req,res){
         .catch(function (err) {
             res.status(500).json(err);
         })
+     } else {
+        result.message = req.ajv.errorsText()
+        res.json(result);
+    } 
 }
 exports.positionDelete = function(req,res){
 //   console.log(req.body)

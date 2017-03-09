@@ -1,0 +1,12 @@
+{
+    "name":"faculty",
+    "properties": {
+        "faculty_code": {
+            "type": "string"
+        },
+        "faculty_name": {
+            "type": "string"
+        }
+    },
+    "required": ["faculty_code", "faculty_name"]
+}

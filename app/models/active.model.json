@@ -1,0 +1,9 @@
+{
+    "name":"active",
+    "properties": {
+        "active_name": {
+            "type": "string"
+        }
+    },
+    "required": ["active_name"]
+}

@@ -1,0 +1,9 @@
+{
+    "name":"type_employee",
+    "properties": {
+        "type_emp_name": {
+            "type": "string"
+        }
+    },
+    "required": ["type_emp_name"]
+}

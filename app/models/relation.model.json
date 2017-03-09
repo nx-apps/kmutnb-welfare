@@ -1,0 +1,9 @@
+{
+    "name":"relation",
+    "properties": {
+        "relation_name": {
+            "type": "string"
+        }
+    },
+    "required": ["relation_name"]
+}
