@@ -171,6 +171,9 @@
                 data.emp_id = this.data.id
                 data.welfare_id = e.currentTarget.data.welfare_id
                 data.budget_cover = e.currentTarget.data.budget_balance
+                data.status = false
+                data.year = new Date().getFullYear()
+                data.group_id = e.currentTarget.data.group_id
                 this.$$('#walfare_budget').open()
                 this.dispatchAction('USER_USE_SELETE_WELFARE',data);
             },

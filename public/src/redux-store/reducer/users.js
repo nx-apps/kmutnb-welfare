@@ -24,11 +24,10 @@ const clearData = (data,callback)=>{
 }
 const clearDataWalfare = (data,callback)=>{
     
-    let {emp_id,welfare_id,use_budget}=data;
-    let newData={emp_id,welfare_id,use_budget};
+    let {emp_id,welfare_id,use_budget,status,year}=data;
+    let newData={emp_id,welfare_id,use_budget,status,year};
     // console.log(data.date_use == '');
-    newData.status = false
-    newData.year = new Date().getFullYear
+    
     if (data.date_use == '' || data.date_use == undefined) {
         newData.date_use = new Date().toISOString();
     } else {

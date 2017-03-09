@@ -146,7 +146,6 @@ exports.welfares = function(req,res) {
                           
                         //   con_map('value')
                           ,
-                        //   value_show:con_map('value_show')
                         }
                       }
                     )
@@ -231,7 +230,16 @@ exports.welfares = function(req,res) {
                                     .orderBy('date_use')
                                     .coerceTo('array')
                     }
-                }) 
+        })
+        .merge((checkTrue)=>{
+            return{
+                welfare:checkTrue('welfare').merge((e)=>{
+                    return{
+                        status:checkTrue('history_welfare').filter({status:false,welfare_id:e('welfare_id')}).count().gt(0)//e('welfare_id')
+                    }
+                })
+            }
+        })
         .run()
         .then(function (result) {
             res.json(result);
