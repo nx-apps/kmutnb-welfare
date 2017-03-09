@@ -103,7 +103,7 @@ export function listWelfareAction(store) {
         },
         WELFARE_DATA_SELECT: function (val) {
             // console.log(val);
-            axios.get('/list_welfare/' + val)
+            axios.get('/user_welfare/id/' + val)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: result.data })

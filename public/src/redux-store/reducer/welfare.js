@@ -33,15 +33,15 @@ export function welfareAction(store) {
     return [commonAction(),
     {
         LIST_WELFARE: function (year) {
-            console.log(year);
-            // axios.get('/group_welfare/' + year)
-            //     .then(function (result) {
-            //         // console.log(result.data);
-            //         store.dispatch({ type: 'LIST_WELFARE', payload: result.data })
-            //     })
-            //     .catch(err => {
+            // console.log(year);
+            axios.get('/group_welfare/year/' + year)
+                .then(function (result) {
+                    // console.log(result.data);
+                    store.dispatch({ type: 'LIST_WELFARE', payload: result.data })
+                })
+                .catch(err => {
 
-            //     })
+                })
         },
         LIST_WELFARE_ID: function (data) {
             axios.get('/group_welfare/' + data)
@@ -121,7 +121,7 @@ export function welfareAction(store) {
         },
         DATA_WELFARE_SELECT: function (val) {
             // console.log(val);
-            axios.get('/group_welfare/' + val)
+            axios.get('/group_welfare/id/' + val)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'DATA_WELFARE_SELECT', payload: result.data })

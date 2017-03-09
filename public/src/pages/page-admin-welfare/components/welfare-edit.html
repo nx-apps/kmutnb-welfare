@@ -7,17 +7,30 @@
             gl-combo-box {
                 margin-top: 15px;
             }
+            
             .label_condition {
                 font-weight: bold;
                 text-align: right;
                 margin-top: 35px;
                 font-size: 20px;
             }
+            
             .btn-bottom {
                 margin: 30px;
             }
+            
             paper-material {
                 background-color: var(--gl-white-color);
+            }
+            
+            .table-detail {
+                margin: auto;
+                width: 80%;
+                padding: 20px;
+            }
+            
+            table.gl-table-default {
+                border: 1px solid #ddd;
             }
         </style>
 
@@ -78,15 +91,44 @@
                         <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
                     </div>
                 </div>
-                <div class="horizontal end-justified layout btn-bottom">
-                    <div hidden="{{active}}">
-                        <paper-button raised class="gl-btn-danger" on-tap="back">ยกเลิก</paper-button>
+                <div class="horizontal layout">
+                    <div hidden="{{!active}}" class="btn-bottom">
+                        <paper-button raised class="gl-btn-danger" on-tap="back">ย้อนกลับ</paper-button>
+                        <paper-button raised class="gl-btn-success" on-tap="list_users">ดูสมาชิก</paper-button>
+                        
+                    </div>
+                </div>
+                <div class="horizontal end-justified layout">
+                    <div hidden="{{active}}" class="btn-bottom">
+                        <paper-button raised class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
                         <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
                     </div>
                 </div>
             </paper-material>
 
         </div>
+
+
+        <template is="dom-if" if="{{tableStatus}}">
+            <div class="table-detail">
+                <paper-material elevation="1">
+                    <table class="gl-table-default">
+                        <thead class="table-head">
+                            <tr>
+                                <th style="text-align:center">ชื่อ</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            <template is="dom-repeat" items="{{data.employee}}">
+                                <tr>
+                                    <td style="text-align:center">[[item.name]]</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </paper-material>
+            </div>
+        </template>
     </template>
     <script>
         Polymer({
@@ -171,6 +213,10 @@
                         { field: '', logic: '', value: '' }
                     ]
                 };
+                this.tableStatus = false;
+            },
+            cancle: function () {
+                this.set('disabled', this.active = true);
             },
             checkField: function (e, index) {
                 try {
@@ -207,6 +253,9 @@
             },
             _edit: function () {
                 this.set('disabled', this.active = false);
+            },
+            list_users: function () {
+                this.tableStatus = true;
             }
         });
     </script>

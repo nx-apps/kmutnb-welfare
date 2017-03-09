@@ -90,6 +90,7 @@
         Polymer({
             is: 'page-admin-welfare',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior, welfareAction, listWelfareAction],
+            observers: ['changeYear(selectYear)'],
             properties: {
                 list: {
                     statePath: 'welfare.list'
@@ -125,7 +126,7 @@
                 this.set('title', this.title = "เพิ่มสวัสดิการ");
             },
             select_welfare: function (e) {
-                console.log(e.currentTarget.data);
+                // console.log(e.currentTarget.data);
                 this.$$('panel-right').open();
                 this.$$('welfare-detail').setPage(0);
                 // this.pageDetail = '0';
@@ -152,6 +153,10 @@
                 this.$$('panel-right').open();
                 this.pages = 2;
                 this.set('title', this.title = "แก้ไข");
+            },
+            changeYear:function(e){
+                var year = e-543;
+                this.LIST_WELFARE(year);
             }
         });
     </script>

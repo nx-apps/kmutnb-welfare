@@ -34,10 +34,10 @@
                                 </tr>
                             </thead>
                             <tbody class="table-body">
-                                <template is="dom-repeat" items="{{list}}">
-                                    <template is="dom-repeat" items="{{item.welfare}}" as="welfare">
+                                <!--<template is="dom-repeat" items="{{list}}">-->
+                                    <template is="dom-repeat" items="{{list.welfare}}" as="welfare">
                                     <tr data="[[item]]">
-                                        <td style="text-align: center">[[item.year]]</td>
+                                        <td style="text-align: center">[[list.year]]</td>
                                         <td>[[welfare.welfare_name]]</td>
                                         <td style="text-align:right;">[[formatNumber(welfare.budget)]]</td>
                                         <td style="text-align:center;">
@@ -47,7 +47,7 @@
                                         </td>
                                     </tr>
                                     </template>
-                                </template>
+                                <!--</template>-->
                             </tbody>
                         </table>
                     </paper-material>
