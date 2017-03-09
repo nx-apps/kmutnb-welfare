@@ -1,0 +1,86 @@
+
+<link rel="import" href="./dialog-approve-walfare.html">
+
+<dom-module id="user-list-unapprove">
+    <style include="iron-flex iron-flex-factors iron-flex-alignment page-style">
+            :host {
+                display: block;
+            }
+        </style>
+    <template>
+        
+        <paper-material elevation="1">
+            <div class="head">รายชื่อคนที่ขอสมัครใช้สวัสดิการ</div>
+            <div class="content horizontal center-justified layout">
+                <table class="gl-table-default">
+                <thead class="table-head">
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อ - นามสกุล</th>
+                        <th>กอง</th>
+                        <th>คณะ</th>
+                        <th>กระทำ</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    
+                    <template is="dom-repeat" items={{listUserFalse}} >
+                        <tr>
+                            <td>[[index]]</td>
+                            <td>[[item.prefixname_id]] [[item.name]] [[item.surname]]</td>
+                            <td>[[item.department]]</td>
+                            <td>[[item.faculty]]</td>
+                            <td>
+                                <paper-button raised class="gl-btn-info gl-small" on-tap="userWalfare" data="[[item]]"> ดูข้อมูล </paper-button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        </paper-material>
+        <paper-dialog id="walfare_budget" >
+            <dialog-approve-walfare data="{{useWalfareProp}}"></dialog-approve-walfare>
+            <div class="flex horizontal end-justified layout">
+                <paper-button raised class="gl-btn-primary" on-tap="getWalfare">อนุญาต</paper-button>
+                <paper-button raised class="gl-btn-danger" on-tap="delWalfare">ไม่อนุญาต</paper-button>
+            </div>
+        </paper-dialog>
+        
+    </template>
+    <script>
+        Polymer({
+            is: 'user-list-unapprove',
+            behaviors: [
+                ReduxBehavior,
+            ],
+            properties:{
+                listUserFalse:{
+                    statePath:'users.lisyUserFalse'
+                },
+                useWalfareProp:{
+                    type:Object
+                }
+            },
+            userWalfare(e){
+                console.log(e.currentTarget.data);
+                this.set('useWalfareProp',e.currentTarget.data)
+                // let data = new Object();
+                // data.title = e.currentTarget.data.name
+                // data.emp_id = this.data.id
+                // data.welfare_id = e.currentTarget.data.welfare_id
+                // data.budget_cover = e.currentTarget.data.budget_balance
+                this.$$('#walfare_budget').open()
+                // this.dispatchAction('USER_USE_SELETE_WELFARE',data);
+            },
+            getWalfare(){
+                this.dispatchAction('USER_USE_WELFARE_APPROVE',this.useWalfareProp);
+                this.$$('#walfare_budget').close()
+            },
+            delWalfare(){
+                this.dispatchAction('USER_DELETE_USE_WELFARE',this.useWalfareProp.id);
+                this.$$('#walfare_budget').close()
+            }
+        });
+    </script>
+</dom-module>
