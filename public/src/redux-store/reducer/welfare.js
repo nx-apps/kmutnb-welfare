@@ -33,20 +33,21 @@ export function welfareAction(store) {
     return [commonAction(),
     {
         LIST_WELFARE: function (year) {
-            axios.get('/group_welfare/' + year)
-                .then(function (result) {
-                    // console.log(result.data);
-                    store.dispatch({ type: 'LIST_WELFARE', payload: result.data })
-                })
-                .catch(err => {
+            console.log(year);
+            // axios.get('/group_welfare/' + year)
+            //     .then(function (result) {
+            //         // console.log(result.data);
+            //         store.dispatch({ type: 'LIST_WELFARE', payload: result.data })
+            //     })
+            //     .catch(err => {
 
-                })
+            //     })
         },
         LIST_WELFARE_ID: function (data) {
             axios.get('/group_welfare/' + data)
                 .then(function (result) {
                     // console.log([result]);
-                    store.dispatch({ type: 'LIST_WELFARE_ID', payload: [result.data] })
+                    store.dispatch({ type: 'LIST_WELFARE_ID', payload: result.data })
                 })
                 .catch(err => {
 
