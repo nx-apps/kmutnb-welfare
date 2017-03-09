@@ -27,7 +27,7 @@
                         <div class="container flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="academic_name" placeholder="กรอกข้อมูล" value="{{data.academic_name}}"></gl-form-input>
+                                <gl-form-input label="academic_name" id="form" placeholder="กรอกข้อมูล" value="{{data.academic_name}}" required></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center">
                                 <paper-button class="gl-btn-success" on-tap="getForm" raised>save</paper-button>
@@ -59,7 +59,7 @@
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
-                                            <paper-input no-label-float value="{{item.academic_name}}"></paper-input>
+                                            <paper-input no-label-float id="formUpdate" value="{{item.academic_name}}" required></paper-input>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
@@ -121,15 +121,21 @@
                 // })
             },
             getForm:function(){
-                this.dispatchAction('COMMONDATA_DATA_ACADEMIC_INSERT',this.data);
+                var check = this.validateForm('#form');
+                if(check == true){
+                    this.dispatchAction('COMMONDATA_DATA_ACADEMIC_INSERT',this.data);
+                }
             },
             update:function(e){
+                var check = this.validateForm('#formUpdate');
                 var getForm = e.target.item;
                 var newItem = {
                     old_id: getForm.id,
                     academic_name: getForm.academic_name
                 }
-                this.dispatchAction('COMMONDATA_DATA_ACADEMIC_UPDATE',newItem);
+                if(check == true){
+                    this.dispatchAction('COMMONDATA_DATA_ACADEMIC_UPDATE',newItem);
+                }
             },
             confirmDelete:function(e){
                 var id = e.target.item.id;
