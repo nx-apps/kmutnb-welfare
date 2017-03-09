@@ -1,0 +1,9 @@
+{
+    "name":"position",
+    "properties": {
+        "position_name": {
+            "type": "string"
+        }
+    },
+    "required": ["position_name"]
+}

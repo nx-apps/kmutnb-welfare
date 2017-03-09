@@ -1,0 +1,9 @@
+{
+    "name":"academic",
+    "properties": {
+        "academic_name": {
+            "type": "string"
+        }
+    },
+    "required": ["academic_name"]
+}

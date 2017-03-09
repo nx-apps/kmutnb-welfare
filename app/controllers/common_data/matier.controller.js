@@ -10,11 +10,11 @@ exports.matier = function(req,res){
         })
 }
 exports.matierInsert = function(req,res){
-    let data = new Object()
-    data.matier_name = req.body.matier_name
-    data.id = sha1(req.body.matier_name)
     var r = req.r;
-    r.db('welfare_common').table('matier').insert(data)
+    var valid = req.ajv.validate('matier', req.body);
+    var result = { result: false, message: null, id: null };
+    if (valid) {
+    r.db('welfare_common').table('matier').insert(req.body)
         .run()
         .then(function (result) {
             res.json(result);
@@ -22,36 +22,20 @@ exports.matierInsert = function(req,res){
         .catch(function (err) {
             res.status(500).json(err);
         })
+     } else {
+        result.message = req.ajv.errorsText()
+        res.json(result);
+    } 
 }
 exports.matierUpdate = function(req,res){
   var r = req.r;
-    // console.log(req.body)
-    let data = new Object()
-    let old_id = req.body.old_id
-    data.matier_name = req.body.matier_name
-    data.id = sha1(req.body.matier_name)
-    r.expr(data)
-        .merge((int)=>{
-            return {
-                int : r.db('welfare_common').table('matier')
-                .insert(int)
-            }
-        })
-        .merge((emp)=>{
-            return {
-                emp : r.db('welfare').table('employee')
-                .filter({matier_id:old_id})
-                .update({matier_id:data.id})
-                .coerceTo('array')
-            }
-        })
-        .merge((del)=>{
-            return {
-                del : r.db('welfare_common').table('matier')
-                .get(old_id)
-                .delete()
-            }
-        })
+    
+    var valid = req.ajv.validate('matier', req.body);
+    var result = { result: false, message: null, id: null };
+    if (valid) {
+     r.db('welfare_common').table('matier')
+        .get(req.body.id)
+        .update(req.body)
         .run()
         .then(function (result) {
             res.json(result);
@@ -59,6 +43,10 @@ exports.matierUpdate = function(req,res){
         .catch(function (err) {
             res.status(500).json(err);
         })
+     } else {
+        result.message = req.ajv.errorsText()
+        res.json(result);
+    } 
 }
 exports.matierDelete = function(req,res){
 //   console.log(req.body)

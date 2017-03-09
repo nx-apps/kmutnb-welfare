@@ -5,7 +5,7 @@ exports.read = function(req,res){
 //   var sha1 = crypto.createHash('sha1').update('Apple').digest("hex");
 //   console.log('>>>>>>>',sha1);
     var r = req.r;
-    r.db('welfare').table('condition_2')
+    r.db('welfare').table('condition')
         .run()
         .then(function (result) {
             res.json(result);
@@ -31,7 +31,7 @@ exports.insert = function(req,res){
 //     //  req.body[prop] = req.body[prop].replace(/ /g,'').trim()
 //   }  
     var r = req.r;
-    r.db('welfare').table('condition_2').insert(req.body)
+    r.db('welfare').table('condition').insert(req.body)
         .run()
         .then(function (result) {
             res.json(result);
@@ -43,7 +43,7 @@ exports.insert = function(req,res){
 exports.delete = function(req,res){
   console.log(req.body)
     var r = req.r;
-   r.db('welfare').table('condition_2')
+   r.db('welfare').table('condition')
         .get(req.params.id)
         .delete()
         .run()
@@ -58,7 +58,7 @@ exports.update = function(req,res){
   var r = req.r;
     // console.log(req.body)
     // req.body = Object.assign(req.body, { year: req.body.year - 543 });
-    r.db('welfare').table('condition_2')
+    r.db('welfare').table('condition')
         .get(req.body.id)
         .update(req.body)
         .run()
@@ -73,7 +73,7 @@ exports.conditions = function(req,res) {
     //https://localhost:3000/api/condition_read_welfare/list/conditions
    var r = req.r;
 
-        r.db('welfare').table('condition_2')
+        r.db('welfare').table('condition')
          .merge(function(f){
             return {
             data:  f('data_source').eq("").branch("",

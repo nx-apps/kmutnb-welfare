@@ -10,11 +10,11 @@ exports.gender = function(req,res){
         })
 }
 exports.genderInsert = function(req,res){
-    let data = new Object()
-    data.gender_name = req.body.gender_name
-    data.id = sha1(req.body.gender_name)
     var r = req.r;
-    r.db('welfare_common').table('gender').insert(data)
+    var valid = req.ajv.validate('gender', req.body);
+    var result = { result: false, message: null, id: null };
+    if (valid) {
+    r.db('welfare_common').table('gender').insert(req.body)
         .run()
         .then(function (result) {
             res.json(result);
@@ -22,36 +22,21 @@ exports.genderInsert = function(req,res){
         .catch(function (err) {
             res.status(500).json(err);
         })
+     } else {
+        result.message = req.ajv.errorsText()
+        res.json(result);
+    } 
 }
 exports.genderUpdate = function(req,res){
   var r = req.r;
+  var valid = req.ajv.validate('gender', req.body);
+    var result = { result: false, message: null, id: null };
+    if (valid) {
     // console.log(req.body)
-    let data = new Object()
-    let old_id = req.body.old_id
-    data.gender_name = req.body.gender_name
-    data.id = sha1(req.body.gender_name)
-    r.expr(data)
-        .merge((int)=>{
-            return {
-                int : r.db('welfare_common').table('gender')
-                .insert(int)
-            }
-        })
-        .merge((emp)=>{
-            return {
-                emp : r.db('welfare').table('employee')
-                .filter({gender_id:old_id})
-                .update({gender_id:data.id})
-                .coerceTo('array')
-            }
-        })
-        .merge((del)=>{
-            return {
-                del : r.db('welfare_common').table('gender')
-                .get(old_id)
-                .delete()
-            }
-        })
+    
+      r.db('welfare_common').table('gender')
+        .get(req.body.id)
+        .update(req.body)
         .run()
         .then(function (result) {
             res.json(result);
@@ -59,6 +44,10 @@ exports.genderUpdate = function(req,res){
         .catch(function (err) {
             res.status(500).json(err);
         })
+     } else {
+        result.message = req.ajv.errorsText()
+        res.json(result);
+    } 
 }
 exports.genderDelete = function(req,res){
 //   console.log(req.body)

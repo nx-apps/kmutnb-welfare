@@ -1,0 +1,15 @@
+{
+    "name":"department",
+    "properties": {
+        "department_name": {
+            "type": "string"
+        },
+        "faculty": {
+            "type": "string"
+        },
+        "faculty_name": {
+            "type": "string"
+        }
+    },
+    "required": ["department_name", "faculty", "faculty_name"]
+}
