@@ -7,7 +7,8 @@ const initialState = {
     select_welefares:{},
     select_use_welefares:{date_use:new Date().toISOString().split('T')[0]},
     disabled:true,
-    insert_view:true
+    insert_view:true,
+    lisyUserFalse:[]
 }
 const clearData = (data,callback)=>{
 
@@ -26,7 +27,7 @@ const clearDataWalfare = (data,callback)=>{
     
     let {emp_id,welfare_id,use_budget,status,year}=data;
     let newData={emp_id,welfare_id,use_budget,status,year};
-    // console.log(data.date_use == '');
+    // console.log(data.date/use_welfare/update_use == '');
     
     if (data.date_use == '' || data.date_use == undefined) {
         newData.date_use = new Date().toISOString();
@@ -51,7 +52,9 @@ export function usersReducer(state = initialState,action){
         case 'USER_INSERT_VIEW' : 
             return Object.assign({},state,{insert_view:action.payload});
         case 'USER_USE_SELETE_WELFARE' :
-            return Object.assign({},state,{select_use_welefares:action.payload});      
+            return Object.assign({},state,{select_use_welefares:action.payload});
+        case 'USERS_FALSE_LIST' : 
+            return Object.assign({},state,{lisyUserFalse:action.payload});          
         default:
             return state
     }
@@ -174,7 +177,9 @@ export function usersAction(store){
             USER_USE_WELFARE(data){
             // console.log(data);
             clearDataWalfare(data,(newData)=>{
+                
                 this.fire('toast',{status:'load'});
+                // newData.status = true;
                     axios.post(`./user/use_welfare/`,newData)
                     .then(res=>{
                         this.USER_GET_WELFARES(newData.emp_id,true);
@@ -188,7 +193,28 @@ export function usersAction(store){
                     .catch(err=>{
                         console.log(err);
                     })
+                })
+            },
+            USER_USE_WELFARE_APPROVE(data){
+            // console.log(data);
+            clearDataWalfare(data,(newData)=>{
+                newData.id = data.id;
+                this.fire('toast',{status:'load'});
+                newData.status = true;
+                    axios.put(`./user/use_welfare/update`,newData)
+                    .then(res=>{
+                        this.dispatchAction('USERS_FALSE_LIST');
+                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                            callback:()=>{
+                                // this.$$('panel-right').close();
+                                // this.$$('#walfare_budget').close()
+                            }
+                        });
                     })
+                    .catch(err=>{
+                        console.log(err);
+                    })
+                })
             },
             USER_DELETE_USE_WELFARE(data){
                 console.log(data);
@@ -199,7 +225,7 @@ export function usersAction(store){
                         if(result == true){
                             axios.delete(`./user/use_welfare/delete/id/${data.history_welfare_id}`)
                             .then(res=>{
-                                this.USER_GET_WELFARES(data.emp_id,true);
+                                this.dispatchAction('USERS_FALSE_LIST');
                                 this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
                                     callback:()=>{
                                         // this.$$('panel-right').close();
@@ -212,6 +238,23 @@ export function usersAction(store){
             },
             USER_USE_SELETE_WELFARE(data){
                 store.dispatch({type:'USER_USE_SELETE_WELFARE',payload:data})
+            },
+            USERS_FALSE_LIST(data){
+                this.fire('toast',{status:'load'});
+                    axios.get(`./user/unapprove/`)
+                    .then(res=>{
+                        // console.log(res)
+                        this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
+                            callback:()=>{
+                                store.dispatch({type:'USERS_FALSE_LIST',payload:res.data})
+                                // if(!otherFunction)
+                                //     this.$$('panel-right').open();
+                            }
+                        });
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    })
             }
         },
         

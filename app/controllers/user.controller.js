@@ -196,11 +196,11 @@ exports.welfares = function(req,res) {
                     return {
                     budget_use : r.db('welfare').table('history_welfare')
                             .filter(
-                                {stastus:true,
+                                {status:true,
                                  emp_id:welfare('id'),
                                  welfare_id:use_his('id')}
                                 )
-                            .sum('use_budget')
+                            .sum('use_budget'),
                     }
                 })
                 .merge((balance)=>{
@@ -254,12 +254,40 @@ exports.welfares = function(req,res) {
             res.status(500).json(err);
         })
 }
+exports.userForApprove = function (req,res) {
+    r.db('welfare').table('history_welfare').filter({status: false})
+  .merge((user)=>{
+    return {
+    date_use:user('date_use').split('T')(0),
+    data:r.db('welfare').table('employee').get(user('emp_id'))
+    }
+  })
+          
+   .merge((userName)=>{
+    return {
+    prefixname_id:r.db('welfare_common').table('prefixname').get(userName('data').getField('prefixname_id')).getField('prefixname'),
+    name:userName('data').getField('name'),
+    surname:userName('data').getField('surname'),
+    department:r.db('welfare_common').table('department').get(userName('data').getField('department_id')).getField('department_name'),
+    faculty:r.db('welfare_common').table('faculty').get(userName('data').getField('faculty_id')).getField('faculty_name')
+    }
+  })
+    .without('data')
+    .filter({status: false})
+    .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
 exports.useWelfare = function (req,res) {
     // https://localhost:3000/api/user/use_welfare/
 //     for (let prop in req.body) {
 //      req.body[prop] = req.body[prop].replace(/ /g,'').trim()
 //   }   
-console.log(req.body);
+// console.log(req.body);
 
     var r = req.r;
     r.db('welfare').table('history_welfare').insert(req.body)
@@ -273,7 +301,7 @@ console.log(req.body);
 },
 exports.editWelfare = function (req,res) {
     var r = req.r;
-    // console.log(req.params.id);
+    console.log(req.body);
     r.db('welfare').table('history_welfare')
         .get(req.body.id)
         .update(req.body)
