@@ -10,13 +10,13 @@ exports.list = function(req,res){
         .merge(function(f){
         return {
           start_work_date:f('start_work_date').split('T')(0),
-          birthday:f('birthday').split('T')(0)
+          birthdate:f('birthdate').split('T')(0)
         }
       })
       .merge(function(f){
         return {
           start_work_date:f('start_work_date').split('T')(0),
-         birthday:f('birthday').split('T')(0),
+         birthdate:f('birthdate').split('T')(0),
           academic_name :r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
           active_name :r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
           department_name :r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
@@ -98,7 +98,7 @@ exports.welfares = function(req,res) {
     .merge(function(f){
         return {
           start_work_date:f('start_work_date').split('T')(0),
-         birthday:f('birthday').split('T')(0),
+         birthdate:f('birthdate').split('T')(0),
           academic_name :r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
           active_name :r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
           department_name :r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
