@@ -11,7 +11,7 @@
 
             .table-detail {
                 margin: auto;
-                width: 50%;
+                width: 80%;
                 padding: 20px;
             }
 
@@ -29,18 +29,24 @@
                     <table class="gl-table-default">
                         <thead class="table-head">
                             <tr>
-                                <th style="text-align: center">ปี</th>
+                                <th style="text-align:center; width:15%;">ปี</th>
                                 <th>ชื่อสวัสดิการ</th>
-                                <th style="text-align:center;">เครื่องมือ</th>
+                                <th style="text-align:center;width:15%;">ยอดเต็ม</th>
+                                <th style="text-align:center;width:15%;">ยอดที่ใช้</th>
+                                <th style="width:15%;text-align:center;">เครื่องมือ</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">
                             <template is="dom-repeat" items="{{list}}">
                                 <tr style="cursor:pointer;">
-                                    <td style="text-align: center" data="[[item]]" on-tap="select_welfare" >[[item.year]]</td>
-                                    <td data="[[item]]" on-tap="select_welfare" >[[item.group_welfare_name]]</td>
-                                    <td style="width:10%;">
-                                        <paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info" on-tap="_edit">แก้ไข</paper-button>
+                                    <td style="text-align:center">[[item.year]]</td>
+                                    <td>[[item.group_welfare_name]]</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="text-align:center">
+                                        <paper-icon-button data="[[item]]" icon="add" on-tap="select_welfare"></paper-icon-button>
+                                        <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit"></paper-icon-button>
+                                        <!--<paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info">แก้ไข</paper-button>-->
                                     </td>
                                 </tr>
                             </template>
