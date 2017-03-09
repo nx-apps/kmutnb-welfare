@@ -4,7 +4,7 @@
         <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
             gl-form-input,
             vaadin-date-picker,
-            gl-combo-box {
+            gl-combo-box{
                 margin-top: 15px;
             }
             .label_condition {
@@ -44,6 +44,12 @@
                     </gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                         <vaadin-date-picker label="วันที่ยกเลิกใช้ :" value="{{data.end_date}}"></vaadin-date-picker>
+                    </gl-grid-col>
+                </gl-grid-row>
+                <gl-grid-row>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <gl-form-textarea style="margin-top:15px;" label="รายละเอียด" value="{{data.description}}" placeholder="เพิ่มรายละเอียด"></gl-form-textarea>
                     </gl-grid-col>
                 </gl-grid-row>
 

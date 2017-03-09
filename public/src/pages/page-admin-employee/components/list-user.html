@@ -25,35 +25,31 @@
                 <paper-button raised on-tap="back_page">back</paper-button>
             </div>-->
             <paper-material elevation="1">
-                <template is="dom-repeat" items={{list}}>
-                    <div class="text-head">สวัสดิการ : [[item.group_welfare_name]]</div>
                     <div class="table-detail">
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
                                     <!--<th style="width:10%;">กระทำ</th>-->
                                     <th style="width:10%;">รหัสพนักงาน</th>
-                                    <th style="width:10%;">คำนำหน้า</th>
-                                    <th style="width:15%;">ชื่อ</th>
-                                    <th style="width:15%;">นามสกุล</th>
-                                    <th style="width:10%;">เพศ</th>
+                                    <!--<th style="width:10%;">คำนำหน้า</th>-->
+                                    <th style="width:15%;">ชื่อ นามสกุล</th>
+                                    <!--<th style="width:15%;">นามสกุล</th>-->
+                                    <!--<th style="width:10%;">เพศ</th>-->
                                     <th style="width:25%;">ตำแหน่ง</th>
                                     <th style="width:15%;">ตำแหน่งวิชาการ</th>
                                 </tr>
                             </thead>
                             <tbody class="table-body">
-                                <template is="dom-repeat" items={{item.welfare}}>
-                                    <template is="dom-repeat" items="{{item.employee}}">
+                                <template is="dom-repeat" items={{list}}>
                                     <tr>
                                         <td>[[item.emp_id]]</td>
-                                        <td>[[item.prefixname]]</td>
-                                        <td>[[item.name]]</td>
-                                        <td>[[item.surname]]</td>
-                                        <td>[[item.gender_name]]</td>
+                                        <!--<td>[[item.prefixname]]</td>-->
+                                        <td>[[item.name]] [[item.surname]]</td>
+                                        <!--<td></td>-->
+                                        <!--<td>[[item.gender_name]]</td>-->
                                         <td>[[item.position_name]]</td>
                                         <td>[[item.academic_name]]</td>
                                     </tr>
-                                    </template>
                                 </template>
                                 <template is="dom-if" if={{checkData(item.employee)}}>
                                     <tr>
@@ -63,7 +59,6 @@
                             </tbody>
                         </table>
                     </div>
-
                 </template>
             </paper-material>
         </div>
@@ -75,7 +70,7 @@
             behaviors: [ReduxBehavior],
             properties: {
                 list: {
-                    statePath: 'userWelfare.list_user',
+                    statePath:'userWelfare.list_user',
                 }
             },
             checkData:function(data){

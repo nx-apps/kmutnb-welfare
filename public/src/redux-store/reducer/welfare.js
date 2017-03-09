@@ -5,7 +5,8 @@ const initialState = {
     list: [],
     select: {},
     list_id: [],
-    dataSelect: {}
+    dataSelect: {},
+    list_year: []
 }
 
 export function welfareReducer(state = initialState, action) {
@@ -19,6 +20,8 @@ export function welfareReducer(state = initialState, action) {
             return Object.assign({}, state, { dataSelect: action.payload });
         case 'SELECT_DATA':
             return Object.assign({}, state, { select: action.payload });
+        case 'GET_YEAR':
+            return Object.assign({}, state, { list_year: action.payload });
         default:
             return state
     }
@@ -29,11 +32,11 @@ export function welfareAction(store) {
 
     return [commonAction(),
     {
-        LIST_WELFARE: function () {
-            axios.get('/group_welfare')
+        LIST_WELFARE: function (year) {
+            axios.get('/group_welfare/' + year)
                 .then(function (result) {
                     // console.log(result.data);
-                    store.dispatch({ type: 'LIST_WELFARE', payload: result.data})
+                    store.dispatch({ type: 'LIST_WELFARE', payload: result.data })
                 })
                 .catch(err => {
 
@@ -132,6 +135,15 @@ export function welfareAction(store) {
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'SELECT_DATA', payload: result.data })
+                })
+                .catch(err => {
+
+                })
+        },
+        GET_YEAR() {
+            axios.get('/group_welfare/year')
+                .then(function (result) {
+                    store.dispatch({ type: 'GET_YEAR', payload: result.data })
                 })
                 .catch(err => {
 

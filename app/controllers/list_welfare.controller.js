@@ -43,11 +43,6 @@ exports.insert = function (req, res) {
 exports.update = function (req, res) {
     var r = req.r;
     // console.log(req.body)
-    req.body = Object.assign(req.body,
-        {
-            year: req.body.year - 543
-        }
-    );
     r.db('welfare').table('welfare')
         .get(req.body.id)
         .update(req.body)
