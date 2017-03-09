@@ -1,20 +1,22 @@
 exports.list = function (req, res) {
     var r = req.r
     r.db('welfare').table('welfare')
-    .eqJoin('group_id', r.db('welfare').table('group_welfare')).without({right:'id'}).zip()
+        .eqJoin('group_id', r.db('welfare').table('group_welfare')).without({ right: 'id' }).zip()
         .merge(function (wel_merge) {
             return {
                 employees: r.db('welfare').table('employee').coerceTo('array')
-                    .eqJoin('academic_id', r.db('welfare_common').table('academic')).without({ right: 'id' }).zip()
-                    .eqJoin('active_id', r.db('welfare_common').table('active')).without({ right: 'id' }).zip()
-                    .eqJoin('department_id', r.db('welfare_common').table('department')).without({ right: 'id' }).zip()
-                    .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).without({ right: 'id' }).zip()
-                    .eqJoin('gender_id', r.db('welfare_common').table('gender')).without({ right: 'id' }).zip()
-                    .eqJoin('matier_id', r.db('welfare_common').table('matier')).without({ right: 'id' }).zip()
-                    .eqJoin('position_id', r.db('welfare_common').table('position')).without({ right: 'id' }).zip()
-                    .eqJoin('prefixname_id', r.db('welfare_common').table('prefixname')).without({ right: 'id' }).zip()
-                    .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).without({ right: 'id' }).zip()
-                    .without('academic_id', 'active_id', 'department_id', 'faculty_id', 'gender_id', 'matier_id', 'position_id', 'prefixname_id', 'type_employee_id')
+
+
+            }
+        })
+        .merge(function (wel_merge) {
+            return {
+                condition: wel_merge('condition')
+                    .merge(function (con_merge) {
+                        return {
+                            field: r.db('welfare').table('condition').get(con_merge('field')).getField('field')
+                        }
+                    })
             }
         })
         .merge(function (wel_merge) {
@@ -77,8 +79,18 @@ exports.list = function (req, res) {
                     })
                     // .filter({ count: wel_merge('countCon') })
                     .coerceTo('array')
+                    .eqJoin('academic_id', r.db('welfare_common').table('academic')).without({ right: 'id' }).zip()
+                    .eqJoin('active_id', r.db('welfare_common').table('active')).without({ right: 'id' }).zip()
+                    .eqJoin('department_id', r.db('welfare_common').table('department')).without({ right: 'id' }).zip()
+                    .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).without({ right: 'id' }).zip()
+                    .eqJoin('gender_id', r.db('welfare_common').table('gender')).without({ right: 'id' }).zip()
+                    .eqJoin('matier_id', r.db('welfare_common').table('matier')).without({ right: 'id' }).zip()
+                    .eqJoin('position_id', r.db('welfare_common').table('position')).without({ right: 'id' }).zip()
+                    .eqJoin('prefixname_id', r.db('welfare_common').table('prefixname')).without({ right: 'id' }).zip()
+                    .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).without({ right: 'id' }).zip()
                     .distinct()
                     .without('count')
+                    .without('academic_id', 'active_id', 'department_id', 'faculty_id', 'gender_id', 'matier_id', 'position_id', 'prefixname_id', 'type_employee_id')
             }
         })
         .without('employees', 'employee1', 'employee2', 'employee3', 'countCon')
@@ -90,13 +102,13 @@ exports.list = function (req, res) {
         })
         .group('group_id')
         .ungroup()
-        .merge(function(m){
-            return{
-                group_welfare_name : m('reduction')(0)('group_welfare_name'),
-                welfare : m('reduction'),
-                group_id : m('group')
+        .merge(function (m) {
+            return {
+                group_welfare_name: m('reduction')(0)('group_welfare_name'),
+                welfare: m('reduction'),
+                group_id: m('group')
             }
-        }).without('group','reduction')
+        }).without('group', 'reduction')
         .run()
         .then(function (result) {
             res.json(result)
