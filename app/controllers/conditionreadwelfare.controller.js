@@ -88,12 +88,12 @@ exports.conditions = function(req,res) {
          .merge(function(f){
             return {
             data:  f('data_source').eq("").branch("",
-              r.db('welfare').table(f('data_source'))
+              r.db('welfare_common').table(f('data_source'))
                 .merge((data_source)=>{
                    return{
                   name: data_source.hasFields('department_name').eq(true).branch(data_source('department_name'),
                           data_source.hasFields('faculty_name').eq(true).branch(data_source('faculty_name'),
-                  		     data_source.hasFields('gender_name').eq(true).branch(data_source('gender_name'),
+                  		  data_source.hasFields('gender_name').eq(true).branch(data_source('gender_name'),
                           data_source.hasFields('academic_name').eq(true).branch(data_source('academic_name'),
                           data_source.hasFields('matier_name').eq(true).branch(data_source('matier_name'),
                           data_source.hasFields('active_name').eq(true).branch(data_source('active_name'),
