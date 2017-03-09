@@ -28,11 +28,7 @@
                     <div class="container flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
                         <div class="flex3child">
-                            <gl-combo-box label="ชื่อสวัสดิการ" placeholder="มีสวัสดิการทั้งหมด {{list.length}} รายการ" items="{{list}}" item-label-path="group_welfare_name" item-value-path="id" value="{{selectWelfare}}">
-                                  <template>
-                                    <b>[[item.group_welfare_name]]</b><br>
-                                    ปี: [[item.year]]
-                                </template>
+                            <gl-combo-box label="ปี" placeholder="มีสวัสดิการทั้งหมด {{year.length}} รายการ" items="{{year}}" item-label-path="year" item-value-path="year" value="{{selectYear}}">
                             </gl-combo-box>
                         </div>
                         <div class="flexchild"></div>
@@ -54,9 +50,9 @@
         Polymer({
             is: 'page-admin-employee',
             behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction],
-            observers:['select_welfare(selectWelfare)','select_sub_welfare(selectSubWelfare)'],
+            observers:['select_year(selectYear)','select_sub_welfare(selectSubWelfare)'],
             properties: {
-                list: {
+                year: {
                     statePath: 'userWelfare.list'
                 },
                 subList:{
@@ -70,13 +66,15 @@
                 console.log('*',subList);
             },  
             nylonPageActive: function () {
-                this.WELFARE_LIST();
+                this.WELFARE_LIST_YEAR();
                 this.LIST_USER("");
             },
-            select_welfare:function(data) {
-               if(data != ""){
+            select_year:function(year) {
+                // alert(year)
+               if(year != ""){
                    this.selectSubWelfare = "";
-                   this.WELFARE_LIST_ID(data);
+                   var newYear = parseInt(year)-543;
+                   this.WELFARE_LIST(newYear);
                }
             },
             select_sub_welfare:function(id){
