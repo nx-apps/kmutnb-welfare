@@ -21,9 +21,12 @@
             }
         </style>
         <div class="container">
+            <div class="horizontal layout">
+                <paper-button raised on-tap="back_page">back</paper-button>
+            </div>
             <paper-material elevation="1">
                 <template is="dom-repeat" items={{list}}>
-                    <div class="text-head">สวัสดิการ : [[item.name]] ปี : {{changeYear(item.year)}}</div>
+                    <div class="text-head">สวัสดิการ : [[item.welfare_name]]</div>
                     <div class="table-detail">
                         <table class="gl-table-default">
                             <thead class="table-head">
@@ -69,7 +72,7 @@
             behaviors: [ReduxBehavior],
             properties: {
                 list: {
-                    statePath: 'userWelfare.list_id',
+                    statePath: 'userWelfare.list_user',
                 }
             },
             checkData:function(data){
@@ -83,8 +86,8 @@
                     // console.log(data.length);
                 }
             },
-            changeYear:function(year){
-                return year+543;
+            back_page:function(){
+                this.fire('back_page_welfare');
             }
         });
     </script>

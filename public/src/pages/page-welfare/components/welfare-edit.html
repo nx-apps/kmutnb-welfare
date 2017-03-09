@@ -35,7 +35,7 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input label="ชื่อสวัสดิการย่อย" value="{{data.name}}" placeholder="กรุณากรอกชื่อสวัสดิการ" disabled="{{active}}"></gl-form-input>
+                        <gl-form-input label="ชื่อสวัสดิการย่อย" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ" disabled="{{active}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
@@ -60,10 +60,10 @@
                         [[checkValue(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                             <div id="combobox-[[index]]" hidden>
-                                <gl-combo-box id="value-combo-[[index]]" item-label-path="name" item-value-path="id" value="{{item.value}}" disabled="{{active}}"></gl-combobox>
+                                <gl-combo-box id="value-combo-[[index]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}" disabled="{{active}}"></gl-combobox>
                             </div>
                             <div id="input-[[index]]" hidden>
-                                <gl-form-input value="{{item.value}}" disabled="{{active}}"></gl-form-input>
+                                <gl-form-input value="{{item.value_show}}" disabled="{{active}}"></gl-form-input>
                             </div>
                         </gl-grid-col>
                         <div hidden="{{active}}">
@@ -93,14 +93,18 @@
             is: 'welfare-edit',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
             properties: {
+                condition: {
+                    statePath: 'listWelfare.condition'
+                },
                 data: {
+                    statePath: 'listWelfare.dataSelect',
                     type: Object,
-                    value:
-                    {
-                        condition: [
-                            { field: '', logic: '', value: '' }
-                        ]
-                    },
+                    // value:
+                    // {
+                    //     condition: [
+                    //         { field: '', logic: '', value: '' }
+                    //     ]
+                    // },
                     notify: true
                 },
                 active: {
@@ -159,7 +163,7 @@
                     var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
                     var id = e;
                     var value = this.condition.filter((val) => val.id == id)[0]
-                    // combobox.items = value.data;
+                    combobox.items = value.data;
                     if (value.data.length == 0) {
                         Polymer.dom(this.root).querySelector('#input-' + index).hidden = false;
                         Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = true;

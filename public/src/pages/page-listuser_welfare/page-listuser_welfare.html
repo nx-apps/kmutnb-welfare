@@ -1,16 +1,24 @@
-<link rel="import" href="components/list-user.html">
+<link rel="import" href="components/list-welfare.html">
 
 <dom-module id="page-listuser_welfare">
+    <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
+        paper-material {
+            background-color: var(--gl-white-color);
+        }
+        .table-detail {
+            margin: auto;
+            width: 50%;
+            padding: 20px;
+        }
+        table.gl-table-default {
+            border: 1px solid #ddd;
+        }
+    </style>
     <template>
-        <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
-            gl-combo-box {
-                margin: 20px 0px 20px 0px;
-            }
-        </style>
-        <gl-grid-row width="{{getWidth}}">
+        <!--<gl-grid-row width="{{getWidth}}">
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
-                <gl-combo-box label="เลือกสวัสดิการ" placeholder="ทั้งหมด" item-label-path="name" 
+                <gl-combo-box label="เลือกสวัสดิการ" placeholder="ทั้งหมด" item-label-path="group_welfare_name" 
                 item-value-path="id" items="[[list]]" value="{{dataSelected}}">
                 </gl-combo-box>
             </gl-grid-col>
@@ -21,7 +29,33 @@
             </gl-grid-col>
         </gl-grid-row>
 
-        <list-user></list-user>
+        <list-user></list-user>-->
+        <iron-pages selected="{{pages}}">
+            <div class="container">
+                <div class="table-detail">
+                    <paper-material elevation="1">
+                        <table class="gl-table-default">
+                            <thead class="table-head">
+                                <tr>
+                                    <th style="width:15%;text-align:center;">ปี</th>
+                                    <th style="text-align: center">ชื่อสวัสดิการ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+                                <template is="dom-repeat" items="{{list}}">
+                                    <tr data="[[item]]" on-tap="select_welfare" style="cursor:pointer;">
+                                        <td style="text-align:center;">[[item.year]]</td>
+                                        <td>[[item.group_welfare_name]]</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </paper-material>
+                </div>
+            </div>
+
+            <div><list-welfare></list-welfare></div>
+        </iron-pages>
 
     </template>
     <script>
@@ -29,9 +63,16 @@
             is: 'page-listuser_welfare',
             behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction],
             properties: {
+                pages: {
+                    type: Number,
+                    value: 0
+                },
                 list: {
                     statePath: 'userWelfare.list',
                 }
+            },
+            listeners:{
+                'back_page' : 'back_page'
             },
             nylonPageActive: function () {
                 // this.dispatchAction('WELFARE_LIST');
@@ -39,16 +80,25 @@
                 this.WELFARE_LIST_ID('');
 
             },
-            _search: function () {
-                if (this.dataSelected != '') {
-                    // console.log(this.dataSelected)
-                    this.dispatchAction('WELFARE_LIST_ID',this.dataSelected);
-                }
-                else {
-                    this.WELFARE_LIST_ID('');
-                    // this.dispatchAction('WELFARE_LIST');
-                }
+            select_welfare: function (e) {
+                this.pages = 1;
+                // console.log(e.currentTarget.data);
+                var id = e.currentTarget.data.id;
+                this.WELFARE_LIST_ID(id);
+            },
+            back_page:function(){
+                this.pages = 0;
             }
+            // _search: function () {
+            //     if (this.dataSelected != '') {
+            //         // console.log(this.dataSelected)
+            //         this.dispatchAction('WELFARE_LIST_ID',this.dataSelected);
+            //     }
+            //     else {
+            //         this.WELFARE_LIST_ID('');
+            //         // this.dispatchAction('WELFARE_LIST');
+            //     }
+            // }
         });
     </script>
 </dom-module>

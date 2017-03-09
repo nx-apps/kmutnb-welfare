@@ -39,7 +39,7 @@
                                         <td style="text-align: center">[[item.year]]</td>
                                         <td>[[welfare.welfare_name]]</td>
                                         <td style="text-align:center;">
-                                        <paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info" on-tap="_edit">แก้ไข</paper-button>
+                                        <paper-button data="[[welfare]]" style="height:30px; width:25px;" raised class="gl-btn-info" on-tap="_edit">แก้ไข</paper-button>
                                         </td>
                                     </tr>
                                     </template>
@@ -80,9 +80,12 @@
             back_page:function(){
                 this.pages = 0;
             },
-            _edit:function(){
-                this.pages = 2;
+            _edit:function(e){
+                // console.log(e.currentTarget.data);
+                var id = e.currentTarget.data.id;
+                this.dispatchAction('WELFARE_DATA_SELECT', id)
                 this.dispatchAction('CONDITION_LIST')
+                this.pages = 2;
             }
         });
     </script>
