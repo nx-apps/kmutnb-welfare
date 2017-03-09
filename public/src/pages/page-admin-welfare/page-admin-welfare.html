@@ -2,7 +2,7 @@
 <link rel="import" href="components/welfare-manage.html">
 <link rel="import" href="components/welfare-detail.html">
 
-<dom-module id="page-welfare">
+<dom-module id="page-admin-welfare">
     <template>
         <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
             paper-material {
@@ -74,7 +74,7 @@
     </template>
     <script>
         Polymer({
-            is: 'page-welfare',
+            is: 'page-admin-welfare',
             behaviors: [ReduxBehavior, nylonBehavior, welfareAction, listWelfareAction],
             properties: {
                 list: {
