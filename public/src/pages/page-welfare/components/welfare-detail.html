@@ -66,26 +66,29 @@
             },
             properties: {
                 pages:{
-                    type:Number,
-                    value:0
+                    type: String,
+                    value : '0'
                 },
                 list:{
                     statePath: 'welfare.list_id'
                 }
             },
             _insert:function(){
-                this.pages = 1;
+                this.pages = '1';
                 this.dispatchAction('CONDITION_LIST')
             },
             back_page:function(){
-                this.pages = 0;
+                this.pages = '0';
             },
             _edit:function(e){
                 // console.log(e.currentTarget.data);
                 var id = e.currentTarget.data.id;
                 this.dispatchAction('WELFARE_DATA_SELECT', id)
                 this.dispatchAction('CONDITION_LIST')
-                this.pages = 2;
+                this.pages = '2';
+            },
+            setPage:function(pages){
+                this.pages = pages
             }
         });
     </script>

@@ -97,6 +97,8 @@
             select_welfare: function (e) {
                 // console.log(e.currentTarget.data);
                 this.$$('panel-right').open();
+                this.$$('welfare-detail').setPage(0);
+                // this.pageDetail = '0';
                 this.pages = 1;
                 this.set('title', this.title = "ข้อมูลสวัสดิการ");
                 this.dataSelect = e.currentTarget.data;
@@ -120,7 +122,8 @@
                 this.$$('panel-right').open();
                 this.pages = 2;
                 this.set('title', this.title = "แก้ไข");
-            }
+            },
+         
         });
     </script>
 </dom-module>
