@@ -10,11 +10,8 @@ exports.matier = function(req,res){
         })
 }
 exports.matierInsert = function(req,res){
-    let data = new Object()
-    data.matier_name = req.body.matier_name
-    data.id = sha1(req.body.matier_name)
     var r = req.r;
-    r.db('welfare_common').table('matier').insert(data)
+    r.db('welfare_common').table('matier').insert(req.body)
         .run()
         .then(function (result) {
             res.json(result);
@@ -25,33 +22,10 @@ exports.matierInsert = function(req,res){
 }
 exports.matierUpdate = function(req,res){
   var r = req.r;
-    // console.log(req.body)
-    let data = new Object()
-    let old_id = req.body.old_id
-    data.matier_name = req.body.matier_name
-    data.id = sha1(req.body.matier_name)
-    r.expr(data)
-        .merge((int)=>{
-            return {
-                int : r.db('welfare_common').table('matier')
-                .insert(int)
-            }
-        })
-        .merge((emp)=>{
-            return {
-                emp : r.db('welfare').table('employee')
-                .filter({matier_id:old_id})
-                .update({matier_id:data.id})
-                .coerceTo('array')
-            }
-        })
-        .merge((del)=>{
-            return {
-                del : r.db('welfare_common').table('matier')
-                .get(old_id)
-                .delete()
-            }
-        })
+    
+     r.db('welfare_common').table('matier')
+        .get(req.body.id)
+        .update(req.body)
         .run()
         .then(function (result) {
             res.json(result);
