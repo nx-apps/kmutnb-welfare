@@ -196,7 +196,6 @@ exports.employees = function (req, res) {
             res.json(data);
         })
 }
-
 exports.changeValue = function (req, res) {
     var r = req.r;
     r.db('welfare').table('welfare').filter(function (f) {
