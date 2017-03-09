@@ -21,16 +21,17 @@
             }
         </style>
         <div class="container">
-            <div class="horizontal layout">
+            <!--<div class="horizontal layout">
                 <paper-button raised on-tap="back_page">back</paper-button>
-            </div>
+            </div>-->
             <paper-material elevation="1">
                 <template is="dom-repeat" items={{list}}>
-                    <div class="text-head">สวัสดิการ : [[item.welfare_name]]</div>
+                    <div class="text-head">สวัสดิการ : [[item.group_welfare_name]]</div>
                     <div class="table-detail">
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
+                                    <!--<th style="width:10%;">กระทำ</th>-->
                                     <th style="width:10%;">รหัสพนักงาน</th>
                                     <th style="width:10%;">คำนำหน้า</th>
                                     <th style="width:15%;">ชื่อ</th>
@@ -41,7 +42,8 @@
                                 </tr>
                             </thead>
                             <tbody class="table-body">
-                                <template is="dom-repeat" items={{item.employee}}>
+                                <template is="dom-repeat" items={{item.welfare}}>
+                                    <template is="dom-repeat" items="{{item.employee}}">
                                     <tr>
                                         <td>[[item.emp_id]]</td>
                                         <td>[[item.prefixname]]</td>
@@ -51,6 +53,7 @@
                                         <td>[[item.position_name]]</td>
                                         <td>[[item.academic_name]]</td>
                                     </tr>
+                                    </template>
                                 </template>
                                 <template is="dom-if" if={{checkData(item.employee)}}>
                                     <tr>

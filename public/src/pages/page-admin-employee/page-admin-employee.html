@@ -1,104 +1,90 @@
 <link rel="import" href="components/list-welfare.html">
+<link rel="import" href="./components/list-user.html">
 
 <dom-module id="page-admin-employee">
-    <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
+    <style is="custom-style" include="gl-color gl-table flex-style">
         paper-material {
             background-color: var(--gl-white-color);
         }
+        .container{
+            padding: 20px;
+        }
         .table-detail {
             margin: auto;
-            width: 50%;
-            padding: 20px;
+            width: 70%;
+        }
+        .serachBox{
+            margin: auto;
+            width: 70%;
         }
         table.gl-table-default {
             border: 1px solid #ddd;
         }
     </style>
     <template>
-        <!--<gl-grid-row width="{{getWidth}}">
-            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
-                <gl-combo-box label="เลือกสวัสดิการ" placeholder="ทั้งหมด" item-label-path="group_welfare_name" 
-                item-value-path="id" items="[[list]]" value="{{dataSelected}}">
-                </gl-combo-box>
-            </gl-grid-col>
-            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                <div style="margin:20px 0px 20px 0px">
-                    <paper-button class="gl-btn-info" on-tap="_search" title="ค้นหา" raised>ค้นหา</paper-button>
-                </div>
-            </gl-grid-col>
-        </gl-grid-row>
-
-        <list-user></list-user>-->
-        <iron-pages selected="{{pages}}">
-            <div class="container">
-                <div class="table-detail">
-                    <paper-material elevation="1">
-                        <table class="gl-table-default">
-                            <thead class="table-head">
-                                <tr>
-                                    <th style="width:15%;text-align:center;">ปี</th>
-                                    <th style="text-align: center">ชื่อสวัสดิการ</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-body">
-                                <template is="dom-repeat" items="{{list}}">
-                                    <tr data="[[item]]" on-tap="select_welfare" style="cursor:pointer;">
-                                        <td style="text-align:center;">[[item.year]]</td>
-                                        <td>[[item.group_welfare_name]]</td>
-                                    </tr>
+        <div class="container serachBox">
+            <paper-material elevation="1">
+                <div style="padding: 10px">
+                    <div class="container flex-horizontal-with-ratios">
+                        <div class="flexchild"></div>
+                        <div class="flex3child">
+                            <gl-combo-box label="ชื่อสวัสดิการ" placeholder="มีสวัสดิการทั้งหมด {{list.length}} รายการ" items="{{list}}" item-label-path="group_welfare_name" item-value-path="id" value="{{selectWelfare}}">
+                                  <template>
+                                    <b>[[item.group_welfare_name]]</b><br>
+                                    ปี: [[item.year]]
                                 </template>
-                            </tbody>
-                        </table>
-                    </paper-material>
+                            </gl-combo-box>
+                        </div>
+                        <div class="flexchild"></div>
+                        <div class="flex3child">
+                            <gl-combo-box label="ชื่อสวัสดิการย่อย" placeholder="มีสวัสดิย่อยการทั้งหมด {{subList.welfare.length}}" items="{{subList.welfare}}" item-label-path="welfare_name" item-value-path="id" value="{{selectSubWelfare}}"></gl-combo-box>
+                        </div>
+                        <div class="flexchild"></div>
+                    </div>
                 </div>
-            </div>
-
-            <div><list-welfare></list-welfare></div>
-        </iron-pages>
-
+            </paper-material>
+        </div>
+        <section>
+            <list-user></list-user>
+        </section>
+        
+        
     </template>
     <script>
         Polymer({
             is: 'page-admin-employee',
             behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction],
+            observers:['select_welfare(selectWelfare)','select_sub_welfare(selectSubWelfare)'],
             properties: {
-                pages: {
-                    type: Number,
-                    value: 0
-                },
                 list: {
-                    statePath: 'userWelfare.list',
+                    statePath: 'userWelfare.list'
+                },
+                subList:{
+                    statePath: 'userWelfare.list_id'
                 }
             },
             listeners:{
                 'back_page' : 'back_page'
             },
+            showSubWelfare:function(subList){
+                console.log('*',subList);
+            },  
             nylonPageActive: function () {
-                // this.dispatchAction('WELFARE_LIST');
                 this.WELFARE_LIST();
-                this.WELFARE_LIST_ID('');
-
+                this.LIST_USER("");
             },
-            select_welfare: function (e) {
-                this.pages = 1;
-                // console.log(e.currentTarget.data);
-                var id = e.currentTarget.data.id;
-                this.WELFARE_LIST_ID(id);
+            select_welfare:function(data) {
+               if(data != ""){
+                   this.selectSubWelfare = "";
+                   this.WELFARE_LIST_ID(data);
+               }
+            },
+            select_sub_welfare:function(id){
+                 this.LIST_USER(id);
             },
             back_page:function(){
                 this.pages = 0;
             }
-            // _search: function () {
-            //     if (this.dataSelected != '') {
-            //         // console.log(this.dataSelected)
-            //         this.dispatchAction('WELFARE_LIST_ID',this.dataSelected);
-            //     }
-            //     else {
-            //         this.WELFARE_LIST_ID('');
-            //         // this.dispatchAction('WELFARE_LIST');
-            //     }
-            // }
         });
     </script>
 </dom-module>

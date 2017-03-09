@@ -41,8 +41,8 @@ export function userWelfareAction(store) {
             // console.log(data);
             axios.get('/group_welfare/' + data)
                 .then(function (result) {
-                    // console.log(result);
-                    store.dispatch({ type: 'WELFARE_LIST_ID', payload: [result.data] })
+                    // console.log(JSON.stringify(result.data));
+                    store.dispatch({ type: 'WELFARE_LIST_ID', payload: result.data })
                 })
                 .catch(err => {
 
@@ -52,7 +52,8 @@ export function userWelfareAction(store) {
             // console.log(id);
             axios.get('/user_welfare/' + id)
                 .then(function (result) {
-                    // console.log(result);
+                    console.log(result.data);
+                    // console.log(JSON.stringify(result.data));
                     store.dispatch({ type: 'LIST_USER', payload: result.data })
                 })
                 .catch(err => {
