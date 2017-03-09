@@ -68,16 +68,15 @@ export function listWelfareAction(store) {
                     console.log(err);
                 })
         },
-        WELFARE_DELETE: function (data) {
-            // console.log(data);
-            axios.delete(`./list_welfare/delete/id/` + data)
+        WELFARE_DELETE: function (id) {
+            // console.log(id);
+            axios.delete(`./list_welfare/delete/id/` + id)
                 .then((result) => {
                     console.log(result);
-                    this.LIST_WELFARE();
+                    this.WELFARE_LIST();
                     this.fire('toast', {
                         status: 'success', text: 'ลบสำเร็จ', callback: () => {
                             console.log('success');
-                            this.$$('panel-right').close();
                         }
                     });
                 })
@@ -87,21 +86,11 @@ export function listWelfareAction(store) {
         },
         WELFARE_EDIT: function (data) {
             // console.log(data);
-            var datas = {
-                id: data.id,
-                budget: data.budget,
-                year: data.year,
-                condition: data.condition,
-                start_date: new Date(data.start_date).toISOString(),
-                end_date: new Date(data.end_date).toISOString(),
-                name: data.name
-            }
-            // console.log(datas);
             this.fire('toast', { status: 'load' });
-            axios.put(`./list_welfare/update`, datas)
+            axios.put(`./list_welfare/update`, data)
                 .then((result) => {
                     console.log(result);
-                    this.LIST_WELFARE();
+                    this.WELFARE_LIST();
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: function () {
                             console.log('success');

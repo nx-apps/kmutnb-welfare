@@ -8,13 +8,13 @@
             paper-material {
                 background-color: var(--gl-white-color);
             }
-
+            
             .table-detail {
                 margin: auto;
                 width: 80%;
                 padding: 20px;
             }
-
+            
             table.gl-table-default {
                 border: 1px solid #ddd;
             }
@@ -22,6 +22,15 @@
         <div class="horizontal end-justified layout">
             <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
                 <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการ</paper-button>
+        </div>
+        <div style="margin-left:140px;">
+            <gl-form-dropdown-menu label="ปี" placeholder="เลือกปี">
+                <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{dataSelected.year}}">
+                    <template is="dom-repeat" items={{list_year}}>
+                        <paper-item value="[[item.year]]">[[item.year]]</paper-item>
+                    </template>
+                </paper-menu>
+            </gl-form-dropdown-menu>
         </div>
         <div class="container">
             <div class="table-detail">
@@ -31,6 +40,8 @@
                             <tr>
                                 <th style="text-align:center; width:15%;">ปี</th>
                                 <th>ชื่อสวัสดิการ</th>
+                                <th style="text-align:center">จำนวนผู้มีสิทธิ</th>
+                                <th style="text-align:center">จำนวนผู้ใช้สิทธิ</th>
                                 <th style="text-align:center;width:15%;">ยอดเต็ม</th>
                                 <th style="text-align:center;width:15%;">ยอดที่ใช้</th>
                                 <th style="width:15%;text-align:center;">เครื่องมือ</th>
@@ -41,8 +52,10 @@
                                 <tr style="cursor:pointer;">
                                     <td style="text-align:center">[[item.year]]</td>
                                     <td>[[item.group_welfare_name]]</td>
-                                    <td></td>
-                                    <td></td>
+                                    <td style="text-align:center">[[item.emp_budget]]</td>
+                                    <td style="text-align:center">[[item.emp_use]]</td>
+                                    <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
+                                    <td style="text-align:right">[[formatNumber(item.value_use)]]</td>
                                     <td style="text-align:center">
                                         <paper-icon-button data="[[item]]" icon="add" on-tap="select_welfare"></paper-icon-button>
                                         <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit"></paper-icon-button>
@@ -75,10 +88,13 @@
     <script>
         Polymer({
             is: 'page-admin-welfare',
-            behaviors: [ReduxBehavior, nylonBehavior, welfareAction, listWelfareAction],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior, welfareAction, listWelfareAction],
             properties: {
                 list: {
-                    statePath: 'welfare.list',
+                    statePath: 'welfare.list'
+                },
+                list_year:{
+                    statePath: 'welfare.list_year'
                 },
                 pages: {
                     type: Number,
@@ -86,14 +102,15 @@
                 }
             },
             listeners:
-            { 
-                'closePanel': 'close_panel' 
+            {
+                'closePanel': 'close_panel'
             }
             ,
             nylonPageActive: function () {
-                // this.dispatchAction('LIST_WELFARE');
-                this.LIST_WELFARE();
+                let year = new Date().getFullYear();
+                this.LIST_WELFARE(year);
                 this.WELFARE_LIST();
+                this.GET_YEAR();
             },
             _insert: function () {
                 this.$$('panel-right').open();
@@ -121,15 +138,14 @@
                     condition: []
                 };
             },
-            _edit:function(e){
+            _edit: function (e) {
                 // console.log(e.currentTarget.data);
                 var id = e.currentTarget.data.id;
                 this.SELECT_DATA(id);
                 this.$$('panel-right').open();
                 this.pages = 2;
                 this.set('title', this.title = "แก้ไข");
-            },
-         
+            }
         });
     </script>
 </dom-module>

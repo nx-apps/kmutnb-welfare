@@ -111,25 +111,53 @@
                     type: Boolean,
                     value: true
                 }
-                // value: {
-                //     type: Array,
-                //     value: [{}]
-                // }
             },
             add_condition: function () {
                 this.push('data.condition', { field: '', logic: '', value: '' })
             },
             save: function () {
+                for (var i = 0; i < this.data.condition.length; i++) {
+                    // console.log(this.data.condition[i].field);
+                    var id = this.data.condition[i].field;
+                    var item = this.condition.filter((val) => val.id == id)[0]
+                    var field = item.field;
+                    console.log(field);
+                    // console.log(this.data.condition[i].logic.search("<"))
+                    if (field == 'start_work_date') {
+                        if (this.data.condition[i].logic_show.search(">") >= 0) {
+                            var d = this.datas.start_date.split("-");
+                            this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
+                            this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
+                        } else if (this.data.condition[i].logic_show.search("<") >= 0) {
+                            var d = this.datas.end_date.split("-");
+                            this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
+                            this.data.condition[i].logic = this.data.condition[i].logic_show.replace("<", ">");
+                        }
+                    }
+                    else if (field == 'birthday') {
+                        if (this.data.condition[i].logic_show.search(">") >= 0) {
+                            var date = new Date().toISOString().split("T")(0);
+                            var d = date.split('-');
+                            // console.log(d);
+                            this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
+                            this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
+                        } else if (this.data.condition[i].logic_show.search("<") >= 0) {
+                            var date = new Date().toISOString().split("T")(0);
+                            var d = date.split('-');
+                            this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
+                            this.data.condition[i].logic = this.data.condition[i].logic_show.replace("<", ">");
+                        }
+                    } else {
+                        this.data.condition[i].value = this.data.condition[i].value_show;
+                        this.data.condition[i].logic = this.data.condition[i].logic_show;
+                    }
+
+                }
                 this.data.budget = this.unFormat(this.data.budget);
-                this.set('data.group_id', this.iddata);
-                this.data.condition.map((val) => {
-                    var id = val.field;
-                    var field = this.condition.filter((val) => val.id == id)[0]
-                    val.field = field.field;
-                    // console.log(field.field);
-                })
-                console.log(this.data);
-                // this.dispatchAction('WELFARE_INSERT', this.data)
+                this.set('data.group_id', this.datas.id);
+                // console.log(this.data);
+                this.dispatchAction('WELFARE_EDIT', this.data)
+                this.set('disabled', this.active = true);
             },
             delete_condition: function (e) {
                 // console.log(e.target.index);
@@ -177,7 +205,7 @@
 
                 }
             },
-            _edit:function(){
+            _edit: function () {
                 this.set('disabled', this.active = false);
             }
         });
