@@ -7,4 +7,5 @@ module.exports = function (app) {
     app.get('/adminWelfare/:year', controller.adminWelfare);
     app.get('/groupYear', controller.groupYear);
     app.get('/groupByYear/:year', controller.groupByYear);
+    app.get('/adminEmployee/:welId', controller.adminEmployee);
 }
