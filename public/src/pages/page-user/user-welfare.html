@@ -66,7 +66,8 @@
                             <tr>
                                 <th style="width: 5%">ลำดับ</th>
                                 <th style="width: 50%">สวัสดิการที่สามารถใช้ได้</th>
-                                <th style="width: 30%">จำนวนเงินคงเหลือ</th>
+                                <th style="width: 15%">จำนวนเงินคงเหลือ</th>
+                                <th style="width: 15%">จำนวนเงินที่ได้</th>
                                 <th style="width: 15%">ขอใช้</th>
                             </tr>
                         </thead>
@@ -77,7 +78,8 @@
                                     <td>[[_Obindex(index)]]</td>
                                     <td>[[item.name]]</td>
                                     <td>[[formatNumber(item.budget_balance)]]</td>
-                                    <td> <paper-button class="gl-btn-primary gl-small"raised on-tap="useWalfare" data="[[item]]">ขอใช้</paper-button></td>
+                                    <td>[[formatNumber(item.budget)]]</td>
+                                    <td><paper-button class="gl-btn-primary gl-small"raised on-tap="useWalfare" data="[[item]]"disabled="[[item.status]]">ขอใช้</paper-button></td>
                                 </tr>
                             </template>
                             <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
@@ -103,7 +105,7 @@
                                 <th style="width: 30%">สวัสดิการที่ใช้</th>
                                 <th style="width: 30%">จำนวนเงินที่ใช้</th>
                                 <th style="width: 30%">วันที่ใช้งาน</th>
-                                <th style="width: 10%">กระทำการ</th>
+                                <!--<th style="width: 10%">กระทำการ</th>-->
                             </tr>
                         </thead>
                         <tbody class="table-body">
@@ -115,7 +117,7 @@
                                     <td>
                                         <vaadin-date-picker always-float-label  disabled value="{{item.date_use}}"></vaadin-date-picker>
                                     </td>
-                                    <td> <paper-button class="gl-btn-danger gl-small"raised on-tap="deleteHistoryWelfare" data="[[item]]">ลบ</paper-button></td>
+                                    <!--<td><paper-button class="gl-btn-danger gl-small"raised on-tap="deleteHistoryWelfare" data="[[item]]">ลบ</paper-button></td>-->
                                 </tr>
                             </template>
                             <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
