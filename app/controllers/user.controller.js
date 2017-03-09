@@ -115,7 +115,7 @@ exports.welfares = function(req,res) {
               welfare: r.db('welfare').table('welfare')
               .merge((group_name)=>{
                   return {
-                      group_name: r.db('welfare').table('group_welfare').get(group_name('group_id')).getField('group_welfare_name')
+                      name: r.db('welfare').table('group_welfare').get(group_name('group_id')).getField('group_welfare_name')
                   }
               })
               .merge((name_field)=>{
@@ -220,15 +220,15 @@ exports.welfares = function(req,res) {
                     
                     history_welfare : r.db('welfare').table('history_welfare')
                                     .getAll(use_his('id'), {index:'emp_id'})
-                                    // .merge((name_welfare)=>{
-                                    //     return {
-                                    //         date_use:name_welfare('date_use').split('T')(0),
-                                    //         name : r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('name'),
-                                    //         history_welfare_id : name_welfare('id')
-                                    //     }
-                                    // })
-                                    // .without('id')
-                                    // .orderBy('date_use')
+                                    .merge((name_welfare)=>{
+                                        return {
+                                            date_use:name_welfare('date_use').split('T')(0),
+                                            name : r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('group_welfare_name'),
+                                            history_welfare_id : name_welfare('id')
+                                        }
+                                    })
+                                    .without('id')
+                                    .orderBy('date_use')
                                     .coerceTo('array')
                     }
                 }) 
