@@ -254,8 +254,6 @@ exports.adminWelfare = function (req, res) {
                             year: m('year').add(543),
                             start_date: m('start_date').split('T')(0),
                             end_date: m('end_date').split('T')(0),
-                            value_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                                .filter({ year: req.params.year }).sum('use_budget'),
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
                                 .merge(function (wel_merge) {
                                     return {
@@ -331,7 +329,7 @@ exports.adminWelfare = function (req, res) {
                                 .merge(function (wel_merge) {
                                     return {
                                         value_budget: wel_merge('employee').count().mul(wel_merge('budget')),
-                                        count_emp_permis: wel_merge('employee').count()
+                                        emp_budget: wel_merge('employee').count()
                                     }
                                 }),
                         }
@@ -339,9 +337,13 @@ exports.adminWelfare = function (req, res) {
                     .merge(function (m) {
                         return {
                             value_budget: m('welfare').sum('value_budget'),
-                            count_emp_permis: m('welfare').sum('count_emp_permis'),
-                            count_emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                                .pluck('emp_id').distinct().count()
+                            value_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
+                                .filter({ year: req.params.year }).sum('use_budget'),
+                            emp_budget: m('welfare').sum('emp_budget'),
+                            emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
+                                .filter({ year: req.params.year }).pluck('emp_id').distinct().count(),
+                            time_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
+                                .filter({ year: req.params.year }).count()
                         }
                     })
                     .without('welfare')
