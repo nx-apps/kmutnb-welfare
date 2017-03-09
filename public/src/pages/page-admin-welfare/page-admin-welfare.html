@@ -2,7 +2,7 @@
 <link rel="import" href="components/welfare-manage.html">
 <link rel="import" href="components/welfare-detail.html">
 
-<dom-module id="page-welfare">
+<dom-module id="page-admin-welfare">
     <template>
         <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
             paper-material {
@@ -11,7 +11,7 @@
 
             .table-detail {
                 margin: auto;
-                width: 50%;
+                width: 80%;
                 padding: 20px;
             }
 
@@ -29,18 +29,24 @@
                     <table class="gl-table-default">
                         <thead class="table-head">
                             <tr>
-                                <th style="text-align: center">ปี</th>
+                                <th style="text-align:center; width:15%;">ปี</th>
                                 <th>ชื่อสวัสดิการ</th>
-                                <th style="text-align:center;">เครื่องมือ</th>
+                                <th style="text-align:center;width:15%;">ยอดเต็ม</th>
+                                <th style="text-align:center;width:15%;">ยอดที่ใช้</th>
+                                <th style="width:15%;text-align:center;">เครื่องมือ</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">
                             <template is="dom-repeat" items="{{list}}">
                                 <tr style="cursor:pointer;">
-                                    <td style="text-align: center" data="[[item]]" on-tap="select_welfare" >[[item.year]]</td>
-                                    <td data="[[item]]" on-tap="select_welfare" >[[item.group_welfare_name]]</td>
-                                    <td style="width:10%;">
-                                        <paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info" on-tap="_edit">แก้ไข</paper-button>
+                                    <td style="text-align:center">[[item.year]]</td>
+                                    <td>[[item.group_welfare_name]]</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="text-align:center">
+                                        <paper-icon-button data="[[item]]" icon="add" on-tap="select_welfare"></paper-icon-button>
+                                        <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit"></paper-icon-button>
+                                        <!--<paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info">แก้ไข</paper-button>-->
                                     </td>
                                 </tr>
                             </template>
@@ -68,7 +74,7 @@
     </template>
     <script>
         Polymer({
-            is: 'page-welfare',
+            is: 'page-admin-welfare',
             behaviors: [ReduxBehavior, nylonBehavior, welfareAction, listWelfareAction],
             properties: {
                 list: {
@@ -97,6 +103,8 @@
             select_welfare: function (e) {
                 // console.log(e.currentTarget.data);
                 this.$$('panel-right').open();
+                this.$$('welfare-detail').setPage(0);
+                // this.pageDetail = '0';
                 this.pages = 1;
                 this.set('title', this.title = "ข้อมูลสวัสดิการ");
                 this.dataSelect = e.currentTarget.data;
@@ -120,7 +128,8 @@
                 this.$$('panel-right').open();
                 this.pages = 2;
                 this.set('title', this.title = "แก้ไข");
-            }
+            },
+         
         });
     </script>
 </dom-module>
