@@ -122,7 +122,7 @@ exports.welfares = function(req,res) {
                   return {condition:
                        name_field('condition').map((con_map)=>{
                       return  {
-                          field:r.db('welfare').table('condition_2').get(con_map('field')).getField('field'),
+                          field:r.db('welfare').table('condition').get(con_map('field')).getField('field'),
                           logic:con_map('logic'),
                           logic_show:con_map('logic_show'),
                           value:con_map('value'),
