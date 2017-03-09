@@ -24,6 +24,17 @@ exports.listTable = function (req,res) {
             res.status(500).json(err);
         })
 }
+exports.listField = function (req,res) {
+    r.db('welfare').table('employee')(0).keys()
+    .run()
+    .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+
+} 
 exports.insert = function(req,res){
   // console.log(req.body)
 //  for (let prop in req.body) {

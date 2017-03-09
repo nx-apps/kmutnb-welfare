@@ -41,7 +41,7 @@
                             <label for="name_field" >ชื่อตารางในฐานข้อมูล :</label>
                         </div>
                         <div class="flex-2">
-                        <gl-form-input id="name_field" no-label-float value="{{data.field}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                            <gl-combo-box id="active_id" no-label-float items="{{listField}}" value="{{data.field}}" disabled="[[disabled]]"></gl-combo-box>
                         </div>    
                     </div>
                 </div>
@@ -138,6 +138,9 @@
                 },
                 listTable:{
                     statePath:'conditionReadWelfare.listTable'
+                },
+                listField:{
+                    statePath:'conditionReadWelfare.listField'
                 },
                 
             },

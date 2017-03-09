@@ -6,6 +6,7 @@ const initialState = {
     select:{data_source:'',conditions:[{name:'',symbol:''}]},
     listConditions:[],
     listTable:[],
+    listField:[],
     disabled:true,
     insert_view:true
 }
@@ -35,6 +36,8 @@ export function conditionReadWelfareReducer(state = initialState,action){
             return Object.assign({},state,{listConditions:action.payload});        
         case 'CONDITIONREADWELFARE_TABLE_LIST' :
             return Object.assign({},state,{listTable:action.payload}); 
+        case 'CONDITIONREADWELFARE_FIEID_LIST' :
+            return Object.assign({},state,{listField:action.payload}); 
         case 'CONDITIONREADWELFARE_SELECT' : 
              return Object.assign({},state,{select:action.payload}); 
         case 'CONDITIONREADWELFARE_BTN' :
@@ -74,6 +77,15 @@ export function conditionReadWelfareAction(store){
                 axios.get('/condition_read_welfare/listTable/')
                 .then(res=>{
                     store.dispatch({type:'CONDITIONREADWELFARE_TABLE_LIST',payload:res.data})
+                })
+                .catch(err=>{
+                    console.log(err);
+                })
+            },
+            CONDITIONREADWELFARE_FIEID_LIST(){
+                axios.get('/condition_read_welfare/listField/')
+                .then(res=>{
+                    store.dispatch({type:'CONDITIONREADWELFARE_FIEID_LIST',payload:res.data})
                 })
                 .catch(err=>{
                     console.log(err);
