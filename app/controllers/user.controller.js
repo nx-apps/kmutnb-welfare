@@ -92,7 +92,7 @@ exports.welfares = function(req,res) {
    r.db('welfare').table('employee').get(req.params.id)
    .merge(function (emp) {
             return {
-              gender: r.db('welfare').table('gender').get(emp('gender_id')).getField('gender_name')
+              gender: r.db('welfare_common').table('gender').get(emp('gender_id')).getField('gender_name')
             }}
    )
     .merge(function(f){
@@ -209,7 +209,7 @@ exports.welfares = function(req,res) {
                         budget_balance_check : balance('budget').sub(balance('budget_use')).le(0).branch(true,false)
                     }
                 })
-                //เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
+                // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
                .filter({"budget_balance_check": false})
                .without('condition','countpass','id','count','count_pass_status','countpass_total','budget_balance_check','year','start_date','end_date')
               .coerceTo('array')
