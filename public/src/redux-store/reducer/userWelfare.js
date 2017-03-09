@@ -11,9 +11,9 @@ const initialState = {
 export function userWelfareReducer(state = initialState, action) {
 
     switch (action.type) {
-        case 'WELFARE_LIST':
+        case 'WELFARE_LIST_YEAR':
             return Object.assign({}, state, { list: action.payload });
-        case 'WELFARE_LIST_ID':
+        case 'WELFARE_LIST':
             return Object.assign({}, state, { list_id: action.payload });
         case 'LIST_USER':
             return Object.assign({}, state, { list_user: action.payload });
@@ -27,22 +27,22 @@ export function userWelfareAction(store) {
 
     return [commonAction(),
     {
-        WELFARE_LIST: function () {
-            axios.get('/group_welfare')
+        WELFARE_LIST_YEAR: function () {
+            axios.get('./user_welfare/groupYear')
                 .then(function (result) {
                     // console.log(result.data);
-                    store.dispatch({ type: 'WELFARE_LIST', payload: result.data })
+                    store.dispatch({ type: 'WELFARE_LIST_YEAR', payload: result.data })
                 })
                 .catch(err => {
 
                 })
         },
-        WELFARE_LIST_ID: function (data) {
+        WELFARE_LIST: function (data) {
             // console.log(data);
             axios.get('/group_welfare/' + data)
                 .then(function (result) {
                     // console.log(JSON.stringify(result.data));
-                    store.dispatch({ type: 'WELFARE_LIST_ID', payload: result.data })
+                    store.dispatch({ type: 'WELFARE_LIST', payload: result.data })
                 })
                 .catch(err => {
 
@@ -50,9 +50,9 @@ export function userWelfareAction(store) {
         },
         LIST_USER: function (id) {
             // console.log(id);
-            axios.get('/user_welfare/' + id)
+            axios.get('./user/list')
                 .then(function (result) {
-                    console.log(result.data);
+                    // console.log(result.data);
                     // console.log(JSON.stringify(result.data));
                     store.dispatch({ type: 'LIST_USER', payload: result.data })
                 })
