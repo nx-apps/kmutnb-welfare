@@ -196,7 +196,8 @@ exports.welfares = function(req,res) {
                     return {
                     budget_use : r.db('welfare').table('history_welfare')
                             .filter(
-                                { emp_id:welfare('id'),
+                                {stastus:true,
+                                 emp_id:welfare('id'),
                                  welfare_id:use_his('id')}
                                 )
                             .sum('use_budget')
@@ -239,6 +240,11 @@ exports.welfares = function(req,res) {
                     }
                 })
             }
+        })
+        .merge((withOutHistorty)=>{
+           return{ 
+               history_welfare: withOutHistorty('history_welfare').filter({status:true})
+           }
         })
         .run()
         .then(function (result) {
