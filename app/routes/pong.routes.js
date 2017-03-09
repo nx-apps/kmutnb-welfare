@@ -3,5 +3,6 @@ module.exports = function (app) {
     app.get('/welfares', controller.welfares);
     app.get('/welfare/:id', controller.welById);
     app.get('/employees', controller.employees);
-    app.get('/test', controller.test);
+    app.get('/changeValue', controller.changeValue);
+    app.get('/adminWelfare/:year', controller.adminWelfare);
 }
