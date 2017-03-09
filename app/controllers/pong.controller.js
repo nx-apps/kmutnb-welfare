@@ -356,3 +356,30 @@ exports.adminWelfare = function (req, res) {
             res.json(result);
         })
 }
+
+exports.groupYear = function (req, res) {
+    var r = req.r;
+    r.db('welfare').table('group_welfare')
+        .group('year')
+        .ungroup()
+        .map(function (y_map) {
+            return {
+                year: y_map('group').add(543)
+            }
+        })
+        .run()
+        .then(function (data) {
+            res.json(data)
+        })
+}
+exports.groupByYear = function (req, res) {
+    var r = req.r;
+    year = parseInt(req.params.year);
+    r.db('welfare').table('group_welfare')
+        .getAll(year, { index: 'year' })
+        .pluck('group_welfare_name', 'id')
+        .run()
+        .then(function (data) {
+            res.json(data)
+        })
+}
