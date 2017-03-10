@@ -23,12 +23,12 @@ const clearData = (data,callback)=>{
         callback(newData)
     // callback(data)
 }
-const clearDataWalfare = (data,callback)=>{
+const clearDatawelfare = (data,callback)=>{
     
     let {emp_id,welfare_id,use_budget,status,year,group_id}=data;
     let newData={emp_id,welfare_id,use_budget,status,year,group_id};
     // console.log(data.date/use_welfare/update_use == '');
-    
+    newData.admin_approve_date = new Date().toISOString()
     if (data.date_use == '' || data.date_use == undefined) {
         newData.date_use = new Date().toISOString();
     } else {
@@ -176,7 +176,7 @@ export function usersAction(store){
             },
             USER_USE_WELFARE(data){
             // console.log(data);
-            clearDataWalfare(data,(newData)=>{
+            clearDatawelfare(data,(newData)=>{
                 
                 this.fire('toast',{status:'load'});
                 // newData.status = true;
@@ -186,7 +186,7 @@ export function usersAction(store){
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                             callback:()=>{
                                 // this.$$('panel-right').close();
-                                // this.$$('#walfare_budget').close()
+                                // this.$$('#welfare_budget').close()
                             }
                         });
                     })
@@ -197,7 +197,7 @@ export function usersAction(store){
             },
             USER_USE_WELFARE_APPROVE(data){
             // console.log(data);
-            clearDataWalfare(data,(newData)=>{
+            clearDatawelfare(data,(newData)=>{
                 newData.id = data.id;
                 this.fire('toast',{status:'load'});
                 newData.status = true;
@@ -207,7 +207,7 @@ export function usersAction(store){
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                             callback:()=>{
                                 // this.$$('panel-right').close();
-                                // this.$$('#walfare_budget').close()
+                                // this.$$('#welfare_budget').close()
                             }
                         });
                     })
@@ -216,14 +216,14 @@ export function usersAction(store){
                     })
                 })
             },
-            USER_DELETE_USE_WELFARE(data){
-                console.log(data);
+            USER_DELETE_USE_WELFARE(id){
+                // console.log(data);
                  this.fire('toast',{
                     status:'openDialog',
                     text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
                     confirmed:(result)=>{
                         if(result == true){
-                            axios.delete(`./user/use_welfare/delete/id/${data.history_welfare_id}`)
+                            axios.delete(`./user/use_welfare/delete/id/${id}`)
                             .then(res=>{
                                 this.dispatchAction('USERS_FALSE_LIST');
                                 this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',

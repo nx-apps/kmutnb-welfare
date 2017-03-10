@@ -1,5 +1,5 @@
 
-<dom-module id="dialog-use-walfare">
+<dom-module id="dialog-use-welfare">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
             :host {
                 display: block;
@@ -8,7 +8,7 @@
     <template>
         
          <div class="flex">
-             <h2 id="walfare_name">[[data.title]]</h2>
+             <h2 id="welfare_name">[[data.title]]</h2>
         </div>
         <div class="flex horizontal start-justified layout">
             <div class="flex-2 label">
@@ -48,7 +48,7 @@
     </template>
     <script>
         Polymer({
-            is: 'dialog-use-walfare',
+            is: 'dialog-use-welfare',
             behaviors:[ReduxBehavior,FormatNumberBehavior,commonLogic],
             properties:{
                 data:{

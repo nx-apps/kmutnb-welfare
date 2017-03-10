@@ -3,11 +3,15 @@
 
 <link rel="import" href="./user-panel.html">
 
-<dom-module id="page-user">
+<dom-module id="page-user-welfare">
     <style>
             :host {
                 display: block;
             }
+            *{
+      font-family: 'CSChatThaiUI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
         </style>
     <template>
         
@@ -18,9 +22,9 @@
     </template>
     <script>
         Polymer({
-            is: 'page-user',
+            is: 'page-user-welfare',
             behaviors: [
-                ReduxBehavior,nylonBehavior,commonDataAction,usersAction
+                ReduxBehavior,nylonBehavior,commonDataAction,usersAction,welfareAction
             ],
             properties:{
                 page:{
@@ -52,6 +56,7 @@
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
 
                 this.dispatchAction('USER_GET_WELFARES','411e54dd-b808-4d4d-9984-201b68c70dff',true);
+                this.dispatchAction('GET_YEAR');
             },
             _getUserEdit(e){
                 // this.set('page',0)
