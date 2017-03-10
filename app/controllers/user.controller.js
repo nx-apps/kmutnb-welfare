@@ -236,7 +236,7 @@ exports.welfares = function(req,res) {
             return{
                 welfare:checkTrue('welfare').merge((e)=>{
                     return{
-                        status:checkTrue('history_welfare').filter({status:false,welfare_id:e('welfare_id')}).count().gt(0)//e('welfare_id')
+                        status_approve:checkTrue('history_welfare').filter({status:false,welfare_id:e('welfare_id')}).count().gt(0)//e('welfare_id')
                     }
                 })
             }
