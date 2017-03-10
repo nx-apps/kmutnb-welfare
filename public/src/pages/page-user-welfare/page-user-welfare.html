@@ -19,6 +19,7 @@
        <panel-right id="test" title="{{title}}" >
          <user-panel class="sub-component" data="[[dataSelete]]"></user-panel>
       </panel-right>
+      [[setYear(year)]]
     </template>
     <script>
         Polymer({
@@ -34,6 +35,10 @@
                 title:{
                     type:String,
                     value:'แก้ไขข้อมูล'
+                },
+                year :{
+                    statePath:'welfare.list_year',
+                    type:Number,
                 }
             },
             listeners: {
@@ -55,8 +60,16 @@
                 this.dispatchAction('COMMONDATA_DATA_RELATION');
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
 
-                this.dispatchAction('USER_GET_WELFARES','411e54dd-b808-4d4d-9984-201b68c70dff',true);
+                
                 this.dispatchAction('GET_YEAR');
+            },
+            setYear(year){
+                try {
+                    this.set('seleterYear',year[year.length-1].year)
+                  this.dispatchAction('USER_GET_WELFARES','411e54dd-b808-4d4d-9984-201b68c70dff',true,year[year.length-1].year);
+                } catch (error) {
+                    
+                }
             },
             _getUserEdit(e){
                 // this.set('page',0)

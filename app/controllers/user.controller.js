@@ -116,7 +116,14 @@ exports.welfares = function (req, res) {
                 welfare: r.db('welfare').table('welfare')
                     .merge((group_name) => {
                         return {
-                            name: r.db('welfare').table('group_welfare').get(group_name('group_id')).getField('group_welfare_name')
+                            group_welfare: r.db('welfare').table('group_welfare').get(group_name('group_id'))//.getField('group_welfare_name')
+                        }
+                    })
+                    .merge((group)=>{
+                        return {
+                            name:group('group_welfare').getField('group_welfare_name'),
+                            admin_use:group('group_welfare').getField('admin_use'),
+                            onetime:group('group_welfare').getField('onetime')
                         }
                     })
                     .merge((name_field) => {
@@ -216,7 +223,7 @@ exports.welfares = function (req, res) {
                     })
                     // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
                     .filter({ "budget_balance_check": false })
-                    .without('condition', 'countpass', 'id', 'count', 'count_pass_status', 'countpass_total', 'budget_balance_check', 'year', 'start_date', 'end_date')
+                    .without('condition', 'countpass', 'id', 'count', 'count_pass_status', 'countpass_total', 'budget_balance_check', 'year', 'start_date', 'end_date','group_welfare')
                     .coerceTo('array')
             }
         }
@@ -229,7 +236,7 @@ exports.welfares = function (req, res) {
                     .merge((name_welfare) => {
                         return {
                             date_use: name_welfare('date_use').split('T')(0),
-                            admin_approve_date: name_welfare('admin_approve_date').split('T')(0),
+                            date_approve: name_welfare('date_approve').split('T')(0),
                             name: r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('group_welfare_name'),
                             history_welfare_id: name_welfare('id')
                         }

@@ -28,7 +28,7 @@ const clearDatawelfare = (data,callback)=>{
     let {emp_id,welfare_id,use_budget,status,year,group_id}=data;
     let newData={emp_id,welfare_id,use_budget,status,year,group_id};
     // console.log(data.date/use_welfare/update_use == '');
-    newData.admin_approve_date = new Date().toISOString()
+    newData.date_approve = new Date().toISOString()
     if (data.date_use == '' || data.date_use == undefined) {
         newData.date_use = new Date().toISOString();
     } else {
@@ -155,8 +155,8 @@ export function usersAction(store){
                 // console.log(data)
                 store.dispatch({type:'USER_INSERT_VIEW',payload:data})
             },
-            USER_GET_WELFARES(id,otherFunction=false){
-                console.log('otherFunction',otherFunction)
+            USER_GET_WELFARES(id,otherFunction=false,year=new Date().getFullYear()+543){
+                console.log('otherFunction',year)
                  this.fire('toast',{status:'load'});
                     axios.get(`./user/welfares/id/${id}`)
                     .then(res=>{
