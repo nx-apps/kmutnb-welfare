@@ -58,13 +58,9 @@ export function userWelfareAction(store) {
                 .then(function (result) {
                     // console.log(result.data);
                     // console.log(JSON.stringify(result.data));'
-                    var newData = result.data.map((item)=>{
-                        item.check = false;
-                        return item;
-                    })
                     // console.log(JSON.stringify(newData));
                     // console.log(newData);
-                    store.dispatch({ type: 'LIST_USER', payload: newData })
+                    store.dispatch({ type: 'LIST_USER', payload: result.data })
                 })
                 .catch(err => {
 
@@ -75,7 +71,11 @@ export function userWelfareAction(store) {
             axios.get('./user_welfare/adminEmployee/'+id)
             .then((response)=>{
                 //  console.log(JSON.stringify(response.data));
-                 store.dispatch({ type:'LIST_USER_SERARCH', payload: response.data })
+                  var newData = response.data.map((item)=>{
+                        item.check = false;
+                        return item;
+                    })
+                 store.dispatch({ type:'LIST_USER_SERARCH', payload: newData })
             })
             .catch((error)=>{
                 console.log('error');

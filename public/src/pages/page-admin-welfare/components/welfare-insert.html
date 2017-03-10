@@ -7,18 +7,18 @@
             gl-combo-box {
                 margin-top: 15px;
             }
-
+            
             .label_condition {
                 font-weight: bold;
                 text-align: right;
                 margin-top: 35px;
                 font-size: 20px;
             }
-
+            
             .btn-bottom {
                 margin: 30px;
             }
-
+            
             paper-material {
                 background-color: var(--gl-white-color);
             }
@@ -47,7 +47,7 @@
                         </gl-grid-col>
                         [[checkField(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="[[index]]" items="[[condition]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>
+                            <gl-combo-box id="field-[[index]]" items="[[condition]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}"></gl-combobox>
@@ -139,11 +139,11 @@
                             this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
                             this.data.condition[i].logic = this.data.condition[i].logic_show.replace("<", ">");
                         }
-                    }else{
+                    } else {
                         this.data.condition[i].value = this.data.condition[i].value_show;
                         this.data.condition[i].logic = this.data.condition[i].logic_show;
                     }
-                    
+
                 }
                 this.data.budget = this.unFormat(this.data.budget);
                 this.set('data.group_id', this.datas.id);
@@ -164,18 +164,27 @@
             },
             checkField: function (e, index) {
                 try {
-                    // console.log(e, index);
+                    // console.log(this.condition);
+                    // if (e != '') {
+                    //     //     // console.log(e);
+                    //     if (this.condition != []) {
+                    //         var newFeild = [];
+                    //         this.condition.map((val) => {
+                    //             if (val.id != e) {
+                    //                 // console.log(val);
+                    //                 newFeild.push(val);
+                    //             }
+                    //         })
+                    //         // console.log(feild);
+                    //         let comboboxs = Polymer.dom(this.root).querySelector('#field-' + index);
+                    //         comboboxs.items = feild;
+                    //     }
+                    // }
                     var combobox = Polymer.dom(this.root).querySelector('#symbo-' + index);
                     // console.log(combobox.items);
                     var id = e;
                     var symbol = this.condition.filter((val) => val.id == id)[0]
                     // console.log(symbol);
-                    // console.log(this.condition);
-                    this.condition.map((val)=>{
-                        if(val == symbol){
-                            console.log('wow');
-                        }
-                    })
                     combobox.items = symbol.conditions;
 
                 } catch (error) {
@@ -201,8 +210,8 @@
 
                 }
             },
-            count:function(val){
-                return val+1;
+            count: function (val) {
+                return val + 1;
             }
         });
     </script>

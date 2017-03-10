@@ -90,6 +90,26 @@ exports.listWelfareId = function (req, res) {
     var r = req.r
     r.db('welfare').table('welfare')
         .get(req.params.id)
+        .merge(function (m) {
+            return {
+                condition: m('condition').merge(function (con_merge) {
+                    return {
+                        conditions: r.db('welfare').table('condition').get(con_merge('field'))
+                            .merge(function (con_merge) {
+                                return con_merge
+                            })
+                    }
+                }).without('data_source', 'field', 'label')
+                .merge(function(m){
+                    return {
+                        conditions : m('conditions')('conditions'),
+                        label : m('conditions')('label'),
+                        data_source : m('conditions')('data_source'),
+                        field : m('conditions')('id')
+                    }
+                })
+            }
+        })
         .run()
         .then(function (result) {
             res.json(result);

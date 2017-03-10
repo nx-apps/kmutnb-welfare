@@ -30,9 +30,7 @@
             </div>-->
             
             <paper-material elevation="1">
-                    <div class="table-detail">
-                        
-                        
+                    <div class="table-detail">   
                         <template is="dom-if" if={{isSearch}}>
                         <table class="gl-table-default">
                             <thead class="table-head">
@@ -52,7 +50,7 @@
                                         <!--<td style="text-align: center">
                                             <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
                                         </td>-->
-                                        <td>[[item.emp_id]]</td>
+                                        <td>[[item.emp_no]]</td>
                                         <td>[[item.prefixname_name]] [[item.name]] [[item.surname]]</td>
                                         <td>[[item.position_name]]</td>
                                         <td>[[item.academic_name]]</td>
@@ -70,8 +68,8 @@
                               <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <th style="width:10%;">
-                                        <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>กระทำ
+                                    <th style="width:15%;" hidden="{{!checkBox}}">
+                                        <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>เลือกทั้งหมด
                                     </th>
                                     <th style="width:10%;">รหัสพนักงาน</th>
                                     <th style="width:15%;">ชื่อ นามสกุล</th>
@@ -83,11 +81,11 @@
                             </thead>
                             <tbody class="table-body">
                                 <template is="dom-repeat" items={{listSearch}}>
-                                    <tr>
-                                        <td style="text-align: center">
-                                            <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
+                                    <tr on-tap="chagePage">
+                                        <td style="text-align: center" hidden="{{!checkBox}}">
+                                            <paper-checkbox checked="{{item.check}}" disabled="{{!item.admin_use}}"></paper-checkbox>
                                         </td>
-                                        <td>[[item.emp_id]]</td>
+                                        <td>[[item.emp_no]]</td>
                                         <td>[[item.prefixname]] [[item.name]] [[item.surname]]</td>
                                         <td>[[item.position_name]]</td>
                                         <td>[[item.academic_name]]</td>
@@ -119,6 +117,11 @@
                 },
                 listSearch:{
                     statePath:'userWelfare.listSearch'
+                },
+                checkBox:{
+                    type: Boolean,
+                    value: false,
+                    observer:'hiddenCheckBox'
                 }
             },
             checkData:function(data){
@@ -132,15 +135,26 @@
                     // console.log(data.length);
                 }
             },
+            hiddenCheckBox:function(check){
+                if(typeof check == 'undefined'){
+                    this.checkBox = false;
+                }
+            },
             selectAll:function(e){
                 var check = e.target.checked;
                 if(check == true){
-                    this.list.map((item,index)=>{
-                        this.set('listSearch.'+index+'.check',true);
+                    this.listSearch.map((item,index)=>{
+                        console.log(item.admin_use);
+                        if(item.admin_use == true){
+                            this.set('listSearch.'+index+'.check',true);
+                        }else{
+                            this.set('listSearch.'+index+'.check',false);
+                        }
+                        
                     })
                 }
                 else{
-                    this.list.map((item,index)=>{
+                    this.listSearch.map((item,index)=>{
                         this.set('listSearch.'+index+'.check',false);
                     })
                 }
@@ -159,13 +173,14 @@
                        year : item.year,
                        emp_id : item.emp_id,
                        welfare_id : item.welfare_id,
-                       use_budget : item.value_use,
+                       use_budget : item.value_budget - item.value_use,
                        date_approve: new Date().toISOString(),
                        date_use: new Date().toISOString(),
                        status: true
                     };
                    return newItem;
                })
+            //    console.log(saveData);
                this.dispatchAction('USER_INSERT',saveData)
             },
             selectTable:function(id){
@@ -175,7 +190,13 @@
                 else {
                     this.isSearch = false;
                 }
-                
+            },
+            chagePage:function(e){
+                var check = e.target.is;
+                if(check != 'paper-checkbox'){
+                    this.fire('select-page',1)
+                }
+                // console.log(e.target.is);
             }
         });
     </script>

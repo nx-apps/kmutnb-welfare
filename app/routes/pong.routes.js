@@ -8,4 +8,5 @@ module.exports = function (app) {
     app.get('/groupYear', controller.groupYear);
     app.get('/groupByYear/:year', controller.groupByYear);
     app.get('/adminEmployee/:welId', controller.adminEmployee);
+    app.get('/condition', controller.condition);
 }

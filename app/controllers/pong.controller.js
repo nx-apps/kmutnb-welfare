@@ -497,3 +497,41 @@ exports.adminEmployee = function (req, res) {
         })
 
 }
+
+exports.condition = function (req, res) {
+    var r = req.r;
+
+    r.db('welfare').table('condition')
+        .merge(function (con_merge) {
+            return {
+                data: r.branch(
+                    con_merge('data_source').eq(""),
+                    "",
+                    r.db('welfare_common').table(con_merge('data_source')).merge(function (com_map) {
+                        return {
+                            id: com_map('id'),
+                            name: com_map(con_merge('data_source').add('_name'))
+                        }
+                    }).coerceTo('array')
+                        .merge(function (data_merge) {
+                            return {
+                                name: r.branch(
+                                    con_merge('data_source').eq("department"),
+                                    r.db('welfare_common').table('faculty').get(data_merge('faculty_id')).getField('faculty_name').add('/', data_merge('name')),
+                                    data_merge('name')
+                                )
+                            }
+                        })
+                        .pluck('id', 'name')
+                        .orderBy('name')
+                )
+            }
+        })
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}

@@ -30,29 +30,44 @@
         }
     </style>
     <template>
-        <div class="container serachBox">
-            <paper-material elevation="1">
-                <div style="padding: 10px">
-                    <div class="container flex-horizontal-with-ratios">
-                        <div class="flexchild"></div>
-                        <div class="flex3child">
-                            <gl-combo-box label="ปี" placeholder="มีทั้งหมด {{year.length}} ปี" items="{{year}}" item-label-path="year" item-value-path="year" value="{{selectYear}}">
-                            </gl-combo-box>
-                        </div>
-                        <div class="flexchild"></div>
-                        <div class="flex3child">
-                            <gl-combo-box label="สวัสดิการ" placeholder="มีสวัสดิการทั้งหมด {{listWelfare.length}} รายการ" items="{{listWelfare}}" item-label-path="group_welfare_name" item-value-path="id" value="{{selectWelfare}}"></gl-combo-box>
-                        </div>
-                        <div class="flexchild"></div>
-                    </div>
-                </div>
-            </paper-material>
-        </div>
-        <section>
-            <list-user></list-user>
-        </section>
-        <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
         
+        <iron-pages selected="{{selected}}">
+            <section>   
+                <div class="container serachBox">
+                    <paper-material elevation="1">
+                        <div style="padding: 10px">
+                            <div class="container flex-horizontal-with-ratios">
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <gl-combo-box label="ปี" placeholder="มีทั้งหมด {{year.length}} ปี" items="{{year}}" item-label-path="year" item-value-path="year" value="{{selectYear}}">
+                                    </gl-combo-box>
+                                </div>
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <!--<gl-combo-box id="setComboBox" label="สวัสดิการ" placeholder="มีสวัสดิการทั้งหมด {{listWelfare.length}} รายการ" items="{{testItem}}"></gl-combo-box>-->
+                                    <gl-combo-box id="setComboBox" label="สวัสดิการ" items="{{listWelfare}}" placeholder="มีสวัสดิการทั้งหมด {{listWelfare.length}} รายการ" item-label-path="group_welfare_name" item-value-path="id" value="{{selectWelfare}}"></gl-combo-box>
+                                    <!--<paper-dropdown-menu label="Dinosaurs">
+                                        <paper-listbox class="dropdown-content" selected="1">
+                                            <template is="dom-repeat" items="{{listWelfare}}">
+                                                <paper-item>{{item.group_welfare_name}}</paper-item>
+                                            </template>
+                                        </paper-listbox>
+                                    </paper-dropdown-menu>-->
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+                        </div>
+                    </paper-material>
+                </div>
+                <div>
+                    <list-user></list-user>
+                </div>
+            </section>
+            <section>
+                <!--pages-->
+            </section>  
+        <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
+        </iron-pages>
     </template>
     <script>
         Polymer({
@@ -68,15 +83,16 @@
                 }
             },
             listeners:{
-                'back_page' : 'back_page'
+                'back_page' : 'back_page',
+                'select-page' : 'changePage'
             },
             nylonPageActive: function () {
+                this.selected = 0;
                 this.WELFARE_LIST_YEAR();
                 this.LIST_USER("");
                 this.$$('list-user').selectTable(true)
             },
             select_year:function(year) {
-                // alert(year)
                if(year != ""){
                    this.selectWelfare = "";
                    var newYear = parseInt(year)-543;
@@ -84,7 +100,18 @@
                }
             },
             select_welfare:function(id){
-                if(id != ""){
+                 if(id != ""){
+                    var getid = id;
+                    var dataFilter = this.listWelfare.filter((item)=>{
+                        return item.id == id;
+                    })
+                    var getStatus;
+                    dataFilter.map((item)=>{
+                        getStatus = item.admin_use;
+                    })
+                    console.log(getStatus);
+                    this.$$('list-user').checkBox = getStatus;
+                // if(id != ""){
                     this.$$('list-user').selectTable(false)
                     this.LIST_USER_SERARCH(id);
                 }
@@ -102,6 +129,9 @@
             sendUser:function(check){
                 if(check == true)
                     this.$$('list-user').insertData();
+            },
+            changePage:function(page){
+                this.selected = page;
             }
         });
     </script>
