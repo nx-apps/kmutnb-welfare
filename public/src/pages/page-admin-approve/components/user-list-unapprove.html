@@ -39,6 +39,11 @@
                             </td>
                         </tr>
                     </template>
+                    <template is="dom-if" if={{_ObIsHave(listUserFalse)}}>
+                                <tr>
+                                    <td colspan="6" style="text-align: center">ยังไม่มีการขอใช้สวัสดิการ</td>
+                                </tr>
+                    </template>
                 </tbody>
             </table>
         </div>

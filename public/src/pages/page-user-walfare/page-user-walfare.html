@@ -3,11 +3,15 @@
 
 <link rel="import" href="./user-panel.html">
 
-<dom-module id="page-user">
+<dom-module id="page-user-walfare">
     <style>
             :host {
                 display: block;
             }
+            *{
+      font-family: 'CSChatThaiUI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
         </style>
     <template>
         
@@ -18,7 +22,7 @@
     </template>
     <script>
         Polymer({
-            is: 'page-user',
+            is: 'page-user-walfare',
             behaviors: [
                 ReduxBehavior,nylonBehavior,commonDataAction,usersAction
             ],

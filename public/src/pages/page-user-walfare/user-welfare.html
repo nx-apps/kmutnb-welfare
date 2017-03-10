@@ -102,10 +102,10 @@
                         <thead class="table-head">
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
-                                <th style="width: 50%">สวัสดิการที่ใช้</th>
+                                <th style="width: 40%">สวัสดิการที่ใช้</th>
                                 <th style="width: 15%">จำนวนเงินที่ใช้</th>
-                                <th style="width: 15%">วันที่ใช้งาน</th>
-                                <th style="width: 15%"></th>
+                                <th style="width: 15%">วันที่ขอใช้งาน</th>
+                                <th style="width: 20%">วันที่อนุมัติ</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">
@@ -118,7 +118,8 @@
                                         <vaadin-date-picker always-float-label  disabled value="{{item.date_use}}"></vaadin-date-picker>
                                     </td>
                                     <td>
-                                        <!--<paper-button class="gl-btn-danger gl-small"raised on-tap="deleteHistoryWelfare" data="[[item]]">ลบ</paper-button>-->
+                                        <vaadin-date-picker always-float-label  disabled value="{{item.admin_approve_date}}"></vaadin-date-picker>
+                                        
                                     </td>
                                 </tr>
                             </template>
@@ -178,6 +179,7 @@
                 data.status = false
                 data.year = new Date().getFullYear()
                 data.group_id = e.currentTarget.data.group_id
+                
                 this.$$('#walfare_budget').open()
                 this.dispatchAction('USER_USE_SELETE_WELFARE',data);
             },

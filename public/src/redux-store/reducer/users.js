@@ -28,7 +28,7 @@ const clearDataWalfare = (data,callback)=>{
     let {emp_id,welfare_id,use_budget,status,year,group_id}=data;
     let newData={emp_id,welfare_id,use_budget,status,year,group_id};
     // console.log(data.date/use_welfare/update_use == '');
-    
+    newData.admin_approve_date = new Date().toISOString()
     if (data.date_use == '' || data.date_use == undefined) {
         newData.date_use = new Date().toISOString();
     } else {
