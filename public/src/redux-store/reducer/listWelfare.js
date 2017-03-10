@@ -46,7 +46,7 @@ export function listWelfareAction(store) {
         WELFARE_LIST_ID: function (data) {
             axios.get('/list_welfare/' + data)
                 .then(function (result) {
-                    // console.log(result);
+                    // console.log('*',result.data);
                     store.dispatch({ type: 'WELFARE_LIST_ID', payload: result.data })
                 })
                 .catch(err => {
@@ -59,7 +59,7 @@ export function listWelfareAction(store) {
             axios.post(`./list_welfare/insert`, data)
                 .then((result) => {
                     console.log(result);
-                    this.WELFARE_LIST();
+                    // this.WELFARE_LIST_ID(this.id);
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             console.log('success');
@@ -76,7 +76,7 @@ export function listWelfareAction(store) {
             axios.delete(`./list_welfare/delete/id/` + id)
                 .then((result) => {
                     // console.log(result);
-                    this.WELFARE_LIST();
+                    this.WELFARE_DATA_SELECT(this.id);
                     this.fire('toast', {
                         status: 'success', text: 'ลบสำเร็จ', callback: () => {
                             console.log('success');
@@ -100,7 +100,7 @@ export function listWelfareAction(store) {
             this.fire('toast', { status: 'load' });
             axios.put(`./list_welfare/update`, datas)
                 .then((result) => {
-                    console.log(result);
+                    // console.log(result);
                     this.WELFARE_LIST();
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: function () {
@@ -113,10 +113,10 @@ export function listWelfareAction(store) {
                 })
         },
         WELFARE_DATA_SELECT: function (val) {
-            // console.log(val);
+            // this.id = val
             axios.get('/list_welfare/' + val)
                 .then(function (result) {
-                    // console.log(result.data);
+                    // console.log("*",result.data);
                     store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: result.data })
                 })
                 .catch(err => {
