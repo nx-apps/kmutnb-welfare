@@ -30,6 +30,8 @@
                                     <th style="width:15%;text-align: center">ปี</th>
                                     <th>ชื่อสวัสดิการย่อย</th>
                                     <th style="width:15%;">จำนวนเงิน (บาท)</th>
+                                    <th style="text-align:center;">จำนวนผู้มีสิทธิ</th>
+                                    <th style="text-align:center;">จำนวนผู้ใช้สิทธิ</th>
                                     <th style="width:20%;text-align:center;">เครื่องมือ</th>
                                 </tr>
                             </thead>
@@ -37,9 +39,11 @@
                                 <!--<template is="dom-repeat" items="{{list}}">-->
                                     <template is="dom-repeat" items="{{list.welfare}}" as="welfare">
                                     <tr data="[[item]]">
-                                        <td style="text-align: center">[[list.year]]</td>
+                                        <td style="text-align:center;">[[list.year]]</td>
                                         <td>[[welfare.welfare_name]]</td>
                                         <td style="text-align:right;">[[formatNumber(welfare.budget)]]</td>
+                                        <td style="text-align:center;">[[welfare.emp_budget]]</td>
+                                        <td style="text-align:center;">[[welfare.emp_use]]</td>
                                         <td style="text-align:center;">
                                             <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:create"></paper-icon-button>
                                             <paper-icon-button data="[[welfare]]" on-tap="_delete" icon="delete"></paper-icon-button>
@@ -85,6 +89,7 @@
                 this.pages = '0';
             },
             _edit:function(e){
+                console.log(this.list);
                 // console.log(e.currentTarget.data);
                 var id = e.currentTarget.data.id;
                 this.dispatchAction('WELFARE_DATA_SELECT', id)

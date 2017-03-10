@@ -122,7 +122,7 @@ exports.listId = function (req, res) {
     r.db('welfare').table('welfare')
     .get(req.params.id)
     .merge(function(m){
-        return r.db('welfare').table('group_welfare').get(m('group_id'))
+        return r.db('welfare').table('group_welfare').get(m('group_id')).without('id')
     })
         // .eqJoin('group_id', r.db('welfare').table('group_welfare')).without({ right: 'id' }).zip()
         .merge(function (wel_merge) {
