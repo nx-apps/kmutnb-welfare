@@ -22,11 +22,10 @@ exports.uploadFile = function (req, res) {
                 ref_path: req.headers['ref-path']
             })('generated_keys')(0)
                 .do(function (file_id) {
-                    return r.db('wto2').table('document_file').insert({
+                    return r.db('welfare').table('document_file').insert({
                         file_id: file_id,
                         file_status: true,
-                        doc_type_id: doc_type_id,
-                        request_id: params.request_id,
+                        emp_id: params.emp_id,
                         date_upload: new Date(),
                         date_update: new Date()
                     })
@@ -42,12 +41,19 @@ exports.uploadFile = function (req, res) {
     // res.json({ec:'01252'});
 
 }
+exports.listFile = function (req, res) {
+    var r = req.r;
+    r.db('welfare').table('files').without('contents')
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+}
 exports.listFilePath = function (req, res) {
     var r = req.r;
     var params = req.params;
-    r.db('wto2').table('document_file')
-        .eqJoin('file_id', r.db('files').table('files')).without({ right: ["id", "contents"] }).zip()
-        // .eqJoin('seller_id', r.db('external').table('seller')).pluck('left', { right: 'seller_id' }).zip()
+    r.db('welfare').table('document_file')
+        .eqJoin('file_id', r.db('welfare').table('files')).without({ right: ["id", "contents"] }).zip()
         .merge(function (m) {
             return { timestamp: m('timestamp').toISO8601().split("T")(0) }
         })
@@ -63,7 +69,7 @@ exports.listFilePath = function (req, res) {
                 progress: 100, complete: true
             }
         })
-        .filter({ request_id: params.request_id, ref_path: params.refPath, file_status: true })
+        .filter({ emp_id: params.emp_id, ref_path: params.refPath, file_status: true })
         .orderBy(r.desc('date_upload'))
         .run()
         .then(function (result) {
@@ -78,7 +84,7 @@ exports.downloadFile = function (req, res) {
     var params = req.params;
     // console.log(params)
 
-    r.db('files').table('files').get(params.id)
+    r.db('welfare').table('files').get(params.id)
         .run().then(function (result) {
             res.writeHead(200, {
                 'Content-Type': result.type,
@@ -99,15 +105,8 @@ exports.downloadFile = function (req, res) {
 exports.deleteFile = function (req, res) {
     var r = req.r;
     var params = req.params;
-    r.db('wto2').table('document_file').getAll(params.id, { index: 'file_id' })
-    .update({ file_status: false, date_update: new Date() })
-
-        // r.db('files').table('files').get(params.id).delete()
-        //     .do(
-        //     function (d) {
-        //         return r.db('external').table('document_file').getAll(params.id, { index: 'file_id' }).delete()
-        //     }
-        //     )
+    r.db('welfare').table('document_file').getAll(params.id, { index: 'file_id' })
+        .update({ file_status: false, date_update: new Date() })
         .run().then(function (result) {
             res.json(result);
         }).catch(function (err) {
@@ -115,54 +114,46 @@ exports.deleteFile = function (req, res) {
         })
 
 }
-exports.listFileDelete = function (req, res) {
-    var r = req.r;
-    var params = req.params;
-    r.db('wto2').table('document_file')
-        .eqJoin('file_id', r.db('files').table('files')).without({ right: ["id", "contents"] }).zip()
-        // .eqJoin('seller_id', r.db('external').table('seller')).pluck('left', { right: 'seller_id' }).zip()
-        .merge(function (m) {
-            return { timestamp: m('timestamp').toISO8601().split("T")(0) }
-        })
-        .merge(function (row) {
-            return {
-                name: row('name').add(' | ')
-                    .add(row('timestamp'))
-                // .add('-')
-                // .add(row('date_upload').month().coerceTo('string'))
-                // .add('-')
-                // .add(row('date_upload').year().coerceTo('string'))
-                ,
-                progress: 100, complete: true
-            }
-        })
-        .filter({ request_id: params.request_id, file_status: false })
-        .orderBy(r.desc('date_update'))
-        .limit(5)
-        .run()
-        .then(function (result) {
-            res.json(result);
-        })
-        .error(function (err) {
-            res.json(err);
-        })
-}
-exports.recoveryFile = function (req, res) {
-    var r = req.r;
-    var params = req.params;
-    console.log(params.file_id+'mmm');
-    r.db('external').table('document_file').getAll(params.file_id, { index: 'file_id' }).update({ file_status: true, date_update: new Date() })
-        .run().then(function (result) {
-            res.json(result);
-        }).catch(function (err) {
-            res.json(err);
-        })
-}
-exports.listFile = function(req, res){
-    var r = req.r
-    r.db('welfare').table('files').without('contents')
-    .run()
-    .then(function(result){
-        res.json(result)
-    })
-}
+// exports.listFileDelete = function (req, res) {
+//     var r = req.r;
+//     var params = req.params;
+//     r.db('wto2').table('document_file')
+//         .eqJoin('file_id', r.db('files').table('files')).without({ right: ["id", "contents"] }).zip()
+//         // .eqJoin('seller_id', r.db('external').table('seller')).pluck('left', { right: 'seller_id' }).zip()
+//         .merge(function (m) {
+//             return { timestamp: m('timestamp').toISO8601().split("T")(0) }
+//         })
+//         .merge(function (row) {
+//             return {
+//                 name: row('name').add(' | ')
+//                     .add(row('timestamp'))
+//                 // .add('-')
+//                 // .add(row('date_upload').month().coerceTo('string'))
+//                 // .add('-')
+//                 // .add(row('date_upload').year().coerceTo('string'))
+//                 ,
+//                 progress: 100, complete: true
+//             }
+//         })
+//         .filter({ request_id: params.request_id, file_status: false })
+//         .orderBy(r.desc('date_update'))
+//         .limit(5)
+//         .run()
+//         .then(function (result) {
+//             res.json(result);
+//         })
+//         .error(function (err) {
+//             res.json(err);
+//         })
+// }
+// exports.recoveryFile = function (req, res) {
+//     var r = req.r;
+//     var params = req.params;
+//     console.log(params.file_id+'mmm');
+//     r.db('external').table('document_file').getAll(params.file_id, { index: 'file_id' }).update({ file_status: true, date_update: new Date() })
+//         .run().then(function (result) {
+//             res.json(result);
+//         }).catch(function (err) {
+//             res.json(err);
+//         })
+// }
