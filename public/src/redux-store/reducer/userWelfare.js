@@ -7,7 +7,8 @@ const initialState = {
     list_id: [],
     list_user: [],
     listSearch:[],
-    welfare_employee:[]
+    welfare_employee:[],
+    welfare_employees:[]
 }
 
 export function userWelfareReducer(state = initialState, action) {
@@ -23,6 +24,8 @@ export function userWelfareReducer(state = initialState, action) {
             return Object.assign({}, state, { listSearch: action.payload });
         case 'LIST_EMPLOYEE_WELFARE':
             return Object.assign({}, state, { welfare_employee: action.payload });
+        case 'LIST_EMPLOYEES_WELFARE':
+            return Object.assign({}, state, { welfare_employees: action.payload });
         default:
             return state
     }
@@ -101,16 +104,27 @@ export function userWelfareAction(store) {
             });
         },
         LIST_EMPLOYEE_WELFARE: function (data) {
+            console.log(data);
+            // axios.get('./user/welfares/year/'+data.year+'/id/' + data.id)
+            //     .then(function (result) {
+            //         // console.log(result.data);
+            //         store.dispatch({ type: 'LIST_EMPLOYEE_WELFARE', payload: result.data })
+            //     })
+            //     .catch(err => {
+
+            //     })
+        },
+        LIST_EMPLOYEES_WELFARE: function (data) {
             // console.log(data);
             axios.get('./user/welfares/year/'+data.year+'/id/' + data.id)
                 .then(function (result) {
                     // console.log(result.data);
-                    store.dispatch({ type: 'LIST_EMPLOYEE_WELFARE', payload: result.data })
+                    store.dispatch({ type: 'LIST_EMPLOYEES_WELFARE', payload: result.data })
                 })
                 .catch(err => {
 
                 })
-        }   
+        } 
     }
     ]
    

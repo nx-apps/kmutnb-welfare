@@ -43,6 +43,7 @@
 
         <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
             <gl-form-panel-head label="" set-padding="10px" set-border="1px">
+                <paper-button on-tap="back" raised>back</paper-button>
                 <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
             </gl-form-panel-head>
             <gl-form-panel-body label="" set-padding="10px" set-border="1px">
@@ -168,7 +169,7 @@
             behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic],
             properties: {
                 data: {
-                    statePath: 'userWelfare.welfare_employee'
+                    statePath: 'userWelfare.welfare_employees'
                 },
                 year :{
                     statePath:'welfare.list_year',
@@ -187,7 +188,10 @@
             gerYearWelfare(e){
              if (e.detail.value)
                  this.dispatchAction('USER_GET_WELFARES','411e54dd-b808-4d4d-9984-201b68c70dff',true,e.detail.value-543);
-                
+            },
+            back:function(){
+                // console.log(55);
+                this.fire('select-page',0)
             }
         });
     </script>

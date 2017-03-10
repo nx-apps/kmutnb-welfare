@@ -1,4 +1,3 @@
-
 <link rel="import" href="./../../../../bower_components/paper-fab/paper-fab.html">
 
 <dom-module id="list-user">
@@ -11,34 +10,38 @@
                 padding-bottom: 15px;
             }
 
+
             .table-detail {
                 margin: 20px;
             }
 
+
             table.gl-table-default {
                 border: 1px solid #ddd;
             }
-            .text-head{
+
+            .text-head {
                 margin-left: 20px;
                 font-weight: bold;
             }
+
             paper-fab {
                 position: fixed;
                 right: 25px;
                 bottom: 25px;
                 color: #fff;
-                --paper-fab-background:var(--paper-light-blue-500);
+                --paper-fab-background: var(--paper-light-blue-500);
                 --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
-        }
+            }
         </style>
         <div class="container">
             <!--<div class="horizontal layout">
                 <paper-button raised on-tap="back_page">back</paper-button>
             </div>-->
-            
+
             <paper-material elevation="1">
-                    <div class="table-detail">   
-                        <template is="dom-if" if={{isSearch}}>
+                <div class="table-detail">
+                    <template is="dom-if" if={{isSearch}}>
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
@@ -53,7 +56,7 @@
                             </thead>
                             <tbody class="table-body">
                                 <template is="dom-repeat" items={{list}}>
-                                    <tr>
+                                    <tr data="[[item]]" on-tap="chagePageDetail">
                                         <!--<td style="text-align: center">
                                             <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
                                         </td>-->
@@ -70,9 +73,9 @@
                                 </template>
                             </tbody>
                         </table>
-                        </template>
-                        <template is="dom-if" if={{!isSearch}}>
-                              <table class="gl-table-default">
+                    </template>
+                    <template is="dom-if" if={{!isSearch}}>
+                        <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
                                     <th style="width:15%;" hidden="{{!checkBox}}">
@@ -106,141 +109,150 @@
                                     </tr>
                                 </template>
                             </tbody>
-                            </table>
-                        </template>
-                    </div>
+                        </table>
+                    </template>
+                </div>
             </paper-material>
-            
+
         </div>
         <div hidden="{{paperFab}}">
             <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
         </div>
-        
+
     </template>
     <script>
         Polymer({
             is: 'list-user',
             behaviors: [ReduxBehavior],
-            observers:['showBtn(listSearch.*)'],
+            observers: ['showBtn(listSearch.*)'],
             properties: {
                 list: {
-                    statePath:'userWelfare.list_user',
+                    statePath: 'userWelfare.list_user',
                 },
-                listSearch:{
-                    statePath:'userWelfare.listSearch'
+                listSearch: {
+                    statePath: 'userWelfare.listSearch'
                 },
-                checkBox:{
+                checkBox: {
                     type: Boolean,
                     value: false,
-                    observer:'hiddenCheckBox'
+                    observer: 'hiddenCheckBox'
                 },
-                paperFab:{
-                    type:Boolean,
+                paperFab: {
+                    type: Boolean,
                     value: true
                 }
             },
-            checkData:function(data){
-                if(typeof data != 'undefined'){
-                    if(data.length == 0){
+            checkData: function (data) {
+                if (typeof data != 'undefined') {
+                    if (data.length == 0) {
                         return true;
                     }
-                    else{
+                    else {
                         return false;
                     }
                     // console.log(data.length);
                 }
             },
-            hiddenCheckBox:function(check){
-                if(typeof check == 'undefined'){
+            hiddenCheckBox: function (check) {
+                if (typeof check == 'undefined') {
                     this.checkBox = false;
                 }
             },
-            showBtn:function(show){
-                var check = show.base.filter((item)=>{
+            showBtn: function (show) {
+                var check = show.base.filter((item) => {
                     return item.check == true
                 })
                 console.log(check);
-                if(check.length != 0){
+                if (check.length != 0) {
                     this.paperFab = false;
                 }
-                else{
+                else {
                     this.paperFab = true;
                 }
             },
-            selectAll:function(e){
+            selectAll: function (e) {
                 var check = e.target.checked;
-                if(check == true){
-                    this.listSearch.map((item,index)=>{
+                if (check == true) {
+                    this.listSearch.map((item, index) => {
                         console.log(item.admin_use);
-                        if(item.admin_use == true){
-                            this.set('listSearch.'+index+'.check',true);
-                        }else{
-                            this.set('listSearch.'+index+'.check',false);
+                        if (item.admin_use == true) {
+                            this.set('listSearch.' + index + '.check', true);
+                        } else {
+                            this.set('listSearch.' + index + '.check', false);
                         }
-                        
+
                     })
                 }
-                else{
-                    this.listSearch.map((item,index)=>{
-                        this.set('listSearch.'+index+'.check',false);
+                else {
+                    this.listSearch.map((item, index) => {
+                        this.set('listSearch.' + index + '.check', false);
                     })
                 }
-               
+
             },
-            back_page:function(){
+            back_page: function () {
                 this.fire('back_page_welfare');
             },
-            confirmSend:function(){
-                this.fire('toast',{ 
-                 status:'openDialog',
-                 text:'ต้องการอนุมัติข้อมูลใช่หรือไม่ ?',
-                 confirmed:this.insertData.bind(this), 
-                 })
+            confirmSend: function () {
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการอนุมัติข้อมูลใช่หรือไม่ ?',
+                    confirmed: this.insertData.bind(this),
+                })
             },
-            insertData:function(check){
-                if(check == true){
-                    var newData = this.listSearch.filter((item)=>{
+            insertData: function (check) {
+                if (check == true) {
+                    var newData = this.listSearch.filter((item) => {
                         return item.check == true;
                     })
-                    var saveData = newData.map((item)=>{
+                    var saveData = newData.map((item) => {
                         var newItem = {
-                            group_id : item.group_id,
-                            year : item.year,
-                            emp_id : item.emp_id,
-                            welfare_id : item.welfare_id,
-                            use_budget : item.value_budget - item.value_use,
+                            group_id: item.group_id,
+                            year: item.year,
+                            emp_id: item.emp_id,
+                            welfare_id: item.welfare_id,
+                            use_budget: item.value_budget - item.value_use,
                             date_approve: new Date().toISOString(),
                             date_use: new Date().toISOString(),
                             status: true
-                            };
+                        };
                         return newItem;
                     })
                     //    console.log(saveData);
-                    this.dispatchAction('USER_INSERT',saveData)
+                    this.dispatchAction('USER_INSERT', saveData)
                 }
-              
+
             },
-            selectTable:function(id){
-                if(id == true){
+            selectTable: function (id) {
+                if (id == true) {
                     this.isSearch = true;
                 }
                 else {
                     this.isSearch = false;
                 }
             },
-            chagePage:function(e){
+            chagePage: function (e) {
                 var item = e.currentTarget.data;
                 var datas = {
-                    id : item.emp_id,
-                    year : item.year
+                    id: item.emp_id,
+                    year: item.year
                 }
                 // console.log(datas);
-                this.dispatchAction('LIST_EMPLOYEE_WELFARE',datas);
+                this.dispatchAction('LIST_EMPLOYEES_WELFARE', datas);
                 var check = e.target.is;
-                if(check != 'paper-checkbox'){
-                    this.fire('select-page',1)
+                if (check != 'paper-checkbox') {
+                    this.fire('select-page', 1)
                 }
                 // console.log(e.target.is);
+            },
+            chagePageDetail: function (e) {
+                console.log(e.currentTarget.data);
+                // var item = e.currentTarget.data;
+                // var datas = {
+                //     id: item.id,
+                //     year: item.year
+                // }
+                // this.dispatchAction('LIST_EMPLOYEE_WELFARE', datas);
             }
         });
     </script>
