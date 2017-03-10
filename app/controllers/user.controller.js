@@ -386,7 +386,7 @@ exports.unapprove = function (req, res) {
         .merge((userName) => {
             return {
                 group_welfare_name: r.db('welfare').table('group_welfare').get(userName('group_id')).getField('group_welfare_name'),
-                prefixname_id: r.db('welfare_common').table('prefixname').get(userName('data').getField('prefixname_id')).getField('prefixname'),
+                prefix_name: r.db('welfare_common').table('prefix').get(userName('data').getField('prefix_id')).getField('prefix_name'),
                 firstname: userName('data').getField('firstname'),
                 lastname: userName('data').getField('lastname'),
                 department: r.db('welfare_common').table('department').get(userName('data').getField('department_id')).getField('department_name'),
