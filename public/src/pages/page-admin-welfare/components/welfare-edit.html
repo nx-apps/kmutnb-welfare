@@ -64,7 +64,7 @@
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
                             <div class="label_condition">เงื่อนไข</div>
                         </gl-grid-col>
-                        <!--[[checkField(item.field,index)]]-->
+                        [[checkField(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-combo-box id="[[index]]" items="[[condition]]" item-label-path="label" item-value-path="id" value="{{item.field}}" disabled="{{active}}"></gl-combobox>
                         </gl-grid-col>
@@ -141,7 +141,6 @@
         Polymer({
             is: 'welfare-edit',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
-            observers: ['checkField(item.field,index)'],
             properties: {
                 condition: {
                     statePath: 'listWelfare.condition'
