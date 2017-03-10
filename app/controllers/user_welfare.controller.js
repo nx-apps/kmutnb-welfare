@@ -120,10 +120,10 @@ exports.list = function (req, res) {
 exports.listId = function (req, res) {
     var r = req.r
     r.db('welfare').table('welfare')
-    .get(req.params.id)
-    .merge(function(m){
-        return r.db('welfare').table('group_welfare').get(m('group_id')).without('id')
-    })
+        .get(req.params.id)
+        .merge(function (m) {
+            return r.db('welfare').table('group_welfare').get(m('group_id')).without('id')
+        })
         // .eqJoin('group_id', r.db('welfare').table('group_welfare')).without({ right: 'id' }).zip()
         .merge(function (wel_merge) {
             return {
@@ -251,7 +251,7 @@ exports.groupByYear = function (req, res) {
     year = parseInt(req.params.year);
     r.db('welfare').table('group_welfare')
         .getAll(year, { index: 'year' })
-        .pluck('group_welfare_name', 'id')
+        .pluck('group_welfare_name', 'id', 'admin_use')
         .run()
         .then(function (data) {
             res.json(data)
@@ -356,6 +356,12 @@ exports.adminEmployee = function (req, res) {
             return {
                 value_use: r.db('welfare').table('history_welfare').getAll(emp_merge('id'), { index: 'emp_id' })
                     .filter({ welfare_id: emp_merge('welfare_id') }).sum('use_budget')
+            }
+        })
+        .merge(function (emp_merge) {
+            return {
+                admin_use: r.branch(emp_merge('value_budget').sub(emp_merge('value_use')).le(0),
+                    false, true)
             }
         })
         .eqJoin('academic_id', r.db('welfare_common').table('academic')).without({ right: 'id' }).zip()
