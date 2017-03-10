@@ -33,7 +33,7 @@
                 border: 1px solid #ddd;
             }
         </style>
-
+<paper-button raised on-tap="getbt">ทดสอบปุ่ม</paper-button>
         <div style="padding:20px;">
 
             <paper-material elevation="1">
@@ -109,7 +109,9 @@
 
         </div>
 
-
+        
+        
+        
         <template is="dom-if" if="{{tableStatus}}">
             <div class="table-detail">
                 <paper-material elevation="1">
@@ -228,10 +230,12 @@
                 this.set('disabled', this.active = true);
             },
             checkField: function (e, index) {
+                this.async(()=>{
                 try {
-                    // console.log(e, index);
-                    var combobox = Polymer.dom(this.root).querySelector('#symbo-' + index);
-                    // console.log(combobox.items);
+                    console.log(e, index);
+                    // console.log('ddddddd',document.getElementById(symbo-1));
+                    var combobox = Polymer.dom(this.root).querySelector('#symbo-'+index);
+                    console.log('fffff',combobox);
                     var id = e;
                     var symbol = this.condition.filter((val) => val.id == id)[0]
                     // console.log(symbol);
@@ -240,8 +244,13 @@
                 } catch (error) {
 
                 }
+                 },1);    
+            },
+            getbt(){
+                console.log(Polymer.dom(this.root).querySelector('#symbo-1'));
             },
             checkValue: function (e, index) {
+                this.async(()=>{
                 try {
                     var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
                     var id = e;
@@ -259,6 +268,7 @@
                 } catch (error) {
 
                 }
+                },1); 
             },
             _edit: function () {
                 this.set('disabled', this.active = false);
@@ -270,9 +280,10 @@
             },
             valueChanged: function (e) {
                 var id = e.detail.value;
-                var combobox = Polymer.dom(this.root).querySelector('#symbo-');
-                var symbol = this.condition.filter((val) => val.id == id)[0]
-                console.log(symbol);
+                console.log('cccccc',id);
+                // var combobox = Polymer.dom(this.root).querySelector('#symbo-');
+                // var symbol = this.condition.filter((val) => val.id == id)[0]
+                // console.log(symbol);
                 // combobox.items = symbol.conditions;
             }
         });
