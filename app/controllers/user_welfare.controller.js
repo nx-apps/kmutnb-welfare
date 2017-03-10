@@ -1,4 +1,4 @@
-/*exports.list = function (req, res) {
+exports.list = function (req, res) {
     var r = req.r
     r.db('welfare').table('welfare')
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).without({ right: 'id' }).zip()
@@ -230,7 +230,7 @@ exports.listId = function (req, res) {
         .catch(function (err) {
             res.status(500).json(err)
         })
-}*/
+}
 exports.groupYear = function (req, res) {
     var r = req.r;
     r.db('welfare').table('group_welfare')
