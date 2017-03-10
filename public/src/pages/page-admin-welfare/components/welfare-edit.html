@@ -25,8 +25,9 @@
             
             .table-detail {
                 margin: auto;
-                width: 80%;
-                padding: 20px;
+                width: 96%;
+                padding: 20px 20px 100px 20px;
+                
             }
             
             table.gl-table-default {
@@ -94,7 +95,7 @@
                 <div class="horizontal layout">
                     <div hidden="{{!active}}" class="btn-bottom">
                         <paper-button raised class="gl-btn-danger" on-tap="back">ย้อนกลับ</paper-button>
-                        <paper-button raised class="gl-btn-success" on-tap="list_users">ดูสมาชิก</paper-button>
+                        <paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
                         
                     </div>
                 </div>
@@ -115,13 +116,19 @@
                     <table class="gl-table-default">
                         <thead class="table-head">
                             <tr>
+                                <th style="text-align:center">เลขบัตรประชาชน</th>
                                 <th style="text-align:center">ชื่อ</th>
+                                <th style="text-align:center">ตำแหน่ง</th>
+                                <th style="text-align:center">แผนก</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">
                             <template is="dom-repeat" items="{{data.employee}}">
                                 <tr>
-                                    <td style="text-align:center">[[item.name]]</td>
+                                    <td>[[item.personal_id]]</td>
+                                    <td>[[item.prefixname]] [[item.name]] [[item.surname]]</td>
+                                    <td>[[item.position_name]]</td>
+                                    <td>[[item.department_name]]</td>
                                 </tr>
                             </template>
                         </tbody>
@@ -256,6 +263,7 @@
             },
             list_users: function () {
                 this.tableStatus = true;
+                console.log(this.data);
             }
         });
     </script>
