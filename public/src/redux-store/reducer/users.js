@@ -155,10 +155,10 @@ export function usersAction(store){
                 // console.log(data)
                 store.dispatch({type:'USER_INSERT_VIEW',payload:data})
             },
-            USER_GET_WELFARES(id,otherFunction=false,year=new Date().getFullYear()+543){
-                console.log('otherFunction',year)
+            USER_GET_WELFARES(id,otherFunction=false,year=new Date().getFullYear()){
+                console.log('otherFunctioncdddd',year)
                  this.fire('toast',{status:'load'});
-                    axios.get(`./user/welfares/id/${id}`)
+                    axios.get(`./user/welfares/year/${year}/id/${id}`)
                     .then(res=>{
                         console.log(res)
                         this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
