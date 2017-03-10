@@ -94,7 +94,7 @@
                 this.pages = '0';
             },
             _edit:function(e){
-                console.log(e.currentTarget.data);
+                // console.log(e.currentTarget.data);
                 var id = e.currentTarget.data.id;
                 this.dispatchAction('WELFARE_DATA_SELECT', id)
                 this.dispatchAction('CONDITION_LIST')
