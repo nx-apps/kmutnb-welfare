@@ -19,14 +19,14 @@
             <fieldset>
                 <legend>ข้อมูลส่วนตัว :</legend>
                 <div class="from layout horizontal">
-                    <div class="flex layout horizontal">
+                    <!--<div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="emp_id">รหัสพนักงาน :</label>
                         </div>
                         <div class="flex-2">
                             <gl-form-input id="emp_id" no-label-float value="{{data.emp_id}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                         </div>    
-                    </div>
+                    </div>-->
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="personal_id" >รหัสบัตรประชาชน :</label>
@@ -93,7 +93,7 @@
                         </div> -->
                     </div>
                 </div>
-                <div class="from layout horizontal">  
+                <!--<div class="from layout horizontal">  
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="relation" >ความสัมพัธ์ :</label>
@@ -110,11 +110,19 @@
                         <gl-form-input id="name" no-label-float value="{{data.surname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                         </div> 
                     </div>
-                </div>
+                </div>-->
             </fieldset>
             <fieldset>
                 <legend>ข้อมูลพนักงาน :</legend>
-                <div class="from layout horizontal"> 
+                <div class="from layout horizontal">
+                    <div class="flex layout horizontal">
+                        <div class="flex label">
+                            <label for="emp_id">รหัสพนักงาน :</label>
+                        </div>
+                        <div class="flex-2">
+                            <gl-form-input id="emp_id" no-label-float value="{{data.emp_id}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                        </div>    
+                    </div> 
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="start_work_date" >วันที่เริ่มทำงาน :</label>
@@ -123,6 +131,9 @@
                             <vaadin-date-picker always-float-label  value="{{data.start_work_date}}"disabled="[[disabled]]" class="required" required></vaadin-date-picker>
                         </div> 
                     </div> 
+                    
+                </div>
+                <div class="from layout horizontal"> 
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="active_id">สถานณะการทำงานปัจจุบัน :</label>
@@ -131,8 +142,6 @@
                             <gl-combo-box id="active_id" no-label-float items="{{active}}" value="{{data.active_id}}"  item-label-path="active_name" item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
                         </div> 
                     </div>
-                </div>
-                <div class="from layout horizontal"> 
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="type_emp_name" >ประเภทลูกจ้าง :</label>
@@ -141,6 +150,9 @@
                             <gl-combo-box id="type_emp_name"no-label-float items="{{type_employee}}" value="{{data.type_employee_id}}" item-label-path="type_emp_name" item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
                         </div> 
                     </div> 
+                    
+                </div>
+                <div class="from layout horizontal"> 
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="position">ตำแหน่ง :</label>
@@ -149,8 +161,6 @@
                             <gl-combo-box id="position" no-label-float items="{{position}}" value="{{data.position_id}}"  item-label-path="position_name" item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
                         </div> 
                     </div>
-                </div>
-                <div class="from layout horizontal"> 
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="matier_id" >ระดับทางวิชาการ :</label>
@@ -159,6 +169,9 @@
                             <gl-combo-box id="matier_id" no-label-float items="{{matier}}" value="{{data.matier_id}}"  item-label-path="matier_name" item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
                         </div> 
                     </div> 
+                    
+                </div>
+                <div class="from layout horizontal"> 
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="academic">ตำแหน่งทางวิชาการ :</label>
@@ -168,7 +181,7 @@
                                 item-label-path="academic_name" item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
                         </div> 
                     </div>
-                </div>
+                 </div>       
                 <div class="from layout horizontal"> 
                     
                         <div class="flex label">

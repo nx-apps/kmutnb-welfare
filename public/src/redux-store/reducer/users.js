@@ -19,14 +19,14 @@ const clearData = (data,callback)=>{
     //     newData.period.push({no:tag.no,quality:tag.quality});
     // });
     newData.start_work_date = new Date (data.start_work_date).toISOString();
-    newData.birthday = new Date (data.birthday).toISOString();
+    newData.birthdate = new Date (data.birthdate).toISOString();
         callback(newData)
     // callback(data)
 }
 const clearDataWalfare = (data,callback)=>{
     
-    let {emp_id,welfare_id,use_budget,status,year}=data;
-    let newData={emp_id,welfare_id,use_budget,status,year};
+    let {emp_id,welfare_id,use_budget,status,year,group_id}=data;
+    let newData={emp_id,welfare_id,use_budget,status,year,group_id};
     // console.log(data.date/use_welfare/update_use == '');
     
     if (data.date_use == '' || data.date_use == undefined) {

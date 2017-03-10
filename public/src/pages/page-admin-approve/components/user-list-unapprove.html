@@ -1,4 +1,6 @@
 
+<link rel="import" href="./../../components/common-logic.html">
+
 <link rel="import" href="./dialog-approve-walfare.html">
 
 <dom-module id="user-list-unapprove">
@@ -17,6 +19,7 @@
                     <tr>
                         <th>ลำดับ</th>
                         <th>ชื่อ - นามสกุล</th>
+                        <th>สวัสดิการที่ขอใช้</th>
                         <th>กอง</th>
                         <th>คณะ</th>
                         <th>กระทำ</th>
@@ -26,8 +29,9 @@
                     
                     <template is="dom-repeat" items={{listUserFalse}} >
                         <tr>
-                            <td>[[index]]</td>
+                            <td>[[_Obindex(index)]]</td>
                             <td>[[item.prefixname_id]] [[item.name]] [[item.surname]]</td>
+                            <td>[[item.group_welfare_name]]</td>
                             <td>[[item.department]]</td>
                             <td>[[item.faculty]]</td>
                             <td>
@@ -52,7 +56,7 @@
         Polymer({
             is: 'user-list-unapprove',
             behaviors: [
-                ReduxBehavior,
+                ReduxBehavior,commonLogic
             ],
             properties:{
                 listUserFalse:{
