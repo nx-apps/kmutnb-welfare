@@ -84,7 +84,18 @@
                }
             },
             select_welfare:function(id){
-                if(id != ""){
+                 if(id != ""){
+                    var getid = id;
+                    var dataFilter = this.listWelfare.filter((item)=>{
+                        return item.id == id;
+                    })
+                    var getStatus;
+                    dataFilter.map((item)=>{
+                        getStatus = item.admin_use;
+                    })
+                    console.log(getStatus);
+                    this.$$('list-user').checkBox = getStatus;
+                // if(id != ""){
                     this.$$('list-user').selectTable(false)
                     this.LIST_USER_SERARCH(id);
                 }
