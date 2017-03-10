@@ -27,7 +27,6 @@
                 margin: auto;
                 width: 96%;
                 padding: 20px 20px 100px 20px;
-                
             }
             
             table.gl-table-default {
@@ -66,7 +65,8 @@
                         </gl-grid-col>
                         [[checkField(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="[[index]]" items="[[condition]]" item-label-path="label" item-value-path="id" value="{{item.field}}" disabled="{{active}}"></gl-combobox>
+                            <gl-combo-box on-value-changed="valueChanged" id="[[index]]" items="[[condition]]" item-label-path="label" item-value-path="id"
+                                value="{{item.field}}" disabled="{{active}}"></gl-combobox>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}" disabled="{{active}}"></gl-combobox>
@@ -96,7 +96,7 @@
                     <div hidden="{{!active}}" class="btn-bottom">
                         <paper-button raised class="gl-btn-danger" on-tap="back">ย้อนกลับ</paper-button>
                         <paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
-                        
+
                     </div>
                 </div>
                 <div class="horizontal end-justified layout">
@@ -267,6 +267,13 @@
                 var id = this.data.id
                 this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
                 this.tableStatus = true;
+            },
+            valueChanged: function (e) {
+                var id = e.detail.value;
+                var combobox = Polymer.dom(this.root).querySelector('#symbo-');
+                var symbol = this.condition.filter((val) => val.id == id)[0]
+                console.log(symbol);
+                // combobox.items = symbol.conditions;
             }
         });
     </script>

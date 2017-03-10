@@ -88,7 +88,7 @@
                             </thead>
                             <tbody class="table-body">
                                 <template is="dom-repeat" items={{listSearch}}>
-                                    <tr on-tap="chagePage">
+                                    <tr on-tap="chagePage" data="[[item]]">
                                         <td style="text-align: center" hidden="{{!checkBox}}">
                                             <paper-checkbox checked="{{item.check}}" disabled="{{!item.admin_use}}"></paper-checkbox>
                                         </td>
@@ -229,6 +229,13 @@
                 }
             },
             chagePage:function(e){
+                var item = e.currentTarget.data;
+                var datas = {
+                    id : item.emp_id,
+                    year : item.year
+                }
+                // console.log(datas);
+                this.dispatchAction('LIST_EMPLOYEE_WELFARE',datas);
                 var check = e.target.is;
                 if(check != 'paper-checkbox'){
                     this.fire('select-page',1)

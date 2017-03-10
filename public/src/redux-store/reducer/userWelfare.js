@@ -6,7 +6,8 @@ const initialState = {
     select: {},
     list_id: [],
     list_user: [],
-    listSearch:[]
+    listSearch:[],
+    welfare_employee:[]
 }
 
 export function userWelfareReducer(state = initialState, action) {
@@ -20,6 +21,8 @@ export function userWelfareReducer(state = initialState, action) {
             return Object.assign({}, state, { list_user: action.payload });
         case 'LIST_USER_SERARCH':
             return Object.assign({}, state, { listSearch: action.payload });
+        case 'LIST_EMPLOYEE_WELFARE':
+            return Object.assign({}, state, { welfare_employee: action.payload });
         default:
             return state
     }
@@ -96,6 +99,17 @@ export function userWelfareAction(store) {
                 console.log('error');
                 console.log(error);
             });
+        },
+        LIST_EMPLOYEE_WELFARE: function (data) {
+            // console.log(data);
+            axios.get('./user/welfares/year/'+data.year+'/id/' + data.id)
+                .then(function (result) {
+                    // console.log(result.data);
+                    store.dispatch({ type: 'LIST_EMPLOYEE_WELFARE', payload: result.data })
+                })
+                .catch(err => {
+
+                })
         }   
     }
     ]
