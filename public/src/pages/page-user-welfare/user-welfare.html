@@ -42,7 +42,7 @@
                     <fieldset>
                         <legend>ข้อมูลพนักงาน :</legend>
                         <div class="flex content horizontal start-justified layout">
-                                <div class="flex">ชื่อ : [[data.prefixname_name]] [[data.name]] [[data.surname]]</div>
+                                <div class="flex">ชื่อ : [[data.prefix_name]] [[data.firstname]] [[data.lastname]]</div>
                                 <div class="flex">รหัสพนักงาน : [[data.emp_id]]</div>
                         </div>
                         <div class="flex content horizontal start-justified layout">
@@ -84,7 +84,7 @@
                             <template is="dom-repeat" items={{data.welfare}} >
                                 <tr>
                                     <td>[[_Obindex(index)]]</td>
-                                    <td>[[item.name]]</td>
+                                    <td>[[item.group_welfare_name]]</td>
                                     <td>[[formatNumber(item.budget_balance)]]</td>
                                     <td>[[formatNumber(item.budget)]]</td>
                                     <td><paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]"disabled="[[_checkAdmin(item.status_approve,item.admin_use)]]">ขอใช้</paper-button></td>
@@ -205,6 +205,7 @@
             },
             usewelfare(e){
                 let data = new Object();
+                console.log(this.data.id);
                 data.title = e.currentTarget.data.name
                 data.emp_id = this.data.id
                 data.welfare_id = e.currentTarget.data.welfare_id

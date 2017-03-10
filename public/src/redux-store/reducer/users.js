@@ -12,8 +12,8 @@ const initialState = {
 }
 const clearData = (data,callback)=>{
 
-    let {prefixname_id,name,surname,gender_id,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id,emp_id,personal_id}=data;
-    let newData={prefixname_id,name,surname,gender_id,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id,emp_id,personal_id};
+    let {prefix_id,firstname,lastname,gender_id,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id,emp_id,personal_id}=data;
+    let newData={prefix_id,firstname,lastname,gender_id,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,relation_id,emp_id,personal_id};
     // newData.period = new Array();
     // data.period.map((tag)=>{
     //     newData.period.push({no:tag.no,quality:tag.quality});
