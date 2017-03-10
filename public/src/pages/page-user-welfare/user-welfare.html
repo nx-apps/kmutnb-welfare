@@ -1,7 +1,7 @@
 <link rel="import" href="./../components/format-number-behavior.html">
 <link rel="import" href="./../components/common-logic.html">
 
-<link rel="import" href="./components/dialog-use-walfare.html">
+<link rel="import" href="./components/dialog-use-welfare.html">
 
 <dom-module id="user-welfare">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
@@ -54,6 +54,10 @@
                                 <div class="flex">คณะ : [[data.faculty_name]]</div>
                         </div>
                     </fieldset>
+                    <div class="content horizontal start-justified layout">
+                        <gl-combo-box no-label-float items="{{gender}}" value="{{data.gender_id}}" 
+                                item-label-path="gender_name" item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                    </div>
                 </gl-form-panel-body>
 
  <gl-form-panel-body label="" set-padding="10px" set-border="1px">
@@ -79,7 +83,7 @@
                                     <td>[[item.name]]</td>
                                     <td>[[formatNumber(item.budget_balance)]]</td>
                                     <td>[[formatNumber(item.budget)]]</td>
-                                    <td><paper-button class="gl-btn-primary gl-small"raised on-tap="useWalfare" data="[[item]]"disabled="[[item.status_approve]]">ขอใช้</paper-button></td>
+                                    <td><paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]"disabled="[[item.status_approve]]">ขอใช้</paper-button></td>
                                 </tr>
                             </template>
                             <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
@@ -138,10 +142,10 @@
                 </gl-form-panel-footer>-->
             </gl-form-panel>
         <!--</paper-material>-->
-<paper-dialog id="walfare_budget" >
-        <dialog-use-walfare data="{{useWalfareProp}}"></dialog-use-walfare>
+<paper-dialog id="welfare_budget" >
+        <dialog-use-welfare data="{{usewelfareProp}}"></dialog-use-welfare>
         <div class="flex horizontal end-justified layout">
-            <paper-button raised class="gl-btn-primary" on-tap="getWalfare">ใช้งาน</paper-button>
+            <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้งาน</paper-button>
         </div>
 </paper-dialog>
         
@@ -154,7 +158,7 @@
                 data:{
                     statePath:'users.select_welefares'
                 },
-                useWalfareProp:{
+                usewelfareProp:{
                     statePath:'users.select_use_welefares',
                     type:Object,
                 },
@@ -170,7 +174,7 @@
             _Obindex(index){
                 return index+1
             },
-            useWalfare(e){
+            usewelfare(e){
                 let data = new Object();
                 data.title = e.currentTarget.data.name
                 data.emp_id = this.data.id
@@ -180,13 +184,13 @@
                 data.year = new Date().getFullYear()
                 data.group_id = e.currentTarget.data.group_id
                 
-                this.$$('#walfare_budget').open()
+                this.$$('#welfare_budget').open()
                 this.dispatchAction('USER_USE_SELETE_WELFARE',data);
             },
-            getWalfare(){
-                // console.log(this.useWalfareProp);
-                this.$$('#walfare_budget').close()
-                this.dispatchAction('USER_USE_WELFARE',this.useWalfareProp);
+            getwelfare(){
+                // console.log(this.usewelfareProp);
+                this.$$('#welfare_budget').close()
+                this.dispatchAction('USER_USE_WELFARE',this.usewelfareProp);
             },
             
             deleteHistoryWelfare(e){

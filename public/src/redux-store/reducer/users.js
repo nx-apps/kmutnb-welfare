@@ -23,7 +23,7 @@ const clearData = (data,callback)=>{
         callback(newData)
     // callback(data)
 }
-const clearDataWalfare = (data,callback)=>{
+const clearDatawelfare = (data,callback)=>{
     
     let {emp_id,welfare_id,use_budget,status,year,group_id}=data;
     let newData={emp_id,welfare_id,use_budget,status,year,group_id};
@@ -176,7 +176,7 @@ export function usersAction(store){
             },
             USER_USE_WELFARE(data){
             // console.log(data);
-            clearDataWalfare(data,(newData)=>{
+            clearDatawelfare(data,(newData)=>{
                 
                 this.fire('toast',{status:'load'});
                 // newData.status = true;
@@ -186,7 +186,7 @@ export function usersAction(store){
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                             callback:()=>{
                                 // this.$$('panel-right').close();
-                                // this.$$('#walfare_budget').close()
+                                // this.$$('#welfare_budget').close()
                             }
                         });
                     })
@@ -197,7 +197,7 @@ export function usersAction(store){
             },
             USER_USE_WELFARE_APPROVE(data){
             // console.log(data);
-            clearDataWalfare(data,(newData)=>{
+            clearDatawelfare(data,(newData)=>{
                 newData.id = data.id;
                 this.fire('toast',{status:'load'});
                 newData.status = true;
@@ -207,7 +207,7 @@ export function usersAction(store){
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                             callback:()=>{
                                 // this.$$('panel-right').close();
-                                // this.$$('#walfare_budget').close()
+                                // this.$$('#welfare_budget').close()
                             }
                         });
                     })
