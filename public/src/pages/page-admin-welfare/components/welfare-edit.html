@@ -204,7 +204,7 @@
                 }
                 this.data.condition.map((val)=>{
                     if(typeof val.conditions == 'object'){
-                        delete val['conditions','field'];
+                        delete val['conditions','data_source'];
                     }
                 })
                 // this.data.budget = this.unFormat(this.data.budget);
