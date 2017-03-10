@@ -355,7 +355,8 @@ exports.adminEmployee = function (req, res) {
         .merge(function (emp_merge) {
             return {
                 value_use: r.db('welfare').table('history_welfare').getAll(emp_merge('id'), { index: 'emp_id' })
-                    .filter({ welfare_id: emp_merge('welfare_id') }).sum('use_budget')
+                    .filter({ welfare_id: emp_merge('welfare_id') }).sum('use_budget'),
+                emp_id: emp_merge('id')
             }
         })
         .merge(function (emp_merge) {
@@ -373,6 +374,7 @@ exports.adminEmployee = function (req, res) {
         .eqJoin('position_id', r.db('welfare_common').table('position')).without({ right: 'id' }).zip()
         .eqJoin('prefixname_id', r.db('welfare_common').table('prefixname')).without({ right: 'id' }).zip()
         .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).without({ right: 'id' }).zip()
+        .without('id')
         .run()
         .then(function (data) {
             res.json(data);
