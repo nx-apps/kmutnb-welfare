@@ -94,7 +94,10 @@
               if(fileChange.path=='file.complete'){
                 if(fileChange.base.xhr){
                   var res = JSON.parse(fileChange.base.xhr.response);
-                  this.dispatchAction('UPLOAD_FILECHANGE',res.generated_keys[0]);
+                  console.log(res.generated_keys[0]);
+                  this.getData = res.generated_keys;
+                 
+                //   this.dispatchAction('UPLOAD_FILECHANGE',res.generated_keys[0]);
                   // axios.get('/document_file/id/'+res.generated_keys[0])
                   // .then((response)=> {
                   //   this.fileIdUpload = response.data.file_id;
@@ -130,7 +133,8 @@
                     }else{
                         idFile = e.currentTarget.fileId
                     }
-                    window.location = '/api/upload/file/'+idFile;
+                    // window.location = '/api/upload/download/'+idFile;
+                    window.open('/api/upload/download/'+idFile);
                 }
             },
             _deleteFile:function(e){
@@ -142,7 +146,7 @@
                   idFile = e.target.fileId
                   console.log("ID File = "+idFile);
                 }
-                this.fire('toast',{status:'dialog',
+                this.fire('toast',{status:'openDialog',
                 text:'คุณต้องการจะลบไฟล์ใช่หรือไม่ ?',
                 confirmed : this._confirmToast.bind(this),
                 datas : idFile

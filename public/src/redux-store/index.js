@@ -11,6 +11,7 @@ import {welfareReducer,welfareAction} from './reducer/welfare'
 import {commonDataReducer,commonDataAction} from './reducer/commonData'
 import {usersReducer,usersAction} from './reducer/users'
 import {conditionReadWelfareReducer,conditionReadWelfareAction} from './reducer/conditionReadWelfare'
+import {uploadReducer,uploadAction} from './reducer/upload'
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
     auth:authReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     commonData:commonDataReducer,
     users:usersReducer,
     conditionReadWelfare:conditionReadWelfareReducer,
+    upload:uploadReducer,
 });
 const storeApp = createStore(
     rootReducer,
@@ -39,3 +41,4 @@ window.welfareAction = welfareAction(storeApp);
 window.commonDataAction = commonDataAction(storeApp); 
 window.usersAction = usersAction(storeApp);
 window.conditionReadWelfareAction = conditionReadWelfareAction(storeApp);
+window.uploadAction = uploadAction(storeApp);
