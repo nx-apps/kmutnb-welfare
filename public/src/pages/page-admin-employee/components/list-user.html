@@ -154,11 +154,19 @@
                    return item.check == true;
                })
                var saveData = newData.map((item)=>{
-                   let {group_id,year,emp_id,welfare_id,value_use} = item;
-                   let newItem = {group_id,year,emp_id,welfare_id,value_use};
+                   var newItem = {
+                       group_id : item.group_id,
+                       year : item.year,
+                       emp_id : item.emp_id,
+                       welfare_id : item.welfare_id,
+                       use_budget : item.value_use,
+                       date_approve: new Date().toISOString(),
+                       date_use: new Date().toISOString(),
+                       status: true
+                    };
                    return newItem;
                })
-               console.log(saveData);
+               this.dispatchAction('USER_INSERT',saveData)
             },
             selectTable:function(id){
                 if(id == true){

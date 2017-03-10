@@ -71,6 +71,7 @@ export function userWelfareAction(store) {
                 })
         },
         LIST_USER_SERARCH:function(id){
+            this.userSearch = id;
             axios.get('./user_welfare/adminEmployee/'+id)
             .then((response)=>{
                 //  console.log(JSON.stringify(response.data));
@@ -80,8 +81,25 @@ export function userWelfareAction(store) {
                 console.log('error');
                 console.log(error);
             });
-        }
+        },
+         USER_INSERT:function(data){
+            this.fire('toast',{status:'load'});
+            axios.post('./user/use_welfare/',data)
+            .then((response)=>{
+                this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                  callback:()=>{
+                       this.LIST_USER_SERARCH(this.userSearch);
+                  }
+                 });
+            })
+            .catch((error)=>{
+                console.log('error');
+                console.log(error);
+            });
+        }   
     }
     ]
+   
+    // ./user/use_welfare/
 
 }
