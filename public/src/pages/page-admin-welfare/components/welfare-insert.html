@@ -45,17 +45,33 @@
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
                             <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
                         </gl-grid-col>
-                        [[checkField(item.field,index)]]
+                        <!--[[checkField(item.field,index)]]-->
+                        [[getfield(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="field-[[index]]" items="[[item.condition]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>
+                            <gl-combo-box id="field-[[index]]" items="[[item.itemField]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}"></gl-combobox>
+                            
+                            <gl-form-dropdown-menu style="margin-top: 15px" placeholder="{{item.itemLogic.length}}">
+                                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.logic_show}}">
+                                    <template is="dom-repeat" items="{{item.itemLogic}}">
+                                        <paper-item value="{{item.symbol}}">{{item.name}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                            </gl-form-dropdown-menu>
+                            <!--<gl-combo-box id="symbo-[[index]]" items="[[item.itemLogic]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}"></gl-combobox>-->
                         </gl-grid-col>
                         [[checkValue(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                             <div id="combobox-[[index]]" hidden>
-                                <gl-combo-box id="value-combo-[[index]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}"></gl-combobox>
+                                <gl-form-dropdown-menu style="margin-top: 15px" placeholder="{{item.itemValue.length}}">
+                                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.value_show}}">
+                                        <template is="dom-repeat" items="{{item.itemValue}}">
+                                            <paper-item value="{{item.id}}">{{item.name}}</paper-item>
+                                        </template>
+                                    </paper-listbox>
+                                </gl-form-dropdown-menu>
+                                <!--<gl-combo-box id="value-combo-[[index]]" items="[[item.itemValue]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}"></gl-combobox>-->
                             </div>
                             <div id="input-[[index]]" hidden>
                                 <gl-form-input value="{{item.value_show}}"></gl-form-input>
@@ -81,25 +97,20 @@
         Polymer({
             is: 'welfare-insert',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
-            observers:['getfield(data.condition.*)'],
             properties: {
                 condition: {
                     statePath: 'listWelfare.condition',
                     observer:'setCondition'
                 },
-                data: {
-                    type: Object,
-                    value:
-                    {
-                        condition: [
-                            { field: '', logic: '', value: '' }
-                        ]
-                    },
-                    notify: true
-                },
                 active: {
                     type: Boolean,
                     value: true
+                },
+                data:{
+                    type: Object,
+                    value:{
+                        condition:[],
+                    }
                 }
                 // value: {
                 //     type: Array,
@@ -107,27 +118,70 @@
                 // }
             },
             add_condition:function () {
-                this.push('data.condition', {condition:this.condition, field: '', logic: '', value: '' })
+                this.push('data.condition', {
+                    itemField: this.condition,
+                    field:'',
+                    itemLogic: '',
+                    logic_show: '',
+                    itemValue:'',
+                    value_show:''
+                })
             },
-            setCondition:function(){
-                
-            },
-            getfield:function(filed){
-                // console.log('*',filed);
-                for (var index = 0; index < filed.base.length; index++) {
-                    var id = filed.base[index].field;
-                    // console.log(filter);
-                    // console.log(id);
-                    // var condition = this.condition[index]
-                    if(typeof this.condition != 'undefined'){
-                        // console.log(this.condition);
-                        var filter = this.condition.filter((item)=>{
-                            return id == item.id
-                        })
-                        console.log(filter);
-                    }
-                    
+            setCondition:function(data){
+                // console.log(data);
+                if(data.length != 0){
+                    this.push('data.condition', {
+                        itemField: this.condition,
+                        field:'',
+                        itemLogic: '',
+                        logic_show: '',
+                        itemValue:'',
+                        value_show:''
+                    })
                 }
+               
+            },
+            getfield:function(id,index){
+                this.set('data.condition.'+index+'.logic_show','');
+                this.set('data.condition.'+index+'.value_show','');
+                if(id != ""){
+                    //  console.log(id);
+                     var filter = this.condition.filter((item)=>{
+                         return item.id == id;
+                     })
+                     var getcodition
+                     var getitemValue 
+                     filter.map((item)=>{
+                        getcodition = item.conditions;
+                        getitemValue = item.data;
+
+                     })
+                     console.log(getcodition);
+                     this.set('data.condition.'+index+'.itemLogic',getcodition);
+                     this.set('data.condition.'+index+'.itemValue',getitemValue);
+                     console.log(this.data.condition);
+                }
+                // console.log('*',filed);
+                // for (var index = 0; index < filed.base.length; index++) {
+                //     var id = filed.base[index].field;
+                //     // console.log(filter);
+                //     // console.log(id);
+                //     // var condition = this.condition[index]
+                //     if(typeof this.condition != 'undefined'){
+                //         // console.log(this.condition);
+                //         var filter = this.condition.filter((item)=>{
+                //             return id == item.id
+                //         })
+                //         var getCondition = [];
+                //         filter.map((item)=>{
+                //             getCondition = item.conditions;
+                //         });
+                //         console.log(getCondition);
+                //         // console.log(filter);
+                //         this.set('data.condition.'+index+'.itemLogic',getCondition)
+                //     }
+                    
+                // }
             },
             save: function () {
                 for (var i = 0; i < this.data.condition.length; i++) {
@@ -169,8 +223,25 @@
                 }
                 this.data.budget = this.unFormat(this.data.budget);
                 this.set('data.group_id', this.datas.id);
-                // console.log(this.data);
-                this.dispatchAction('WELFARE_INSERT', this.data)
+                console.log(this.data);
+                var newItem = {
+                    budget:this.data.budget,
+                    group_id: this.data.group_id,
+                    welfare_name: this.data.welfare_name,
+                    condition: this.data.condition.map((item)=>{
+                        var newItem = {
+                            field: item.field,
+                            logic: item.logic,
+                            logic_show: item.logic_show,
+                            value: item.value,
+                            value_show: item.value_show
+                        }
+                        return newItem;
+                    })
+                  
+                }
+                // console.log(newItem);
+                this.dispatchAction('WELFARE_INSERT', newItem)
             },
             delete_condition: function (e) {
                 // console.log(e.target.index);

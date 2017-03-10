@@ -82,8 +82,12 @@
                     value : '0'
                 },
                 list:{
-                    statePath: 'welfare.list_id'
+                    statePath: 'welfare.list_id',
+                    observer:'getData'
                 }
+            },
+            getData:function(data){
+                console.log('11111',data);
             },
             _insert:function(){
                 this.pages = '1';
