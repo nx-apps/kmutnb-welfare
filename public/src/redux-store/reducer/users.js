@@ -216,14 +216,14 @@ export function usersAction(store){
                     })
                 })
             },
-            USER_DELETE_USE_WELFARE(data){
-                console.log(data);
+            USER_DELETE_USE_WELFARE(id){
+                // console.log(data);
                  this.fire('toast',{
                     status:'openDialog',
                     text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
                     confirmed:(result)=>{
                         if(result == true){
-                            axios.delete(`./user/use_welfare/delete/id/${data.history_welfare_id}`)
+                            axios.delete(`./user/use_welfare/delete/id/${id}`)
                             .then(res=>{
                                 this.dispatchAction('USERS_FALSE_LIST');
                                 this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',

@@ -55,8 +55,8 @@
                         </div>
                     </fieldset>
                     <div class="content horizontal start-justified layout">
-                        <gl-combo-box no-label-float items="{{gender}}" value="{{data.gender_id}}" 
-                                item-label-path="gender_name" item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                        <gl-combo-box no-label-float items="{{year}}" value="{{data.gender_id}}" 
+                                item-label-path="year" item-value-path="id" ></gl-combo-box>
                     </div>
                 </gl-form-panel-body>
 
@@ -166,6 +166,11 @@
                     type:Object,
                     value:{budget:0}
                 },
+                year :{
+                    statePath:'welfare.list_year',
+                    type:Number,
+                    
+                }
             },
             editData(){
                 this.fire('_get-user-edit',this.data)
