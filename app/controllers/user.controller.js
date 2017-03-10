@@ -112,114 +112,116 @@ exports.welfares = function (req, res) {
                 type_emp_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_emp_name'),
             }
         })
-        .merge((group_welfare)=>{
+        .merge((group_welfare) => {
             return {
-                group_welfare : r.db('welfare').table('group_welfare').getAll(year, {index:'year'})
-                .merge((welfare_conditions)=>{
-                    return {
-                        conditions : r.db('welfare').table('welfare').getAll(welfare_conditions('id'), {index:'group_id'})
-                        .merge((mer_id)=>{
-                            return {
-                                welfare_id : mer_id('id'),
-                                year : welfare_conditions('year'),
-                                admin_use : welfare_conditions('admin_use'),
-                                onetime : welfare_conditions('onetime'),
-                                group_welfare_name : welfare_conditions('group_welfare_name')
-                            }
-                        })
-                        .without('id')
-                        .coerceTo('array')
-                    }
-                })
-                .coerceTo('array')
-            }
-        })
-        .merge((welfare)=>{
-            return {
-                welfare:welfare('group_welfare').getField('conditions')
-                        .reduce(function(left, right) {
-                            return left.add(right);
-                        })
-                        .merge((conditions)=>{
-                            return{
-                                condition:conditions('condition').merge((changeName)=>{
+                group_welfare: r.db('welfare').table('group_welfare').getAll(year, { index: 'year' })
+                    .merge((welfare_conditions) => {
+                        return {
+                            conditions: r.db('welfare').table('welfare').getAll(welfare_conditions('id'), { index: 'group_id' })
+                                .merge((mer_id) => {
                                     return {
-                                        field:r.db('welfare').table('condition').get(changeName('field')).getField('field')
+                                        welfare_id: mer_id('id'),
+                                        year: welfare_conditions('year'),
+                                        admin_use: welfare_conditions('admin_use'),
+                                        onetime: welfare_conditions('onetime'),
+                                        group_welfare_name: welfare_conditions('group_welfare_name')
                                     }
                                 })
-                            }
-                        })
-                        .merge(function (we_m) {
-                            return {
-                                count: we_m('condition').count(),
-                                countpass: we_m('condition').map(function (con_map) {
-                                    return {
-                                        pass: welfare(con_map('field')).do(function (d) {
-                                            return r.branch(con_map('logic').eq(">="),
-                                                d.ge(con_map('value')),
-                                                r.branch(con_map('logic').eq(">"),
-                                                    d.gt(con_map('value')),
-                                                    r.branch(con_map('logic').eq("<="),
-                                                        d.le(con_map('value')),
-                                                        r.branch(con_map('logic').eq("<"),
-                                                            d.lt(con_map('value')),
-                                                            r.branch(con_map('logic').eq("=="),
-                                                                d.eq(con_map('value')),
-                                                                d.ne(con_map('value'))
-                                                            )
+                                .without('id')
+                                .coerceTo('array')
+                        }
+                    })
+                    .coerceTo('array')
+            }
+        })
+        .merge((welfare) => {
+            return {
+                welfare: welfare('group_welfare').getField('conditions')
+                    .reduce(function (left, right) {
+                        return left.add(right);
+                    })
+                    .merge((conditions) => {
+                        return {
+                            condition: conditions('condition').merge((changeName) => {
+                                return {
+                                    field: r.db('welfare').table('condition').get(changeName('field')).getField('field')
+                                }
+                            })
+                        }
+                    })
+                    .merge(function (we_m) {
+                        return {
+                            count: we_m('condition').count(),
+                            countpass: we_m('condition').map(function (con_map) {
+                                return {
+                                    pass: welfare(con_map('field')).do(function (d) {
+                                        return r.branch(con_map('logic').eq(">="),
+                                            d.ge(con_map('value')),
+                                            r.branch(con_map('logic').eq(">"),
+                                                d.gt(con_map('value')),
+                                                r.branch(con_map('logic').eq("<="),
+                                                    d.le(con_map('value')),
+                                                    r.branch(con_map('logic').eq("<"),
+                                                        d.lt(con_map('value')),
+                                                        r.branch(con_map('logic').eq("=="),
+                                                            d.eq(con_map('value')),
+                                                            d.ne(con_map('value'))
                                                         )
                                                     )
                                                 )
                                             )
-                                        })
-                                    }
-                                })
-                            }
-                        })
-                        .merge((e) => {
-                            return {
-                                countpass_total: e('countpass').filter({ "pass": true }).count()
-                            }
-                        })
-                        .merge((status) => {
-                            return {
-                                count_pass_status: status('countpass_total').eq(status('count')),
-                                id:welfare('id')
-                            }
-                        })
-                        .filter({ "count_pass_status": true })
-                        .merge((use_his) => {
-                            return {
-                                budget_use: r.db('welfare').table('history_welfare')
-                                    .filter(
-                                    {
-                                        status: true,
-                                        emp_id: welfare('id'),
-                                        welfare_id: use_his('welfare_id')
-                                    }
-                                    )
-                                    .sum('use_budget'),
-                            }
-                        })
-                        .merge((balance) => {
-                            return {
-                                budget_balance: balance('budget').sub(balance('budget_use')),
-                                budget_balance_check: balance('budget').sub(balance('budget_use')).le(0).branch(true, false)
-                            }
-                        })
-                        // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
-                        .filter({ "budget_balance_check": false })
-                        .without('condition','countpass')
+                                        )
+                                    })
+                                }
+                            })
+                        }
+                    })
+                    .merge((e) => {
+                        return {
+                            countpass_total: e('countpass').filter({ "pass": true }).count()
+                        }
+                    })
+                    .merge((status) => {
+                        return {
+                            count_pass_status: status('countpass_total').eq(status('count')),
+                            id: welfare('id')
+                        }
+                    })
+                    .filter({ "count_pass_status": true })
+                    .merge((use_his) => {
+                        return {
+                            budget_use: r.db('welfare').table('history_welfare')
+                                .getAll(welfare('id'), { index: 'emp_id' })
+                                .filter(
+                                {
+                                    status: true,
+                                    //  emp_id: welfare('id'),
+                                    welfare_id: use_his('welfare_id')
+                                }
+                                )
+                                .sum('use_budget'),
+                        }
+                    })
+                    .merge((balance) => {
+                        return {
+                            budget_balance: balance('budget').sub(balance('budget_use')),
+                            budget_balance_check: balance('budget').sub(balance('budget_use')).le(0).branch(true, false)
+                        }
+                    })
+                    // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
+                    .filter({ "budget_balance_check": false })
+                    .without('condition', 'countpass')
 
             }
         })
-        
+
         .merge((use_his) => {
             return {
 
                 history_welfare: r.db('welfare').table('history_welfare')
-                        .filter({emp_id:use_his('id'),year:year})
-                    // .getAll(use_his('id'), { index: 'emp_id' })
+                    // .filter({ emp_id: use_his('id'), year: year })
+                    .getAll(use_his('id'), { index: 'emp_id' })
+                    .filter({ year: year })
                     .merge((name_welfare) => {
                         return {
                             date_use: name_welfare('date_use').split('T')(0),
