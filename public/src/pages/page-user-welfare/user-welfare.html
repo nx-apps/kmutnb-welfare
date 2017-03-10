@@ -27,6 +27,9 @@
             .left {
                text-align: left; 
             }
+            .right {
+                text-align: right;
+            }
             fieldset {
                 margin: 15px;
             }
@@ -57,9 +60,8 @@
                     <div class="content horizontal start-justified layout">
                         [[setYear(year)]] 
                         <gl-combo-box no-label-float items="{{year}}" value="{{seleterYear}}" 
-                                item-label-path="year" item-value-path="year" ></gl-combo-box>
+                                item-label-path="year" item-value-path="year" on-value-changed="gerYearWelfare"></gl-combo-box>
                                 
-                        <paper-button raised on-tap="gerYearWelfare" class="gl-btn-info"> ค้นหา</paper-button>
                                 
                     </div>
                 </gl-form-panel-body>
@@ -73,9 +75,10 @@
                         <thead class="table-head">
                             <tr>
                                 <th style="width: 5%">ลำดับ</th>
-                                <th style="width: 50%">สวัสดิการที่สามารถใช้ได้</th>
-                                <th style="width: 15%">จำนวนเงินคงเหลือ</th>
+                                <th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>
                                 <th style="width: 15%">จำนวนเงินที่ได้</th>
+                                <th style="width: 15%">จำนวนเงินที่ใช้ไปแล้ว</th>
+                                <th style="width: 15%">จำนวนเงินที่คงเหลือ</th>
                                 <th style="width: 15%">ขอใช้</th>
                             </tr>
                         </thead>
@@ -85,8 +88,9 @@
                                 <tr>
                                     <td>[[_Obindex(index)]]</td>
                                     <td>[[item.group_welfare_name]]</td>
-                                    <td>[[formatNumber(item.budget_balance)]]</td>
-                                    <td>[[formatNumber(item.budget)]]</td>
+                                    <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
+                                    <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
+                                    <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
                                     <td><paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]"disabled="[[_checkAdmin(item.status_approve,item.admin_use)]]">ขอใช้</paper-button></td>
                                 </tr>
                             </template>
@@ -111,7 +115,7 @@
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
                                 <th style="width: 40%">สวัสดิการที่ใช้</th>
-                                <th style="width: 15%">จำนวนเงินที่ใช้</th>
+                                <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้</th>
                                 <th style="width: 15%">วันที่ขอใช้งาน</th>
                                 <th style="width: 20%">วันที่อนุมัติ</th>
                             </tr>
@@ -193,8 +197,10 @@
                 if (status_admin || status_user) 
                    return true
             },        
-            gerYearWelfare(){
-                console.log(this.seleterYear);
+            gerYearWelfare(e){
+             if (e.detail.value)
+                 this.dispatchAction('USER_GET_WELFARES','411e54dd-b808-4d4d-9984-201b68c70dff',true,e.detail.value-543);
+                
             },
             editData(){
                 this.fire('_get-user-edit',this.data)
@@ -205,7 +211,7 @@
             },
             usewelfare(e){
                 let data = new Object();
-                console.log(this.data.id);
+                // console.log(this.data.id);
                 data.title = e.currentTarget.data.name
                 data.emp_id = this.data.id
                 data.welfare_id = e.currentTarget.data.welfare_id

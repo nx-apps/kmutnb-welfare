@@ -6,7 +6,8 @@ const initialState = {
     select: {},
     list_id: [],
     dataSelect: {},
-    condition: []
+    condition: [],
+    employees:[]
 }
 
 export function listWelfareReducer(state = initialState, action) {
@@ -20,6 +21,8 @@ export function listWelfareReducer(state = initialState, action) {
             return Object.assign({}, state, { dataSelect: action.payload });
         case 'CONDITION_LIST':
             return Object.assign({}, state, { condition: action.payload });
+        case 'WELFARE_LIST_EMPLOYEE':
+            return Object.assign({}, state, { employees: action.payload });
         default:
             return state
     }
@@ -111,7 +114,7 @@ export function listWelfareAction(store) {
         },
         WELFARE_DATA_SELECT: function (val) {
             // console.log(val);
-            axios.get('/user_welfare/id/' + val)
+            axios.get('/list_welfare/' + val)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: result.data })
@@ -125,6 +128,17 @@ export function listWelfareAction(store) {
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'CONDITION_LIST', payload: result.data })
+                })
+                .catch(err => {
+
+                })
+        },
+        WELFARE_LIST_EMPLOYEE: function(id){
+            // console.log(id);
+            axios.get('/user_welfare/id/'+id)
+                .then(function (result) {
+                    // console.log(result.data);
+                    store.dispatch({ type: 'WELFARE_LIST_EMPLOYEE', payload: result.data })
                 })
                 .catch(err => {
 
