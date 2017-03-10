@@ -22,7 +22,14 @@
                 margin-left: 20px;
                 font-weight: bold;
             }
-           
+            paper-fab {
+                position: fixed;
+                right: 25px;
+                bottom: 25px;
+                color: #fff;
+                --paper-fab-background:var(--paper-light-blue-500);
+                --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+        }
         </style>
         <div class="container">
             <!--<div class="horizontal layout">
@@ -105,12 +112,16 @@
             </paper-material>
             
         </div>
-
+        <div hidden="{{paperFab}}">
+            <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
+        </div>
+        
     </template>
     <script>
         Polymer({
             is: 'list-user',
             behaviors: [ReduxBehavior],
+            observers:['showBtn(listSearch.*)'],
             properties: {
                 list: {
                     statePath:'userWelfare.list_user',
@@ -122,6 +133,10 @@
                     type: Boolean,
                     value: false,
                     observer:'hiddenCheckBox'
+                },
+                paperFab:{
+                    type:Boolean,
+                    value: true
                 }
             },
             checkData:function(data){
@@ -138,6 +153,18 @@
             hiddenCheckBox:function(check){
                 if(typeof check == 'undefined'){
                     this.checkBox = false;
+                }
+            },
+            showBtn:function(show){
+                var check = show.base.filter((item)=>{
+                    return item.check == true
+                })
+                console.log(check);
+                if(check.length != 0){
+                    this.paperFab = false;
+                }
+                else{
+                    this.paperFab = true;
                 }
             },
             selectAll:function(e){
@@ -163,25 +190,35 @@
             back_page:function(){
                 this.fire('back_page_welfare');
             },
-            insertData:function(){
-               var newData = this.listSearch.filter((item)=>{
-                   return item.check == true;
-               })
-               var saveData = newData.map((item)=>{
-                   var newItem = {
-                       group_id : item.group_id,
-                       year : item.year,
-                       emp_id : item.emp_id,
-                       welfare_id : item.welfare_id,
-                       use_budget : item.value_budget - item.value_use,
-                       date_approve: new Date().toISOString(),
-                       date_use: new Date().toISOString(),
-                       status: true
-                    };
-                   return newItem;
-               })
-            //    console.log(saveData);
-               this.dispatchAction('USER_INSERT',saveData)
+            confirmSend:function(){
+                this.fire('toast',{ 
+                 status:'openDialog',
+                 text:'ต้องการอนุมัติข้อมูลใช่หรือไม่ ?',
+                 confirmed:this.insertData.bind(this), 
+                 })
+            },
+            insertData:function(check){
+                if(check == true){
+                    var newData = this.listSearch.filter((item)=>{
+                        return item.check == true;
+                    })
+                    var saveData = newData.map((item)=>{
+                        var newItem = {
+                            group_id : item.group_id,
+                            year : item.year,
+                            emp_id : item.emp_id,
+                            welfare_id : item.welfare_id,
+                            use_budget : item.value_budget - item.value_use,
+                            date_approve: new Date().toISOString(),
+                            date_use: new Date().toISOString(),
+                            status: true
+                            };
+                        return newItem;
+                    })
+                    //    console.log(saveData);
+                    this.dispatchAction('USER_INSERT',saveData)
+                }
+              
             },
             selectTable:function(id){
                 if(id == true){

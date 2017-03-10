@@ -20,14 +20,6 @@
         table.gl-table-default {
             border: 1px solid #ddd;
         }
-         paper-fab {
-                position: fixed;
-                right: 25px;
-                bottom: 25px;
-                color: #fff;
-                --paper-fab-background:var(--paper-light-blue-500);
-                --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
-        }
     </style>
     <template>
         
@@ -57,7 +49,9 @@
                                 <div class="flexchild"></div>
                             </div>
                         </div>
+                         
                     </paper-material>
+                    
                 </div>
                 <div>
                     <list-user></list-user>
@@ -66,8 +60,9 @@
             <section>
                 <!--pages-->
             </section>  
-        <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
+       
         </iron-pages>
+        
     </template>
     <script>
         Polymer({
@@ -91,6 +86,7 @@
                 this.WELFARE_LIST_YEAR();
                 this.LIST_USER("");
                 this.$$('list-user').selectTable(true)
+                this.hidePaperfab = true;
             },
             select_year:function(year) {
                if(year != ""){
@@ -131,7 +127,14 @@
                     this.$$('list-user').insertData();
             },
             changePage:function(page){
-                this.selected = page;
+                
+                if(page != 0){
+                    this.hidePaperfab = false;
+                    this.selected = page;
+                }
+                else{
+                    this.hidePaperfab = true;
+                }
             }
         });
     </script>
