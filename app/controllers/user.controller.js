@@ -261,7 +261,7 @@ exports.welfares = function (req, res) {
             res.status(500).json(err);
         })
 }
-exports.userForApprove = function (req, res) {
+exports.unapprove = function (req, res) {
     r.db('welfare').table('history_welfare')
         // .filter({status: false})
         .getAll(false, { index: 'status' })

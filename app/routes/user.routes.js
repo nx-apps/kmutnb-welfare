@@ -5,7 +5,7 @@ module.exports = function (app) {
     app.put('/update', controller.update);
     app.delete('/delete/:id', controller.delete);
 
-    app.get('/unapprove', controller.userForApprove);
+    app.get('/unapprove', controller.unapprove);
     app.get('/welfares/id/:id', controller.welfares);
     app.post('/use_welfare', controller.useWelfare);
     app.put('/use_welfare/update', controller.editWelfare);
