@@ -24,7 +24,7 @@
         Polymer({
             is: 'page-user-welfare',
             behaviors: [
-                ReduxBehavior,nylonBehavior,commonDataAction,usersAction
+                ReduxBehavior,nylonBehavior,commonDataAction,usersAction,welfareAction
             ],
             properties:{
                 page:{
@@ -56,6 +56,7 @@
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
 
                 this.dispatchAction('USER_GET_WELFARES','411e54dd-b808-4d4d-9984-201b68c70dff',true);
+                this.dispatchAction('GET_YEAR');
             },
             _getUserEdit(e){
                 // this.set('page',0)
