@@ -33,9 +33,8 @@
                 border: 1px solid #ddd;
             }
         </style>
-<paper-button raised on-tap="getbt">ทดสอบปุ่ม</paper-button>
         <div style="padding:20px;">
-
+   [[setCondition(condition)]]
             <paper-material elevation="1">
 
                 <div class="horizontal end-justified layout">
@@ -65,7 +64,7 @@
                         </gl-grid-col>
                         [[checkField(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box on-value-changed="valueChanged" id="[[index]]" items="[[condition]]" item-label-path="label" item-value-path="id"
+                            <gl-combo-box id="name-[[index]]" on-value-changed="setCondition" id="[[index]]"  item-label-path="label" item-value-path="id"
                                 value="{{item.field}}" disabled="{{active}}"></gl-combobox>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
@@ -166,6 +165,9 @@
                     statePath: 'listWelfare.employees'
                 }
             },
+            // attached: function() {
+            //     this.setCondition();
+            // },
             add_condition: function () {
                 this.push('data.condition', { field_id: '', logic_show: '', value_show: '' })
             },
@@ -229,9 +231,56 @@
             cancle: function () {
                 this.set('disabled', this.active = true);
             },
+            setCondition(){
+                 this.async(()=>{
+                     try {
+                         let  comboboxs,arrForItem,itemif;
+                    // console.log('hhhhhhhhhhhhhh',this.condition);
+                    
+                    for (var i = 0; i < this.data.condition.length; i++) {
+                        arrForItem = JSON.parse(JSON.stringify(this.condition));
+                        // console.log(arrForItem);
+                        this.data.condition.map((item,index)=>{
+                            let itemUse = item.field
+                            let date =  this.condition.filter((field)=> field.id == itemUse)
+                            // // console.log('date',date);
+                            // // console.log(date[0].field.search('date') > 0);
+                            
+                                if (i != index) {
+                                if (arrForItem.filter((blDetail)=> blDetail.id == item.field )[0] != undefined) {
+                   itemif = arrForItem.indexOf(arrForItem.filter((blDetail)=> blDetail.id == item.field )[0]);
+                  //  console.log(itemif);
+                   arrForItem.splice(itemif, 1);
+                 }
+                            } //else if (date[0].field.search('date') > 0) {
+                                
+                                // console.log(itemUse);
+                            //     let count = this.data.condition.filter((field)=> field.field == itemUse).length
+                            //     console.log('จริงง');
+                            //     if (count > 1){
+                                    
+                            //     }
+                           // }
+                            
+                            
+                            // console.log(item.field);
+                            
+                        });
+                        // console.log(arrForItem);
+                        var combobox = Polymer.dom(this.root).querySelector('#name-'+i);
+                        // console.log('combobox>',Polymer.dom(this.root).querySelector('#name-'+i));
+                        //  console.log('151218131865168');
+                        combobox.items = arrForItem
+                    }
+                     } catch (error) {
+                         
+                     }
+                    
+                 },1);  
+            },
             checkField: function (e, index) {
-                this.async(()=>{
-                try {
+                 this.async(()=>{
+                  try {
                     console.log(e, index);
                     // console.log('ddddddd',document.getElementById(symbo-1));
                     var combobox = Polymer.dom(this.root).querySelector('#symbo-'+index);
@@ -244,10 +293,7 @@
                 } catch (error) {
 
                 }
-                 },1);    
-            },
-            getbt(){
-                console.log(Polymer.dom(this.root).querySelector('#symbo-1'));
+                 },1);  
             },
             checkValue: function (e, index) {
                 this.async(()=>{
@@ -278,14 +324,14 @@
                 this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
                 this.tableStatus = true;
             },
-            valueChanged: function (e) {
-                var id = e.detail.value;
-                console.log('cccccc',id);
-                // var combobox = Polymer.dom(this.root).querySelector('#symbo-');
-                // var symbol = this.condition.filter((val) => val.id == id)[0]
-                // console.log(symbol);
-                // combobox.items = symbol.conditions;
-            }
+            // valueChanged: function (e) {
+            //     var id = e.detail.value;
+            //     console.log('cccccc',id);
+            //     // var combobox = Polymer.dom(this.root).querySelector('#symbo-');
+            //     // var symbol = this.condition.filter((val) => val.id == id)[0]
+            //     // console.log(symbol);
+            //     // combobox.items = symbol.conditions;
+            // }
         });
     </script>
 </dom-module>
