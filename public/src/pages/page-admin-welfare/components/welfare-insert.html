@@ -47,7 +47,7 @@
                         </gl-grid-col>
                         [[checkField(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="field-[[index]]" items="[[condition]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>
+                            <gl-combo-box id="field-[[index]]" items="[[item.condition]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}"></gl-combobox>
@@ -81,9 +81,11 @@
         Polymer({
             is: 'welfare-insert',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
+            observers:['getfield(data.condition.*)'],
             properties: {
                 condition: {
-                    statePath: 'listWelfare.condition'
+                    statePath: 'listWelfare.condition',
+                    observer:'setCondition'
                 },
                 data: {
                     type: Object,
@@ -104,8 +106,28 @@
                 //     value: [{}]
                 // }
             },
-            add_condition: function () {
-                this.push('data.condition', { field: '', logic: '', value: '' })
+            add_condition:function () {
+                this.push('data.condition', {condition:this.condition, field: '', logic: '', value: '' })
+            },
+            setCondition:function(){
+                
+            },
+            getfield:function(filed){
+                // console.log('*',filed);
+                for (var index = 0; index < filed.base.length; index++) {
+                    var id = filed.base[index].field;
+                    // console.log(filter);
+                    // console.log(id);
+                    // var condition = this.condition[index]
+                    if(typeof this.condition != 'undefined'){
+                        // console.log(this.condition);
+                        var filter = this.condition.filter((item)=>{
+                            return id == item.id
+                        })
+                        console.log(filter);
+                    }
+                    
+                }
             },
             save: function () {
                 for (var i = 0; i < this.data.condition.length; i++) {

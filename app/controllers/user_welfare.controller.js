@@ -372,7 +372,7 @@ exports.adminEmployee = function (req, res) {
         .eqJoin('gender_id', r.db('welfare_common').table('gender')).without({ right: 'id' }).zip()
         .eqJoin('matier_id', r.db('welfare_common').table('matier')).without({ right: 'id' }).zip()
         .eqJoin('position_id', r.db('welfare_common').table('position')).without({ right: 'id' }).zip()
-        .eqJoin('prefixname_id', r.db('welfare_common').table('prefixname')).without({ right: 'id' }).zip()
+        .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).without({ right: 'id' }).zip()
         .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).without({ right: 'id' }).zip()
         .without('id')
         .run()
