@@ -137,11 +137,7 @@ exports.listId = function (req, res) {
                 condition: wel_merge('condition')
                     .merge(function (con_merge) {
                         return {
-                            field: r.db('welfare').table('condition').get(con_merge('field')).getField('field'),
-                            field_id: r.db('welfare').table('condition').get(con_merge('field')).getField('id'),
-                            conditions: r.db('welfare').table('condition').get(con_merge('field')).getField('conditions'),
-                            data_source: r.db('welfare').table('condition').get(con_merge('field')).getField('data_source'),
-                            label: r.db('welfare').table('condition').get(con_merge('field')).getField('label')
+                            field: r.db('welfare').table('condition').get(con_merge('field')).getField('field')
                         }
                     })
             }
