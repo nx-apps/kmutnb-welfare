@@ -20,6 +20,14 @@
         table.gl-table-default {
             border: 1px solid #ddd;
         }
+         paper-fab {
+                position: fixed;
+                right: 25px;
+                bottom: 25px;
+                color: #fff;
+                --paper-fab-background:var(--paper-light-blue-500);
+                --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+        }
     </style>
     <template>
         <div class="container serachBox">
@@ -28,12 +36,12 @@
                     <div class="container flex-horizontal-with-ratios">
                         <div class="flexchild"></div>
                         <div class="flex3child">
-                            <gl-combo-box label="ปี" placeholder="มีสวัสดิการทั้งหมด {{year.length}} รายการ" items="{{year}}" item-label-path="year" item-value-path="year" value="{{selectYear}}">
+                            <gl-combo-box label="ปี" placeholder="มีทั้งหมด {{year.length}} ปี" items="{{year}}" item-label-path="year" item-value-path="year" value="{{selectYear}}">
                             </gl-combo-box>
                         </div>
                         <div class="flexchild"></div>
                         <div class="flex3child">
-                            <gl-combo-box label="ชื่อสวัสดิการย่อย" placeholder="มีสวัสดิย่อยการทั้งหมด {{subList.welfare.length}}" items="{{subList.welfare}}" item-label-path="welfare_name" item-value-path="id" value="{{selectSubWelfare}}"></gl-combo-box>
+                            <gl-combo-box label="สวัสดิการ" placeholder="มีสวัสดิการทั้งหมด {{listWelfare.length}} รายการ" items="{{listWelfare}}" item-label-path="group_welfare_name" item-value-path="id" value="{{selectWelfare}}"></gl-combo-box>
                         </div>
                         <div class="flexchild"></div>
                     </div>
@@ -43,45 +51,57 @@
         <section>
             <list-user></list-user>
         </section>
-        
+        <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
         
     </template>
     <script>
         Polymer({
             is: 'page-admin-employee',
             behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction],
-            observers:['select_year(selectYear)','select_sub_welfare(selectSubWelfare)'],
+            observers:['select_year(selectYear)','select_welfare(selectWelfare)'],
             properties: {
                 year: {
                     statePath: 'userWelfare.list'
                 },
-                subList:{
+                listWelfare:{
                     statePath: 'userWelfare.list_id'
                 }
             },
             listeners:{
                 'back_page' : 'back_page'
             },
-            showSubWelfare:function(subList){
-                console.log('*',subList);
-            },  
             nylonPageActive: function () {
                 this.WELFARE_LIST_YEAR();
                 this.LIST_USER("");
+                this.$$('list-user').selectTable(true)
             },
             select_year:function(year) {
                 // alert(year)
                if(year != ""){
-                   this.selectSubWelfare = "";
+                   this.selectWelfare = "";
                    var newYear = parseInt(year)-543;
                    this.WELFARE_LIST(newYear);
                }
             },
-            select_sub_welfare:function(id){
-                 this.LIST_USER(id);
+            select_welfare:function(id){
+                if(id != ""){
+                    this.$$('list-user').selectTable(false)
+                    this.LIST_USER_SERARCH(id);
+                }
             },
             back_page:function(){
                 this.pages = 0;
+            },
+            confirmSend:function(){
+                this.fire('toast',{ 
+                 status:'openDialog',
+                 text:'ต้องการอนุมัติข้อมูลใช่หรือไม่ ?',
+                 confirmed:this.sendUser.bind(this), 
+                 })
+            },
+            sendUser:function(check){
+                if(check == true)
+                    this.$$('list-user').insertData();
             }
         });
     </script>

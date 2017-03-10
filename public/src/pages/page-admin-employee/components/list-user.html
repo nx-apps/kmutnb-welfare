@@ -1,3 +1,6 @@
+
+<link rel="import" href="./../../../../bower_components/paper-fab/paper-fab.html">
+
 <dom-module id="list-user">
     <template>
         <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
@@ -19,22 +22,26 @@
                 margin-left: 20px;
                 font-weight: bold;
             }
+           
         </style>
         <div class="container">
             <!--<div class="horizontal layout">
                 <paper-button raised on-tap="back_page">back</paper-button>
             </div>-->
+            
             <paper-material elevation="1">
                     <div class="table-detail">
+                        
+                        
+                        <template is="dom-if" if={{isSearch}}>
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <!--<th style="width:10%;">กระทำ</th>-->
+                                    <!--<th style="width:10%;">
+                                        <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>กระทำ
+                                    </th>-->
                                     <th style="width:10%;">รหัสพนักงาน</th>
-                                    <!--<th style="width:10%;">คำนำหน้า</th>-->
                                     <th style="width:15%;">ชื่อ นามสกุล</th>
-                                    <!--<th style="width:15%;">นามสกุล</th>-->
-                                    <!--<th style="width:10%;">เพศ</th>-->
                                     <th style="width:25%;">ตำแหน่ง</th>
                                     <th style="width:15%;">ตำแหน่งวิชาการ</th>
                                 </tr>
@@ -42,11 +49,11 @@
                             <tbody class="table-body">
                                 <template is="dom-repeat" items={{list}}>
                                     <tr>
+                                        <!--<td style="text-align: center">
+                                            <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
+                                        </td>-->
                                         <td>[[item.emp_id]]</td>
-                                        <!--<td>[[item.prefixname]]</td>-->
-                                        <td>[[item.name]] [[item.surname]]</td>
-                                        <!--<td></td>-->
-                                        <!--<td>[[item.gender_name]]</td>-->
+                                        <td>[[item.prefixname_name]] [[item.name]] [[item.surname]]</td>
                                         <td>[[item.position_name]]</td>
                                         <td>[[item.academic_name]]</td>
                                     </tr>
@@ -58,9 +65,47 @@
                                 </template>
                             </tbody>
                         </table>
+                        </template>
+                        <template is="dom-if" if={{!isSearch}}>
+                              <table class="gl-table-default">
+                            <thead class="table-head">
+                                <tr>
+                                    <th style="width:10%;">
+                                        <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>กระทำ
+                                    </th>
+                                    <th style="width:10%;">รหัสพนักงาน</th>
+                                    <th style="width:15%;">ชื่อ นามสกุล</th>
+                                    <th style="width:25%;">ตำแหน่ง</th>
+                                    <th style="width:15%;">ตำแหน่งวิชาการ</th>
+                                    <th>ยอดที่ใช้</th>
+                                    <th>ยอดคงเหลือ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+                                <template is="dom-repeat" items={{listSearch}}>
+                                    <tr>
+                                        <td style="text-align: center">
+                                            <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
+                                        </td>
+                                        <td>[[item.emp_id]]</td>
+                                        <td>[[item.prefixname]] [[item.name]] [[item.surname]]</td>
+                                        <td>[[item.position_name]]</td>
+                                        <td>[[item.academic_name]]</td>
+                                        <td>[[item.value_use]]</td>
+                                        <td>[[item.value_budget]]</td>
+                                    </tr>
+                                </template>
+                                <template is="dom-if" if={{checkData(item.employee)}}>
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">ไม่มีข้อมูล</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                            </table>
+                        </template>
                     </div>
-                </template>
             </paper-material>
+            
         </div>
 
     </template>
@@ -71,6 +116,9 @@
             properties: {
                 list: {
                     statePath:'userWelfare.list_user',
+                },
+                listSearch:{
+                    statePath:'userWelfare.listSearch'
                 }
             },
             checkData:function(data){
@@ -84,8 +132,42 @@
                     // console.log(data.length);
                 }
             },
+            selectAll:function(e){
+                var check = e.target.checked;
+                if(check == true){
+                    this.list.map((item,index)=>{
+                        this.set('listSearch.'+index+'.check',true);
+                    })
+                }
+                else{
+                    this.list.map((item,index)=>{
+                        this.set('listSearch.'+index+'.check',false);
+                    })
+                }
+               
+            },
             back_page:function(){
                 this.fire('back_page_welfare');
+            },
+            insertData:function(){
+               var newData = this.listSearch.filter((item)=>{
+                   return item.check == true;
+               })
+               var saveData = newData.map((item)=>{
+                   let {group_id,year,emp_id,welfare_id,value_use} = item;
+                   let newItem = {group_id,year,emp_id,welfare_id,value_use};
+                   return newItem;
+               })
+               console.log(saveData);
+            },
+            selectTable:function(id){
+                if(id == true){
+                    this.isSearch = true;
+                }
+                else {
+                    this.isSearch = false;
+                }
+                
             }
         });
     </script>

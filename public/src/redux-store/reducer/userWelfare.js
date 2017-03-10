@@ -5,7 +5,8 @@ const initialState = {
     list: [],
     select: {},
     list_id: [],
-    list_user: []
+    list_user: [],
+    listSearch:[]
 }
 
 export function userWelfareReducer(state = initialState, action) {
@@ -17,6 +18,8 @@ export function userWelfareReducer(state = initialState, action) {
             return Object.assign({}, state, { list_id: action.payload });
         case 'LIST_USER':
             return Object.assign({}, state, { list_user: action.payload });
+        case 'LIST_USER_SERARCH':
+            return Object.assign({}, state, { listSearch: action.payload });
         default:
             return state
     }
@@ -39,8 +42,9 @@ export function userWelfareAction(store) {
         },
         WELFARE_LIST: function (data) {
             // console.log(data);
-            axios.get('/group_welfare/' + data)
+            axios.get('./user_welfare/groupByYear/year/' + data)
                 .then(function (result) {
+                    console.log(result.data);
                     // console.log(JSON.stringify(result.data));
                     store.dispatch({ type: 'WELFARE_LIST', payload: result.data })
                 })
@@ -53,12 +57,29 @@ export function userWelfareAction(store) {
             axios.get('./user/list')
                 .then(function (result) {
                     // console.log(result.data);
-                    // console.log(JSON.stringify(result.data));
-                    store.dispatch({ type: 'LIST_USER', payload: result.data })
+                    // console.log(JSON.stringify(result.data));'
+                    var newData = result.data.map((item)=>{
+                        item.check = false;
+                        return item;
+                    })
+                    // console.log(JSON.stringify(newData));
+                    // console.log(newData);
+                    store.dispatch({ type: 'LIST_USER', payload: newData })
                 })
                 .catch(err => {
 
                 })
+        },
+        LIST_USER_SERARCH:function(id){
+            axios.get('./user_welfare/adminEmployee/'+id)
+            .then((response)=>{
+                //  console.log(JSON.stringify(response.data));
+                 store.dispatch({ type:'LIST_USER_SERARCH', payload: response.data })
+            })
+            .catch((error)=>{
+                console.log('error');
+                console.log(error);
+            });
         }
     }
     ]
