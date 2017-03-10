@@ -1,7 +1,7 @@
 <link rel="import" href="./../components/format-number-behavior.html">
 <link rel="import" href="./../components/common-logic.html">
 
-<link rel="import" href="./components/dialog-use-walfare.html">
+<link rel="import" href="./components/dialog-use-welfare.html">
 
 <dom-module id="user-welfare">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
@@ -77,7 +77,7 @@
                                     <td>[[_Obindex(index)]]</td>
                                     <td>[[item.name]]</td>
                                     <td>[[formatNumber(item.budget_balance)]]</td>
-                                    <td> <paper-button class="gl-btn-primary gl-small"raised on-tap="useWalfare" data="[[item]]">ขอใช้</paper-button></td>
+                                    <td> <paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]">ขอใช้</paper-button></td>
                                 </tr>
                             </template>
                             <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
@@ -133,10 +133,10 @@
                 </gl-form-panel-footer>-->
             </gl-form-panel>
         <!--</paper-material>-->
-<paper-dialog id="walfare_budget" >
-        <dialog-use-walfare data="{{useWalfareProp}}"></dialog-use-walfare>
+<paper-dialog id="welfare_budget" >
+        <dialog-use-welfare data="{{usewelfareProp}}"></dialog-use-welfare>
         <div class="flex horizontal end-justified layout">
-            <paper-button raised class="gl-btn-primary" on-tap="getWalfare">ใช้งาน</paper-button>
+            <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้งาน</paper-button>
         </div>
 </paper-dialog>
         
@@ -149,7 +149,7 @@
                 data:{
                     statePath:'users.select_welefares'
                 },
-                useWalfareProp:{
+                usewelfareProp:{
                     statePath:'users.select_use_welefares',
                     type:Object,
                 },
@@ -165,19 +165,19 @@
             _Obindex(index){
                 return index+1
             },
-            useWalfare(e){
+            usewelfare(e){
                 let data = new Object();
                 data.title = e.currentTarget.data.name
                 data.emp_id = this.data.id
                 data.welfare_id = e.currentTarget.data.welfare_id
                 data.budget_cover = e.currentTarget.data.budget_balance
-                this.$$('#walfare_budget').open()
+                this.$$('#welfare_budget').open()
                 this.dispatchAction('USER_USE_SELETE_WELFARE',data);
             },
-            getWalfare(){
-                // console.log(this.useWalfareProp);
-                this.$$('#walfare_budget').close()
-                this.dispatchAction('USER_USE_WELFARE',this.useWalfareProp);
+            getwelfare(){
+                // console.log(this.usewelfareProp);
+                this.$$('#welfare_budget').close()
+                this.dispatchAction('USER_USE_WELFARE',this.usewelfareProp);
             },
             
             deleteHistoryWelfare(e){
