@@ -81,7 +81,7 @@
                             </thead>
                             <tbody class="table-body">
                                 <template is="dom-repeat" items={{listSearch}}>
-                                    <tr>
+                                    <tr on-tap="chagePage">
                                         <td style="text-align: center" hidden="{{!checkBox}}">
                                             <paper-checkbox checked="{{item.check}}" disabled="{{!item.admin_use}}"></paper-checkbox>
                                         </td>
@@ -120,7 +120,8 @@
                 },
                 checkBox:{
                     type: Boolean,
-                    value: false
+                    value: false,
+                    observer:'hiddenCheckBox'
                 }
             },
             checkData:function(data){
@@ -132,6 +133,11 @@
                         return false;
                     }
                     // console.log(data.length);
+                }
+            },
+            hiddenCheckBox:function(check){
+                if(typeof check == 'undefined'){
+                    this.checkBox = false;
                 }
             },
             selectAll:function(e){
@@ -184,6 +190,13 @@
                 else {
                     this.isSearch = false;
                 }
+            },
+            chagePage:function(e){
+                var check = e.target.is;
+                if(check != 'paper-checkbox'){
+                    this.fire('select-page',1)
+                }
+                // console.log(e.target.is);
             }
         });
     </script>
