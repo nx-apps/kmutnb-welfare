@@ -123,10 +123,10 @@
                             </tr>
                         </thead>
                         <tbody class="table-body">
-                            <template is="dom-repeat" items="{{data.employee}}">
+                            <template is="dom-repeat" items="{{employees.employee}}">
                                 <tr>
                                     <td>[[item.personal_id]]</td>
-                                    <td>[[item.prefixname]] [[item.name]] [[item.surname]]</td>
+                                    <td>[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
                                     <td>[[item.position_name]]</td>
                                     <td>[[item.department_name]]</td>
                                 </tr>
@@ -159,6 +159,9 @@
                 active: {
                     type: Boolean,
                     value: true
+                },
+                employees: {
+                    statePath: 'listWelfare.employees'
                 }
             },
             add_condition: function () {
@@ -202,12 +205,7 @@
                     }
 
                 }
-                this.data.condition.map((val)=>{
-                    if(typeof val.conditions == 'object'){
-                        delete val['conditions','data_source'];
-                    }
-                })
-                // this.data.budget = this.unFormat(this.data.budget);
+                this.data.budget = this.unFormat(this.data.budget);
                 console.log(this.data);
                 // this.dispatchAction('WELFARE_EDIT', this.data)
                 this.set('disabled', this.active = true);
@@ -266,6 +264,8 @@
                 this.set('disabled', this.active = false);
             },
             list_users: function () {
+                var id = this.data.id
+                this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
                 this.tableStatus = true;
             }
         });
