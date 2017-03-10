@@ -39,7 +39,7 @@
         
              <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
                 <gl-form-panel-head label="" set-padding="10px" set-border="1px">
-                    <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
+                    <paper-button class="gl-btn-info" on-tap="editData" raised>ดูข้อมูลส่วนตัว</paper-button>
                 </gl-form-panel-head>
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <fieldset>
@@ -125,7 +125,7 @@
                                 <tr>
                                     <td>[[_Obindex(index)]]</td>
                                     <td>[[item.name]]</td>
-                                    <td>[[formatNumber(item.use_budget)]]</td>
+                                    <td style="text-align: right;">[[formatNumber(item.use_budget)]]</td>
                                     <td>
                                         <vaadin-date-picker always-float-label  disabled value="{{item.date_use}}"></vaadin-date-picker>
                                     </td>
