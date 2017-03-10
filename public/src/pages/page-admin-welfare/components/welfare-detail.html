@@ -1,5 +1,6 @@
 <link rel="import" href="welfare-insert.html">
 <link rel="import" href="welfare-edit.html">
+<link rel="import" href="welfare-pong.html">
 <dom-module id="welfare-detail">
     <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
         paper-material {
@@ -45,6 +46,7 @@
                                         <td style="text-align:center;">[[welfare.emp_budget]]</td>
                                         <td style="text-align:center;">[[welfare.emp_use]]</td>
                                         <td style="text-align:center;">
+                                            <paper-icon-button data="[[welfare]]" on-tap="_pong" icon="icons:help" title="แก้ไข"></paper-icon-button>
                                             <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:create" title="แก้ไข"></paper-icon-button>
                                             <paper-icon-button data="[[welfare]]" on-tap="_delete" icon="delete" title="ลบ"></paper-icon-button>
                                             <!--<paper-button data="[[welfare]]" style="height:30px; width:25px;" raised class="gl-btn-info" on-tap="_edit">แก้ไข</paper-button>-->
@@ -62,6 +64,9 @@
             </div>
             <div>
                 <welfare-edit datas="{{data}}"></welfare-edit>
+            </div>
+            <div>
+                <welfare-pong datas="{{data}}"></welfare-pong>
             </div>
         </iron-pages>
     </template>
@@ -94,6 +99,13 @@
                 this.dispatchAction('WELFARE_DATA_SELECT', id)
                 this.dispatchAction('CONDITION_LIST')
                 this.pages = '2';
+            },
+            _pong:function(e){
+                // console.log(e.currentTarget.data);
+                var id = e.currentTarget.data.id;
+                this.dispatchAction('WELFARE_DATA_SELECT', id)
+                this.dispatchAction('CONDITION_LIST')
+                this.pages = '3';
             },
             _delete:function(e){
                 // console.log(e.currentTarget.data.id);

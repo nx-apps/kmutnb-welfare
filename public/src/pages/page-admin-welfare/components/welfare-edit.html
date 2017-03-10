@@ -64,14 +64,14 @@
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
                             <div class="label_condition">เงื่อนไข</div>
                         </gl-grid-col>
-                        [[checkField(item.field,index)]]
+                        [[checkField(item.field_id,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="[[index]]" items="[[condition]]" item-label-path="label" item-value-path="id" value="{{item.field}}" disabled="{{active}}"></gl-combobox>
+                            <gl-combo-box id="[[index]]" items="[[condition]]" item-label-path="label" item-value-path="id" value="{{item.field_id}}" disabled="{{active}}"></gl-combobox>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic}}" disabled="{{active}}"></gl-combobox>
+                            <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}" disabled="{{active}}"></gl-combobox>
                         </gl-grid-col>
-                        [[checkValue(item.field,index)]]
+                        [[checkValue(item.field_id,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                             <div id="combobox-[[index]]" hidden>
                                 <gl-combo-box id="value-combo-[[index]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}" disabled="{{active}}"></gl-combobox>
@@ -162,15 +162,15 @@
                 }
             },
             add_condition: function () {
-                this.push('data.condition', { field: '', logic: '', value: '' })
+                this.push('data.condition', { field_id: '', logic_show: '', value_show: '' })
             },
             save: function () {
                 for (var i = 0; i < this.data.condition.length; i++) {
                     // console.log(this.data.condition[i].field);
-                    var id = this.data.condition[i].field;
+                    var id = this.data.condition[i].field_id;
                     var item = this.condition.filter((val) => val.id == id)[0]
                     var field = item.field;
-                    console.log(field);
+                    // console.log(field);
                     // console.log(this.data.condition[i].logic.search("<"))
                     if (field == 'start_work_date') {
                         if (this.data.condition[i].logic_show.search(">") >= 0) {
@@ -202,10 +202,14 @@
                     }
 
                 }
-                this.data.budget = this.unFormat(this.data.budget);
-                this.set('data.group_id', this.datas.id);
-                // console.log(this.data);
-                this.dispatchAction('WELFARE_EDIT', this.data)
+                this.data.condition.map((val)=>{
+                    if(typeof val.conditions == 'object'){
+                        delete val['conditions','data_source'];
+                    }
+                })
+                // this.data.budget = this.unFormat(this.data.budget);
+                console.log(this.data);
+                // this.dispatchAction('WELFARE_EDIT', this.data)
                 this.set('disabled', this.active = true);
             },
             delete_condition: function (e) {
@@ -263,7 +267,6 @@
             },
             list_users: function () {
                 this.tableStatus = true;
-                console.log(this.data);
             }
         });
     </script>

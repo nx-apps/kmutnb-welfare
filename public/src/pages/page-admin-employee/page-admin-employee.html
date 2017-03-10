@@ -45,14 +45,14 @@
                                 <div class="flexchild"></div>
                                 <div class="flex3child">
                                     <!--<gl-combo-box id="setComboBox" label="สวัสดิการ" placeholder="มีสวัสดิการทั้งหมด {{listWelfare.length}} รายการ" items="{{testItem}}"></gl-combo-box>-->
-                                    <gl-combo-box id="setComboBox" label="สวัสดิการ" items="{{listWelfare}}" placeholder="มีสวัสดิการทั้งหมด {{listWelfare.length}} รายการ" item-label-path="group_welfare_name" item-value-path="id" value="{{selectWelfare}}"></gl-combo-box>
-                                    <!--<paper-dropdown-menu label="Dinosaurs">
-                                        <paper-listbox class="dropdown-content" selected="1">
+                                    <!--<gl-combo-box id="setComboBox" label="สวัสดิการ" items="{{listWelfare}}" placeholder="มีสวัสดิการทั้งหมด {{listWelfare.length}} รายการ" item-label-path="group_welfare_name" item-value-path="id" value="{{selectWelfare}}"></gl-combo-box>-->
+                                    <gl-form-dropdown-menu label="สวัสดิการ" placeholder="มีสวัสดิการ {{listWelfare.length}} รายการ">
+                                        <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectWelfare}}">
                                             <template is="dom-repeat" items="{{listWelfare}}">
-                                                <paper-item>{{item.group_welfare_name}}</paper-item>
+                                                <paper-item value="{{item.id}}">{{item.group_welfare_name}}</paper-item>
                                             </template>
                                         </paper-listbox>
-                                    </paper-dropdown-menu>-->
+                                    </gl-form-dropdown-menu>
                                 </div>
                                 <div class="flexchild"></div>
                             </div>

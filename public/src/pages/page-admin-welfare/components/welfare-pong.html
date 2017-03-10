@@ -1,5 +1,5 @@
 <link rel="import" href="../../components/format-number-behavior.html">
-<dom-module id="welfare-insert">
+<dom-module id="welfare-pong">
     <template>
         <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
             gl-form-input,
@@ -22,120 +22,155 @@
             paper-material {
                 background-color: var(--gl-white-color);
             }
+            
+            .table-detail {
+                margin: auto;
+                width: 96%;
+                padding: 20px 20px 100px 20px;
+                
+            }
+            
+            table.gl-table-default {
+                border: 1px solid #ddd;
+            }
         </style>
 
         <div style="padding:20px;">
 
             <paper-material elevation="1">
+
+                <div class="horizontal end-justified layout">
+                    <div style="margin:20px 20px 0px 0px;" hidden="{{!active}}">
+                        <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
+                        <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
+                    </div>
+                </div>
+
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input label="ชื่อสวัสดิการย่อย" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
+                        <gl-form-input label="ชื่อสวัสดิการย่อย" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ" disabled="{{active}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน" disabled="{{active}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <template is="dom-repeat" items="{{data.condition}}">
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                            <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
+                            <div class="label_condition">เงื่อนไข</div>
                         </gl-grid-col>
-                        [[checkField(item.field,index)]]
+                        [[checkField(item.field_id,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="field-[[index]]" items="[[item.condition]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>
+                            <gl-combo-box id="[[index]]" items="[[condition]]" item-label-path="label" item-value-path="id" value="{{item.field_id}}" disabled="{{active}}"></gl-combobox>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}"></gl-combobox>
+                            <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}" disabled="{{active}}"></gl-combobox>
                         </gl-grid-col>
-                        [[checkValue(item.field,index)]]
+                        [[checkValue(item.field_id,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                             <div id="combobox-[[index]]" hidden>
-                                <gl-combo-box id="value-combo-[[index]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}"></gl-combobox>
+                                <gl-combo-box id="value-combo-[[index]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}" disabled="{{active}}"></gl-combobox>
                             </div>
                             <div id="input-[[index]]" hidden>
-                                <gl-form-input value="{{item.value_show}}"></gl-form-input>
+                                <gl-form-input value="{{item.value_show}}" disabled="{{active}}"></gl-form-input>
                             </div>
                         </gl-grid-col>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                            <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
-                        </gl-grid-col>
+                        <div hidden="{{active}}">
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
+                                <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
+                            </gl-grid-col>
+                        </div>
                     </gl-grid-row>
                 </template>
                 <div class="horizontal center-justified layout">
-                    <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
+                    <div hidden="{{active}}">
+                        <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
+                    </div>
                 </div>
-                <div class="horizontal end-justified layout btn-bottom">
-                    <paper-button raised class="gl-btn-danger" on-tap="back">ยกเลิก</paper-button>
-                    <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                <div class="horizontal layout">
+                    <div hidden="{{!active}}" class="btn-bottom">
+                        <paper-button raised class="gl-btn-danger" on-tap="back">ย้อนกลับ</paper-button>
+                        <paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
+                        
+                    </div>
+                </div>
+                <div class="horizontal end-justified layout">
+                    <div hidden="{{active}}" class="btn-bottom">
+                        <paper-button raised class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
+                        <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                    </div>
                 </div>
             </paper-material>
 
         </div>
+
+
+        <template is="dom-if" if="{{tableStatus}}">
+            <div class="table-detail">
+                <paper-material elevation="1">
+                    <table class="gl-table-default">
+                        <thead class="table-head">
+                            <tr>
+                                <th style="text-align:center">เลขบัตรประชาชน</th>
+                                <th style="text-align:center">ชื่อ</th>
+                                <th style="text-align:center">ตำแหน่ง</th>
+                                <th style="text-align:center">แผนก</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            <template is="dom-repeat" items="{{data.employee}}">
+                                <tr>
+                                    <td>[[item.personal_id]]</td>
+                                    <td>[[item.prefixname]] [[item.name]] [[item.surname]]</td>
+                                    <td>[[item.position_name]]</td>
+                                    <td>[[item.department_name]]</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </paper-material>
+            </div>
+        </template>
     </template>
     <script>
         Polymer({
-            is: 'welfare-insert',
+            is: 'welfare-pong',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
-            observers:['getfield(data.condition.*)'],
             properties: {
                 condition: {
-                    statePath: 'listWelfare.condition',
-                    observer:'setCondition'
+                    statePath: 'listWelfare.condition'
                 },
                 data: {
+                    statePath: 'listWelfare.dataSelect',
                     type: Object,
-                    value:
-                    {
-                        condition: [
-                            { field: '', logic: '', value: '' }
-                        ]
-                    },
+                    // value:
+                    // {
+                    //     condition: [
+                    //         { field: '', logic: '', value: '' }
+                    //     ]
+                    // },
                     notify: true
                 },
                 active: {
                     type: Boolean,
                     value: true
                 }
-                // value: {
-                //     type: Array,
-                //     value: [{}]
-                // }
             },
-            add_condition:function () {
-                this.push('data.condition', {condition:this.condition, field: '', logic: '', value: '' })
-            },
-            setCondition:function(){
-                
-            },
-            getfield:function(filed){
-                // console.log('*',filed);
-                for (var index = 0; index < filed.base.length; index++) {
-                    var id = filed.base[index].field;
-                    // console.log(filter);
-                    // console.log(id);
-                    // var condition = this.condition[index]
-                    if(typeof this.condition != 'undefined'){
-                        // console.log(this.condition);
-                        var filter = this.condition.filter((item)=>{
-                            return id == item.id
-                        })
-                        console.log(filter);
-                    }
-                    
-                }
+            add_condition: function () {
+                this.push('data.condition', { field_id: '', logic_show: '', value_show: '' })
             },
             save: function () {
                 for (var i = 0; i < this.data.condition.length; i++) {
                     // console.log(this.data.condition[i].field);
-                    var id = this.data.condition[i].field;
+                    var id = this.data.condition[i].field_id;
                     var item = this.condition.filter((val) => val.id == id)[0]
                     var field = item.field;
-                    console.log(field);
+                    // console.log(field);
                     // console.log(this.data.condition[i].logic.search("<"))
                     if (field == 'start_work_date') {
                         if (this.data.condition[i].logic_show.search(">") >= 0) {
@@ -167,10 +202,15 @@
                     }
 
                 }
-                this.data.budget = this.unFormat(this.data.budget);
-                this.set('data.group_id', this.datas.id);
-                // console.log(this.data);
-                this.dispatchAction('WELFARE_INSERT', this.data)
+                this.data.condition.map((val)=>{
+                    if(typeof val.conditions == 'object'){
+                        delete val['conditions','field'];
+                    }
+                })
+                // this.data.budget = this.unFormat(this.data.budget);
+                console.log(this.data);
+                // this.dispatchAction('WELFARE_EDIT', this.data)
+                this.set('disabled', this.active = true);
             },
             delete_condition: function (e) {
                 // console.log(e.target.index);
@@ -178,30 +218,20 @@
             },
             back: function () {
                 this.fire('back');
+                this.set('disabled', this.active = true);
                 this.data = {
                     condition: [
                         { field: '', logic: '', value: '' }
                     ]
                 };
+                this.tableStatus = false;
+            },
+            cancle: function () {
+                this.set('disabled', this.active = true);
             },
             checkField: function (e, index) {
                 try {
-                    // console.log(this.condition);
-                    // if (e != '') {
-                    //     //     // console.log(e);
-                    //     if (this.condition != []) {
-                    //         var newFeild = [];
-                    //         this.condition.map((val) => {
-                    //             if (val.id != e) {
-                    //                 // console.log(val);
-                    //                 newFeild.push(val);
-                    //             }
-                    //         })
-                    //         // console.log(feild);
-                    //         let comboboxs = Polymer.dom(this.root).querySelector('#field-' + index);
-                    //         comboboxs.items = feild;
-                    //     }
-                    // }
+                    // console.log(e, index);
                     var combobox = Polymer.dom(this.root).querySelector('#symbo-' + index);
                     // console.log(combobox.items);
                     var id = e;
@@ -218,7 +248,7 @@
                     var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
                     var id = e;
                     var value = this.condition.filter((val) => val.id == id)[0]
-                    // combobox.items = value.data;
+                    combobox.items = value.data;
                     if (value.data.length == 0) {
                         Polymer.dom(this.root).querySelector('#input-' + index).hidden = false;
                         Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = true;
@@ -232,8 +262,11 @@
 
                 }
             },
-            count: function (val) {
-                return val + 1;
+            _edit: function () {
+                this.set('disabled', this.active = false);
+            },
+            list_users: function () {
+                this.tableStatus = true;
             }
         });
     </script>
