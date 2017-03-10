@@ -43,7 +43,7 @@
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                            <div class="label_condition">เงื่อนไข</div>
+                            <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
                         </gl-grid-col>
                         [[checkField(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
@@ -170,6 +170,12 @@
                     var id = e;
                     var symbol = this.condition.filter((val) => val.id == id)[0]
                     // console.log(symbol);
+                    // console.log(this.condition);
+                    this.condition.map((val)=>{
+                        if(val == symbol){
+                            console.log('wow');
+                        }
+                    })
                     combobox.items = symbol.conditions;
 
                 } catch (error) {
@@ -194,6 +200,9 @@
                 } catch (error) {
 
                 }
+            },
+            count:function(val){
+                return val+1;
             }
         });
     </script>
