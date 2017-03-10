@@ -25,7 +25,7 @@ exports.list = function (req, res) {
                 matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
                 position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
                 prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
-                type_emp_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_emp_name'),
+                type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
             }
         })
         .run()
@@ -109,7 +109,7 @@ exports.welfares = function (req, res) {
                 matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
                 position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
                 prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
-                type_emp_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_emp_name'),
+                type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
             }
         })
         .merge((group_welfare) => {
