@@ -28,6 +28,10 @@ const clearDatawelfare = (data,callback)=>{
     let {emp_id,welfare_id,use_budget,status,year,group_id}=data;
     let newData={emp_id,welfare_id,use_budget,status,year,group_id};
     // console.log(data.date/use_welfare/update_use == '');
+    newData.document_ids = new Array()
+    data.document_ids.map((file)=>{
+        newData.document_ids.push(file)
+    })
     newData.date_approve = new Date().toISOString()
     if (data.date_use == '' || data.date_use == undefined) {
         newData.date_use = new Date().toISOString();
@@ -35,6 +39,7 @@ const clearDatawelfare = (data,callback)=>{
         // console.log(data.date_use);
         newData.date_use = new Date (data.date_use).toISOString();
     }
+    // console.log(newData);
         callback(newData)
 }
 export function usersReducer(state = initialState,action){
