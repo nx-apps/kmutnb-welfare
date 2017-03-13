@@ -1,5 +1,6 @@
 <link rel="import" href="../../components/format-number-behavior.html">
 <link rel="import" href="../../components/common-logic.html">
+<link rel="import" href="../components/dialog-use-welfare.html">
 <dom-module id="welfare-employee">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
          :host {
@@ -65,8 +66,6 @@
                 <div class="content horizontal start-justified layout">
                     [[setYear(year)]]
                     <gl-combo-box no-label-float items="{{year}}" value="{{seleterYear}}" item-label-path="year" item-value-path="year" on-value-changed="gerYearWelfare"></gl-combo-box>
-
-
                 </div>
             </gl-form-panel-body>
 
@@ -96,7 +95,7 @@
                                     <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                     <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
                                     <td>
-                                        <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" disabled="[[_checkAdmin(item.status_approve,item.admin_use)]]">ขอใช้</paper-button>
+                                        <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" disabled="[[_checkAdmin(item.status_approve,item.admin_use)]]">ใช้</paper-button>
                                     </td>
                                 </tr>
                             </template>
@@ -169,10 +168,10 @@
             behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic],
             properties: {
                 data: {
-                    statePath: 'userWelfare.welfare_employees'
+                    statePath: 'userWelfare.welfare_employee'
                 },
                 year :{
-                    statePath:'welfare.list_year',
+                    statePath:'userWelfare.list',
                     type:Number,
                 }
             },
@@ -186,12 +185,26 @@
                 }
             },        
             gerYearWelfare(e){
-             if (e.detail.value)
-                 this.dispatchAction('USER_GET_WELFARES','411e54dd-b808-4d4d-9984-201b68c70dff',true,e.detail.value-543);
+                if(typeof this.data != 'undefined' ){
+                    // console.log(this.data);
+                    if (e.detail.value)
+                        var id = this.data.id;
+                        if(typeof id != 'undefined' ){
+                            this.dispatchAction('EMPLOYEE_GET_WELFARES',id,e.detail.value-543);
+                        }
+                }
+            },
+            _checkAdmin(status_user,status_admin){
+                // (status_admin || status_user ? {return true} : false)
+                if (status_admin || status_user) 
+                   return true
             },
             back:function(){
                 // console.log(55);
                 this.fire('select-page',0)
+            },
+            usewelfare:function(){
+                this.$$('#welfare_budget').open()
             }
         });
     </script>

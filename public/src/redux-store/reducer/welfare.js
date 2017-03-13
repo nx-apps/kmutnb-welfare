@@ -5,7 +5,6 @@ const initialState = {
     list: [],
     select: {},
     list_id: [],
-    dataSelect: {},
     list_year: []
 }
 
@@ -16,8 +15,6 @@ export function welfareReducer(state = initialState, action) {
             return Object.assign({}, state, { list: action.payload });
         case 'LIST_WELFARE_ID':
             return Object.assign({}, state, { list_id: action.payload });
-        case 'DATA_WELFARE_SELECT':
-            return Object.assign({}, state, { dataSelect: action.payload });
         case 'SELECT_DATA':
             return Object.assign({}, state, { select: action.payload });
         case 'GET_YEAR':
@@ -59,18 +56,22 @@ export function welfareAction(store) {
                 year: data.year,
                 start_date: new Date(data.start_date).toISOString(),
                 end_date: new Date(data.end_date).toISOString(),
-                group_welfare_name: data.group_welfare_name
+                group_welfare_name: data.group_welfare_name,
+                admin_use: data.admin_use,
+                onetime: data.onetime,
+                status_approve: data.status_approve
             }
             // console.log(datas);
             this.fire('toast', { status: 'load' });
             axios.post(`./group_welfare/insert`, datas)
                 .then((result) => {
                     console.log(result);
-                    this.LIST_WELFARE();
+                    this.LIST_WELFARE(data.year-543);
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             console.log('success');
                             this.clearData();
+                            this.GET_YEAR();
                         }
                     });
                 })
@@ -80,10 +81,10 @@ export function welfareAction(store) {
         },
         DELETE_WELFARE: function (data) {
             // console.log(data);
-            axios.delete(`./group_welfare/delete/id/` + data)
+            axios.delete(`./group_welfare/delete/id/` + data.id)
                 .then((result) => {
                     console.log(result);
-                    this.LIST_WELFARE();
+                    this.LIST_WELFARE(data.year-543);
                     this.fire('toast', {
                         status: 'success', text: 'ลบสำเร็จ', callback: () => {
                             console.log('success');
@@ -119,17 +120,6 @@ export function welfareAction(store) {
                     console.log(err);
                 })
         },
-        DATA_WELFARE_SELECT: function (val) {
-            // console.log(val);
-            axios.get('/group_welfare/id/' + val)
-                .then(function (result) {
-                    // console.log(result.data);
-                    store.dispatch({ type: 'DATA_WELFARE_SELECT', payload: result.data })
-                })
-                .catch(err => {
-
-                })
-        },
         SELECT_DATA: function (val) {
             // console.log(val);
             axios.get('/group_welfare/' + val)
@@ -148,6 +138,22 @@ export function welfareAction(store) {
                 })
                 .catch(err => {
 
+                })
+        },
+        APPROVE_WELFARE: function (data) {
+            console.log(data);
+            this.fire('toast', { status: 'load' });
+            axios.put(`./group_welfare/approve`, data)
+                .then((result) => {
+                    this.fire('toast', {
+                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+                            this.SELECT_DATA(data.id);
+                            console.log('success');
+                        }
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
                 })
         }
     }

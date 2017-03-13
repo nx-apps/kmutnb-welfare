@@ -28,13 +28,19 @@ const clearDatawelfare = (data,callback)=>{
     let {emp_id,welfare_id,use_budget,status,year,group_id}=data;
     let newData={emp_id,welfare_id,use_budget,status,year,group_id};
     // console.log(data.date/use_welfare/update_use == '');
-    newData.date_approve = new Date().toISOString()
+   
+    newData.document_ids = new Array()    
+    data.document_ids.map((file)=>{
+        newData.document_ids.push(file)
+    })
+    
     if (data.date_use == '' || data.date_use == undefined) {
         newData.date_use = new Date().toISOString();
     } else {
         // console.log(data.date_use);
         newData.date_use = new Date (data.date_use).toISOString();
     }
+    // console.log(newData);
         callback(newData)
 }
 export function usersReducer(state = initialState,action){
@@ -201,6 +207,7 @@ export function usersAction(store){
                 newData.id = data.id;
                 this.fire('toast',{status:'load'});
                 newData.status = true;
+                newData.date_approve = new Date().toISOString()
                     axios.put(`./user/use_welfare/update`,newData)
                     .then(res=>{
                         this.dispatchAction('USERS_FALSE_LIST');

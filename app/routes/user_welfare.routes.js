@@ -5,4 +5,5 @@ module.exports = function (app) {
     app.get('/groupYear', controller.groupYear);
     app.get('/groupByYear/year/:year', controller.groupByYear);
     app.get('/adminEmployee/:welId', controller.adminEmployee);
+    app.get('/welfaresEmployee/:id', controller.welfaresEmployee);
 }

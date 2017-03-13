@@ -6,7 +6,7 @@ var stream = require('stream');
 exports.uploadFile = function (req, res) {
     var r = req.r;
     var params = req.params;
-
+    console.log(req.body);
     var form = new multiparty.Form();
     form.parse(req, function (err, fields, files) {
 
@@ -26,6 +26,8 @@ exports.uploadFile = function (req, res) {
                         file_id: file_id,
                         file_status: true,
                         emp_id: params.emp_id,
+                        welfare_id: req.headers['welfare-id'],
+                        doc_status: false,
                         date_upload: new Date(),
                         date_update: new Date()
                     })
@@ -69,7 +71,7 @@ exports.listFilePath = function (req, res) {
                 progress: 100, complete: true
             }
         })
-        .filter({ emp_id: params.emp_id, ref_path: params.refPath, file_status: true })
+        .filter({ emp_id: params.emp_id,welfare_id: params.welfare_id, ref_path: params.refPath, file_status: true,doc_status:false })
         .orderBy(r.desc('date_upload'))
         .run()
         .then(function (result) {
