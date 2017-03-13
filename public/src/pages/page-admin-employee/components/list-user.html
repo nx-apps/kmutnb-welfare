@@ -15,7 +15,9 @@
                 margin: 20px;
             }
 
-
+            td,th{
+                white-space: nowrap;
+            }
             table.gl-table-default {
                 border: 1px solid #ddd;
             }
@@ -51,28 +53,35 @@
                                 <paper-icon-button icon="search" on-tap="searchTable"></paper-icon-button>
                             </div>
                         </div>
+                        <div style="overflow-x: auto; border:1px solid #ddd;">
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
                                     <!--<th style="width:10%;">
                                         <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>กระทำ
                                     </th>-->
-                                    <th style="width:10%;">รหัสพนักงาน</th>
-                                    <th style="width:15%;">ชื่อ นามสกุล</th>
-                                    <th style="width:25%;">ตำแหน่ง</th>
-                                    <th style="width:15%;">ตำแหน่งวิชาการ</th>
+                                    <th>รหัสพนักงาน</th>
+                                    <th>ชื่อ นามสกุล</th>
+                                    <th>ตำแหน่ง</th>
+                                    <th>คณะ</th>
+                                    <th>ภาควิชา</th>
+                                    <th>วันที่เริ่มงาน</th>
+                                    <th>ประเภท</th>
                                 </tr>
                             </thead>
                             <tbody class="table-body">
                                 <template is="dom-repeat" items={{newList}}>
-                                    <tr data="[[item]]" on-tap="chagePageDetail">
+                                    <tr data="[[item]]">
                                         <!--<td style="text-align: center">
                                             <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
                                         </td>-->
                                         <td>[[item.emp_no]]</td>
                                         <td>[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
                                         <td>[[item.position_name]]</td>
-                                        <td>[[item.academic_name]]</td>
+                                        <td>[[item.faculty_name]]</td>
+                                        <td>[[item.department_name]]</td>
+                                        <td>[[item.start_work_date]]</td>
+                                        <td>[[item.type_employee_name]]</td>
                                     </tr>
                                 </template>
                                 <template is="dom-if" if={{checkData(item.employee)}}>
@@ -82,20 +91,25 @@
                                 </template>
                             </tbody>
                         </table>
+                        </div>
                     </template>
                     <template is="dom-if" if={{!isSearch}}>
+                        <div style="overflow-x: auto; border:1px solid #ddd;">
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <th style="width:15%;" hidden="{{!checkBox}}">
+                                    <th hidden="{{!checkBox}}">
                                         <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>เลือกทั้งหมด
                                     </th>
-                                    <th style="width:10%;">รหัสพนักงาน</th>
-                                    <th style="width:15%;">ชื่อ นามสกุล</th>
-                                    <th style="width:25%;">ตำแหน่ง</th>
-                                    <th style="width:15%;">ตำแหน่งวิชาการ</th>
-                                    <th>ยอดที่ใช้</th>
-                                    <th>ยอดคงเหลือ</th>
+                                    <th>รหัสพนักงาน</th>
+                                    <th>ชื่อ นามสกุล</th>
+                                    <th>ตำแหน่ง</th>
+                                    <th>คณะ</th>
+                                    <th>ภาควิชา</th>
+                                    <th>วันที่เริ่มงาน</th>
+                                    <th>ประเภท</th>
+                                    <th>ยอดที่ใช้ (บาท)</th>
+                                    <th>ยอดคงเหลือ (บาท)</th>
                                 </tr>
                             </thead>
                             <tbody class="table-body">
@@ -107,9 +121,12 @@
                                         <td>[[item.emp_no]]</td>
                                         <td>[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
                                         <td>[[item.position_name]]</td>
-                                        <td>[[item.academic_name]]</td>
-                                        <td>[[item.value_use]]</td>
-                                        <td>[[item.value_budget]]</td>
+                                        <td>[[item.faculty_name]]</td>
+                                        <td>[[item.department_name]]</td>
+                                        <td>[[item.start_work_date]]</td>
+                                        <td>[[item.type_employee_name]]</td>
+                                        <td style="text-align: right">[[item.value_use]]</td>
+                                        <td style="text-align: right">[[item.value_budget]]</td>
                                     </tr>
                                 </template>
                                 <template is="dom-if" if={{checkData(item.employee)}}>
@@ -119,6 +136,7 @@
                                 </template>
                             </tbody>
                         </table>
+                        </div>
                     </template>
                 </div>
             </paper-material>
@@ -279,26 +297,62 @@
                 this.newList = storeData;
                 var input = this.searchInput;
                 var feild = Object.getOwnPropertyNames(this.newList[0]).sort();
+                // console.log(feild);
                 if(input != ''){
                     this.newList.map((item,index)=>{
                         for(var i = 0; i < feild.length;i++){
                             var getFeild = feild[i];
-                            if(String(item[getFeild]).search(input) > -1){
+                            if(String(item[getFeild]).search(input) != -1){
                                 arr.push(item)   
                             }
                             else{
-                                // console.log(this.newList);
-                                this.newList = [];
+                                // console.log('error');
+                                // arr = [];
                             }
-                        
                         }
                     })
-                    console.log(arr);
                     this.newList = arr
                 }
                 else{
-                    console.log(storeData);
+                    console.log('error');
                     this.newList = storeData;
+                }
+            },
+            searchTableByFilterDepartment:function(id){
+                if(this.isSearch == true){
+                    var storeData = this.list;
+                    this.newList = storeData;
+                    var getList = this.newList;
+                    this.newList = getList.filter((item)=>{
+                        return item.department_id == id
+                    })
+                }
+                else{
+                    var storeData = this.listSearch;
+                    this.newListSearch = storeData;
+                    var getList = this.newListSearch;
+                    this.newListSearch = getList.filter((item)=>{
+                        return item.department_id == id
+                    })
+                    // console.log(this.newListSearch);
+                }
+            },
+            searchTableByFilterFaculty:function(id){
+                if(this.isSearch == true){
+                    var storeData = this.list;
+                    this.newList = storeData;
+                    var getList = this.newList;
+                    this.newList = getList.filter((item)=>{
+                        return item.faculty_id == id
+                    })
+                }
+                else{
+                    var storeData = this.listSearch;
+                    this.newListSearch = storeData;
+                    var getList = this.newListSearch;
+                    this.newListSearch = getList.filter((item)=>{
+                        return item.faculty_id == id
+                    })
                 }
             }      
         });

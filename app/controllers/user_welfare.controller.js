@@ -375,6 +375,12 @@ exports.adminEmployee = function (req, res) {
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).without({ right: 'id' }).zip()
         .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).without({ right: 'id' }).zip()
         .without('id')
+        .merge(function(m){
+            return {
+                start_work_date : m('start_work_date').split('T')(0),
+                birthdate : m('birthdate').split('T')(0)
+            }
+        })
         .run()
         .then(function (data) {
             res.json(data);
@@ -522,7 +528,7 @@ exports.welfaresEmployee = function (req, res) {
                     .merge((name_welfare) => {
                         return {
                             date_use: name_welfare('date_use').split('T')(0),
-                            date_approve: name_welfare('date_approve').split('T')(0),
+                            // date_approve: name_welfare('date_approve').split('T')(0),
                             name: r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('group_welfare_name'),
                             history_welfare_id: name_welfare('id')
                         }
