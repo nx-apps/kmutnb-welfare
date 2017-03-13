@@ -64,6 +64,7 @@
                 </gl-grid-row>
                 <gl-grid-row style="margin-top: 10px">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    [[checkSelect(data.admin_use)]]
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                        <paper-checkbox checked="{{data.admin_use}}">admin เป็นผู้อนุมัติ</paper-checkbox>
                     </gl-grid-col>
@@ -108,6 +109,13 @@
             },
             close: function(){
                 this.fire('closePanel');
+            },
+            checkSelect: function(e){
+                if (e == true) {
+                    if(typeof this.data.onetime == 'undefined'){
+                        this.set('data.onetime', true);
+                    }
+                }
             }
         });
     </script>
