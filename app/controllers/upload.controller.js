@@ -71,7 +71,7 @@ exports.listFilePath = function (req, res) {
                 progress: 100, complete: true
             }
         })
-        .filter({ emp_id: params.emp_id,welfare_id: params.welfare_id, ref_path: params.refPath, file_status: true })
+        .filter({ emp_id: params.emp_id,welfare_id: params.welfare_id, ref_path: params.refPath, file_status: true,doc_status:false })
         .orderBy(r.desc('date_upload'))
         .run()
         .then(function (result) {
