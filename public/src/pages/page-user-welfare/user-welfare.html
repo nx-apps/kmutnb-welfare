@@ -93,7 +93,11 @@
                                     <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
                                     <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                     <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
-                                    <td><paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]"disabled="[[_checkAdmin(item.status_approve,item.admin_use)]]">ขอใช้</paper-button></td>
+                                    <td>
+                                        <template is="dom-if" if=[[_checkAdmin(item.status_approve,item.admin_use)]]>
+                                            รอการอนุมัติ
+                                        </template>
+                                        <paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]" hidden="[[_checkAdmin(item.status_approve,item.admin_use)]]">ขอใช้</paper-button></td>
                                 </tr>
                             </template>
                             <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
@@ -131,8 +135,21 @@
                                     <td>
                                         <vaadin-date-picker always-float-label  disabled value="{{item.date_use}}"></vaadin-date-picker>
                                     </td>
+                                    
+                                    
+                                    
                                     <td>
-                                        <vaadin-date-picker always-float-label  disabled value="{{item.date_approve}}"></vaadin-date-picker>
+                                        <template is="dom-if" if={{!item.date_approve}}>
+                                            <div style="text-align: center">
+                                                รอการอนุมัติ
+                                            </div>
+                                        </template>
+                                        <template is="dom-if" if={{item.date_approve}}>
+                                            <div style="text-align: center">
+                                            <vaadin-date-picker always-float-label  disabled value="{{item.date_approve}}"></vaadin-date-picker>
+                                            </div>
+                                        </template>
+                                        
                                         
                                     </td>
                                 </tr>

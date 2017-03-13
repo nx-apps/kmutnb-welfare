@@ -207,7 +207,7 @@ export function usersAction(store){
                 newData.id = data.id;
                 this.fire('toast',{status:'load'});
                 newData.status = true;
-                newData.date_approve = new Date().toISOString()
+                newData.date_approve = new Date().toISOString();
                     axios.put(`./user/use_welfare/update`,newData)
                     .then(res=>{
                         this.dispatchAction('USERS_FALSE_LIST');

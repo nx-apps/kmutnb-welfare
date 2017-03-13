@@ -241,7 +241,8 @@
                   
                 }
                 // console.log(newItem);
-                this.dispatchAction('WELFARE_INSERT', newItem)
+                this.fire('back');
+                this.dispatchAction('WELFARE_INSERT', newItem);
             },
             delete_condition: function (e) {
                 // console.log(e.target.index);
