@@ -111,6 +111,12 @@ export function userWelfareAction(store) {
                 .then((response) => {
                     //  console.log(JSON.stringify(response.data));
                     var newData = response.data.map((item) => {
+                        if(item.academic_name == ""){
+                            item.fullName = item.prefix_name + " " + item.firstname + " " + item.lastname
+                        }
+                        else{
+                             item.fullName = item.academic_name + " " + item.firstname + " " + item.lastname
+                        }
                         item.check = false;
                         return item;
                     })
