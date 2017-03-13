@@ -47,8 +47,10 @@
                                         <td style="text-align:center;">[[welfare.emp_budget]]</td>
                                         <td style="text-align:center;">[[welfare.emp_use]]</td>
                                         <td style="text-align:center;">
-                                            <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:list" title="แก้ไข"></paper-icon-button>
-                                            <paper-icon-button data="[[welfare]]" on-tap="_delete" icon="delete" title="ลบ"></paper-icon-button>
+                                            <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:list" title="รายละเอียด"></paper-icon-button>
+                                            <template is="dom-if" if={{!list.status_approve}}>
+                                                <paper-icon-button data="[[welfare]]" on-tap="_delete" icon="delete" title="ลบ"></paper-icon-button>
+                                            </template>
                                             <!--<paper-button data="[[welfare]]" style="height:30px; width:25px;" raised class="gl-btn-info" on-tap="_edit">แก้ไข</paper-button>-->
                                         </td>
                                     </tr>
@@ -63,7 +65,7 @@
                 <welfare-insert datas="{{data}}"></welfare-insert>
             </div>
             <div>
-                <welfare-edit datas="{{data}}"></welfare-edit>
+                <welfare-edit datas="{{data}}" status="[[list.status_approve]]"></welfare-edit>
             </div>
         </iron-pages>
     </template>
@@ -102,9 +104,20 @@
                 this.pages = '2';
             },
             _delete: function (e) {
-                // console.log(e.currentTarget.data.id);
-                var id = e.currentTarget.data.id;
-                this.dispatchAction('WELFARE_DELETE', id)
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'คุณต้องการลบเงื่อนไขนี้ใช่หรือไม่ ?',
+                    confirmed: this._confirmToast.bind(this),
+                    datas: {
+                        id : e.currentTarget.data.id,
+                        group_id : e.currentTarget.data.group_id
+                    }
+                });
+            },
+            _confirmToast: function (result, detail) {
+                if (result == true) {
+                    this.dispatchAction('WELFARE_DELETE', detail.datas)
+                }
             },
             setPage: function (pages) {
                 this.pages = pages
