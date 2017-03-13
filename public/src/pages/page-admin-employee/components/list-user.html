@@ -317,6 +317,43 @@
                     console.log('error');
                     this.newList = storeData;
                 }
+            },
+            searchTableByFilterDepartment:function(id){
+                if(this.isSearch == true){
+                    var storeData = this.list;
+                    this.newList = storeData;
+                    var getList = this.newList;
+                    this.newList = getList.filter((item)=>{
+                        return item.department_id == id
+                    })
+                }
+                else{
+                    var storeData = this.listSearch;
+                    this.newListSearch = storeData;
+                    var getList = this.newListSearch;
+                    this.newListSearch = getList.filter((item)=>{
+                        return item.department_id == id
+                    })
+                    // console.log(this.newListSearch);
+                }
+            },
+            searchTableByFilterFaculty:function(id){
+                if(this.isSearch == true){
+                    var storeData = this.list;
+                    this.newList = storeData;
+                    var getList = this.newList;
+                    this.newList = getList.filter((item)=>{
+                        return item.faculty_id == id
+                    })
+                }
+                else{
+                    var storeData = this.listSearch;
+                    this.newListSearch = storeData;
+                    var getList = this.newListSearch;
+                    this.newListSearch = getList.filter((item)=>{
+                        return item.faculty_id == id
+                    })
+                }
             }      
         });
     </script>
