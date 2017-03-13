@@ -242,19 +242,22 @@
                         // console.log(arrForItem);
                         this.data.condition.map((item,index)=>{
                             let itemUse = item.field
-                            let date =  this.condition.filter((field)=> field.id == itemUse)
+                            let date =  this.condition.filter((field)=> field.id == itemUse)[0]
                             // // console.log('date',date);
-                            // // console.log(date[0].field.search('date') > 0);
-                            
+                            // console.log(date.field.search('date') > 0);
+                            console.log(i, index,i != index);
                                 if (i != index) {
+                                    // console.log(date.field.search('date') > 0);
+                                    // console.log(arrForItem);
                                 if (arrForItem.filter((blDetail)=> blDetail.id == item.field )[0] != undefined) {
                    itemif = arrForItem.indexOf(arrForItem.filter((blDetail)=> blDetail.id == item.field )[0]);
                   //  console.log(itemif);
                    arrForItem.splice(itemif, 1);
                  }
+                 
                             } //else if (date[0].field.search('date') > 0) {
-                                
-                                // console.log(itemUse);
+                                // console.log(11121212);
+                                console.log('arrForItem',arrForItem);
                             //     let count = this.data.condition.filter((field)=> field.field == itemUse).length
                             //     console.log('จริงง');
                             //     if (count > 1){
@@ -268,7 +271,7 @@
                         });
                         // console.log(arrForItem);
                         var combobox = Polymer.dom(this.root).querySelector('#name-'+i);
-                        // console.log('combobox>',Polymer.dom(this.root).querySelector('#name-'+i));
+                        console.log('combobox>',combobox);
                         //  console.log('151218131865168');
                         combobox.items = arrForItem
                     }
@@ -281,10 +284,10 @@
             checkField: function (e, index) {
                  this.async(()=>{
                   try {
-                    console.log(e, index);
+                    // console.log(e, index);
                     // console.log('ddddddd',document.getElementById(symbo-1));
                     var combobox = Polymer.dom(this.root).querySelector('#symbo-'+index);
-                    console.log('fffff',combobox);
+                    // console.log('fffff',combobox);
                     var id = e;
                     var symbol = this.condition.filter((val) => val.id == id)[0]
                     // console.log(symbol);
