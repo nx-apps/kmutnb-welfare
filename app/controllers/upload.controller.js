@@ -27,7 +27,7 @@ exports.uploadFile = function (req, res) {
                         file_status: true,
                         emp_id: params.emp_id,
                         welfare_id: req.headers['welfare-id'],
-                        status_raw_history: false,
+                        doc_status: false,
                         date_upload: new Date(),
                         date_update: new Date()
                     })
