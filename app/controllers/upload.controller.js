@@ -51,6 +51,52 @@ exports.listFile = function (req, res) {
             res.json(result);
         })
 }
+exports.uploadFileadmin = function (req, res) {
+    var r = req.r;
+    var params = req.params;
+    console.log(req.body);
+    var form = new multiparty.Form();
+    form.parse(req, function (err, fields, files) {
+
+        var prefile = files.file[0];
+
+        fs.readFile(prefile.path, function (err, data) {
+            // console.log(r);
+            r.db('welfare').table('files').insert({
+                name: prefile.originalFilename.split('.')[0] + '_' + new Date().getTime() + "." + prefile.originalFilename.split('.')[1],
+                type: prefile.headers['content-type'],
+                contents: data,
+                timestamp: new Date(),
+                ref_path: req.headers['ref-path']
+            })('generated_keys')(0)
+                .do(function (file_id) {
+                    return r.db('welfare').table('document_file').insert({
+                        file_id: file_id,
+                        file_status: true,
+                        emp_id: params.emp_id,
+                        welfare_id: req.headers['welfare-id'],
+                        doc_status: true,
+                        date_upload: new Date(),
+                        date_update: new Date()
+                    })
+                })('generated_keys')(0)
+                .do((doc_id)=>{
+                    return {
+                        x:r.db('welfare').table('history_welfare').get(params.history_id).update((id)=>{
+                            return {
+                                document_ids:id('document_ids').append(doc_id)
+                            }
+                        })
+                    }
+                })
+                .run().then(function (result) {
+                    res.json(result);
+                }).catch(function (err) {
+                    res.json(err);
+                })
+        });
+    });
+}
 exports.listFilePath = function (req, res) {
     var r = req.r;
     var params = req.params;
@@ -73,6 +119,44 @@ exports.listFilePath = function (req, res) {
         })
         .filter({ emp_id: params.emp_id,welfare_id: params.welfare_id, ref_path: params.refPath, file_status: true,doc_status:false })
         .orderBy(r.desc('date_upload'))
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .error(function (err) {
+            res.json(err);
+        })
+}
+exports.adminlistFilePath = function (req, res) {
+    var r = req.r;
+    var params = req.params;
+    console.log('params=>',params);
+    r.db('welfare').table('history_welfare').get(params.id)
+    .merge((doc_id)=>{
+       return {
+           files:doc_id('document_ids').map((file)=>{
+           return { 
+               file:r.db('welfare').table('document_file').get(file).merge((me_file)=>{
+               return r.db('welfare').table('files').get(me_file('file_id'))
+                    })
+                    .merge(function (m) {
+            return { timestamp: m('timestamp').toISO8601().split("T")(0) }
+        })
+        .merge(function (row) {
+            return {
+                name: row('name').add(' | ')
+                    .add(row('timestamp'))
+                ,
+                progress: 100, complete: true
+            }
+        })
+               .without('contents')
+           }
+       })
+       }
+    })
+    .getField('files')
+    .getField('file')
         .run()
         .then(function (result) {
             res.json(result);
