@@ -76,13 +76,15 @@
 
                 <div class="horizontal end-justified layout btn-bottom">
                     <div hidden="{{active}}">
-                        <paper-button raised class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
-                        <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                        <paper-button raised style="margin-bottom:15px;" class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
+                        <paper-button raised style="margin-bottom:15px;" class="gl-btn-success" on-tap="save">บันทึก</paper-button>
                     </div>
                     
-                    <template is="dom-if" if={{!data.status_approve}}>
-                        <paper-button raised class="gl-btn-success" on-tap="approve">อนุมัติใช้งาน</paper-button>
-                    </template>
+                    <div hidden="{{!active}}">
+                        <template is="dom-if" if={{!data.status_approve}}>
+                            <paper-button raised style="margin-bottom:15px;" class="gl-btn-success" on-tap="approve">อนุมัติใช้งาน</paper-button>
+                        </template>
+                    </div>
 
                 </div>
             </paper-material>
