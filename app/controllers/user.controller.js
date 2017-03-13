@@ -225,7 +225,7 @@ exports.welfares = function (req, res) {
                     .merge((name_welfare) => {
                         return {
                             date_use: name_welfare('date_use').split('T')(0),
-                            // date_approve: name_welfare('date_approve').split('T')(0),
+                            date_approve: name_welfare.hasFields('date_approve').branch(name_welfare('date_approve').split('T')(0),false),//,
                             name: r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('group_welfare_name'),
                             history_welfare_id: name_welfare('id')
                         }
@@ -244,11 +244,11 @@ exports.welfares = function (req, res) {
                 })
             }
         })
-        .merge((withOutHistorty) => {
-            return {
-                history_welfare: withOutHistorty('history_welfare').filter({ status: true })
-            }
-        })
+        // .merge((withOutHistorty) => {
+        //     return {
+        //         history_welfare: withOutHistorty('history_welfare').filter({ status: true })
+        //     }
+        // })
         .without('group_welfare')
         .run()
         .then(function (result) {
