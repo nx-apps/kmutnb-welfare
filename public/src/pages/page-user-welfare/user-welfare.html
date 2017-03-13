@@ -140,12 +140,14 @@
                                     
                                     <td>
                                         <template is="dom-if" if={{!item.date_approve}}>
-                                            <div>
+                                            <div style="text-align: center">
                                                 รอการอนุมัติ
                                             </div>
                                         </template>
                                         <template is="dom-if" if={{item.date_approve}}>
+                                            <div style="text-align: center">
                                             <vaadin-date-picker always-float-label  disabled value="{{item.date_approve}}"></vaadin-date-picker>
+                                            </div>
                                         </template>
                                         
                                         
