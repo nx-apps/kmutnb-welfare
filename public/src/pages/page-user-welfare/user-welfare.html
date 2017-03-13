@@ -78,10 +78,10 @@
                             <tr>
                                 <th style="width: 5%">ลำดับ</th>
                                 <th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>
-                                <th style="width: 15%">จำนวนเงินที่ได้</th>
-                                <th style="width: 15%">จำนวนเงินที่ใช้ไปแล้ว</th>
-                                <th style="width: 15%">จำนวนเงินที่คงเหลือ</th>
-                                <th style="width: 15%">ขอใช้</th>
+                                <th style="width: 15%">จำนวนเงินที่ได้ (บาท)</th>
+                                <th style="width: 15%">จำนวนเงินที่ใช้ไปแล้ว (บาท)</th>
+                                <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>
+                                <th style="width: 15%">ขอใช้ (บาท)</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">
@@ -121,7 +121,7 @@
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
                                 <th style="width: 40%">สวัสดิการที่ใช้</th>
-                                <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้</th>
+                                <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
                                 <th style="width: 15%">วันที่ขอใช้งาน</th>
                                 <th style="width: 20%">วันที่อนุมัติ</th>
                             </tr>
@@ -139,17 +139,15 @@
                                     
                                     
                                     <td>
+                                        <div style="text-align: center">
                                         <template is="dom-if" if={{!item.date_approve}}>
-                                            <div style="text-align: center">
-                                                รอการอนุมัติ
-                                            </div>
+                                            รอการอนุมัติ
                                         </template>
                                         <template is="dom-if" if={{item.date_approve}}>
-                                            <div style="text-align: center">
                                             <vaadin-date-picker always-float-label  disabled value="{{item.date_approve}}"></vaadin-date-picker>
-                                            </div>
+                                            
                                         </template>
-                                        
+                                       </div> 
                                         
                                     </td>
                                 </tr>
