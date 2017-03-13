@@ -76,7 +76,6 @@
                 </div>
 
             </paper-material>
-
         </div>
 
     </template>
@@ -87,7 +86,12 @@
             properties: {
                 data: {
                     type: Object,
-                    value:{},
+                    value: function(){
+                        return {
+                            start_date : new Date().toISOString().split('-')[0]+'-01-01',
+                            end_date : new Date().toISOString().split('-')[0]+'-12-31'
+                        }
+                    },
                     notify: true
                 },
             },
