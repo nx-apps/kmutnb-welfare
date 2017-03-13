@@ -7,7 +7,7 @@ const initialState = {
     list_id: [],
     dataSelect: {},
     condition: [],
-    employees:[]
+    employees: []
 }
 
 export function listWelfareReducer(state = initialState, action) {
@@ -91,9 +91,9 @@ export function listWelfareAction(store) {
             // console.log(data);
             var datas = {
                 budget: data.budget,
-                group_id : data.group_id,
-                welfare_name : data.welfare_name,
-                condition : data.condition,
+                group_id: data.group_id,
+                welfare_name: data.welfare_name,
+                condition: data.condition,
                 id: data.id
             }
             // console.log(datas);
@@ -123,7 +123,7 @@ export function listWelfareAction(store) {
 
                 })
         },
-        CONDITION_LIST: function(){
+        CONDITION_LIST: function () {
             axios.get('/condition_read_welfare/list/conditions')
                 .then(function (result) {
                     // console.log(result.data);
@@ -133,9 +133,9 @@ export function listWelfareAction(store) {
 
                 })
         },
-        WELFARE_LIST_EMPLOYEE: function(id){
+        WELFARE_LIST_EMPLOYEE: function (id) {
             // console.log(id);
-            axios.get('/user_welfare/id/'+id)
+            axios.get('/user_welfare/id/' + id)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'WELFARE_LIST_EMPLOYEE', payload: result.data })

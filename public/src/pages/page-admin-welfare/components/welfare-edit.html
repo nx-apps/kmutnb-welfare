@@ -95,7 +95,7 @@
                     <div hidden="{{!active}}" class="btn-bottom">
                         <paper-button raised class="gl-btn-danger" on-tap="back">ย้อนกลับ</paper-button>
                         <paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
-
+                        <paper-button raised class="gl-btn-warning" on-tap="print">Print</paper-button>
                     </div>
                 </div>
                 <div class="horizontal end-justified layout">
@@ -112,6 +112,9 @@
         
         
         <template is="dom-if" if="{{tableStatus}}">
+            <div class="horizontal end-justified layout" >
+                <div style="margin-right:30px;font-weight: bold;font-size: 20px;">จำนวนผู้ได้รับสิทธิ [[employees.count_employee]] คน</div>
+            </div>
             <div class="table-detail">
                 <paper-material elevation="1">
                     <table class="gl-table-default">
@@ -323,18 +326,14 @@
                 this.set('disabled', this.active = false);
             },
             list_users: function () {
-                var id = this.data.id
+                var id = this.data.id;
                 this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
                 this.tableStatus = true;
             },
-            // valueChanged: function (e) {
-            //     var id = e.detail.value;
-            //     console.log('cccccc',id);
-            //     // var combobox = Polymer.dom(this.root).querySelector('#symbo-');
-            //     // var symbol = this.condition.filter((val) => val.id == id)[0]
-            //     // console.log(symbol);
-            //     // combobox.items = symbol.conditions;
-            // }
+            print:function(){
+                var id = this.data.id;
+                window.open('api/report/report1/' + id);
+            }
         });
     </script>
 </dom-module>

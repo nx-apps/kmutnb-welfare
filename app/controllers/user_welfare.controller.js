@@ -220,7 +220,8 @@ exports.listId = function (req, res) {
         .merge(function (m) {
             return {
                 start_date: m('start_date').split('T')(0),
-                end_date: m('end_date').split('T')(0)
+                end_date: m('end_date').split('T')(0),
+                count_employee: m('employee').count()
             }
         })
         .run()
