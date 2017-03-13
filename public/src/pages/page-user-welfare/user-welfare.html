@@ -93,11 +93,15 @@
                                     <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
                                     <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                     <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
-                                    <td>
-                                        <template is="dom-if" if=[[_checkAdmin(item.status_approve,item.admin_use)]]>
-                                            รอการอนุมัติ
+                                    <td><div class="approve">
+                                        <template is="dom-if" if=[[_checkAdmin(item.status_approve,item.admin_use,index)]]>
+                                            <!--<div class="approve-[[index]] ff">-->
+                                                รอการอนุมัติ -[[index]]
+                                            <!--</div>-->
+                                            
                                         </template>
-                                        <paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]" hidden="[[_checkAdmin(item.status_approve,item.admin_use)]]">ขอใช้</paper-button></td>
+                                        </div>
+                                        <paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]" hidden="[[_checkAdmin(item.status_approve,item.admin_use,index)]]">ขอใช้</paper-button></td>
                                 </tr>
                             </template>
                             <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
@@ -209,9 +213,11 @@
                     
                 }
             },
-            _checkAdmin(status_user,status_admin){
+            _checkAdmin(status_approve,status_admin,index){
+                
+                console.log(this.$$('.approve-'));
                 // (status_admin || status_user ? {return true} : false)
-                if (status_admin || status_user) 
+                if (status_admin || status_approve) 
                    return true
             },        
             gerYearWelfare(e){
