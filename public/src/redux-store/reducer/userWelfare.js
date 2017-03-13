@@ -7,28 +7,30 @@ const initialState = {
     list_id: [],
     list_user: [],
     listSearch: [],
-    welfare_employee: []
+    welfare_employee: [],
+    select_use_welefares: {},
+    faculty_list: []
 }
 
-const clearDatawelfare = (data,callback)=>{
-    
-    let {emp_id,welfare_id,use_budget,status,year,group_id}=data;
-    let newData={emp_id,welfare_id,use_budget,status,year,group_id};
+const clearDatawelfare = (data, callback) => {
+
+    let { emp_id, welfare_id, use_budget, status, year, group_id } = data;
+    let newData = { emp_id, welfare_id, use_budget, status, year, group_id };
     // console.log(data.date/use_welfare/update_use == '');
-   
-    newData.document_ids = new Array()    
-    data.document_ids.map((file)=>{
+
+    newData.document_ids = new Array()
+    data.document_ids.map((file) => {
         newData.document_ids.push(file)
     })
-    
+
     if (data.date_use == '' || data.date_use == undefined) {
         newData.date_use = new Date().toISOString();
     } else {
         // console.log(data.date_use);
-        newData.date_use = new Date (data.date_use).toISOString();
+        newData.date_use = new Date(data.date_use).toISOString();
     }
     // console.log(newData);
-        callback(newData)
+    callback(newData)
 }
 
 export function userWelfareReducer(state = initialState, action) {
@@ -48,6 +50,10 @@ export function userWelfareReducer(state = initialState, action) {
             return Object.assign({}, state, { welfare_employee: action.payload });
         case 'EMPLOYEE_GET_WELFARES':
             return Object.assign({}, state, { welfare_employee: action.payload });
+        case 'EMPLOYEE_USE_SELETE_WELFARE':
+            return Object.assign({}, state, { select_use_welefares: action.payload });
+        case 'FACULTY_LIST':
+            return Object.assign({}, state, { faculty_list: action.payload });
         default:
             return state
     }
@@ -167,27 +173,43 @@ export function userWelfareAction(store) {
                     console.log(err);
                 })
         },
-            USER_USE_WELFARE(data){
-            console.log(data);
-            // clearDatawelfare(data,(newData)=>{
-                
-            //     this.fire('toast',{status:'load'});
-            //     // newData.status = true;
-            //         axios.post(`./user/use_welfare/`,newData)
-            //         .then(res=>{
-            //             this.USER_GET_WELFARES(newData.emp_id,true);
-            //             this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-            //                 callback:()=>{
-            //                     // this.$$('panel-right').close();
-            //                     // this.$$('#welfare_budget').close()
-            //                 }
-            //             });
-            //         })
-            //         .catch(err=>{
-            //             console.log(err);
-            //         })
-            //     })
-            }
+        EMPLOYEE_USE_SELETE_WELFARE(data) {
+            // console.log(data);
+            store.dispatch({ type: 'EMPLOYEE_USE_SELETE_WELFARE', payload: data })
+        },
+        EMPLOYEE_USE_WELFARE(data) {
+            // console.log(data);
+            clearDatawelfare(data, (newData) => {
+                // console.log(newData);
+
+                this.fire('toast', { status: 'load' });
+                // newData.status = true;
+                axios.post(`./user/use_welfare/`, newData)
+                    .then(res => {
+                        this.EMPLOYEE_GET_WELFARES(newData.emp_id);
+                        this.fire('toast', {
+                            status: 'success', text: 'บันทึกสำเร็จ',
+                            callback: () => {
+                                // this.$$('panel-right').close();
+                                // this.$$('#welfare_budget').close()
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            })
+        },
+        FACULTY_LIST() {
+            axios.get('./common/faculty')
+                .then((response) => {
+                    console.log(response.data);
+                    store.dispatch({ type: 'FACULTY_LIST', payload: response.data })
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     }
     ]
 

@@ -1,4 +1,5 @@
 <link rel="import" href="../../components/upload-file/upload-file.html">
+<link rel="import" href="../../components/validateFormBehaviors.html">
 <dom-module id="dialog-use-welfare">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
             :host {
@@ -25,7 +26,7 @@
             <div class="flex-2">
                 [[changeString2Num(data.*,'use_budget')]]
                 [[checkBudget(data.*)]]
-                 <gl-form-input id="emp_id" no-label-float allowed-pattern="[0-9||,||.]" format-number="on" value="{{data.use_budget}}"  disabled="[[disabled]]"><div suffix>บาท</div></gl-form-input>
+                 <gl-form-input id="use_budget" no-label-float allowed-pattern="[0-9||,||.]" format-number="on" value="{{data.use_budget}}"  disabled="[[disabled]]" class="required" required><div suffix>บาท</div></gl-form-input>
             </div> 
         </div>
         
@@ -50,37 +51,45 @@
         target="/api/upload/file/[[data.emp_id]]"
         accept="application/pdf"
         ref-path="employee.document"
-        emp-id="[[data.emp_id]]">
+        emp-id="[[data.emp_id]]"
+        welfare-id="[[data.welfare_id]]">
         </upload-file>
         
     </template>
     <script>
         Polymer({
             is: 'dialog-use-welfare',
-            behaviors:[ReduxBehavior,FormatNumberBehavior,commonLogic],
+            behaviors:[ReduxBehavior,FormatNumberBehavior,commonLogic,ValidateFormBehavior],
             properties:{
                 data:{
                     type:Object,
                     notify:true
                 },
             },
+            keepFile(){
+                var newItem = this.$$('upload-file').listFiles;
+                return newItem.map((item)=>{
+                    return item.id;
+                })
+
+            },
             checkBudget(e){
                 try {
-                    var newItem = this.$$('upload-file').listFiles;
-                   this.data.file = newItem.map((item)=>{
-                       return item.id;
-                   })
+                    //  console.log(this.$$('#use_budget').validateForm('.required'));
                     // console.log(this.data.use_budget);
                     // console.log(this.data.budget_cover);
                         if(this.data.use_budget > this.data.budget_cover)
                             this.set('data.use_budget',this.data.budget_cover)
-                        if(this.data.onetime)
+                        if(this.data.onetime){
                             this.set('data.use_budget',this.data.budget_cover)
+                            console.log(111);
+                        }
+                            
                     }
                     catch(err) {
                         // document.getElementById("demo").innerHTML = err.message;
                     } 
-            },
+            }
         });
     </script>
 </dom-module>
