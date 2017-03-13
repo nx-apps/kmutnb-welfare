@@ -6,11 +6,13 @@
         paper-material {
             background-color: var(--gl-white-color);
         }
+        
         .table-detail {
             margin: auto;
             width: 80%;
             padding: 20px;
         }
+        
         table.gl-table-default {
             border: 1px solid #ddd;
         }
@@ -38,7 +40,7 @@
                             </thead>
                             <tbody class="table-body">
                                 <!--<template is="dom-repeat" items="{{list}}">-->
-                                    <template is="dom-repeat" items="{{list.welfare}}" as="welfare">
+                                <template is="dom-repeat" items="{{list.welfare}}" as="welfare">
                                     <tr data="[[item]]">
                                         <td style="text-align:center;">[[list.year]]</td>
                                         <td>[[welfare.welfare_name]]</td>
@@ -46,12 +48,12 @@
                                         <td style="text-align:center;">[[welfare.emp_budget]]</td>
                                         <td style="text-align:center;">[[welfare.emp_use]]</td>
                                         <td style="text-align:center;">
-                                            <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:create" title="แก้ไข"></paper-icon-button>
+                                            <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:list" title="แก้ไข"></paper-icon-button>
                                             <paper-icon-button data="[[welfare]]" on-tap="_delete" icon="delete" title="ลบ"></paper-icon-button>
                                             <!--<paper-button data="[[welfare]]" style="height:30px; width:25px;" raised class="gl-btn-info" on-tap="_edit">แก้ไข</paper-button>-->
                                         </td>
                                     </tr>
-                                    </template>
+                                </template>
                                 <!--</template>-->
                             </tbody>
                         </table>
@@ -74,41 +76,41 @@
             is: 'welfare-detail',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
             listeners: {
-                'back' : 'back_page'
+                'back': 'back_page'
             },
             properties: {
-                pages:{
+                pages: {
                     type: String,
-                    value : '0'
+                    value: '0'
                 },
-                list:{
+                list: {
                     statePath: 'welfare.list_id',
-                    observer:'getData'
+                    observer: 'getData'
                 }
             },
-            getData:function(data){
-                console.log('11111',data);
+            getData: function (data) {
+                console.log('11111', data);
             },
-            _insert:function(){
+            _insert: function () {
                 this.pages = '1';
                 this.dispatchAction('CONDITION_LIST')
             },
-            back_page:function(){
+            back_page: function () {
                 this.pages = '0';
             },
-            _edit:function(e){
+            _edit: function (e) {
                 // console.log(e.currentTarget.data);
                 var id = e.currentTarget.data.id;
                 this.dispatchAction('WELFARE_DATA_SELECT', id)
                 this.dispatchAction('CONDITION_LIST')
                 this.pages = '2';
             },
-            _delete:function(e){
+            _delete: function (e) {
                 // console.log(e.currentTarget.data.id);
                 var id = e.currentTarget.data.id;
                 this.dispatchAction('WELFARE_DELETE', id)
             },
-            setPage:function(pages){
+            setPage: function (pages) {
                 this.pages = pages
             }
         });
