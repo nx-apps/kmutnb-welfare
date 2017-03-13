@@ -1,5 +1,5 @@
 <link rel="import" href="../../../../bower_components/vaadin-upload/vaadin-upload.html">
-<dom-module id="upload-file">
+<dom-module id="upload-file-admin">
     <style>
         .borderDrop{
             border: 1px dashed;
@@ -50,7 +50,7 @@
     </template>
     <script>
         Polymer({
-            is: 'upload-file',
+            is: 'upload-file-admin',
             behaviors: [ReduxBehavior],
             properties:{
                 target:{
@@ -81,6 +81,11 @@
                   value:"",
                   observer:'getList'
                 },
+                historyWelfareId:{
+                  type:String,
+                  value:"",
+                  observer:'getList'
+                },
                 // fileIdUpload:{
                 //   statePath: 'upload.fileIdUpload'
                 // },
@@ -91,7 +96,7 @@
             _addHeader:function(e){
                 event.detail.xhr.setRequestHeader('ref-path', this.refPath);
                 event.detail.xhr.setRequestHeader('welfare-id', this.welfareId);
-                event.detail.xhr.setRequestHeader('history-welfare-id', this.welfareId);
+                // event.detail.xhr.setRequestHeader('history-welfare-id', this.welfareId);
             },
             checkRefPath:function(refPath){
                 return (refPath!="")
@@ -101,7 +106,7 @@
               if(fileChange.path=='file.complete'){
                 if(fileChange.base.xhr){
                   var res = JSON.parse(fileChange.base.xhr.response);
-                  console.log(res.generated_keys[0]);
+                //   console.log(res.generated_keys[0]);
                   this.getData = res.generated_keys;
                  
                 //   this.dispatchAction('UPLOAD_FILECHANGE',res.generated_keys[0]);
@@ -122,7 +127,8 @@
                 // console.log(this.welfareId);
               if (this.refPath != {} && this.empId != '' && this.empId != undefined) {
                 // this.dispatchAction('UPLOAD_LISTFILE', this.refPath, this.requestId);
-                axios.get('/upload/list/'+this.refPath+'/'+this.empId+'/'+this.welfareId)
+                console.log(this.historyWelfareId);
+                axios.get('/upload/list/histroy/werfale/id/'+this.historyWelfareId)
                 .then( (response)=>{
                     this.listFiles = response.data;
                 })

@@ -304,42 +304,12 @@ exports.useWelfare = function (req, res) {
     // console.log(req.body.document_ids);
 
     var r = req.r;
-    // r.expr(req.body)
-    // .merge((insert)=>{
-    //     return { insert_id : r.db('welfare').table('history_welfare')
-    //                     .insert(req.body)('generated_keys')(0)
-    //     }
-    // })
-    // .merge((doc)=>{
-    //     return  {
-    //     update_docs : doc('document_ids').map((update_doc)=>{
-    //           return {
-    //                 pass: update_doc.do(function (doc_id) {
-    //                    return r.db('welfare').table('document_file').get(doc_id)
-    //                         //   .update({"status_raw_history": false})
-    //                 })
-    //            }
-    //         })
-    //     }
-    // })
     r.db('welfare').table('history_welfare').insert(req.body)('generated_keys')(0)
         .do ((history_id)=>{
             return r.db('welfare').table('history_welfare').get(history_id).getField('document_ids').forEach((doc_update)=>{
                 return r.db('welfare').table('document_file').get(doc_update).update({doc_status:true})
             })
         })
-        // .do(function (doc_id) {
-        //             return r.db('welfare').table('document_file').get('f0f47101-b9c0-494c-b3d8-bd89cada8868')
-        //                 .update({
-        //                 status_raw_history: true,
-        // //             //     file_status: true,
-        // //             //     emp_id: params.emp_id,
-        // //             //     welfare_id: req.headers['welfare-id'],
-        // //             //     status_raw_history: false,
-        // //             //     date_upload: new Date(),
-        // //             //     date_update: new Date()
-        //             })
-        // })
         .run()
         .then(function (result) {
             res.json(result);
