@@ -76,6 +76,11 @@
                   value:"",
                   observer:'getList'
                 },
+                welfareId:{
+                  type:String,
+                  value:"",
+                  observer:'getList'
+                },
                 // fileIdUpload:{
                 //   statePath: 'upload.fileIdUpload'
                 // },
@@ -85,6 +90,7 @@
             },
             _addHeader:function(e){
                 event.detail.xhr.setRequestHeader('ref-path', this.refPath);
+                event.detail.xhr.setRequestHeader('welfare-id', this.welfareId);
             },
             checkRefPath:function(refPath){
                 return (refPath!="")
@@ -112,9 +118,10 @@
               }
             },
             getList:function(){
+                // console.log(this.welfareId);
               if (this.refPath != {} && this.empId != '' && this.empId != undefined) {
                 // this.dispatchAction('UPLOAD_LISTFILE', this.refPath, this.requestId);
-                axios.get('/upload/list/'+this.refPath+'/'+this.empId)
+                axios.get('/upload/list/'+this.refPath+'/'+this.empId+'/'+this.welfareId)
                 .then( (response)=>{
                     this.listFiles = response.data;
                 })

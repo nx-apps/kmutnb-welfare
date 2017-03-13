@@ -1,6 +1,8 @@
 <link rel="import" href="./../components/format-number-behavior.html">
 <link rel="import" href="./../components/common-logic.html">
 
+<link rel="import" href="./../components/validateFormBehaviors.html">
+
 <link rel="import" href="./components/dialog-use-welfare.html">
 
 <dom-module id="user-welfare">
@@ -151,7 +153,7 @@
             </gl-form-panel>
         <!--</paper-material>-->
 <paper-dialog id="welfare_budget" >
-        <dialog-use-welfare data="{{usewelfareProp}}" disabled="[[disabled]]"></dialog-use-welfare>
+        <dialog-use-welfare id="dialog-use-welfare"data="{{usewelfareProp}}" disabled="[[disabled]]"></dialog-use-welfare>
         <div class="flex horizontal end-justified layout">
             <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้งาน</paper-button>
         </div>
@@ -225,10 +227,17 @@
                 this.dispatchAction('USER_USE_SELETE_WELFARE',data);
             },
             getwelfare(){
-                console.log(this.usewelfareProp);
+                // console.log(this.usewelfareProp);
                 // console.log(this.data.file);
                 // this.$$('#welfare_budget').close()
-                // this.dispatchAction('USER_USE_WELFARE',this.usewelfareProp);
+                this.usewelfareProp.document_ids = this.$$('dialog-use-welfare').keepFile()
+                console.log(this.usewelfareProp);
+                // console.log(this.$$('#dialog-use-welfare'));
+                // console.log(this.usewelfareProp.use_budget);
+                if(this.$$('#dialog-use-welfare').validateForm('.required')){
+                    this.dispatchAction('USER_USE_WELFARE',this.usewelfareProp);
+                }
+                // 
             },
             
             deleteHistoryWelfare(e){
