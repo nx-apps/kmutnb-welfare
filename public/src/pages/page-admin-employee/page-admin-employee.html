@@ -82,7 +82,7 @@
     <script>
         Polymer({
             is: 'page-admin-employee',
-            behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction, usersAction, uploadAction],
+            behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction, uploadAction],
             observers:['select_year(selectYear)','select_welfare(selectWelfare)'],
             properties: {
                 year: {
@@ -123,6 +123,7 @@
                 this.LIST_USER("");
                 this.$$('list-user').selectTable(true)
                 this.hidePaperfab = true;
+                // this.FACULTY_LIST();
             },
             select_year:function(year) {
                if(year != ""){
