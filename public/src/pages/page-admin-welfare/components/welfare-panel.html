@@ -92,6 +92,7 @@
             },
             save: function () {
                 this.data.year = this.unFormat(this.data.year);
+                this.data.status_approve = false;
                 if(this.data.onetime != true){
                     this.data.onetime = false;
                 }

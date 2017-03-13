@@ -52,7 +52,7 @@
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             
-                            <gl-form-dropdown-menu style="margin-top: 15px" placeholder="{{item.itemLogic.length}}">
+                            <gl-form-dropdown-menu style="margin-top: 15px">
                                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.logic_show}}">
                                     <template is="dom-repeat" items="{{item.itemLogic}}">
                                         <paper-item value="{{item.symbol}}">{{item.name}}</paper-item>
@@ -64,7 +64,7 @@
                         [[checkValue(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                             <div id="combobox-[[index]]" hidden>
-                                <gl-form-dropdown-menu style="margin-top: 15px" placeholder="{{item.itemValue.length}}">
+                                <gl-form-dropdown-menu style="margin-top:15px;width:100%;">
                                     <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.value_show}}">
                                         <template is="dom-repeat" items="{{item.itemValue}}">
                                             <paper-item value="{{item.id}}">{{item.name}}</paper-item>
@@ -100,7 +100,7 @@
             properties: {
                 condition: {
                     statePath: 'listWelfare.condition',
-                    observer:'setCondition'
+                    // observer:'setCondition'
                 },
                 active: {
                     type: Boolean,
@@ -249,9 +249,10 @@
             },
             back: function () {
                 this.fire('back');
+                this.data = {};
                 this.data = {
                     condition: [
-                        { field: '', logic: '', value: '' }
+                //         { field: '', logic: '', value: '' }
                     ]
                 };
             },
