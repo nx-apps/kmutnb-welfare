@@ -162,7 +162,7 @@
                 var check = show.base.filter((item) => {
                     return item.check == true
                 })
-                console.log(check);
+                // console.log(check);
                 if (check.length != 0) {
                     this.paperFab = false;
                 }
@@ -246,13 +246,16 @@
                 // console.log(e.target.is);
             },
             chagePageDetail: function (e) {
-                console.log(e.currentTarget.data);
-                // var item = e.currentTarget.data;
-                // var datas = {
-                //     id: item.id,
-                //     year: item.year
-                // }
-                // this.dispatchAction('LIST_EMPLOYEE_WELFARE', datas);
+                    // console.log(e.currentTarget.data);
+                var item = e.currentTarget.data;
+                var id = item.id;
+                this.seleterYear = '';
+                this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
+                this.dispatchAction('LIST_EMPLOYEE_WELFARE', id);
+                var check = e.target.is;
+                if (check != 'paper-checkbox') {
+                    this.fire('select-page', 1)
+                }
             }
         });
     </script>
