@@ -298,3 +298,17 @@ exports.groupYear = function (req, res) {
             res.json(data)
         })
 }
+exports.approve = function (req, res) {
+    var r = req.r;
+    // console.log(req.body)
+    r.db('welfare').table('group_welfare')
+        .get(req.body.id)
+        .update(req.body)
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
