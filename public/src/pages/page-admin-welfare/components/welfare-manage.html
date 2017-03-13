@@ -29,8 +29,8 @@
                     <div style="margin:20px 20px 0px 0px;" hidden="{{!active}}">
                         <template is="dom-if" if={{!data.status_approve}}>
                             <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
+                            <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
                         </template>
-                        <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
                     </div>
                 </div>
 
@@ -49,10 +49,10 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker label="วันที่เริ่มใช้ :" value="{{data.start_date}}" disabled="{{active}}"></vaadin-date-picker>
+                        <vaadin-date-picker label="วันที่เริ่มใช้งาน :" value="{{data.start_date}}" disabled="{{active}}"></vaadin-date-picker>
                     </gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker label="วันที่ยกเลิกใช้ :" value="{{data.end_date}}" disabled="{{active}}"></vaadin-date-picker>
+                        <vaadin-date-picker label="วันที่สิ้นสุดใช้งาน :" value="{{data.end_date}}" disabled="{{active}}"></vaadin-date-picker>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
@@ -64,7 +64,7 @@
                 <gl-grid-row style="margin-top: 10px">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-checkbox checked="{{data.onetime}}" disabled="{{active}}">ขอใช้ครั้งเดียว</paper-checkbox>
+                        <paper-checkbox checked="{{data.onetime}}" disabled="{{active}}">ใช้ครั้งเดียว (เต็มจำนวน)</paper-checkbox>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row style="margin-top: 10px">

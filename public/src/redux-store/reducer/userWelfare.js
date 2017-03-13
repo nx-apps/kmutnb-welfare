@@ -10,6 +10,27 @@ const initialState = {
     welfare_employee: []
 }
 
+const clearDatawelfare = (data,callback)=>{
+    
+    let {emp_id,welfare_id,use_budget,status,year,group_id}=data;
+    let newData={emp_id,welfare_id,use_budget,status,year,group_id};
+    // console.log(data.date/use_welfare/update_use == '');
+   
+    newData.document_ids = new Array()    
+    data.document_ids.map((file)=>{
+        newData.document_ids.push(file)
+    })
+    
+    if (data.date_use == '' || data.date_use == undefined) {
+        newData.date_use = new Date().toISOString();
+    } else {
+        // console.log(data.date_use);
+        newData.date_use = new Date (data.date_use).toISOString();
+    }
+    // console.log(newData);
+        callback(newData)
+}
+
 export function userWelfareReducer(state = initialState, action) {
 
     switch (action.type) {
@@ -145,7 +166,28 @@ export function userWelfareAction(store) {
                 .catch(err => {
                     console.log(err);
                 })
-        }
+        },
+            USER_USE_WELFARE(data){
+            console.log(data);
+            // clearDatawelfare(data,(newData)=>{
+                
+            //     this.fire('toast',{status:'load'});
+            //     // newData.status = true;
+            //         axios.post(`./user/use_welfare/`,newData)
+            //         .then(res=>{
+            //             this.USER_GET_WELFARES(newData.emp_id,true);
+            //             this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+            //                 callback:()=>{
+            //                     // this.$$('panel-right').close();
+            //                     // this.$$('#welfare_budget').close()
+            //                 }
+            //             });
+            //         })
+            //         .catch(err=>{
+            //             console.log(err);
+            //         })
+            //     })
+            }
     }
     ]
 

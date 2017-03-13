@@ -155,7 +155,7 @@
                 </gl-form-panel-footer>-->
         </gl-form-panel>
         <paper-dialog id="welfare_budget">
-            <dialog-use-welfare data="{{usewelfareProp}}" disabled="[[disabled]]"></dialog-use-welfare>
+            <dialog-use-welfare id="dialog-use-welfare" data="{{usewelfareProp}}" disabled="[[disabled]]"></dialog-use-welfare>
             <div class="flex horizontal end-justified layout">
                 <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้งาน</paper-button>
             </div>
@@ -203,8 +203,33 @@
                 // console.log(55);
                 this.fire('select-page',0)
             },
-            usewelfare:function(){
+            usewelfare(e){
+                let data = new Object();
+                // console.log(this.data.id);
+                data.title = e.currentTarget.data.name
+                data.emp_id = this.data.id
+                data.welfare_id = e.currentTarget.data.welfare_id
+                data.budget_cover = e.currentTarget.data.budget_balance
+                data.status = true
+                data.onetime = e.currentTarget.data.onetime
+                data.year = new Date().getFullYear()
+                data.group_id = e.currentTarget.data.group_id
+                this.set('disabled',e.currentTarget.data.onetime)
                 this.$$('#welfare_budget').open()
+                this.dispatchAction('USER_USE_SELETE_WELFARE',data);
+            },
+            getwelfare(){
+                // console.log(this.usewelfareProp);
+                // console.log(this.data.file);
+                this.$$('#welfare_budget').close()
+                this.usewelfareProp.document_ids = this.$$('dialog-use-welfare').keepFile()
+                console.log(this.usewelfareProp);
+                // console.log(this.$$('#dialog-use-welfare'));
+                // console.log(this.usewelfareProp.use_budget);
+                if(this.$$('#dialog-use-welfare').validateForm('.required')){
+                    this.dispatchAction('USER_USE_WELFARE',this.usewelfareProp);
+                }
+                // 
             }
         });
     </script>
