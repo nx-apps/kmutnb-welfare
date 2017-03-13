@@ -210,7 +210,7 @@ exports.listId = function (req, res) {
                     })
                     .merge(function (m) {
                         return {
-                            emp_use: r.db('welfare').table('history_welfare').getAll(m('group_id'), { index: 'group_id' })
+                            emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'welfare_id' })
                             .pluck('emp_id').distinct().count()
                         }
                     }).without('employee')
