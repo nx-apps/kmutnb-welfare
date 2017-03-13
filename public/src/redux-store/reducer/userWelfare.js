@@ -6,9 +6,8 @@ const initialState = {
     select: {},
     list_id: [],
     list_user: [],
-    listSearch:[],
-    welfare_employee:[],
-    welfare_employees:[]
+    listSearch: [],
+    welfare_employee: []
 }
 
 export function userWelfareReducer(state = initialState, action) {
@@ -25,7 +24,9 @@ export function userWelfareReducer(state = initialState, action) {
         case 'LIST_EMPLOYEE_WELFARE':
             return Object.assign({}, state, { welfare_employee: action.payload });
         case 'LIST_EMPLOYEES_WELFARE':
-            return Object.assign({}, state, { welfare_employees: action.payload });
+            return Object.assign({}, state, { welfare_employee: action.payload });
+        case 'EMPLOYEE_GET_WELFARES':
+            return Object.assign({}, state, { welfare_employee: action.payload });
         default:
             return state
     }
@@ -72,51 +73,52 @@ export function userWelfareAction(store) {
 
                 })
         },
-        LIST_USER_SERARCH:function(id){
+        LIST_USER_SERARCH: function (id) {
             this.userSearch = id;
-            axios.get('./user_welfare/adminEmployee/'+id)
-            .then((response)=>{
-                //  console.log(JSON.stringify(response.data));
-                  var newData = response.data.map((item)=>{
+            axios.get('./user_welfare/adminEmployee/' + id)
+                .then((response) => {
+                    //  console.log(JSON.stringify(response.data));
+                    var newData = response.data.map((item) => {
                         item.check = false;
                         return item;
                     })
-                 store.dispatch({ type:'LIST_USER_SERARCH', payload: newData })
-            })
-            .catch((error)=>{
-                console.log('error');
-                console.log(error);
-            });
+                    store.dispatch({ type: 'LIST_USER_SERARCH', payload: newData })
+                })
+                .catch((error) => {
+                    console.log('error');
+                    console.log(error);
+                });
         },
-         USER_INSERT:function(data){
-            this.fire('toast',{status:'load'});
-            axios.post('./user/use_welfare/',data)
-            .then((response)=>{
-                this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                  callback:()=>{
-                       this.LIST_USER_SERARCH(this.userSearch);
-                  }
-                 });
-            })
-            .catch((error)=>{
-                console.log('error');
-                console.log(error);
-            });
+        USER_INSERT: function (data) {
+            this.fire('toast', { status: 'load' });
+            axios.post('./user/use_welfare/', data)
+                .then((response) => {
+                    this.fire('toast', {
+                        status: 'success', text: 'บันทึกสำเร็จ',
+                        callback: () => {
+                            this.LIST_USER_SERARCH(this.userSearch);
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.log('error');
+                    console.log(error);
+                });
         },
         LIST_EMPLOYEE_WELFARE: function (data) {
-            console.log(data);
-            // axios.get('./user/welfares/year/'+data.year+'/id/' + data.id)
-            //     .then(function (result) {
-            //         // console.log(result.data);
-            //         store.dispatch({ type: 'LIST_EMPLOYEE_WELFARE', payload: result.data })
-            //     })
-            //     .catch(err => {
+            // console.log(data);
+            axios.get('./user_welfare/welfaresEmployee/' + data)
+                .then(function (result) {
+                    // console.log(result.data);
+                    store.dispatch({ type: 'LIST_EMPLOYEE_WELFARE', payload: result.data })
+                })
+                .catch(err => {
 
-            //     })
+                })
         },
         LIST_EMPLOYEES_WELFARE: function (data) {
             // console.log(data);
-            axios.get('./user/welfares/year/'+data.year+'/id/' + data.id)
+            axios.get('./user/welfares/year/' + data.year + '/id/' + data.id)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEES_WELFARE', payload: result.data })
@@ -124,10 +126,29 @@ export function userWelfareAction(store) {
                 .catch(err => {
 
                 })
-        } 
+        },
+        EMPLOYEE_GET_WELFARES(id, year = new Date().getFullYear()) {
+            // console.log(id, year);
+            // this.fire('toast', { status: 'load' });
+            axios.get(`./user/welfares/year/${year}/id/${id}`)
+                .then(res => {
+                    // console.log(res)
+                    this.fire('toast', {
+                        status: 'success', text: 'โหลดข้อมูลสำเร็จ',
+                        callback: () => {
+                            store.dispatch({ type: 'EMPLOYEE_GET_WELFARES', payload: res.data })
+                            // if (!otherFunction)
+                            //     this.$$('panel-right').open();
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
     }
     ]
-   
+
     // ./user/use_welfare/
 
 }

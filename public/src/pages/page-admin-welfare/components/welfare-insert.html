@@ -189,7 +189,7 @@
                     var id = this.data.condition[i].field;
                     var item = this.condition.filter((val) => val.id == id)[0]
                     var field = item.field;
-                    console.log(field);
+                    // console.log(field);
                     // console.log(this.data.condition[i].logic.search("<"))
                     if (field == 'start_work_date') {
                         if (this.data.condition[i].logic_show.search(">") >= 0) {
@@ -223,7 +223,7 @@
                 }
                 this.data.budget = this.unFormat(this.data.budget);
                 this.set('data.group_id', this.datas.id);
-                console.log(this.data);
+                // console.log(this.data);
                 var newItem = {
                     budget:this.data.budget,
                     group_id: this.data.group_id,
@@ -257,22 +257,6 @@
             },
             checkField: function (e, index) {
                 try {
-                    // console.log(this.condition);
-                    // if (e != '') {
-                    //     //     // console.log(e);
-                    //     if (this.condition != []) {
-                    //         var newFeild = [];
-                    //         this.condition.map((val) => {
-                    //             if (val.id != e) {
-                    //                 // console.log(val);
-                    //                 newFeild.push(val);
-                    //             }
-                    //         })
-                    //         // console.log(feild);
-                    //         let comboboxs = Polymer.dom(this.root).querySelector('#field-' + index);
-                    //         comboboxs.items = feild;
-                    //     }
-                    // }
                     var combobox = Polymer.dom(this.root).querySelector('#symbo-' + index);
                     // console.log(combobox.items);
                     var id = e;

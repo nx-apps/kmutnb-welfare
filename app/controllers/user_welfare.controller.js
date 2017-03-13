@@ -381,3 +381,177 @@ exports.adminEmployee = function (req, res) {
         })
 
 }
+exports.welfaresEmployee = function (req, res) {
+    var r = req.r;
+    //แก้ด้วย
+    // let year = Number(req.params.year)
+    // https://localhost:3000/api/user/welfares/id/875932f9-a308-4802-980e-247f82f4fb1c
+    r.db('welfare').table('employee').get(req.params.id)
+        .merge(function (emp) {
+            return {
+                gender: r.db('welfare_common').table('gender').get(emp('gender_id')).getField('gender_name')
+            }
+        }
+        )
+        .merge(function (f) {
+            return {
+                start_work_date: f('start_work_date').split('T')(0),
+                birthdate: f('birthdate').split('T')(0),
+                academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
+                active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
+                department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
+                faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
+                gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
+                matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
+                position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
+                prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
+                type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
+            }
+        })
+        .merge((group_welfare) => {
+            return {
+                group_welfare: r.db('welfare').table('group_welfare')
+                // .getAll(year, { index: 'year' })
+                    .merge((welfare_conditions) => {
+                        return {
+                            conditions: r.db('welfare').table('welfare').getAll(welfare_conditions('id'), { index: 'group_id' })
+                                .merge((mer_id) => {
+                                    return {
+                                        welfare_id: mer_id('id'),
+                                        year: welfare_conditions('year'),
+                                        admin_use: welfare_conditions('admin_use'),
+                                        onetime: welfare_conditions('onetime'),
+                                        group_welfare_name: welfare_conditions('group_welfare_name')
+                                    }
+                                })
+                                .without('id')
+                                .coerceTo('array')
+                        }
+                    })
+                    .coerceTo('array')
+            }
+        })
+        .merge((welfare) => {
+            return {
+                welfare: welfare('group_welfare').getField('conditions')
+                    .reduce(function (left, right) {
+                        return left.add(right);
+                    })
+                    .merge((conditions) => {
+                        return {
+                            condition: conditions('condition').merge((changeName) => {
+                                return {
+                                    field: r.db('welfare').table('condition').get(changeName('field')).getField('field')
+                                }
+                            })
+                        }
+                    })
+                    .merge(function (we_m) {
+                        return {
+                            count: we_m('condition').count(),
+                            countpass: we_m('condition').map(function (con_map) {
+                                return {
+                                    pass: welfare(con_map('field')).do(function (d) {
+                                        return r.branch(con_map('logic').eq(">="),
+                                            d.ge(con_map('value')),
+                                            r.branch(con_map('logic').eq(">"),
+                                                d.gt(con_map('value')),
+                                                r.branch(con_map('logic').eq("<="),
+                                                    d.le(con_map('value')),
+                                                    r.branch(con_map('logic').eq("<"),
+                                                        d.lt(con_map('value')),
+                                                        r.branch(con_map('logic').eq("=="),
+                                                            d.eq(con_map('value')),
+                                                            d.ne(con_map('value'))
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    })
+                                }
+                            })
+                        }
+                    })
+                    .merge((e) => {
+                        return {
+                            countpass_total: e('countpass').filter({ "pass": true }).count()
+                        }
+                    })
+                    .merge((status) => {
+                        return {
+                            count_pass_status: status('countpass_total').eq(status('count')),
+                            id: welfare('id')
+                        }
+                    })
+                    .filter({ "count_pass_status": true })
+                    .merge((use_his) => {
+                        return {
+                            budget_use: r.db('welfare').table('history_welfare')
+                                .getAll(welfare('id'), { index: 'emp_id' })
+                                .filter(
+                                {
+                                    status: true,
+                                    //  emp_id: welfare('id'),
+                                    welfare_id: use_his('welfare_id')
+                                }
+                                )
+                                .sum('use_budget'),
+                        }
+                    })
+                    .merge((balance) => {
+                        return {
+                            budget_balance: balance('budget').sub(balance('budget_use')),
+                            budget_balance_check: balance('budget').sub(balance('budget_use')).le(0).branch(true, false)
+                        }
+                    })
+                    // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
+                    .filter({ "budget_balance_check": false })
+                    .without('condition', 'countpass')
+
+            }
+        })
+
+        .merge((use_his) => {
+            return {
+
+                history_welfare: r.db('welfare').table('history_welfare')
+                    // .filter({ emp_id: use_his('id'), year: year })
+                    .getAll(use_his('id'), { index: 'emp_id' })
+                    // .filter({ year: year })
+                    .merge((name_welfare) => {
+                        return {
+                            date_use: name_welfare('date_use').split('T')(0),
+                            date_approve: name_welfare('date_approve').split('T')(0),
+                            name: r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('group_welfare_name'),
+                            history_welfare_id: name_welfare('id')
+                        }
+                    })
+                    .without('id')
+                    .orderBy('date_use')
+                    .coerceTo('array')
+            }
+        })
+        .merge((checkTrue) => {
+            return {
+                welfare: checkTrue('welfare').merge((e) => {
+                    return {
+                        status_approve: checkTrue('history_welfare').filter({ status: false, welfare_id: e('welfare_id') }).count().gt(0)//e('welfare_id')
+                    }
+                })
+            }
+        })
+        .merge((withOutHistorty) => {
+            return {
+                history_welfare: withOutHistorty('history_welfare').filter({ status: true })
+            }
+        })
+        .without('group_welfare')
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}

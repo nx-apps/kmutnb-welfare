@@ -58,8 +58,8 @@
                                     <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
                                     <td style="text-align:right">[[formatNumber(item.value_use)]]</td>
                                     <td style="text-align:center">
-                                        <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="แก้ไขสวัสดิการ"></paper-icon-button>
                                         <paper-icon-button data="[[item]]" icon="icons:list" on-tap="select_welfare" title="เงื่อนไข"></paper-icon-button>
+                                        <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="แก้ไขสวัสดิการ"></paper-icon-button>
                                         <!--<paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info">แก้ไข</paper-button>-->
                                     </td>
                                 </tr>
@@ -95,10 +95,10 @@
                 list: {
                     statePath: 'welfare.list'
                 },
-                list_year:{
+                list_year: {
                     statePath: 'welfare.list_year'
                 },
-                year:{
+                year: {
                     statePath: 'welfare.year'
                 },
                 pages: {
@@ -114,7 +114,7 @@
             nylonPageActive: function () {
                 let year = new Date().getFullYear();
                 // console.log(year);
-                var newYear = year+543;
+                var newYear = year + 543;
                 this.selectYear = newYear;
                 this.LIST_WELFARE(year);
                 this.WELFARE_LIST();
@@ -154,8 +154,8 @@
                 this.pages = 2;
                 this.set('title', this.title = "แก้ไข");
             },
-            changeYear:function(e){
-                var year = e-543;
+            changeYear: function (e) {
+                var year = e - 543;
                 this.LIST_WELFARE(year);
             }
         });
