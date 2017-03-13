@@ -375,6 +375,12 @@ exports.adminEmployee = function (req, res) {
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).without({ right: 'id' }).zip()
         .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).without({ right: 'id' }).zip()
         .without('id')
+        .merge(function(m){
+            return {
+                start_work_date : m('start_work_date').split('T')(0),
+                birthdate : m('birthdate').split('T')(0)
+            }
+        })
         .run()
         .then(function (data) {
             res.json(data);
