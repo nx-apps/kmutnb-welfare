@@ -2,7 +2,7 @@
 
 <dom-module id="list-user">
     <template>
-        <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
+        <style is="custom-style" include="gl-color gl-table flex-style">
             paper-material {
                 margin: 10px;
                 background-color: var(--gl-white-color);
@@ -42,6 +42,15 @@
             <paper-material elevation="1">
                 <div class="table-detail">
                     <template is="dom-if" if={{isSearch}}>
+                        <div class="container flex-horizontal-with-ratios">
+                            <div class="flex3child"></div>
+                            <div class="flex2child">
+                                <gl-form-input no-label-float value="{{searchInput}}"></gl-form-input>
+                            </div>
+                            <div>     
+                                <paper-icon-button icon="search" on-tap="searchTable"></paper-icon-button>
+                            </div>
+                        </div>
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
@@ -55,7 +64,7 @@
                                 </tr>
                             </thead>
                             <tbody class="table-body">
-                                <template is="dom-repeat" items={{list}}>
+                                <template is="dom-repeat" items={{newList}}>
                                     <tr data="[[item]]" on-tap="chagePageDetail">
                                         <!--<td style="text-align: center">
                                             <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
@@ -90,7 +99,7 @@
                                 </tr>
                             </thead>
                             <tbody class="table-body">
-                                <template is="dom-repeat" items={{listSearch}}>
+                                <template is="dom-repeat" items={{newListSearch}}>
                                     <tr on-tap="chagePage" data="[[item]]">
                                         <td style="text-align: center" hidden="{{!checkBox}}">
                                             <paper-checkbox checked="{{item.check}}" disabled="{{!item.admin_use}}"></paper-checkbox>
@@ -124,13 +133,15 @@
         Polymer({
             is: 'list-user',
             behaviors: [ReduxBehavior],
-            observers: ['showBtn(listSearch.*)'],
+            observers: ['showBtn(newListSearch.*)'],
             properties: {
                 list: {
                     statePath: 'userWelfare.list_user',
+                    observer:'getList'
                 },
                 listSearch: {
-                    statePath: 'userWelfare.listSearch'
+                    statePath: 'userWelfare.listSearch',
+                    observer:'getListSearch'
                 },
                 checkBox: {
                     type: Boolean,
@@ -173,19 +184,19 @@
             selectAll: function (e) {
                 var check = e.target.checked;
                 if (check == true) {
-                    this.listSearch.map((item, index) => {
+                    this.newListSearch.map((item, index) => {
                         console.log(item.admin_use);
                         if (item.admin_use == true) {
-                            this.set('listSearch.' + index + '.check', true);
+                            this.set('newListSearch.' + index + '.check', true);
                         } else {
-                            this.set('listSearch.' + index + '.check', false);
+                            this.set('newListSearch.' + index + '.check', false);
                         }
 
                     })
                 }
                 else {
-                    this.listSearch.map((item, index) => {
-                        this.set('listSearch.' + index + '.check', false);
+                    this.newListSearch.map((item, index) => {
+                        this.set('newListSearch.' + index + '.check', false);
                     })
                 }
 
@@ -202,7 +213,7 @@
             },
             insertData: function (check) {
                 if (check == true) {
-                    var newData = this.listSearch.filter((item) => {
+                    var newData = this.newListSearch.filter((item) => {
                         return item.check == true;
                     })
                     var saveData = newData.map((item) => {
@@ -246,7 +257,6 @@
                 // console.log(e.target.is);
             },
             chagePageDetail: function (e) {
-                    // console.log(e.currentTarget.data);
                 var item = e.currentTarget.data;
                 var id = item.id;
                 this.seleterYear = '';
@@ -256,7 +266,41 @@
                 if (check != 'paper-checkbox') {
                     this.fire('select-page', 1)
                 }
-            }
+            },
+            getList:function(list){
+                this.newList = list;
+            },
+            getListSearch:function(list){
+                this.newListSearch = list;
+            },
+            searchTable:function(e){
+                let arr=[];
+                var storeData = this.list;
+                this.newList = storeData;
+                var input = this.searchInput;
+                var feild = Object.getOwnPropertyNames(this.newList[0]).sort();
+                if(input != ''){
+                    this.newList.map((item,index)=>{
+                        for(var i = 0; i < feild.length;i++){
+                            var getFeild = feild[i];
+                            if(String(item[getFeild]).search(input) > -1){
+                                arr.push(item)   
+                            }
+                            else{
+                                // console.log(this.newList);
+                                this.newList = [];
+                            }
+                        
+                        }
+                    })
+                    console.log(arr);
+                    this.newList = arr
+                }
+                else{
+                    console.log(storeData);
+                    this.newList = storeData;
+                }
+            }      
         });
     </script>
 </dom-module>

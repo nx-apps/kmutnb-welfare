@@ -37,8 +37,6 @@
                                 </div>
                                 <div class="flexchild"></div>
                                 <div class="flex3child">
-                                    <!--<gl-combo-box id="setComboBox" label="สวัสดิการ" placeholder="มีสวัสดิการทั้งหมด {{listWelfare.length}} รายการ" items="{{testItem}}"></gl-combo-box>-->
-                                    <!--<gl-combo-box id="setComboBox" label="สวัสดิการ" items="{{listWelfare}}" placeholder="มีสวัสดิการทั้งหมด {{listWelfare.length}} รายการ" item-label-path="group_welfare_name" item-value-path="id" value="{{selectWelfare}}"></gl-combo-box>-->
                                     <gl-form-dropdown-menu label="สวัสดิการ" placeholder="มีสวัสดิการ {{listWelfare.length}} รายการ">
                                         <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectWelfare}}">
                                             <template is="dom-repeat" items="{{listWelfare}}">
@@ -46,6 +44,21 @@
                                             </template>
                                         </paper-listbox>
                                     </gl-form-dropdown-menu>
+                                </div>
+                                <div class="flexchild"></div>
+                            </div>
+                            
+                            <div class="container flex-horizontal-with-ratios">
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <gl-combo-box label="เลือกประเภทข้อมูลที่ใช้ค้นหา" placeholder="มีทั้งหมด {{typeSerach.length}} รายการ" items="{{typeSerach}}" item-label-path="label" item-value-path="value" value="{{selectType}}">
+                                    </gl-combo-box>
+                                </div>
+                                <div class="flexchild"></div>
+                                <div class="flex3child">
+                                    <!--<gl-form-input placeholder="กรอกข้อมูลที่ใช้ค้นหา" value="{{searchType}}">
+                                    </gl-form-input>
+                                    <paper-button raised on-tap="searchTable">Search</paper-button>-->
                                 </div>
                                 <div class="flexchild"></div>
                             </div>
@@ -77,6 +90,27 @@
                 },
                 listWelfare:{
                     statePath: 'userWelfare.list_id'
+                },
+                typeSerach:{
+                    type: Array,
+                    value: [
+                        {
+                            label:'ชื่อ',
+                            value:'name'
+                        },
+                        {
+                            label:'รหัสพนักงาน',
+                            value:'no'
+                        },
+                        {
+                            label:'ตำแหน่ง',
+                            value:'position'
+                        },
+                        {
+                            label:'ตำแหน่งวิชาการ',
+                            value:'SubPosition'
+                        },
+                    ]
                 }
             },
             listeners:{
@@ -138,6 +172,11 @@
                     this.selected = page.detail;
                     this.hidePaperfab = true;
                 }
+            },
+            searchTable:function(search){
+                console.log(search);
+                // this.$$('list-user').searchTable(this.searchType);
+                 
             }
         });
     </script>
