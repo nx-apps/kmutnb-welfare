@@ -34,7 +34,7 @@
             }
         </style>
         <div style="padding:20px;">
-   [[setCondition(condition)]]
+   <!--[[setCondition(condition)]]-->
             <paper-material elevation="1">
 
                 <div class="horizontal end-justified layout">
@@ -158,7 +158,7 @@
                     //         { field: '', logic: '', value: '' }
                     //     ]
                     // },
-                    notify: true
+                    // notify: true
                 },
                 active: {
                     type: Boolean,
@@ -233,6 +233,9 @@
             },
             cancle: function () {
                 this.set('disabled', this.active = true);
+                this.data = {
+                    condition: []
+                };
             },
             // setCondition(){
             //      this.async(()=>{
