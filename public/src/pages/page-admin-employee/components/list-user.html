@@ -47,11 +47,11 @@
                         <div class="container flex-horizontal-with-ratios">
                             <div class="flex3child"></div>
                             <div class="flex2child">
-                                <gl-form-input no-label-float value="{{searchInput}}"></gl-form-input>
+                                <gl-form-input no-label-float on-input="searchTable" value="{{searchInput}}"></gl-form-input>
                             </div>
-                            <div>     
+                            <!--<div>     
                                 <paper-icon-button icon="search" on-tap="searchTable"></paper-icon-button>
-                            </div>
+                            </div>-->
                         </div>
                         <div style="overflow-x: auto; border:1px solid #ddd;">
                         <table class="gl-table-default">
@@ -60,6 +60,7 @@
                                     <!--<th style="width:10%;">
                                         <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>กระทำ
                                     </th>-->
+                                    <th></th>
                                     <th>รหัสพนักงาน</th>
                                     <th>ชื่อ นามสกุล</th>
                                     <th>ตำแหน่ง</th>
@@ -75,8 +76,11 @@
                                         <!--<td style="text-align: center">
                                             <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
                                         </td>-->
+                                        <td>
+                                            <iron-icon icon="list"  on-tap="chagePage" data="[[item]]"></iron-icon>
+                                        </td>
                                         <td>[[item.emp_no]]</td>
-                                        <td>[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
+                                        <td>[[item.fullName]]</td>
                                         <td>[[item.position_name]]</td>
                                         <td>[[item.faculty_name]]</td>
                                         <td>[[item.department_name]]</td>
@@ -114,9 +118,10 @@
                             </thead>
                             <tbody class="table-body">
                                 <template is="dom-repeat" items={{newListSearch}}>
-                                    <tr on-tap="chagePage" data="[[item]]">
+                                    <tr>
                                         <td style="text-align: center" hidden="{{!checkBox}}">
                                             <paper-checkbox checked="{{item.check}}" disabled="{{!item.admin_use}}"></paper-checkbox>
+                                            <iron-icon icon="list" on-tap="chagePage" data="[[item]]"></iron-icon>  
                                         </td>
                                         <td>[[item.emp_no]]</td>
                                         <td>[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
@@ -295,7 +300,7 @@
                 let arr=[];
                 var storeData = this.list;
                 this.newList = storeData;
-                var input = this.searchInput;
+                var input = e.target.value;
                 var feild = Object.getOwnPropertyNames(this.newList[0]).sort();
                 // console.log(feild);
                 if(input != ''){
@@ -303,7 +308,8 @@
                         for(var i = 0; i < feild.length;i++){
                             var getFeild = feild[i];
                             if(String(item[getFeild]).search(input) != -1){
-                                arr.push(item)   
+                                arr.push(item)
+                                break;   
                             }
                             else{
                                 // console.log('error');

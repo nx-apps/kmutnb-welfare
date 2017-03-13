@@ -90,10 +90,15 @@ export function userWelfareAction(store) {
             // console.log(id);
             axios.get('./user/list')
                 .then(function (result) {
-                    // console.log(result.data);
-                    // console.log(JSON.stringify(result.data));'
-                    // console.log(JSON.stringify(newData));
-                    // console.log(newData);
+                    console.log(result.data);
+                    var newData = result.data.map((item)=>{
+                        if(item.academic_name == ""){
+                            item.fullName = item.prefix_name + " " + item.firstname + " " + item.lastname
+                        }
+                        else{
+                             item.fullName = item.academic_name + " " + item.firstname + " " + item.lastname
+                        }
+                    })
                     store.dispatch({ type: 'LIST_USER', payload: result.data })
                 })
                 .catch(err => {
@@ -203,7 +208,6 @@ export function userWelfareAction(store) {
         FACULTY_LIST() {
             axios.get('./common/faculty')
                 .then((response) => {
-                    console.log(response.data);
                     store.dispatch({ type: 'FACULTY_LIST', payload: response.data })
                 })
                 .catch((error) => {
