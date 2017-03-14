@@ -120,7 +120,7 @@ exports.listFilePath = function (req, res) {
                 progress: 100, complete: true
             }
         })
-        .filter({welfare_id: req.query.welfare_id, ref_path: req.query.refPath, file_status: true,doc_status:false })
+        .filter({ref_path: req.query.refPath })
         .orderBy(r.desc('date_upload'))
         .run()
         .then(function (result) {
