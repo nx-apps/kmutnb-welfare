@@ -1,12 +1,14 @@
 <link rel="import" href="components/welfare-panel.html">
 <link rel="import" href="components/welfare-manage.html">
 <link rel="import" href="components/welfare-detail.html">
+<link rel="import" href="./../components/page-style.html">
 
 <dom-module id="page-admin-welfare">
     <template>
-        <style is="custom-style" include="gl-color gl-table iron-flex iron-flex-factors iron-flex-alignment">
+        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
             paper-material {
-                background-color: var(--gl-white-color);
+                /*background-color: var(--gl-white-color);*/
+                padding: 0px;
             }
             
             .table-detail {
@@ -16,6 +18,7 @@
             }
             
             table.gl-table-default {
+                width: 100%;
                 border: 1px solid #ddd;
             }
         </style>
