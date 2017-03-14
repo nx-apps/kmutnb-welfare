@@ -194,6 +194,14 @@
                     statePath: 'userWelfare.listSearch',
                     observer:'getListSearch'
                 },
+                listFilter:{
+                    type: Array,
+                    value: []
+                },
+                listFilterSearch:{
+                    type: Array,
+                    value: []
+                },
                 checkBox: {
                     type: Boolean,
                     value: false,
@@ -331,7 +339,7 @@
             },
             searchTableList:function(e){
                 let arr=[];
-                var storeData = this.list;
+                var storeData = this.listFilter;
                 this.newList = storeData;
                 var input = e.target.value;
                 var feild = Object.getOwnPropertyNames(this.newList[0]).sort();
@@ -358,12 +366,12 @@
             },
             searchTableListSearch:function(e){
                 let arr=[];
-                var storeData = this.listSearch;
+                var storeData = this.listFilterSearch;
                 this.newListSearch = storeData;
                 var input = e.target.value;
                 var feild = Object.getOwnPropertyNames(this.newListSearch[0]).sort();
                 if(input != ''){
-                    this.newList.map((item,index)=>{
+                    this.newListSearch.map((item,index)=>{
                         for(var i = 0; i < feild.length;i++){
                             var getFeild = feild[i];
                             if(String(item[getFeild]).search(input) != -1){
@@ -391,6 +399,7 @@
                     this.newList = getList.filter((item)=>{
                         return item.department_id == id
                     })
+                    this.listFilter = this.newList;
                 }
                 else{
                     var storeData = this.listSearch;
@@ -399,6 +408,7 @@
                     this.newListSearch = getList.filter((item)=>{
                         return item.department_id == id
                     })
+                    this.listFilterSearch = this.newListSearch
                     // console.log(this.newListSearch);
                 }
             },
@@ -410,6 +420,7 @@
                     this.newList = getList.filter((item)=>{
                         return item.faculty_id == id
                     })
+                    this.listFilter = this.newList;
                 }
                 else{
                     var storeData = this.listSearch;
@@ -418,6 +429,7 @@
                     this.newListSearch = getList.filter((item)=>{
                         return item.faculty_id == id
                     })
+                    this.listFilterSearch = this.newListSearch
                 }
             }      
         });
