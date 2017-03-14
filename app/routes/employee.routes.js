@@ -1,5 +1,5 @@
 module.exports = function (app) {
-    var controller = require('../controllers/user.controller');
+    var controller = require('../controllers/employee/employee.controller');
     app.get('/list', controller.list);
     app.post('/insert', controller.insert);
     app.put('/update', controller.update);
