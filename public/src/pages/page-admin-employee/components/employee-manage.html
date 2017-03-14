@@ -213,12 +213,12 @@
         Polymer({
             is: 'employee-manage',
             behaviors: [ReduxBehavior, ValidateFormBehavior],
-            observers:['getDepartment(data.faculty_id,faculty)'],
+            observers:['getDepartment(data.faculty_id,faculty)','cloneData(data)'],
             properties: {
                 data: {
                     type: Object,
                     value: {},
-                    notify: true
+                    // notify: true
                 },
                 academic: {
                     statePath: 'commonData.academic'
@@ -257,16 +257,23 @@
                 }
             },
             save:function(){
-                console.log(this.data);
+                this.dispatchAction('EMPLOYEE_UPDATE', this.data);
+            },
+            cancle:function(){
+                this.data = this.dataClone;
+                this.fire('back-page',0);
             },
             getDepartment:function(id,item){
                 if(typeof id != 'undefined' && item[0].faculty != ""){
                     // console.log('*',item); 
                     // console.log('id',id);
                     var faculty = item.filter((val)=> val.id == id)[0]
-                    console.log(faculty);
+                    // console.log(faculty);
                     this.department = faculty.department;
                 }
+            },
+            cloneData:function(data){
+                this.dataClone = JSON.parse(JSON.stringify(data));
             }
         });
     </script>
