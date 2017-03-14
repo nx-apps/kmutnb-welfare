@@ -91,7 +91,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="151" splitType="Stretch">
+		<band height="174" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="97" width="554" height="25" uuid="3e6edaca-45a4-4f85-a475-4c60bcaf612c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -115,7 +115,22 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["รายงานสวัสดิการพนักงานประจำเดือน  "+new nylon.utility.NumberFormat().toThaiDate($P{CURRENT_DATE}).split(" ")[1]+" ปีงบประมาณ "+(($P{yearStart}==$P{yearEnd})?$P{yearStart}:$P{yearStart}$P{yearEnd})
+				<textFieldExpression><![CDATA["ปีงบประมาณ "+(($P{yearStart}==$P{yearEnd})?$P{yearStart}:$P{yearStart}$P{yearEnd})
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="1" y="146" width="554" height="24" uuid="d3ffce95-3831-4b80-90d7-a4de1e617bdc"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["รายงานสวัสดิการพนักงานประจำเดือน "+new nylon.utility.NumberFormat().toThaiDate($P{CURRENT_DATE}).split(" ")[1]
 ]]></textFieldExpression>
 			</textField>
 		</band>

@@ -14,6 +14,7 @@
 	<field name="welfare_name" class="java.lang.String"/>
 	<field name="employee" class="java.lang.Object"/>
 	<field name="count_employee" class="java.lang.String"/>
+	<field name="budget" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -190,6 +191,28 @@
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[เพศ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="346" y="33" width="149" height="20" uuid="feb33c00-ced7-4671-a7e5-71cb81e7bae7"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{budget}+ "  บาท"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="281" y="33" width="65" height="20" uuid="7d53e4bb-18c0-4914-b4ea-147649387ff9"/>
+				<box leftPadding="0" rightPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ค่าตอบแทน :]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
