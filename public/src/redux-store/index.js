@@ -6,8 +6,8 @@ import {commonSystemReducer,commonSystemAction} from './reducer/commonSystem'
 import {authReducer,authAction} from './reducer/auth'
 import {providerReducer,providerAction} from './reducer/provider'
 import {userWelfareReducer,userWelfareAction} from './reducer/userWelfare'
-import {listWelfareReducer,listWelfareAction} from './reducer/listWelfare'
 import {welfareReducer,welfareAction} from './reducer/welfare'
+import {groupWelfareReducer,groupWelfareAction} from './reducer/groupWelfare'
 import {commonDataReducer,commonDataAction} from './reducer/commonData'
 import {usersReducer,usersAction} from './reducer/users'
 import {conditionReadWelfareReducer,conditionReadWelfareAction} from './reducer/conditionReadWelfare'
@@ -17,8 +17,8 @@ const rootReducer = combineReducers({
     auth:authReducer,
     provider:providerReducer,
     userWelfare:userWelfareReducer,
-    listWelfare:listWelfareReducer,
     welfare:welfareReducer,
+    groupWelfare:groupWelfareReducer,
     commonData:commonDataReducer,
     users:usersReducer,
     conditionReadWelfare:conditionReadWelfareReducer,
@@ -36,8 +36,8 @@ window.commonSystemAction = commonSystemAction(storeApp);
 window.authAction = authAction(storeApp);
 window.providerAction = providerAction(storeApp);
 window.userWelfareAction = userWelfareAction(storeApp);
-window.listWelfareAction = listWelfareAction(storeApp);
 window.welfareAction = welfareAction(storeApp);
+window.groupWelfareAction = groupWelfareAction(storeApp);
 window.commonDataAction = commonDataAction(storeApp); 
 window.usersAction = usersAction(storeApp);
 window.conditionReadWelfareAction = conditionReadWelfareAction(storeApp);

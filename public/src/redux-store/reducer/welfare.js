@@ -5,20 +5,24 @@ const initialState = {
     list: [],
     select: {},
     list_id: [],
-    list_year: []
+    dataSelect: {},
+    condition: [],
+    employees: []
 }
 
 export function welfareReducer(state = initialState, action) {
 
     switch (action.type) {
-        case 'LIST_WELFARE':
+        case 'WELFARE_LIST':
             return Object.assign({}, state, { list: action.payload });
-        case 'LIST_WELFARE_ID':
+        case 'WELFARE_LIST_ID':
             return Object.assign({}, state, { list_id: action.payload });
-        case 'SELECT_DATA':
-            return Object.assign({}, state, { select: action.payload });
-        case 'GET_YEAR':
-            return Object.assign({}, state, { list_year: action.payload });
+        case 'WELFARE_DATA_SELECT':
+            return Object.assign({}, state, { dataSelect: action.payload });
+        case 'CONDITION_LIST':
+            return Object.assign({}, state, { condition: action.payload });
+        case 'WELFARE_LIST_EMPLOYEE':
+            return Object.assign({}, state, { employees: action.payload });
         default:
             return state
     }
@@ -29,49 +33,37 @@ export function welfareAction(store) {
 
     return [commonAction(),
     {
-        LIST_WELFARE: function (year) {
-            // console.log(year);
-            axios.get('/group_welfare/year/' + year)
+        WELFARE_LIST: function () {
+            axios.get('/welfare')
                 .then(function (result) {
                     // console.log(result.data);
-                    store.dispatch({ type: 'LIST_WELFARE', payload: result.data })
+                    store.dispatch({ type: 'WELFARE_LIST', payload: result.data })
                 })
                 .catch(err => {
 
                 })
         },
-        LIST_WELFARE_ID: function (data) {
-            axios.get('/group_welfare/' + data)
+        WELFARE_LIST_ID: function (data) {
+            axios.get('/welfare/' + data)
                 .then(function (result) {
-                    // console.log([result]);
-                    store.dispatch({ type: 'LIST_WELFARE_ID', payload: result.data })
+                    // console.log('*',result.data);
+                    store.dispatch({ type: 'WELFARE_LIST_ID', payload: result.data })
                 })
                 .catch(err => {
 
                 })
         },
-        INSERT_WELFARE: function (data) {
-            // console.log(data);
-            var datas = {
-                year: data.year,
-                start_date: new Date(data.start_date).toISOString(),
-                end_date: new Date(data.end_date).toISOString(),
-                group_welfare_name: data.group_welfare_name,
-                admin_use: data.admin_use,
-                onetime: data.onetime,
-                status_approve: data.status_approve
-            }
-            // console.log(datas);
+        WELFARE_INSERT: function (data) {
+            console.log(data);
             this.fire('toast', { status: 'load' });
-            axios.post(`./group_welfare/insert`, datas)
+            axios.post(`./welfare/insert`, data)
                 .then((result) => {
                     console.log(result);
-                    this.LIST_WELFARE(data.year-543);
+                    this.LIST_WELFARE_ID(data.group_id);
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             console.log('success');
                             this.clearData();
-                            this.GET_YEAR();
                         }
                     });
                 })
@@ -79,16 +71,15 @@ export function welfareAction(store) {
                     console.log(err);
                 })
         },
-        DELETE_WELFARE: function (data) {
+        WELFARE_DELETE: function (data) {
             // console.log(data);
-            axios.delete(`./group_welfare/delete/id/` + data.id)
+            axios.delete(`./welfare/delete/id/` + data.id)
                 .then((result) => {
-                    console.log(result);
-                    this.LIST_WELFARE(data.year-543);
+                    // console.log(result);
+                    this.LIST_WELFARE_ID(data.group_id);
                     this.fire('toast', {
                         status: 'success', text: 'ลบสำเร็จ', callback: () => {
                             console.log('success');
-                            this.$$('panel-right').close();
                         }
                     });
                 })
@@ -96,22 +87,23 @@ export function welfareAction(store) {
                     console.log(err);
                 })
         },
-        EDIT_WELFARE: function (data) {
+        WELFARE_EDIT: function (data) {
             // console.log(data);
             var datas = {
-                id: data.id,
-                year: data.year,
-                start_date: new Date(data.start_date).toISOString(),
-                end_date: new Date(data.end_date).toISOString(),
-                name: data.name
+                budget: data.budget,
+                group_id: data.group_id,
+                welfare_name: data.welfare_name,
+                condition: data.condition,
+                id: data.id
             }
             // console.log(datas);
             this.fire('toast', { status: 'load' });
-            axios.put(`./group_welfare/update`, datas)
+            axios.put(`./welfare/update`, datas)
                 .then((result) => {
+                    // console.log(result);
+                    this.WELFARE_LIST();
                     this.fire('toast', {
-                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-                            this.LIST_WELFARE();
+                        status: 'success', text: 'บันทึกสำเร็จ', callback: function () {
                             console.log('success');
                         }
                     });
@@ -120,40 +112,36 @@ export function welfareAction(store) {
                     console.log(err);
                 })
         },
-        SELECT_DATA: function (val) {
-            // console.log(val);
-            axios.get('/group_welfare/' + val)
+        WELFARE_DATA_SELECT: function (val) {
+            // this.id = val
+            axios.get('/welfare/' + val)
+                .then(function (result) {
+                    // console.log("*",result.data);
+                    store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: result.data })
+                })
+                .catch(err => {
+
+                })
+        },
+        CONDITION_LIST: function () {
+            axios.get('/condition_read_welfare/list/conditions')
                 .then(function (result) {
                     // console.log(result.data);
-                    store.dispatch({ type: 'SELECT_DATA', payload: result.data })
+                    store.dispatch({ type: 'CONDITION_LIST', payload: result.data })
                 })
                 .catch(err => {
 
                 })
         },
-        GET_YEAR() {
-            axios.get('/group_welfare/year')
+        WELFARE_LIST_EMPLOYEE: function (id) {
+            // console.log(id);
+            axios.get('/user_welfare/id/' + id)
                 .then(function (result) {
-                    store.dispatch({ type: 'GET_YEAR', payload: result.data })
+                    // console.log(result.data);
+                    store.dispatch({ type: 'WELFARE_LIST_EMPLOYEE', payload: result.data })
                 })
                 .catch(err => {
 
-                })
-        },
-        APPROVE_WELFARE: function (data) {
-            console.log(data);
-            this.fire('toast', { status: 'load' });
-            axios.put(`./group_welfare/approve`, data)
-                .then((result) => {
-                    this.fire('toast', {
-                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-                            this.SELECT_DATA(data.id);
-                            console.log('success');
-                        }
-                    });
-                })
-                .catch((err) => {
-                    console.log(err);
                 })
         }
     }

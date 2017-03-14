@@ -1,5 +1,5 @@
 module.exports = function (app) {
-    var controller = require('../controllers/group_welfare.controller');
+    var controller = require('../../controllers/group/welfare.controller');
     app.get('/year/:year', controller.list);
     app.get('/year', controller.groupYear);
     app.get('/:id', controller.listId);

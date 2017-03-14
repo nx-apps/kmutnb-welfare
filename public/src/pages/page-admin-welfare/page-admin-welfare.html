@@ -89,17 +89,17 @@
     <script>
         Polymer({
             is: 'page-admin-welfare',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior, welfareAction, listWelfareAction],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction],
             observers: ['changeYear(selectYear)'],
             properties: {
                 list: {
-                    statePath: 'welfare.list'
+                    statePath: 'groupWelfare.list'
                 },
                 list_year: {
-                    statePath: 'welfare.list_year'
+                    statePath: 'groupWelfare.list_year'
                 },
                 year: {
-                    statePath: 'welfare.year'
+                    statePath: 'groupWelfare.year'
                 },
                 pages: {
                     type: Number,

@@ -1,4 +1,4 @@
-exports.listWelfare = function (req, res) {
+exports.welfare = function (req, res) {
     var r = req.r
     r.db('welfare').table('welfare')
         .merge(function (wel_merge) {
@@ -86,7 +86,7 @@ exports.listWelfare = function (req, res) {
             res.json(result);
         })
 }
-exports.listWelfareId = function (req, res) {
+exports.welfareId = function (req, res) {
     var r = req.r
     r.db('welfare').table('welfare')
         .get(req.params.id)
