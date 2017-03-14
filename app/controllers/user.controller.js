@@ -1,5 +1,5 @@
 exports.list = function (req, res) {
-    // https://localhost:3000/api/user/list
+    // https://localhost:3000/api/employee/list
     // console.log('1111111')
     //  res.json({user:'1'});
     //   var crypto = require('crypto');
@@ -89,7 +89,7 @@ exports.welfares = function (req, res) {
     var r = req.r;
     //แก้ด้วย
     let year = Number(req.params.year)
-    // https://localhost:3000/api/user/welfares/year/2017/id/411e54dd-b808-4d4d-9984-201b68c70dff
+    // https://localhost:3000/api/employee/welfares/year/2017/id/411e54dd-b808-4d4d-9984-201b68c70dff
     r.db('welfare').table('employee').get(req.params.id)
         .merge(function (emp) {
             return {
@@ -296,8 +296,8 @@ exports.unapprove = function (req, res) {
             res.status(500).json(err);
         })
 }
-exports.useWelfare = function (req, res) {
-    // https://localhost:3000/api/user/use_welfare/
+exports.requestWelfare = function (req, res) {
+    // https://localhost:3000/api/employee/use_welfare/
     //     for (let prop in req.body) {
     //      req.body[prop] = req.body[prop].replace(/ /g,'').trim()
     //   }   
@@ -318,7 +318,7 @@ exports.useWelfare = function (req, res) {
             res.status(500).json(err);
         })
 },
-    exports.editWelfare = function (req, res) {
+exports.updateWelfare = function (req, res) {
         var r = req.r;
         console.log(req.body);
         r.db('welfare').table('history_welfare')
@@ -332,17 +332,17 @@ exports.useWelfare = function (req, res) {
                 res.status(500).json(err);
             })
     }
-exports.deleteWelfare = function (req, res) {
-    var r = req.r;
-    // console.log(req.params.id);
-    r.db('welfare').table('history_welfare')
-        .get(req.params.id)
-        .delete()
-        .run()
-        .then(function (result) {
-            res.json(result);
-        })
-        .catch(function (err) {
-            res.status(500).json(err);
-        })
-}
+// exports.deleteWelfare = function (req, res) {
+//     var r = req.r;
+//     // console.log(req.params.id);
+//     r.db('welfare').table('history_welfare')
+//         .get(req.params.id)
+//         .delete()
+//         .run()
+//         .then(function (result) {
+//             res.json(result);
+//         })
+//         .catch(function (err) {
+//             res.status(500).json(err);
+//         })
+// }

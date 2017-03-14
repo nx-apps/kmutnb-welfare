@@ -126,7 +126,7 @@
             update:function(e){
                 var getForm = e.target.item;
                 var newItem = {
-                    old_id: getForm.id,
+                    id: getForm.id,
                     position_name: getForm.position_name
                 }
                 this.dispatchAction('COMMONDATA_DATA_POSITION_UPDATE',newItem);

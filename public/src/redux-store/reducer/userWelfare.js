@@ -88,7 +88,7 @@ export function userWelfareAction(store) {
         },
         LIST_USER: function (id) {
             // console.log(id);
-            axios.get('./user/list')
+            axios.get('./employee/list')
                 .then(function (result) {
                     console.log(result.data);
                     var newData = result.data.map((item)=>{
@@ -129,7 +129,7 @@ export function userWelfareAction(store) {
         },
         USER_INSERT: function (data) {
             this.fire('toast', { status: 'load' });
-            axios.post('./user/use/welfare/', data)
+            axios.post('./employee/request/welfare/', data)
                 .then((response) => {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ',
@@ -156,7 +156,7 @@ export function userWelfareAction(store) {
         },
         LIST_EMPLOYEES_WELFARE: function (data) {
             // console.log(data);
-            axios.get('./user/welfares/year/' + data.year + '/id/' + data.id)
+            axios.get('./employee/welfares/year/' + data.year + '/id/' + data.id)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEES_WELFARE', payload: result.data })
@@ -168,7 +168,7 @@ export function userWelfareAction(store) {
         EMPLOYEE_GET_WELFARES(id, year = new Date().getFullYear()) {
             // console.log(id, year);
             // this.fire('toast', { status: 'load' });
-            axios.get(`./user/welfares/year/${year}/id/${id}`)
+            axios.get(`./employee/welfares/year/${year}/id/${id}`)
                 .then(res => {
                     // console.log(res)
                     this.fire('toast', {
@@ -195,7 +195,7 @@ export function userWelfareAction(store) {
 
                 this.fire('toast', { status: 'load' });
                 // newData.status = true;
-                axios.post(`./user/use/welfare/`, newData)
+                axios.post(`./employee/request/welfare/`, newData)
                     .then(res => {
                         this.EMPLOYEE_GET_WELFARES(newData.emp_id);
                         this.fire('toast', {
@@ -223,6 +223,6 @@ export function userWelfareAction(store) {
     }
     ]
 
-    // ./user/use_welfare/
+    // ./employee/use_welfare/
 
 }

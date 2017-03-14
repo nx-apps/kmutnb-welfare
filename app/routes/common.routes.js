@@ -13,7 +13,7 @@ module.exports = function (app) {
 // Exsample 
 // https://localhost:3000/api/common/academic/
 // https://localhost:3000/api/common/academic/insert/
-// ส่ง old_id มาด้วยเพื่ออัพเดตได้
+// ส่ง id มาด้วยเพื่ออัพเดตได้
 // https://localhost:3000/api/common/academic/update/
 // https://localhost:3000/api/common/academic/delete/id/:id
 // เปลี่ยนแค่ academic เป็นอย่างอื่น
@@ -33,7 +33,7 @@ module.exports = function (app) {
     app.put('/department/update', departmentController.departmentUpdate);
     app.delete('/department/delete/id/:id', departmentController.departmentDelete);
 
-    // // app.get('/employee', controller.employee);
+    // // // app.get('/employee', controller.employee);
     app.get('/faculty', facultyController.faculty);
     app.post('/faculty/insert', facultyController.facultyInsert);
     app.put('/faculty/update', facultyController.facultyUpdate);
@@ -54,10 +54,10 @@ module.exports = function (app) {
     app.put('/position/update', positionController.positionUpdate);
     app.delete('/position/delete/id/:id', positionController.positionDelete);
 
-    app.get('/prefixname', prefixnameController.prefixname);
-    app.post('/prefixname/insert', prefixnameController.prefixnameInsert);
-    app.put('/prefixname/update', prefixnameController.prefixnameUpdate);
-    app.delete('/prefixname/delete/id/:id', prefixnameController.prefixnameDelete);
+    app.get('/prefix', prefixnameController.prefixname);
+    app.post('/prefix/insert', prefixnameController.prefixnameInsert);
+    app.put('/prefix/update', prefixnameController.prefixnameUpdate);
+    app.delete('/prefix/delete/id/:id', prefixnameController.prefixnameDelete);
     
     app.get('/relation', relationController.relation);
     app.post('/relation/insert', relationController.relationInsert);

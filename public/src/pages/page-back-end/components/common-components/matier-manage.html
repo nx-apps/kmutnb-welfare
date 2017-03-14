@@ -126,7 +126,7 @@
             update:function(e){
                 var getForm = e.target.item;
                 var newItem = {
-                    old_id: getForm.id,
+                    id: getForm.id,
                     matier_name: getForm.matier_name
                 }
                 this.dispatchAction('COMMONDATA_DATA_MATIER_UPDATE',newItem);

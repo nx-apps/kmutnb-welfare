@@ -127,7 +127,7 @@
             update:function(e){
                 var getForm = e.target.item;
                 var newItem = {
-                    old_id: getForm.id,
+                    id: getForm.id,
                     type_emp_name: getForm.type_emp_name
                 }
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE_UPDATE',newItem);
