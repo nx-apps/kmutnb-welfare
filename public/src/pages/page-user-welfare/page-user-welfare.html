@@ -25,7 +25,7 @@
         Polymer({
             is: 'page-user-welfare',
             behaviors: [
-                ReduxBehavior,nylonBehavior,commonDataAction,usersAction,welfareAction,uploadAction
+                ReduxBehavior,nylonBehavior,commonDataAction,usersAction,userWelfareAction,uploadAction
             ],
             properties:{
                 page:{
@@ -36,10 +36,6 @@
                     type:String,
                     value:'แก้ไขข้อมูล'
                 },
-                year :{
-                    statePath:'welfare.list_year',
-                    type:Number,
-                }
             },
             listeners: {
                 '_get-user-edit': '_getUserEdit',
@@ -61,7 +57,7 @@
                 // this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
 
                 
-                this.dispatchAction('GET_YEAR');
+                this.dispatchAction('WELFARE_LIST_YEAR');
             },
             setYear(year){
                 try {
