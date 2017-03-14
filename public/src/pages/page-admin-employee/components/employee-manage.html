@@ -186,8 +186,15 @@
                             <label for="department">แผนก :</label>
                         </div>
                         <div class="flex-5">
-                            <gl-combo-box id="department" no-label-float items="{{department}}" value="{{data.department_id}}" item-label-path="department_name"
-                                item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                              <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{department.length}}">
+                                    <paper-listbox class="dropdown-content required" attr-for-selected="value" selected="{{data.faculty_id}}">
+                                        <template is="dom-repeat" items="{{department}}">
+                                            <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
+                                        </template>
+                                    </paper-listbox>
+                                </gl-form-dropdown-menu>
+                            <!--<gl-combo-box id="department" no-label-float items="{{department}}" value="{{data.department_id}}" item-label-path="department_name"
+                                item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>-->
                         </div>
                     </div>
                 </fieldset>
@@ -206,6 +213,7 @@
         Polymer({
             is: 'employee-manage',
             behaviors: [ReduxBehavior, ValidateFormBehavior],
+            observers:['getDepartment(data.faculty_id,faculty)'],
             properties: {
                 data: {
                     type: Object,
@@ -219,7 +227,9 @@
                     statePath: 'commonData.active'
                 },
                 department: {
-                    statePath: 'commonData.department'
+                    type: Array,
+                    value: []
+                    // statePath: 'commonData.department'
                 },
                 employee: {
                     statePath: 'commonData.employee'
@@ -249,8 +259,14 @@
             save:function(){
                 console.log(this.data);
             },
+            getDepartment:function(id,item){
+                if(typeof id != 'undefined' && item[0].faculty != ""){
+                    console.log('*',item); 
+                    console.log('id',id);
+                }
+            },
             checkDepartment:function(e){
-                console.log(e);
+                // console.log(e);
                 // var id = e;
                 // var combobox = Polymer.dom(this.root).querySelector('#department');
                 // console.log(this.department);
