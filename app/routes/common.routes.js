@@ -13,7 +13,7 @@ module.exports = function (app) {
 // Exsample 
 // https://localhost:3000/api/common/academic/
 // https://localhost:3000/api/common/academic/insert/
-// ส่ง old_id มาด้วยเพื่ออัพเดตได้
+// ส่ง id มาด้วยเพื่ออัพเดตได้
 // https://localhost:3000/api/common/academic/update/
 // https://localhost:3000/api/common/academic/delete/id/:id
 // เปลี่ยนแค่ academic เป็นอย่างอื่น

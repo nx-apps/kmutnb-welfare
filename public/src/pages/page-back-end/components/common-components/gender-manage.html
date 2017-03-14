@@ -126,7 +126,7 @@
             update:function(e){
                 var getForm = e.target.item;
                 var newItem = {
-                    old_id: getForm.id,
+                    id: getForm.id,
                     gender_name: getForm.gender_name
                 }
                 this.dispatchAction('COMMONDATA_DATA_GENDER_UPDATE',newItem);

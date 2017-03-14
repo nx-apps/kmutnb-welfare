@@ -127,7 +127,7 @@
             update:function(e){
                 var getForm = e.target.item;
                 var newItem = {
-                    old_id: getForm.id,
+                    id: getForm.id,
                     relation_name: getForm.relation_name
                 }
                 this.dispatchAction('COMMONDATA_DATA_RELATION_UPDATE',newItem);
