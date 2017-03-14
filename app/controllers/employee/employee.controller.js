@@ -115,6 +115,7 @@ exports.welfaresYear = function (req, res) {
         .merge((group_welfare) => {
             return {
                 group_welfare: r.db('welfare').table('group_welfare').getAll(year, { index: 'year' })
+                 .filter({status_approve:true})
                     .merge((welfare_conditions) => {
                         return {
                             conditions: r.db('welfare').table('welfare').getAll(welfare_conditions('id'), { index: 'group_id' })
@@ -140,6 +141,7 @@ exports.welfaresYear = function (req, res) {
                     .reduce(function (left, right) {
                         return left.add(right);
                     })
+                    //
                     .merge((conditions) => {
                         return {
                             condition: conditions('condition').merge((changeName) => {
@@ -242,14 +244,14 @@ exports.welfaresYear = function (req, res) {
                         status_approve: checkTrue('history_welfare').filter({ status: 'request', welfare_id: e('welfare_id') }).count().gt(0)//e('welfare_id')
                     }
                 })
-                // .filter({status_approve:true})
+                // 
             }
         })
-        // .merge((withOutHistorty) => {
-        //     return {
-        //         history_welfare: withOutHistorty('history_welfare').filter({ status: true })
-        //     }
-        // })
+        .merge((withOutHistorty) => {
+            return {
+                history_welfare: withOutHistorty('history_welfare').filter({ status: true })
+            }
+        })
         .without('group_welfare')
         .run()
         .then(function (result) {
