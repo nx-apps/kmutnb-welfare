@@ -19,10 +19,12 @@
     <template>
         <iron-pages selected="{{pages}}">
             <div>
-                <div class="horizontal end-justified layout">
-                    <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
-                        <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการย่อย</paper-button>
-                </div>
+                <template is="dom-if" if={{!list.status_approve}}>
+                    <div class="horizontal end-justified layout">
+                        <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
+                            <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการย่อย</paper-button>
+                    </div>
+                </template>
 
                 <div class="table-detail">
                     <paper-material elevation="1">
