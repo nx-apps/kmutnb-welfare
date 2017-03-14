@@ -161,24 +161,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="from layout horizontal">
-
-                        <div class="flex label">
-                            <label for="department">แผนก :</label>
-                        </div>
-                        <div class="flex-5">
-                            <gl-combo-box id="department" no-label-float items="{{department}}" value="{{data.department_id}}" item-label-path="department_name"
-                                item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
-                        </div>
-                    </div>
-                    [[checkFaculty(data.department_id)]]
+                    
                     <div class="from layout horizontal">
                         <div class="flex label">
                             <label for="faculty">คณะ :</label>
                         </div>
                         <div class="flex-5">
                             <div id="faculty">
-                                <gl-form-dropdown-menu style="margin-top:15px;" placeholder="{{faculty.length}}">
+                                <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{faculty.length}}">
                                     <paper-listbox class="dropdown-content required" attr-for-selected="value" selected="{{data.faculty_id}}">
                                         <template is="dom-repeat" items="{{faculty}}">
                                             <paper-item value="{{item.id}}">{{item.faculty_name}}</paper-item>
@@ -188,6 +178,16 @@
                             </div>
                             <!--<gl-combo-box id="faculty" no-label-float items="{{faculty}}" value="{{data.faculty_id}}" item-label-path="faculty_name"
                                 item-value-path="id" class="required" required></gl-combo-box>-->
+                        </div>
+                    </div>
+                    [[checkDepartment(data.faculty_id)]]
+                    <div class="from layout horizontal">
+                        <div class="flex label">
+                            <label for="department">แผนก :</label>
+                        </div>
+                        <div class="flex-5">
+                            <gl-combo-box id="department" no-label-float items="{{department}}" value="{{data.department_id}}" item-label-path="department_name"
+                                item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
                         </div>
                     </div>
                 </fieldset>
@@ -249,19 +249,19 @@
             save:function(){
                 console.log(this.data);
             },
-            checkFaculty:function(e){
-                // console.log(e);
-                var id = e;
-                var combobox = Polymer.dom(this.root).querySelector('#faculty');
+            checkDepartment:function(e){
+                console.log(e);
+                // var id = e;
+                // var combobox = Polymer.dom(this.root).querySelector('#department');
                 // console.log(this.department);
-                if(typeof this.department != 'undefined' && this.department != undefined && this.department[0].department != ''){
-                    var depart = this.department.filter((val) => val.id == id)[0]
-                    // console.log(depart.faculty_id);
+                // if(typeof this.department != 'undefined' && this.department != undefined && this.department[0].department != ''){
+                //     var depart = this.department.filter((val) => val.id == id)[0]
+                //     console.log(depart.faculty_id);
 
-                    var faculty = this.faculty.filter((item) => item.id == depart.faculty_id)
-                    console.log(faculty);
-                    combobox.items = faculty;
-                }
+                    // var faculty = this.faculty.filter((item) => item.id == depart.faculty_id)
+                    // console.log(faculty);
+                    // combobox.items = faculty;
+                // }
                 
 
             }
