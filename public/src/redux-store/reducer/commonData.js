@@ -498,7 +498,7 @@ export function commonDataAction(store){
             },
             // COMMONDATA_DATA_PREFIXNAME
             COMMONDATA_DATA_PREFIXNAME:function(id){
-                axios.get(`/common/prefixname`)
+                axios.get(`/common/prefix`)
                 .then(res=>{
                     var newData = res.data.map((item)=>{
                         item.check = true;
@@ -513,7 +513,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_PREFIXNAME_INSERT:function(data){
                 this.fire('toast',{status:'load'}); 
-                axios.post(`/common/prefixname/insert`,data)
+                axios.post(`/common/prefix/insert`,data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                       callback:()=>{
@@ -528,7 +528,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_PREFIXNAME_UPDATE:function(data){
                 this.fire('toast',{status:'load'}); 
-                axios.put('/common/prefixname/update',data)
+                axios.put('/common/prefix/update',data)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
                       callback:()=>{
@@ -543,7 +543,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_PREFIXNAME_DELETE:function(del){
                 this.fire('toast',{status:'load'});
-                axios.delete('/common/prefixname/delete/id/'+del)
+                axios.delete('/common/prefix/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
                       callback:()=>{
