@@ -233,9 +233,7 @@
             },
             cancle: function () {
                 this.set('disabled', this.active = true);
-                this.data = {
-                    condition: []
-                };
+                this.dispatchAction('WELFARE_DATA_SELECT', this.data.id)
             },
             // setCondition(){
             //      this.async(()=>{

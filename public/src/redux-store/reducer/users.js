@@ -186,7 +186,7 @@ export function usersAction(store){
                 
                 this.fire('toast',{status:'load'});
                 // newData.status = true;
-                    axios.post(`./user/use_welfare/`,newData)
+                    axios.post(`./user/use/welfare/`,newData)
                     .then(res=>{
                         this.USER_GET_WELFARES(newData.emp_id,true);
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -206,7 +206,7 @@ export function usersAction(store){
             clearDatawelfare(data,(newData)=>{
                 newData.id = data.id;
                 this.fire('toast',{status:'load'});
-                newData.status = true;
+                newData.status = 'approve';
                 newData.date_approve = new Date().toISOString();
                     axios.put(`./user/use_welfare/update`,newData)
                     .then(res=>{
@@ -223,25 +223,44 @@ export function usersAction(store){
                     })
                 })
             },
-            USER_DELETE_USE_WELFARE(id){
-                // console.log(data);
-                 this.fire('toast',{
-                    status:'openDialog',
-                    text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
-                    confirmed:(result)=>{
-                        if(result == true){
-                            axios.delete(`./user/use_welfare/delete/id/${id}`)
-                            .then(res=>{
-                                this.dispatchAction('USERS_FALSE_LIST');
-                                this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
-                                    callback:()=>{
-                                        // this.$$('panel-right').close();
-                                    }
-                                });
-                            })
-                        }
-                    }
+            USER_DELETE_USE_WELFARE(data){
+                clearDatawelfare(data,(newData)=>{
+                newData.id = data.id;
+                this.fire('toast',{status:'load'});
+                newData.status = 'reject';
+                newData.date_approve = new Date().toISOString();
+                    axios.put(`./user/use_welfare/update`,newData)
+                    .then(res=>{
+                        this.dispatchAction('USERS_FALSE_LIST');
+                        this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                            callback:()=>{
+                                // this.$$('panel-right').close();
+                                // this.$$('#welfare_budget').close()
+                            }
+                        });
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    })
                 })
+                // console.log(data);
+                //  this.fire('toast',{
+                //     status:'openDialog',
+                //     text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                //     confirmed:(result)=>{
+                //         if(result == true){
+                //             axios.delete(`./user/use_welfare/delete/id/${id}`)
+                //             .then(res=>{
+                //                 this.dispatchAction('USERS_FALSE_LIST');
+                //                 this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
+                //                     callback:()=>{
+                //                         // this.$$('panel-right').close();
+                //                     }
+                //                 });
+                //             })
+                //         }
+                //     }
+                // })
             },
             USER_USE_SELETE_WELFARE(data){
                 store.dispatch({type:'USER_USE_SELETE_WELFARE',payload:data})

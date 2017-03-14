@@ -1,6 +1,8 @@
 <link rel="import" href="./../components/format-number-behavior.html">
 <link rel="import" href="./../components/common-logic.html">
 
+<link rel="import" href="./../components/month-behavior.html">
+
 <link rel="import" href="./../components/validateFormBehaviors.html">
 
 <link rel="import" href="./components/dialog-use-welfare.html">
@@ -125,8 +127,10 @@
                                 <th style="width: 10%">ลำดับ</th>
                                 <th style="width: 40%">สวัสดิการที่ใช้</th>
                                 <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
-                                <th style="width: 15%">วันที่ขอใช้งาน</th>
-                                <th style="width: 20%">วันที่อนุมัติ</th>
+                                <th style="width: 10%">วันที่ขอใช้งาน</th>
+                                <th style="width: 10%">วันที่ตรวจ</th>
+                                <th style="width: 15%">สถานะการขอ</th>
+                                
                             </tr>
                         </thead>
                         <tbody class="table-body">
@@ -136,23 +140,20 @@
                                     <td>[[item.name]]</td>
                                     <td style="text-align: right;">[[formatNumber(item.use_budget)]]</td>
                                     <td>
-                                        <vaadin-date-picker always-float-label  disabled value="{{item.date_use}}"></vaadin-date-picker>
+                                        [[toThaiDate(item.date_use)]]
                                     </td>
-                                    
-                                    
-                                    
                                     <td>
                                         <div style="text-align: center">
                                         <template is="dom-if" if={{!item.date_approve}}>
                                             รอการอนุมัติ
                                         </template>
                                         <template is="dom-if" if={{item.date_approve}}>
-                                            <vaadin-date-picker always-float-label  disabled value="{{item.date_approve}}"></vaadin-date-picker>
-                                            
+                                            <!--<vaadin-date-picker always-float-label  disabled value="{{item.date_approve}}"></vaadin-date-picker>-->
+                                            [[toThaiDate(item.date_approve)]]
                                         </template>
-                                       </div> 
-                                        
+                                       </div>  
                                     </td>
+                                    <td>[[_checkApprove(item.status)]]</td>
                                 </tr>
                             </template>
                             <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
@@ -181,7 +182,7 @@
     <script>
         Polymer({
             is: 'user-welfare',
-            behaviors:[ReduxBehavior,FormatNumberBehavior,commonLogic],
+            behaviors:[ReduxBehavior,FormatNumberBehavior,commonLogic,MonthBehavior],
             properties:{
                 data:{
                     statePath:'users.select_welefares'
@@ -195,7 +196,7 @@
                     value:{budget:0}
                 },
                 year :{
-                    statePath:'welfare.list_year',
+                    statePath:'userWelfare.list',
                     type:Number,
                 },
                 disabled:{
@@ -219,10 +220,27 @@
             _checkAdmin(status_approve,status_admin){
                 if (status_admin || status_approve) 
                    return true
-            },        
+            },    
+            _checkApprove(status){
+                switch (status) {
+                    case 'request':
+                               return 'รออนุมัติ'
+                        break;
+                    case 'approve':
+                               return 'อนุมัติ'
+                        break;
+                    case 'reject':
+                               return 'ไม่อนุมัติ'
+                        break;
+                    default:
+                        
+                }
+            },    
             gerYearWelfare(e){
+                // console.log(window.location.pathname.split('/')[2]);
+                // console.log(e.detail.value);
              if (e.detail.value)
-                 this.dispatchAction('USER_GET_WELFARES','411e54dd-b808-4d4d-9984-201b68c70dff',true,e.detail.value-543);
+                 this.dispatchAction('USER_GET_WELFARES',window.location.pathname.split('/')[2],true,e.detail.value-543);
                 
             },
             editData(){
@@ -239,7 +257,7 @@
                 data.emp_id = this.data.id
                 data.welfare_id = e.currentTarget.data.welfare_id
                 data.budget_cover = e.currentTarget.data.budget_balance
-                data.status = false
+                data.status = 'request'
                 data.onetime = e.currentTarget.data.onetime
                 data.year = new Date().getFullYear()
                 data.group_id = e.currentTarget.data.group_id
