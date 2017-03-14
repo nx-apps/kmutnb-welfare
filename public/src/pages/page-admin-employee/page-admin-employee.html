@@ -28,7 +28,7 @@
             <section>   
                 <div class="container serachBox">
                     <paper-material elevation="1">
-                        <div style="padding: 10px">
+                        <div>
                             <div class="container flex-horizontal-with-ratios">
                                 <div class="flexchild"></div>
                                 <div class="flex3child">
@@ -127,14 +127,23 @@
             },
             listeners:{
                 'back_page' : 'back_page',
-                'select-page' : 'changePage'
+                'select-page' : 'changePage',
+                'reset-search' : 'resetSearch'
+            },
+            resetSearch:function(){
+                this.selectYear = "";
+                this.selectWelfare = "";
+                this.selectType = "";
+                this.selectDepartment = "";
+                this.$$('list-user').selectTable(true);
+                this.FACULTY_LIST();
+                this.LIST_USER("");
             },
             nylonPageActive: function () {
                 this.selected = 0;
                 this.WELFARE_LIST_YEAR();
                 this.LIST_USER("");
                 this.$$('list-user').selectTable(true)
-                this.hidePaperfab = true;
                 this.FACULTY_LIST();
             },
             select_year:function(year) {
@@ -196,12 +205,10 @@
             changePage:function(page){
                 // console.log(page.detail.data);
                 if(page.detail != 0){
-                    this.hidePaperfab = false;
                     this.selected = page.detail;
                 }
                 else{
                     this.selected = page.detail;
-                    this.hidePaperfab = true;
                 }
             }
         });

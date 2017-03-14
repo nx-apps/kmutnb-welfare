@@ -26,7 +26,6 @@
                 margin-left: 20px;
                 font-weight: bold;
             }
-
             paper-fab {
                 position: fixed;
                 right: 25px;
@@ -42,16 +41,23 @@
             </div>-->
 
             <paper-material elevation="1">
-                <div class="table-detail">
+                <div class="table-detail">  
                     <template is="dom-if" if={{isSearch}}>
                         <div class="container flex-horizontal-with-ratios">
-                            <div class="flex3child"></div>
-                            <div class="flex2child">
-                                <gl-form-input no-label-float on-input="searchTable" value="{{searchInput}}"></gl-form-input>
+                            <div class="flex3child">
+                                <paper-button class="gl-btn-primary" on-tap="resetData">
+                                    <iron-icon icon="autorenew"></iron-icon>
+                                    <span style="margin-left: 5px">แสดงทั้งหมด</span>
+                                </paper-button>
+                                <!--<paper-icon-button icon="autorenew"></paper-icon-button>-->
                             </div>
-                            <!--<div>     
-                                <paper-icon-button icon="search" on-tap="searchTable"></paper-icon-button>
-                            </div>-->
+                            <div class="flex2child">
+                                <gl-form-input no-label-float placeholder="ค้นหาข้อมูล" on-input="searchTableList" value="{{searchInputList}}">
+                                    <div prefix>
+                                        <iron-icon icon="search"></iron-icon>&nbsp;&nbsp;
+                                    </div>
+                                </gl-form-input>
+                            </div>
                         </div>
                         <div style="overflow-x: auto; border:1px solid #ddd;">
                         <table class="gl-table-default">
@@ -77,7 +83,7 @@
                                             <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
                                         </td>-->
                                         <td>
-                                            <iron-icon icon="list"  on-tap="chagePage" data="[[item]]"></iron-icon>
+                                            <iron-icon style="cursor:pointer" icon="list"  on-tap="chagePageDetail" data="[[item]]"></iron-icon>
                                         </td>
                                         <td>[[item.emp_no]]</td>
                                         <td>[[item.fullName]]</td>
@@ -98,6 +104,22 @@
                         </div>
                     </template>
                     <template is="dom-if" if={{!isSearch}}>
+                        <div class="container flex-horizontal-with-ratios">
+                            <div class="flex3child">
+                                <paper-button class="gl-btn-primary" on-tap="resetData">
+                                    <iron-icon icon="autorenew"></iron-icon>
+                                    <span style="margin-left: 5px">แสดงทั้งหมด</span>
+                                </paper-button>
+                                <!--<paper-icon-button icon="autorenew"></paper-icon-button>-->
+                            </div>
+                            <div class="flex2child">
+                                <gl-form-input no-label-float placeholder="ค้นหาข้อมูล" on-input="searchTableListSearch" value="{{searchInputListSearch}}">
+                                    <div prefix>
+                                        <iron-icon icon="search"></iron-icon>&nbsp;&nbsp;
+                                    </div>
+                                </gl-form-input>
+                            </div>
+                        </div>
                         <div style="overflow-x: auto; border:1px solid #ddd;">
                         <table class="gl-table-default">
                             <thead class="table-head">
@@ -105,6 +127,7 @@
                                     <th hidden="{{!checkBox}}">
                                         <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>เลือกทั้งหมด
                                     </th>
+                                    <th></th>
                                     <th>รหัสพนักงาน</th>
                                     <th>ชื่อ นามสกุล</th>
                                     <th>ตำแหน่ง</th>
@@ -120,8 +143,10 @@
                                 <template is="dom-repeat" items={{newListSearch}}>
                                     <tr>
                                         <td style="text-align: center" hidden="{{!checkBox}}">
-                                            <paper-checkbox checked="{{item.check}}" disabled="{{!item.admin_use}}"></paper-checkbox>
-                                            <iron-icon icon="list" on-tap="chagePage" data="[[item]]"></iron-icon>  
+                                            <paper-checkbox checked="{{item.check}}" disabled="{{!item.admin_use}}"></paper-checkbox>  
+                                        </td>
+                                        <td>
+                                            <iron-icon icon="list" on-tap="chagePage" data="[[item]]"></iron-icon>
                                         </td>
                                         <td>[[item.emp_no]]</td>
                                         <td>[[item.fullName]]</td>
@@ -186,6 +211,10 @@
                     }
                     // console.log(data.length);
                 }
+            },
+            resetData:function(){
+                this.searchInputList = "";
+                this.fire('reset-search')
             },
             hiddenCheckBox: function (check) {
                 if (typeof check == 'undefined') {
@@ -296,13 +325,12 @@
             getListSearch:function(list){
                 this.newListSearch = list;
             },
-            searchTable:function(e){
+            searchTableList:function(e){
                 let arr=[];
                 var storeData = this.list;
                 this.newList = storeData;
                 var input = e.target.value;
                 var feild = Object.getOwnPropertyNames(this.newList[0]).sort();
-                // console.log(feild);
                 if(input != ''){
                     this.newList.map((item,index)=>{
                         for(var i = 0; i < feild.length;i++){
@@ -322,6 +350,33 @@
                 else{
                     console.log('error');
                     this.newList = storeData;
+                }
+            },
+            searchTableListSearch:function(e){
+                let arr=[];
+                var storeData = this.listSearch;
+                this.newListSearch = storeData;
+                var input = e.target.value;
+                var feild = Object.getOwnPropertyNames(this.newListSearch[0]).sort();
+                if(input != ''){
+                    this.newList.map((item,index)=>{
+                        for(var i = 0; i < feild.length;i++){
+                            var getFeild = feild[i];
+                            if(String(item[getFeild]).search(input) != -1){
+                                arr.push(item)
+                                break;   
+                            }
+                            else{
+                                // console.log('error');
+                                // arr = [];
+                            }
+                        }
+                    })
+                    this.newListSearch = arr
+                }
+                else{
+                    console.log('error');
+                    this.newListSearch = storeData;
                 }
             },
             searchTableByFilterDepartment:function(id){
