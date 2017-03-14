@@ -27,7 +27,7 @@
                         <div class="container flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="prefixname" placeholder="กรอกข้อมูล" value="{{data.prefixname}}"></gl-form-input>
+                                <gl-form-input label="prefix_name" placeholder="กรอกข้อมูล" value="{{data.prefix_name}}"></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center">
                                 <paper-button class="gl-btn-success" on-tap="getForm" raised>save</paper-button>
@@ -43,7 +43,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
-                                <th>prefixname</th>
+                                <th>prefix_name</th>
                                 <th style="width: 20%">กระทำ</th>
                             </tr>
                         </thead>
@@ -54,12 +54,12 @@
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
-                                            {{item.prefixname}} 
+                                            {{item.prefix_name}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
-                                            <paper-input no-label-float value="{{item.prefixname}}"></paper-input>
+                                            <paper-input no-label-float value="{{item.prefix_name}}"></paper-input>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
@@ -71,7 +71,7 @@
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
                                             <paper-icon-button on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
-                                            <paper-icon-button on-tap="close" item=[[item.prefixname]] index="[[index]]" icon="clear"></paper-icon-button>
+                                            <paper-icon-button on-tap="close" item=[[item.prefix_name]] index="[[index]]" icon="clear"></paper-icon-button>
                                         </td>
                                     </template>
                                 </tr>
@@ -128,7 +128,7 @@
                 var getForm = e.target.item;
                 var newItem = {
                     id: getForm.id,
-                    prefixname: getForm.prefixname
+                    prefix_name: getForm.prefix_name
                 }
                 this.dispatchAction('COMMONDATA_DATA_PREFIXNAME_UPDATE',newItem);
             },

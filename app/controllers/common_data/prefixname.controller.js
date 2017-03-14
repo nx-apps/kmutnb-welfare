@@ -11,7 +11,9 @@ exports.prefixname = function(req,res){
 }
 exports.prefixnameInsert = function(req,res){
     var r = req.r;
+    console.log(req.body);
     var valid = req.ajv.validate('prefix', req.body);
+    console.log(valid);
     var result = { result: false, message: null, id: null };
     if (valid) {
     r.db('welfare_common').table('prefix')

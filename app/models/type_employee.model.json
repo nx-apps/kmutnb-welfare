@@ -1,9 +1,9 @@
 {
     "name":"type_employee",
     "properties": {
-        "type_emp_name": {
+        "type_employee_name": {
             "type": "string"
         }
     },
-    "required": ["type_emp_name"]
+    "required": ["type_employee_name"]
 }
