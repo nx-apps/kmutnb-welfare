@@ -86,7 +86,7 @@
     <script>
         Polymer({
             is: 'page-admin-employee',
-            behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction, uploadAction],
+            behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction, uploadAction, commonDataAction],
             observers:[
             'select_year(selectYear)',
             'select_welfare(selectWelfare)',

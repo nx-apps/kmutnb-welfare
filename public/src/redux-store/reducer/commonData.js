@@ -498,7 +498,7 @@ export function commonDataAction(store){
             },
             // COMMONDATA_DATA_PREFIXNAME
             COMMONDATA_DATA_PREFIXNAME:function(id){
-                axios.get(`/common/prefixname`)
+                axios.get(`/common/prefix`)
                 .then(res=>{
                     var newData = res.data.map((item)=>{
                         item.check = true;
