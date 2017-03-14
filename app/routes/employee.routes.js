@@ -12,10 +12,10 @@ module.exports = function (app) {
     app.put('/update/welfare/', controller.updateWelfare);
 
     // upload
-    
-    app.post('/:emp_id/upload/', upload.uploadFile);
-    // app.get('/list/:refPath/:emp_id/:welfare_id', upload.listFilePath);
     app.get('/list/file/', upload.listFilePath);
+    app.get('/download/:id', upload.downloadFile);
+    app.post('/:emp_id/upload/', upload.uploadFile);
+    app.delete('/delete/:id', upload.deleteFile);
     // app.route().get(upload.listFilePath);
     // app.delete('/use_welfare/delete/id/:id', controller.deleteWelfare);
 

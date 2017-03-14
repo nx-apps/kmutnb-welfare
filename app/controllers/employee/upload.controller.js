@@ -112,10 +112,6 @@ exports.listFilePath = function (req, res) {
             return {
                 name: row('name').add(' | ')
                     .add(row('timestamp'))
-                // .add('-')
-                // .add(row('date_upload').month().coerceTo('string'))
-                // .add('-')
-                // .add(row('date_upload').year().coerceTo('string'))
                 ,
                 progress: 100, complete: true
             }
