@@ -242,7 +242,7 @@ exports.welfaresYear = function (req, res) {
                         status_approve: checkTrue('history_welfare').filter({ status: 'request', welfare_id: e('welfare_id') }).count().gt(0)//e('welfare_id')
                     }
                 })
-                .filter({status_approve:true})
+                // .filter({status_approve:true})
             }
         })
         // .merge((withOutHistorty) => {
