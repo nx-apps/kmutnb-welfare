@@ -11,6 +11,7 @@
 	<field name="sum_use" class="java.lang.Integer"/>
 	<field name="sum_budget" class="java.lang.Integer"/>
 	<field name="date_use" class="java.lang.String"/>
+	<field name="month_name" class="java.lang.String"/>
 	<variable name="use" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{sum_use}]]></variableExpression>
 	</variable>
@@ -126,7 +127,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDate($F{date_use}).split(" ")[1]]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{month_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="402" y="0" width="152" height="20" uuid="122f4e80-4760-4409-b1f8-252cdd46450a"/>
