@@ -86,7 +86,7 @@
     <script>
         Polymer({
             is: 'page-admin-employee',
-            behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction, uploadAction],
+            behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction, uploadAction, commonDataAction],
             observers:[
             'select_year(selectYear)',
             'select_welfare(selectWelfare)',
@@ -155,6 +155,8 @@
             },
             select_welfare:function(id){
                  if(id != ""){
+                    this.selectType = "";
+                    this.selectDepartment = "";
                     var getid = id;
                     var dataFilter = this.listWelfare.filter((item)=>{
                         return item.id == id;

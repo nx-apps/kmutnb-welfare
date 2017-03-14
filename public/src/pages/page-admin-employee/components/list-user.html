@@ -339,7 +339,13 @@
             },
             searchTableList:function(e){
                 let arr=[];
-                var storeData = this.listFilter;
+                var storeData;
+                if(this.listFilter.length == 0){
+                   storeData = this.list;
+                }
+                else{
+                    storeData = this.listFilter;
+                }
                 this.newList = storeData;
                 var input = e.target.value;
                 var feild = Object.getOwnPropertyNames(this.newList[0]).sort();
@@ -366,7 +372,14 @@
             },
             searchTableListSearch:function(e){
                 let arr=[];
-                var storeData = this.listFilterSearch;
+                // console.log(this.listFilterSearch);
+                var storeData;
+                if(this.listFilterSearch.length == 0){
+                    storeData = this.listSearch
+                }
+                else{
+                    storeData = this.listFilterSearch;
+                }
                 this.newListSearch = storeData;
                 var input = e.target.value;
                 var feild = Object.getOwnPropertyNames(this.newListSearch[0]).sort();

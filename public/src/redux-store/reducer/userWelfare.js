@@ -156,7 +156,7 @@ export function userWelfareAction(store) {
         },
         LIST_EMPLOYEES_WELFARE: function (data) {
             // console.log(data);
-            axios.get('./employee/welfares/year/' + data.year + '/id/' + data.id)
+            axios.get('./employee/'+ data.id+'/welfares/year/' + data.year)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEES_WELFARE', payload: result.data })
@@ -168,7 +168,7 @@ export function userWelfareAction(store) {
         EMPLOYEE_GET_WELFARES(id, year = new Date().getFullYear()) {
             // console.log(id, year);
             // this.fire('toast', { status: 'load' });
-            axios.get(`./employee/welfares/year/${year}/id/${id}`)
+            axios.get(`./employee/${id}/welfares/year/${year}`)
                 .then(res => {
                     // console.log(res)
                     this.fire('toast', {
