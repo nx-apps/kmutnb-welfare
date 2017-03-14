@@ -43,10 +43,18 @@
     <template>
 
         <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
-            <gl-form-panel-head label="" set-padding="10px" set-border="1px">
-                <paper-button on-tap="back" raised>back</paper-button>
-                <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
-            </gl-form-panel-head>
+            <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+                <div class="horizontal justified layout">
+                    <paper-button on-tap="back" raised>
+                        <iron-icon icon="arrow-back"></iron-icon>
+                        <span style="margin-left: 5px">ย้อนกลับ</span>
+                    </paper-button>
+                    <!--<paper-icon-button icon="arrow-back" on-tap="back"></paper-icon-button>-->
+                    <!--<paper-button on-tap="back" raised>back</paper-button>-->
+                    <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
+                </div>
+               
+            </gl-form-panel-body>
             <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                 <fieldset>
                     <legend>ข้อมูลพนักงาน :</legend>
@@ -65,7 +73,7 @@
                 </fieldset>
                 <div class="content horizontal start-justified layout">
                     [[setYear(year)]]
-                    <gl-combo-box no-label-float items="{{year}}" value="{{seleterYear}}" item-label-path="year" item-value-path="year" on-value-changed="gerYearWelfare"></gl-combo-box>
+                    <gl-combo-box label="ปีงบประมาณ" items="{{year}}" value="{{seleterYear}}" item-label-path="year" item-value-path="year" on-value-changed="gerYearWelfare"></gl-combo-box>
                 </div>
             </gl-form-panel-body>
 
