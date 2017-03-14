@@ -93,15 +93,14 @@
                                     <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
                                     <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                     <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
-                                    <td><div class="approve">
+                                    <td>
                                         <template is="dom-if" if=[[_checkAdmin(item.status_approve,item.admin_use,index)]]>
                                             <!--<div class="approve-[[index]] ff">-->
-                                                รอการอนุมัติ -[[index]]
+                                                [[_wordApprove(item.status_approve,item.admin_use)]]
                                             <!--</div>-->
                                             
                                         </template>
-                                        </div>
-                                        <paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]" hidden="[[_checkAdmin(item.status_approve,item.admin_use,index)]]">ขอใช้</paper-button></td>
+                                        <paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]" hidden="[[_checkAdmin(item.status_approve,item.admin_use)]]">ขอใช้</paper-button></td>
                                 </tr>
                             </template>
                             <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
@@ -213,10 +212,11 @@
                     
                 }
             },
-            _checkAdmin(status_approve,status_admin,index){
-                
-                console.log(this.$$('.approve-'));
-                // (status_admin || status_user ? {return true} : false)
+            _wordApprove(status_approve,admin_use){
+                // let word;
+                return (admin_use ? 'ผู้ดูแลระบบอนุมัติเท่านั้น' :'รออนุมัติ');
+            },
+            _checkAdmin(status_approve,status_admin){
                 if (status_admin || status_approve) 
                    return true
             },        
@@ -255,9 +255,9 @@
                 console.log(this.usewelfareProp);
                 // console.log(this.$$('#dialog-use-welfare'));
                 // console.log(this.usewelfareProp.use_budget);
-                if(this.$$('#dialog-use-welfare').validateForm('.required')){
+                if(this.$$('#dialog-use-welfare').validateForm('.required'))
                     this.dispatchAction('USER_USE_WELFARE',this.usewelfareProp);
-                }
+                
                 // 
             },
             
