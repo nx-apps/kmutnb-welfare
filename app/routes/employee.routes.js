@@ -6,8 +6,7 @@ module.exports = function (app) {
     app.delete('/delete/:id', controller.delete);
 
     app.get('/unapprove', controller.unapprove);
-    app.get('/:id/welfares/year/:year', controller.welfares);
-    // app.get('/welfares/year/:year/id/:id', controller.welfares);
+    app.get('/:id/welfares/year/:year', controller.welfaresYear);
     app.post('/request/welfare/', controller.requestWelfare);
     app.put('/update/welfare/', controller.updateWelfare);
 

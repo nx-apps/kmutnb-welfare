@@ -85,7 +85,7 @@ exports.update = function (req, res) {
             res.status(500).json(err);
         })
 }
-exports.welfares = function (req, res) {
+exports.welfaresYear = function (req, res) {
     var r = req.r;
     //แก้ด้วย
     let year = Number(req.params.year)
