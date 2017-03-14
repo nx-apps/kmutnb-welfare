@@ -56,6 +56,12 @@
                             name: 'ธันวาคม'
                         }
                     ];
+        },
+        toThaiDate(date){
+            let year = date.split('-')[0],
+                month = date.split('-')[1],
+                day = date.split('-')[2];
+          return day+'/'+month+'/'+year
         }
     }
 </script>

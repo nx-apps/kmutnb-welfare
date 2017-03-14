@@ -89,7 +89,7 @@ exports.welfares = function (req, res) {
     var r = req.r;
     //แก้ด้วย
     let year = Number(req.params.year)
-    // https://localhost:3000/api/user/welfares/id/875932f9-a308-4802-980e-247f82f4fb1c
+    // https://localhost:3000/api/user/welfares/year/2017/id/411e54dd-b808-4d4d-9984-201b68c70dff
     r.db('welfare').table('employee').get(req.params.id)
         .merge(function (emp) {
             return {
@@ -194,7 +194,7 @@ exports.welfares = function (req, res) {
                                 .getAll(welfare('id'), { index: 'emp_id' })
                                 .filter(
                                 {
-                                    status: true,
+                                    status: 'approve',
                                     //  emp_id: welfare('id'),
                                     welfare_id: use_his('welfare_id')
                                 }
@@ -239,7 +239,7 @@ exports.welfares = function (req, res) {
             return {
                 welfare: checkTrue('welfare').merge((e) => {
                     return {
-                        status_approve: checkTrue('history_welfare').filter({ status: false, welfare_id: e('welfare_id') }).count().gt(0)//e('welfare_id')
+                        status_approve: checkTrue('history_welfare').filter({ status: 'request', welfare_id: e('welfare_id') }).count().gt(0)//e('welfare_id')
                     }
                 })
             }
@@ -261,7 +261,7 @@ exports.welfares = function (req, res) {
 exports.unapprove = function (req, res) {
     r.db('welfare').table('history_welfare')
         // .filter({status: false})
-        .getAll(false, { index: 'status' })
+        .getAll('request', { index: 'status' })
         .merge((user) => {
             return {
                 date_use: user('date_use').split('T')(0),
