@@ -11,7 +11,19 @@ const initialState = {
     select_use_welefares: {},
     faculty_list: []
 }
+const clearData = (data,callback)=>{
 
+    let {prefix_id,firstname,lastname,gender_id,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,emp_no,personal_id}=data;
+    let newData={prefix_id,firstname,lastname,gender_id,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,emp_no,personal_id};
+    // newData.period = new Array();
+    // data.period.map((tag)=>{
+    //     newData.period.push({no:tag.no,quality:tag.quality});
+    // });
+    newData.start_work_date = new Date (data.start_work_date).toISOString();
+    newData.birthdate = new Date (data.birthdate).toISOString();
+        callback(newData)
+    // callback(data)
+}
 const clearDatawelfare = (data, callback) => {
 
     let { emp_id, welfare_id, use_budget, status, year, group_id } = data;
@@ -90,7 +102,7 @@ export function userWelfareAction(store) {
             // console.log(id);
             axios.get('./employee/list')
                 .then(function (result) {
-                    console.log(result.data);
+                    // console.log(result.data);
                     var newData = result.data.map((item)=>{
                         if(item.academic_name == ""){
                             item.fullName = item.prefix_name + " " + item.firstname + " " + item.lastname
@@ -219,6 +231,34 @@ export function userWelfareAction(store) {
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+        EMPLOYEE_UPDATE(data){
+            // console.log(data);
+            this.fire('toast',{
+                    status:'openDialog',
+                    text:'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
+                    confirmed:(result)=>{
+                        if(result == true){
+                            this.fire('toast',{status:'load'})
+                            clearData(data,(newData)=>{
+                                this.fire('toast',{status:'load'});
+                                newData.id = data.id
+                                axios.put(`/employee/update`,newData)
+                                .then(res=>{
+                                    this.EMPLOYEE_USE_SELETE_WELFARE();
+                                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
+                                        callback:()=>{
+                                            this.fire('select-page', 0);
+                                        }
+                                    });
+                                })
+                                .catch(err=>{
+                                    console.log(err);
+                                })
+                            })
+                        }
+                    }
+                })
         }
     }
     ]

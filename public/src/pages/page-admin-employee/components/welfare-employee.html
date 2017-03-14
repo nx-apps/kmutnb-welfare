@@ -195,6 +195,9 @@
         Polymer({
             is: 'welfare-employee',
             behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic, MonthBehavior],
+            listeners:{
+                'back-page' : 'changePage'
+            },
             properties: {
                 data: {
                     statePath: 'userWelfare.welfare_employee'
@@ -296,6 +299,15 @@
                 this.dispatchAction('COMMONDATA_DATA_POSITION');
                 this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
+            },
+            changePage:function(page){
+                // console.log(page.detail.data);
+                if(page.detail != 0){
+                    this.pages = page.detail;
+                }
+                else{
+                    this.pages = page.detail;
+                }
             }
         });
     </script>
