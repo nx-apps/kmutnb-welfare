@@ -11,11 +11,13 @@ module.exports = function (app) {
     app.post('/request/welfare/', controller.requestWelfare);
     app.put('/update/welfare/', controller.updateWelfare);
 
-    // upload
+    // upload employee
     app.get('/list/file/', upload.listFilePath);
     app.get('/download/:id', upload.downloadFile);
     app.post('/:emp_id/upload/', upload.uploadFile);
     app.delete('/delete/:id', upload.deleteFile);
+    // upload admin
+    app.get('/list/upload/history/:id', upload.listUploadHistory);
     // app.route().get(upload.listFilePath);
     // app.delete('/use_welfare/delete/id/:id', controller.deleteWelfare);
 

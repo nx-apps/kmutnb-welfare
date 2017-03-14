@@ -128,7 +128,7 @@
               if (this.refPath != {} && this.empId != '' && this.empId != undefined) {
                 // this.dispatchAction('UPLOAD_LISTFILE', this.refPath, this.requestId);
                 console.log(this.historyWelfareId);
-                axios.get('/upload/list/histroy/werfale/id/'+this.historyWelfareId)
+                axios.get('/employee/list/upload/history/'+this.historyWelfareId)
                 .then( (response)=>{
                     this.listFiles = response.data;
                 })

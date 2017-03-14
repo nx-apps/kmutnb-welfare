@@ -58,11 +58,16 @@
                     ];
         },
         toThaiDate(date){
-            // console.log(date);
-            let year = parseInt(date.split('-')[0])+543,
+            // console.log(typeof date);
+            try {
+                let year = parseInt(date.split('-')[0])+543,
                 month = date.split('-')[1],
                 day = date.split('-')[2];
-          return day+'/'+month+'/'+year
+                 return day+'/'+month+'/'+year
+            } catch (error) {
+                
+            }
+            
         }
     }
 </script>

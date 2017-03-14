@@ -126,21 +126,24 @@ exports.listFilePath = function (req, res) {
             res.json(err);
         })
 }
-exports.adminlistFilePath = function (req, res) {
+exports.listUploadHistory = function (req, res) {
     var r = req.r;
     var params = req.params;
-    console.log('params=>',params);
+    console.log(params.id);
+    // console.log('params=>',params);
     r.db('welfare').table('history_welfare').get(params.id)
     .merge((doc_id)=>{
        return {
            files:doc_id('document_ids').map((file)=>{
            return { 
                file:r.db('welfare').table('document_file').get(file).merge((me_file)=>{
-               return r.db('welfare').table('files').get(me_file('file_id'))
-                    })
+                return r.db('welfare').table('files').get(me_file('file_id'))
+                        })
                     .merge(function (m) {
-            return { timestamp: m('timestamp').toISO8601().split("T")(0) }
-        })
+                        return { 
+                            timestamp: m('timestamp').toISO8601().split("T")(0) 
+                        }
+                    })
         .merge(function (row) {
             return {
                 name: row('name').add(' | ')
