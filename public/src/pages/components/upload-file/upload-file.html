@@ -122,7 +122,9 @@
                 // console.log(this.welfareId);
               if (this.refPath != {} && this.empId != '' && this.empId != undefined) {
                 // this.dispatchAction('UPLOAD_LISTFILE', this.refPath, this.requestId);
-                axios.get('/upload/list/'+this.refPath+'/'+this.empId+'/'+this.welfareId)
+                // axios.defaults.headers.common['ref-path'] = this.refPath;
+                // axios.defaults.headers.common['welfare-id'] = this.welfareId;
+                axios.get('/employee/list/file/?emp_id='+this.empId+'&refPath='+this.refPath+'&welfareId='+this.welfareId)
                 .then( (response)=>{
                     this.listFiles = response.data;
                 })
@@ -142,7 +144,7 @@
                         idFile = e.currentTarget.fileId
                     }
                     // window.location = '/api/upload/download/'+idFile;
-                    window.open('/api/upload/download/'+idFile);
+                    window.open('/api/employee/download/'+idFile);
                 }
             },
             _deleteFile:function(e){

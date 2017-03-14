@@ -23,7 +23,7 @@ export function uploadAction(store){
     return [commonAction(),{
       UPLOAD_DELETE(data){
         this.fire('toast',{status:'load',text:'กำลังบันทึกข้อมูล...'})
-        axios.delete('/upload/delete/'+data)
+        axios.delete('/employee/delete/'+data)
         .then( (response)=>{
             console.log(response);
             // store.dispatch({type:'UPLOAD_DELETE',payload:response.data})

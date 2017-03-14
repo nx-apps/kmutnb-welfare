@@ -100,7 +100,10 @@ exports.uploadFileadmin = function (req, res) {
 exports.listFilePath = function (req, res) {
     var r = req.r;
     var params = req.params;
-    r.db('welfare').table('document_file')
+    console.log(req.query);
+    // console.log(req.query.welfare_id);
+    r.db('welfare').table('document_file').getAll(req.query.emp_id,{index:'emp_id'})
+        .filter({welfare_id: req.query.welfareId, file_status: true,doc_status:false })
         .eqJoin('file_id', r.db('welfare').table('files')).without({ right: ["id", "contents"] }).zip()
         .merge(function (m) {
             return { timestamp: m('timestamp').toISO8601().split("T")(0) }
@@ -109,15 +112,11 @@ exports.listFilePath = function (req, res) {
             return {
                 name: row('name').add(' | ')
                     .add(row('timestamp'))
-                // .add('-')
-                // .add(row('date_upload').month().coerceTo('string'))
-                // .add('-')
-                // .add(row('date_upload').year().coerceTo('string'))
                 ,
                 progress: 100, complete: true
             }
         })
-        .filter({ emp_id: params.emp_id,welfare_id: params.welfare_id, ref_path: params.refPath, file_status: true,doc_status:false })
+        .filter({ref_path: req.query.refPath })
         .orderBy(r.desc('date_upload'))
         .run()
         .then(function (result) {
