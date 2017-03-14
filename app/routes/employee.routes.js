@@ -17,7 +17,10 @@ module.exports = function (app) {
     app.post('/:emp_id/upload/', upload.uploadFile);
     app.delete('/delete/:id', upload.deleteFile);
     // upload admin
+
     app.get('/list/upload/history/:id', upload.listUploadHistory);
+    app.post('/:emp_id/upload/', upload.uploadFile);
+    app.route('/admin/:emp_id/history/file/:history_id').post(upload.uploadFileadmin);
     // app.route().get(upload.listFilePath);
     // app.delete('/use_welfare/delete/id/:id', controller.deleteWelfare);
 
