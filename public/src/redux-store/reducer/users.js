@@ -73,7 +73,7 @@ export function usersAction(store){
         {
             USERS_LIST:function(){
                 // console.log(1)
-                axios.get('./user/list')
+                axios.get('./employee/list')
                 .then(res=>{
                     console.log(res.data)
                     store.dispatch({type:'USERS_LIST',payload:res.data})
@@ -85,7 +85,7 @@ export function usersAction(store){
             USER_INSERT(data){
                 clearData(data,(newData)=>{
                  this.fire('toast',{status:'load'});
-                    axios.post(`./user/insert`,newData)
+                    axios.post(`./employee/insert`,newData)
                     .then(res=>{
                         this.USERS_LIST();
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -113,7 +113,7 @@ export function usersAction(store){
                             clearData(data,(newData)=>{
                                 this.fire('toast',{status:'load'});
                                 newData.id = data.id
-                                axios.put(`/user/update`,newData)
+                                axios.put(`/employee/update`,newData)
                                 .then(res=>{
                                     this.USERS_LIST();
                                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -139,7 +139,7 @@ export function usersAction(store){
                     text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
                     confirmed:(result)=>{
                         if(result == true){
-                            axios.delete(`./user/delete/${id}`)
+                            axios.delete(`./employee/delete/${id}`)
                             .then(res=>{
                                 this.USERS_LIST();
                                 this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -164,7 +164,7 @@ export function usersAction(store){
             USER_GET_WELFARES(id,otherFunction=false,year=new Date().getFullYear()){
                 console.log('otherFunctioncdddd',year)
                  this.fire('toast',{status:'load'});
-                    axios.get(`./user/welfares/year/${year}/id/${id}`)
+                    axios.get(`./employee/${id}/welfares/year/${year}`)
                     .then(res=>{
                         console.log(res)
                         this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
@@ -186,7 +186,7 @@ export function usersAction(store){
                 
                 this.fire('toast',{status:'load'});
                 // newData.status = true;
-                    axios.post(`./user/use/welfare/`,newData)
+                    axios.post(`./employee/request/welfare/`,newData)
                     .then(res=>{
                         this.USER_GET_WELFARES(newData.emp_id,true);
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -208,7 +208,7 @@ export function usersAction(store){
                 this.fire('toast',{status:'load'});
                 newData.status = 'approve';
                 newData.date_approve = new Date().toISOString();
-                    axios.put(`./user/use_welfare/update`,newData)
+                    axios.put(`./employee/update/welfare`,newData)
                     .then(res=>{
                         this.dispatchAction('USERS_FALSE_LIST');
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -229,7 +229,7 @@ export function usersAction(store){
                 this.fire('toast',{status:'load'});
                 newData.status = 'reject';
                 newData.date_approve = new Date().toISOString();
-                    axios.put(`./user/use_welfare/update`,newData)
+                    axios.put(`./employee/update/welfare`,newData)
                     .then(res=>{
                         this.dispatchAction('USERS_FALSE_LIST');
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -249,7 +249,7 @@ export function usersAction(store){
                 //     text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
                 //     confirmed:(result)=>{
                 //         if(result == true){
-                //             axios.delete(`./user/use_welfare/delete/id/${id}`)
+                //             axios.delete(`./employee/use_welfare/delete/id/${id}`)
                 //             .then(res=>{
                 //                 this.dispatchAction('USERS_FALSE_LIST');
                 //                 this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -267,7 +267,7 @@ export function usersAction(store){
             },
             USERS_FALSE_LIST(data){
                 this.fire('toast',{status:'load'});
-                    axios.get(`./user/unapprove/`)
+                    axios.get(`./employee/unapprove/`)
                     .then(res=>{
                         // console.log(res)
                         this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',

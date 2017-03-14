@@ -392,7 +392,7 @@ exports.welfaresEmployee = function (req, res) {
     var r = req.r;
     //แก้ด้วย
     // let year = Number(req.params.year)
-    // https://localhost:3000/api/user/welfares/id/875932f9-a308-4802-980e-247f82f4fb1c
+    // https://localhost:3000/api/employee/welfares/id/875932f9-a308-4802-980e-247f82f4fb1c
     r.db('welfare').table('employee').get(req.params.id)
         .merge(function (emp) {
             return {
