@@ -22,7 +22,9 @@
                 border: 1px solid #ddd;
             }
         </style>
-        <div class="horizontal end-justified layout">
+        <div class="horizontal justified layout">
+            <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_print">
+                <iron-icon icon="print"></iron-icon>ออกรายงาน</paper-button>
             <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
                 <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการ</paper-button>
         </div>
@@ -92,7 +94,7 @@
     <script>
         Polymer({
             is: 'page-admin-welfare',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction, nylonLocalizeBehavior],
             observers: ['changeYear(selectYear)'],
             properties: {
                 list: {
@@ -160,6 +162,9 @@
             changeYear: function (e) {
                 var year = e - 543;
                 this.LIST_WELFARE(year);
+            },
+            _print:function(){
+                this.fire('nylon-change-page',{path:'/report'})
             }
         });
     </script>

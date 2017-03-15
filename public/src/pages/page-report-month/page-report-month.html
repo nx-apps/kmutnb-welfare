@@ -1,0 +1,110 @@
+<link rel="import" href="../components/card-search.html">
+<link rel="import" href="../components/page-style.html">
+
+<dom-module id="page-report-month">
+    <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+        paper-item{
+            width:150px;
+        }
+    </style>
+    <template>
+        <div class="layout horizontal center-justified wrap">
+            <card-search>
+                <div class="title-head">
+                    รายงานของเดือน
+                </div>
+                <div class="layout horizontal center-justified">
+                    <div class="menu">
+                        เลือกปี
+                    </div>
+                    <div class="layout horizontal center-justified">
+
+                        <gl-form-dropdown-menu style="margin-left:15px;margin-top:15px;width:100%;">
+                            <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
+                                <template is="dom-repeat" items="{{year}}">
+                                    <paper-item value="{{item.year}}">{{item.year}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </gl-form-dropdown-menu>
+                    </div>
+                </div>
+                <div class="layout horizontal center-justified">
+                    <div class="menu">
+                        เลือกเดือน
+                    </div>
+                    [[checkMonth(selectMonth)]]
+                    <div class="layout horizontal center-justified">
+
+                        <gl-form-dropdown-menu style="margin-top:15px;width:100%;">
+                            <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectMonth}}">
+                                <template is="dom-repeat" items="{{month}}">
+                                    <paper-item value="{{item.id}}">{{item.name}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </gl-form-dropdown-menu>
+                    </div>
+                </div>
+                <paper-button class="gl-btn-info" on-tap="print">Print</paper-button>
+            </card-search>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-report-month',
+            behaviors: [ReduxBehavior, nylonBehavior, groupWelfareAction],
+            properties: {
+                year: {
+                    statePath: 'groupWelfare.list_year'
+                },
+                month: {
+                    type: Array,
+                    value: [
+                        { id: '01', name: 'มกราคม' },
+                        { id: '02', name: 'กุมภาพันธ์' },
+                        { id: '03', name: 'มีนาคม' },
+                        { id: '04', name: 'เมษายน' },
+                        { id: '05', name: 'พฤษภาคม' },
+                        { id: '06', name: 'มิถุนายน' },
+                        { id: '07', name: 'กรกฎาคม' },
+                        { id: '08', name: 'สิงหาคม' },
+                        { id: '09', name: 'กันยายน' },
+                        { id: '10', name: 'ตุลาคม' },
+                        { id: '11', name: 'พฤศจิกายน' },
+                        { id: '12', name: 'ธันวาคม' }
+                    ]
+                }
+            },
+            nylonPageActive: function () {
+                let year = new Date().getFullYear();
+                var newYear = year + 543;
+                this.selectYear = newYear;
+                this.GET_YEAR();
+            },
+            checkMonth:function(val){
+                if(typeof val != 'undefined' && val != undefined){
+                    // console.log(val);
+                    var year = this.selectYear - 543;
+                    var sum = '0'+ (parseInt(val) + parseInt(1));
+                    var date_start = year + '-' + val + '-01';
+                    var date_end = year + '-' + sum + '-01';
+                    // console.log('start ' + date_start);
+                    // console.log('end ' + date_end);
+                    this.select = {date_start,date_end};
+                }
+            },
+            print:function(){
+                // console.log(this.select);
+                var str = '';
+                for (var key in this.select) {
+                    // console.log(key);
+                    if(this.select[key] != '' && this.select[key] != null){
+                        if(str==''){str += '?'}else{str += '&'}
+                        str += key + "=" + this.select[key];
+                    }
+                }
+                // console.log(str);
+                window.open('./api/report/report3'+str);
+            }
+        });
+    </script>
+</dom-module>

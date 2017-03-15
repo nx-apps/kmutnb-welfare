@@ -1,0 +1,57 @@
+<link rel="import" href="../components/card-search.html">
+<link rel="import" href="../components/page-style.html">
+<dom-module id="page-report-day">
+    <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+         :host {
+            display: block;
+        }
+    </style>
+    <template>
+        <div class="layout horizontal center-justified wrap">
+            <card-search>
+                <div class="title-head">
+                    เลือกวันที่ต้องการดูรายงาน
+                </div>
+                <div class="layout horizontal center-justified">
+                    <div class="menu">
+                        วันที่
+                    </div>
+                    [[checkDate(date)]]
+                    <div class="layout horizontal center-justified">
+                        <vaadin-date-picker always-float-label style="width:210px;margin-top:15px;" label="" value="{{date}}"></vaadin-date-picker>
+                    </div>
+                </div>
+                <paper-button class="gl-btn-info" on-tap="print">Print</paper-button>
+            </card-search>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-report-day',
+            checkDate:function(date){
+                if(date != ''){
+                    var changeDate = new Date(date);
+                    changeDate.setDate(changeDate.getDate() + 1);
+                    // console.log(changeDate);
+                    var date_start = date;
+                    var date_end = changeDate.toISOString().split("T")[0];
+                    // console.log(date_start, date_end);
+                    this.select = {date_start, date_end};
+                }
+            },
+            print:function(){
+                // console.log(this.select);
+                var str = '';
+                for (var key in this.select) {
+                    // console.log(key);
+                    if(this.select[key] != '' && this.select[key] != null){
+                        if(str==''){str += '?'}else{str += '&'}
+                        str += key + "=" + this.select[key];
+                    }
+                }
+                // console.log(str);
+                window.open('./api/report/report2'+str);
+            }
+        });
+    </script>
+</dom-module>

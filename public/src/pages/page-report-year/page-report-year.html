@@ -1,0 +1,64 @@
+<link rel="import" href="../components/card-search.html">
+<link rel="import" href="../components/page-style.html">
+<dom-module id="page-report-year">
+    <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+        paper-item {
+            width: 150px;
+        }
+    </style>
+    <template>
+        <div class="layout horizontal center-justified wrap">
+            <card-search>
+                <div class="title-head">
+                    รายงานของปี
+                </div>
+                <div class="layout horizontal center-justified">
+                    <div class="menu">
+                        เลือกปี
+                    </div>
+                    [[changeYears(selectYear)]]
+                    <div class="layout horizontal center-justified">
+                        <gl-form-dropdown-menu style="margin-top:15px;width:100%;">
+                            <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
+                                <template is="dom-repeat" items="{{year}}">
+                                    <paper-item value="{{item.year}}">{{item.year}}</paper-item>
+                                </template>
+                            </paper-listbox>
+                        </gl-form-dropdown-menu>
+                    </div>
+                </div>
+                
+                <paper-button class="gl-btn-info" on-tap="print">Print</paper-button>
+                
+            </card-search>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-report-year',
+            behaviors: [ReduxBehavior, nylonBehavior, groupWelfareAction],
+            properties: {
+                year: {
+                    statePath: 'groupWelfare.list_year'
+                }
+            },
+            nylonPageActive: function () {
+                let year = new Date().getFullYear();
+                var newYear = year + 543;
+                this.selectYear = newYear;
+                this.GET_YEAR();
+            },
+            changeYears: function (year) {
+                if(typeof year != 'undefined' && year != undefined){
+                    var changeYear = year - 543;
+                    this.select =  changeYear;
+                }
+            },
+            print:function(){
+                // console.log(this.select);
+                window.open('./api/report/report4/'+this.select);
+            }
+
+        });
+    </script>
+</dom-module>

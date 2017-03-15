@@ -1,0 +1,31 @@
+<link rel="import" href="components/card-menu.html">
+
+<dom-module id="page-report">
+    <style include="iron-flex iron-flex-factors iron-flex-alignment">
+         :host {
+            display: block;
+        }
+    </style>
+    <template>
+        <div class="layout horizontal center-justified">
+            <template is="dom-repeat" items="[[listMenu]]">
+                <card-menu data="{{item}}"></card-menu>
+            </template>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-report',
+            properties: {
+                listMenu: {
+                    type: Array,
+                    value: [
+                        { path: '/report-day', nameMenu: 'รายวัน', img: '/images/report/daily/192.png' },
+                        { path: '/report-month', nameMenu: 'รายเดือน', img: '/images/report/monthly/192.png' },
+                        { path: '/report-year', nameMenu: 'รายปี', img: '/images/report/yearly/192.png' }
+                    ]
+                }
+            }
+        });
+    </script>
+</dom-module>
