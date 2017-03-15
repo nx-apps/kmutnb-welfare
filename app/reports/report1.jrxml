@@ -14,7 +14,7 @@
 	<field name="welfare_name" class="java.lang.String"/>
 	<field name="employee" class="java.lang.Object"/>
 	<field name="count_employee" class="java.lang.String"/>
-	<field name="budget" class="java.lang.String"/>
+	<field name="budget" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -204,7 +204,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{budget}+ "  บาท"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toFormat($F{budget},"#,###.##")+ "  บาท"]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="281" y="33" width="65" height="20" uuid="7d53e4bb-18c0-4914-b4ea-147649387ff9"/>

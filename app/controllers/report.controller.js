@@ -133,7 +133,8 @@ exports.report2 = function (req, res, next) {
     var r = req.r
     var parameters = {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
-        SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\'
+        SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
+        date_start:req.query.date_start
     };
 
     var date_start = req.query.date_start;
@@ -165,6 +166,7 @@ exports.report2 = function (req, res, next) {
         .run()
         .then(function (result) {
             //   res.json(result);
+            //   if (result.length > 0 ) 
             res.ireport("report2.jasper", req.query.export || "pdf", result, parameters);
         });
 }
@@ -172,10 +174,11 @@ exports.report3 = function (req, res, next) {
     var r = req.r
     var parameters = {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
-        SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\'
+        SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
+        date_start: req.query.date_start
     };
-    var date_start = "2017-03-08";
-    var date_end = "2017-03-15";
+    var date_start = req.query.date_start;
+    var date_end = req.query.date_end;
     r.db('welfare').table('history_welfare').between(date_start, date_end, { index: 'date_use' })
 
         .merge(function (emp_merge) {
@@ -223,8 +226,17 @@ exports.report3 = function (req, res, next) {
         .run()
         .then(function (result) {
             //   res.json(result);
-            parameters.yearStart = result[0].year + 543;
-            parameters.yearEnd = result[result.length - 1].year + 543;
+            //   if(result.length < 1)
+            // console.log('>>>>>',result.length < 1)
+            if(result.length > 0) {
+                console.log()
+                parameters.monthStart = result[0].reduction[0].date_use
+                parameters.monthEnd = result[result.length - 1].reduction[(result[result.length - 1].reduction.length - 1)].date_use
+                parameters.yearStart = result[0].year + 543;
+                parameters.yearEnd = result[result.length - 1].year + 543;
+            }
+            // parameters.yearStart = result[0].year + 543;
+            // parameters.yearEnd = result[result.length - 1].year + 543;
             console.log(parameters)
             res.ireport("report3.jasper", req.query.export || "pdf", result, parameters);
         });
@@ -233,7 +245,8 @@ exports.report4 = function (req, res, next) {
     var r = req.r
     var parameters = {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
-        SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\'
+        SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
+        YEAR: req.params.year + "-01-01"
     };
     var date_start = "2017-01-01";
     var date_end = "2017-12-31";

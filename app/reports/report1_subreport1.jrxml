@@ -58,28 +58,28 @@
 			</textField>
 			<textField>
 				<reportElement x="582" y="0" width="109" height="20" uuid="296a5ffc-a1ff-4caf-84ea-358e3fa4b5bc"/>
-				<box leftPadding="5" rightPadding="5">
+				<box leftPadding="25" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDate ($F{start_work_date})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="691" y="0" width="111" height="20" uuid="17c7ba30-0646-4f93-82c6-ea950ef207b4"/>
-				<box leftPadding="5" rightPadding="5">
+				<box leftPadding="25" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDate ($F{birthdate})]]></textFieldExpression>
