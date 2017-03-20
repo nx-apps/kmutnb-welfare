@@ -64,8 +64,16 @@
                         </gl-grid-col>
                         [[checkField(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="name-[[index]]" on-value-changed="setCondition" id="[[index]]"  item-label-path="label" item-value-path="id" items="[[condition]]"
-                                value="{{item.field}}" disabled="{{active}}"></gl-combobox>
+                            <!--<gl-combo-box id="name-[[index]]" id="[[index]]"  item-label-path="label" item-value-path="id" items="[[newCondition]]"
+                                value="{{item.field}}" disabled="{{active}}"></gl-combobox>-->
+                            <gl-form-dropdown-menu label="" placeholder="{{itemCondition.length}}">
+                                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
+                                    <template is="dom-repeat" items="{{itemCondition}}">
+                                     <!--[[index]],-->
+                                        <paper-item value="{{item.id}}">{{item.label}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                            <!--</gl-form-dropdown-menu>-->
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}" disabled="{{active}}"></gl-combobox>
@@ -145,9 +153,11 @@
         Polymer({
             is: 'welfare-edit',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
+            observers:['conditionManage(data.*)'],
             properties: {
                 condition: {
-                    statePath: 'welfare.condition'
+                    statePath: 'welfare.condition',
+                    observer:'storeCondition'
                 },
                 data: {
                     statePath: 'welfare.dataSelect',
@@ -167,6 +177,40 @@
                 employees: {
                     statePath: 'welfare.employees'
                 }
+            },
+            ready:function(){
+                this.conditionLength = 0;
+            },
+            storeCondition:function(val){
+                this.itemCondition = val;
+            },
+            //  getCondition:function(val){
+            //     this.newCondition = val;
+            // },
+            conditionManage:function(val){
+                // console.log(val);
+                if(val.path == 'data.condition.splices'){
+                    // add and delete 
+                    
+                    // console.log(val);
+                    // console.log(val.base.condition);
+                }
+                else if(val.path != 'data.condition.length' && val.path != 'data'){
+                  
+                    var getItemId = val.base.condition.map((item)=>{
+                        return item.field
+                    });
+
+                    var condition = this.itemCondition.map((item)=>{
+                        return item
+                    })
+
+                    this.itemCondition = condition.filter((item)=>{
+                        // console.log(i);console.log(getItemId);
+                        return getItemId.indexOf(item.id) < 0;
+                    })
+                }
+                    // console.log(itemFillter);
             },
             // attached: function() {
             //     this.setCondition();
