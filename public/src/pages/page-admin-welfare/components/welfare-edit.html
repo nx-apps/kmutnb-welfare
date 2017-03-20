@@ -64,16 +64,8 @@
                         </gl-grid-col>
                         [[checkField(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <!--<gl-combo-box id="name-[[index]]" id="[[index]]"  item-label-path="label" item-value-path="id" items="[[newCondition]]"
+                            <!--<gl-combo-box id="name-[[index]]" on-value-changed="setCondition" id="[[index]]"  item-label-path="label" item-value-path="id" 
                                 value="{{item.field}}" disabled="{{active}}"></gl-combobox>-->
-                            <gl-form-dropdown-menu label="" placeholder="{{itemCondition.length}}">
-                                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
-                                    <template is="dom-repeat" items="{{itemCondition}}">
-                                     <!--[[index]],-->
-                                        <paper-item value="{{item.id}}">{{item.label}}</paper-item>
-                                    </template>
-                                </paper-listbox>
-                            <!--</gl-form-dropdown-menu>-->
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}" disabled="{{active}}"></gl-combobox>
@@ -289,39 +281,25 @@
             //             arrForItem = JSON.parse(JSON.stringify(this.condition));
             //             // console.log(arrForItem);
             //             this.data.condition.map((item,index)=>{
-            //                 let itemUse = item.field
-            //                 let date =  this.condition.filter((field)=> field.id == itemUse)[0]
-            //                 // // console.log('date',date);
-            //                 // console.log(date.field.search('date') > 0);
-            //                 console.log(i, index,i != index);
+                            
+                            
             //                     if (i != index) {
-            //                         // console.log(date.field.search('date') > 0);
-            //                         // console.log(arrForItem);
+            //                         console.log(i, index,i != index);
             //                     if (arrForItem.filter((blDetail)=> blDetail.id == item.field )[0] != undefined) {
             //        itemif = arrForItem.indexOf(arrForItem.filter((blDetail)=> blDetail.id == item.field )[0]);
             //       //  console.log(itemif);
             //        arrForItem.splice(itemif, 1);
             //      }
                  
-            //                 } //else if (date[0].field.search('date') > 0) {
-            //                     // console.log(11121212);
-            //                     console.log('arrForItem',arrForItem);
-            //                 //     let count = this.data.condition.filter((field)=> field.field == itemUse).length
-            //                 //     console.log('จริงง');
-            //                 //     if (count > 1){
-                                    
-            //                 //     }
-            //                // }
-                            
-                            
-            //                 // console.log(item.field);
+            //                 } 
                             
             //             });
-            //             // console.log(arrForItem);
+            //             console.log(arrForItem);
             //             var combobox = Polymer.dom(this.root).querySelector('#name-'+i);
-            //             console.log('combobox>',combobox);
+            //             // console.log('combobox>',combobox);
             //             //  console.log('151218131865168');
             //             combobox.items = arrForItem
+            //             console.log(combobox)
             //         }
             //          } catch (error) {
                          

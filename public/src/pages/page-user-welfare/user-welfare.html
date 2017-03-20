@@ -96,13 +96,13 @@
                                     <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                     <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
                                     <td>
-                                        <template is="dom-if" if=[[_checkAdmin(item.status_approve,item.admin_use,index)]]>
+                                        <template is="dom-if" if=[[_checkAdmin(item.status_approve,item.admin_use,item.welfare_old,index)]]>
                                             <!--<div class="approve-[[index]] ff">-->
-                                                [[_wordApprove(item.status_approve,item.admin_use)]]
+                                                [[_wordApprove(item.status_approve,item.admin_use,item.welfare_old)]]
                                             <!--</div>-->
                                             
                                         </template>
-                                        <paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]" hidden="[[_checkAdmin(item.status_approve,item.admin_use)]]">ขอใช้</paper-button></td>
+                                        <paper-button class="gl-btn-primary gl-small"raised on-tap="usewelfare" data="[[item]]" hidden="[[_checkAdmin(item.status_approve,item.admin_use,item.welfare_old)]]">ขอใช้</paper-button></td>
                                 </tr>
                             </template>
                             <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
@@ -158,7 +158,7 @@
                             </template>
                             <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
                                 <tr>
-                                    <td colspan="5" style="text-align: center">ไม่มีข้อมูล</td>
+                                    <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
                                 </tr>
                             </template>
                          </tbody>
@@ -213,12 +213,11 @@
                     
                 }
             },
-            _wordApprove(status_approve,admin_use){
-                // let word;
-                return (admin_use ? 'ผู้ดูแลระบบอนุมัติเท่านั้น' :'รออนุมัติ');
+            _wordApprove(status_approve,admin_use,welfare_old){
+                return (welfare_old ? 'ไม่สามารถใช้ของปีที่แล้วได้':(admin_use ? 'ผู้ดูแลระบบอนุมัติเท่านั้น' :'รออนุมัติ'));
             },
-            _checkAdmin(status_approve,status_admin){
-                if (status_admin || status_approve) 
+            _checkAdmin(status_approve,status_admin,welfare_old){
+                if (status_admin || status_approve || welfare_old) 
                    return true
             },    
             _checkApprove(status){
