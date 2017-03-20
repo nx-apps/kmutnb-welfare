@@ -89,6 +89,7 @@ exports.welfaresYear = function (req, res) {
     var r = req.r;
     //แก้ด้วย
     let year = Number(req.params.year)
+    let now_Date = {now_date :+ new Date()}
     // https://localhost:3000/api/employee/welfares/year/2017/id/411e54dd-b808-4d4d-9984-201b68c70dff
     r.db('welfare').table('employee').get(req.params.id)
         .merge(function (emp) {
@@ -125,7 +126,10 @@ exports.welfaresYear = function (req, res) {
                                         year: welfare_conditions('year'),
                                         admin_use: welfare_conditions('admin_use'),
                                         onetime: welfare_conditions('onetime'),
-                                        group_welfare_name: welfare_conditions('group_welfare_name')
+                                        group_welfare_name: welfare_conditions('group_welfare_name'),
+                                        start_date: r.ISO8601(welfare_conditions('start_date')).toEpochTime(),
+                                        end_date: r.ISO8601(welfare_conditions('end_date')).toEpochTime(),
+                                        now_date : r.now().toEpochTime()
                                     }
                                 })
                                 .without('id')
@@ -135,14 +139,16 @@ exports.welfaresYear = function (req, res) {
                     .coerceTo('array')
             }
         })
-        .merge((welfare) => {
-            return {
-                welfare: welfare('group_welfare').getField('conditions')
-                    .reduce(function (left, right) {
+        .merge((welfare)=>{
+           return {
+                welfare : welfare('group_welfare').getField('conditions').count()
+                .eq(0)
+                .branch([],welfare('group_welfare').getField('conditions')
+                 // remove array 1 dimintion
+                .reduce(function (left, right) {
                         return left.add(right);
-                    })
-                    //
-                    .merge((conditions) => {
+                })
+                .merge((conditions) => {
                         return {
                             condition: conditions('condition').merge((changeName) => {
                                 return {
@@ -213,8 +219,8 @@ exports.welfaresYear = function (req, res) {
                     // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
                     .filter({ "budget_balance_check": false })
                     .without('condition', 'countpass')
-
-            }
+                )
+           }
         })
 
         .merge((use_his) => {
@@ -241,7 +247,9 @@ exports.welfaresYear = function (req, res) {
             return {
                 welfare: checkTrue('welfare').merge((e) => {
                     return {
-                        status_approve: checkTrue('history_welfare').filter({ status: 'request', welfare_id: e('welfare_id') }).count().gt(0)//e('welfare_id')
+                        status_approve: checkTrue('history_welfare').filter({ status: 'request', welfare_id: e('welfare_id') }).count().gt(0),//e('welfare_id'),
+                        welfare_old:e('start_date').ge(e('now_date')).branch(true,
+                                        e('end_date').ge(e('now_date')).branch(false,true))
                     }
                 })
                 // 

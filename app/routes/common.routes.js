@@ -1,4 +1,5 @@
 module.exports = function (app) {
+    var dateController = require('../controllers/common_data/date.controller');
     var academicController = require('../controllers/common_data/academic.controller');
     var activeController = require('../controllers/common_data/active.controller');
     var departmentController = require('../controllers/common_data/department.controller');
@@ -10,6 +11,8 @@ module.exports = function (app) {
     var relationController = require('../controllers/common_data/relation.controller');
     var type_employeeController = require('../controllers/common_data/type_employee.controller');
 
+
+    app.get('/date', dateController.date);
 // Exsample 
 // https://localhost:3000/api/common/academic/
 // https://localhost:3000/api/common/academic/insert/
