@@ -48,7 +48,14 @@
                         <!--[[checkField(item.field,index)]]-->
                         [[getfield(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-combo-box id="field-[[index]]" items="[[item.itemField]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>
+                            <gl-form-dropdown-menu style="margin-top: 15px">
+                                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
+                                    <template is="dom-repeat" items="[[item.itemField]]">
+                                        <paper-item value="{{item.id}}">{{item.label}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                            </gl-form-dropdown-menu>
+                            <!--<gl-combo-box id="field-[[index]]" items="[[item.itemField]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>-->
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             
