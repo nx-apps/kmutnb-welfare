@@ -311,13 +311,14 @@
                         arrForItem = JSON.parse(JSON.stringify(this.condition));
                         // console.log(arrForItem);
                         this.data.condition.map((item,index)=>{
-                            // let itemUse = item.field_id
-                            // console.log(item)
-                            // let date =  this.condition.filter((field)=> field.id == itemUse)[0]
-                            // console.log(date)
+                            
                             // console.log(date.field.search('date'));
                          if (i != index) {
-                                    console.log(i, index,i != index);
+                            //  let itemUse = item.field
+                            // // console.log(item)
+                            // let date =  this.condition.filter((field)=> field.id == itemUse)[0]
+                            // console.log(date.field)
+                                    // console.log(i, index,i != index);
                                 if (arrForItem.filter((blDetail)=> blDetail.id == item.field )[0] != undefined) {
                    itemif = arrForItem.indexOf(arrForItem.filter((blDetail)=> blDetail.id == item.field )[0]);
                   //  console.log(itemif);
