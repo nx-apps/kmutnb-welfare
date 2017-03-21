@@ -1,4 +1,7 @@
 <link rel="import" href="../../components/format-number-behavior.html">
+
+<link rel="import" href="../../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
+
 <dom-module id="welfare-edit">
     <template>
         <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -56,6 +59,7 @@
                         <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน" disabled="{{active}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
+                <div id="special">I am special!</div>
                 <template is="dom-repeat" items="{{data.condition}}">
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
@@ -63,9 +67,18 @@
                             <div class="label_condition">เงื่อนไข</div>
                         </gl-grid-col>
                         [[checkField(item.field,index)]]
+                        <!--[[setCondition(item.id)]]-->
+                        
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <!--<gl-combo-box id="name-[[index]]" on-value-changed="setCondition" id="[[index]]"  item-label-path="label" item-value-path="id" 
-                                value="{{item.field}}" disabled="{{active}}"></gl-combobox>-->
+                            <gl-form-dropdown-menu  on-iron-select="setCondition"  style="margin-top: 15px">
+                                <paper-listbox id="fied" class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
+                                    <template is="dom-repeat" items="{{item.newCondition}}">
+                                        <paper-item value="{{item.id}}" on-tap="setCondition">{{item.label}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                            </gl-form-dropdown-menu>
+                            <!--<gl-combo-box id="name-[[index]]" on-value-changed="setCondition" id="[[index]]"  item-label-path="label" item-value-path="id" items="[[ee.0]].[[index]]"
+                                value="{{item.field}}" disabled="{{active}}"></gl-combo-box>-->
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}" disabled="{{active}}"></gl-combobox>
@@ -73,7 +86,7 @@
                         [[checkValue(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                             <div id="combobox-[[index]]" hidden>
-                                <gl-combo-box id="value-combo-[[index]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}" disabled="{{active}}"></gl-combobox>
+                                <gl-combobox id="value-combo-[[index]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}" disabled="{{active}}"></gl-combobox>
                             </div>
                             <div id="input-[[index]]" hidden>
                                 <gl-form-input value="{{item.value_show}}" disabled="{{active}}"></gl-form-input>
@@ -168,8 +181,19 @@
                 },
                 employees: {
                     statePath: 'welfare.employees'
+                },
+                newCondition:{
+                    type:Array,
+                    value:[]
                 }
             },
+            // listeners: {
+            //     'special.tap': 'specialTap'
+            // },
+            // specialTap(){
+            //     console.log(0)
+            //     this.setCondition()
+            // },
             ready:function(){
                 this.conditionLength = 0;
             },
@@ -208,7 +232,8 @@
             //     this.setCondition();
             // },
             add_condition: function () {
-                this.push('data.condition', { field_id: '', logic_show: '', value_show: '' })
+                this.push('data.condition', { field_id: '', logic_show: '', value_show: ''})
+                this.setCondition()
             },
             save: function () {
                 for (var i = 0; i < this.data.condition.length; i++) {
@@ -271,42 +296,52 @@
                 this.set('disabled', this.active = true);
                 this.dispatchAction('WELFARE_DATA_SELECT', this.data.id)
             },
-            // setCondition(){
-            //      this.async(()=>{
-            //          try {
-            //              let  comboboxs,arrForItem,itemif;
-            //         // console.log('hhhhhhhhhhhhhh',this.condition);
+            setCondition(){
+                // let newItem=[];
+                // newItem.push(condition)
+                // console.log(newItem)
+                console.log(1)
+                //  this.async(()=>{
+                     try {
+                         newItem=[]
+                         let  comboboxs,arrForItem,itemif;
+                    // console.log('hhhhhhhhhhhhhh',this.condition);
                     
-            //         for (var i = 0; i < this.data.condition.length; i++) {
-            //             arrForItem = JSON.parse(JSON.stringify(this.condition));
-            //             // console.log(arrForItem);
-            //             this.data.condition.map((item,index)=>{
-                            
-                            
-            //                     if (i != index) {
-            //                         console.log(i, index,i != index);
-            //                     if (arrForItem.filter((blDetail)=> blDetail.id == item.field )[0] != undefined) {
-            //        itemif = arrForItem.indexOf(arrForItem.filter((blDetail)=> blDetail.id == item.field )[0]);
-            //       //  console.log(itemif);
-            //        arrForItem.splice(itemif, 1);
-            //      }
+                    for (var i = 0; i < this.data.condition.length; i++) {
+                        arrForItem = JSON.parse(JSON.stringify(this.condition));
+                        // console.log(arrForItem);
+                        this.data.condition.map((item,index)=>{
+                            // let itemUse = item.field_id
+                            // console.log(item)
+                            // let date =  this.condition.filter((field)=> field.id == itemUse)[0]
+                            // console.log(date)
+                            // console.log(date.field.search('date'));
+                         if (i != index) {
+                                    console.log(i, index,i != index);
+                                if (arrForItem.filter((blDetail)=> blDetail.id == item.field )[0] != undefined) {
+                   itemif = arrForItem.indexOf(arrForItem.filter((blDetail)=> blDetail.id == item.field )[0]);
+                  //  console.log(itemif);
+                   arrForItem.splice(itemif, 1);
+                 }
                  
-            //                 } 
+                            } 
                             
-            //             });
-            //             console.log(arrForItem);
-            //             var combobox = Polymer.dom(this.root).querySelector('#name-'+i);
-            //             // console.log('combobox>',combobox);
-            //             //  console.log('151218131865168');
-            //             combobox.items = arrForItem
-            //             console.log(combobox)
-            //         }
-            //          } catch (error) {
+                        });
+                         this.set('data.condition.'+i+'.newCondition',arrForItem)
+                        console.log(arrForItem);
+                        // var combobox = Polymer.dom(this.root).querySelector('#name-'+i);
+                        // console.log('combobox>',combobox);
+                        //  console.log('151218131865168');
+                        
+                        // combobox.items = []
+                        // combobox.items = arrForItem
+                    }
+                     } catch (error) {
                          
-            //          }
-                    
-            //      },1);  
-            // },
+                     }
+                 
+                
+            },
             checkField: function (e, index) {
                  this.async(()=>{
                   try {
