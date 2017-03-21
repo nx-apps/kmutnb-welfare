@@ -50,11 +50,12 @@
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-form-dropdown-menu style="margin-top: 15px">
                                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
-                                    <template is="dom-repeat" items="[[item.itemField]]">
+                                    <template is="dom-repeat" items="{{item.itemField}}">
                                         <paper-item value="{{item.id}}">{{item.label}}</paper-item>
                                     </template>
                                 </paper-listbox>
                             </gl-form-dropdown-menu>
+                            [[conditionManage(item.field,index)]]
                             <!--<gl-combo-box id="field-[[index]]" items="[[item.itemField]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>-->
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
@@ -104,6 +105,7 @@
         Polymer({
             is: 'welfare-insert',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
+            observers:[''],
             properties: {
                 condition: {
                     statePath: 'welfare.condition',
@@ -124,9 +126,36 @@
                 //     value: [{}]
                 // }
             },
+            conditionManage:function(val,index){
+                if(val != ""){
+                    var getfield = this.data.condition.map((item)=>{
+                        return item.field;
+                    })
+                    var storeCondition = this.condition.filter((item)=>{
+                        return getfield.indexOf(item.id) < 0;
+                    })
+                     this.data.condition.map((item,count)=>{
+                        if(index != count){
+                            console.log(count);
+                            this.set('data.condition.'+count+'.itemField',storeCondition);
+                            // this.set('data.condition.'+count+'.field',val);
+                        }
+                     })
+                }
+            
+             
+            },
             add_condition:function () {
+                var getfield = this.data.condition.map((item)=>{
+                    return item.field
+                })
+                // console.log(getfield);
+                var storeCondition = this.condition.filter((item)=>{
+                    return getfield.indexOf(item.id) < 0
+                })
+                console.log(storeCondition);
                 this.push('data.condition', {
-                    itemField: this.condition,
+                    itemField: storeCondition,
                     field:'',
                     itemLogic: '',
                     logic_show: '',
@@ -163,10 +192,10 @@
                         getitemValue = item.data;
 
                      })
-                     console.log(getcodition);
+                    //  console.log(getcodition);
                      this.set('data.condition.'+index+'.itemLogic',getcodition);
                      this.set('data.condition.'+index+'.itemValue',getitemValue);
-                     console.log(this.data.condition);
+                    //  console.log(this.data.condition);
                 }
                 // console.log('*',filed);
                 // for (var index = 0; index < filed.base.length; index++) {
