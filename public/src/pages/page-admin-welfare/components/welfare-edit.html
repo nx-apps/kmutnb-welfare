@@ -39,7 +39,7 @@
         <div style="padding:20px;">
             <!--[[setCondition(condition)]]-->
             <paper-material elevation="1">
-
+//{{isEnabled}}//
                 <div class="horizontal end-justified layout">
                     <div style="margin:20px 20px 0px 0px;" hidden="{{status}}">
                         <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
@@ -59,6 +59,11 @@
                         <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน" disabled="{{active}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
+                
+               
+                    
+                
+                
                 <template is="dom-repeat" items="{{data.condition}}">
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
@@ -66,7 +71,7 @@
                             <div class="label_condition">เงื่อนไข</div>
                         </gl-grid-col>
                         [[checkSelected(item.field, index)]]
-
+                         <template is="dom-if" if={{isEnabled}}>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-form-dropdown-menu style="margin-top: 15px">
                                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
@@ -78,6 +83,7 @@
                             <!--<gl-combo-box id="name-[[index]]" on-value-changed="setCondition" id="[[index]]"  item-label-path="label" item-value-path="id" items="[[ee.0]].[[index]]"
                                 value="{{item.field}}" disabled="{{active}}"></gl-combo-box>-->
                         </gl-grid-col>
+                        
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-form-dropdown-menu style="margin-top: 15px">
                                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.logic_show}}">
@@ -109,6 +115,7 @@
                                 <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
                             </gl-grid-col>
                         </div>
+                        </template>
                     </gl-grid-row>
                 </template>
                 <div class="horizontal center-justified layout">
@@ -184,6 +191,10 @@
                 },
                 employees: {
                     statePath: 'welfare.employees'
+                },
+                isEnabled :{
+                    type:Boolean,
+                    value:false
                 }
             },
             checkSelected: function (val, index) {
@@ -209,6 +220,8 @@
                         this.set('data.condition.' + i + '.itemField', a);
                     }
                     console.log(this.data.condition);
+                    console.log(this.isEnabled)
+                    this.isEnabled = true
                 }, 1);
             },
             checkValue: function (e, index) {

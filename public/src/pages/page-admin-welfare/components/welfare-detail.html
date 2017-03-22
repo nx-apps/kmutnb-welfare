@@ -92,10 +92,11 @@
             },
             getData: function (data) {
                 // console.log('11111', data);
+                this.dispatchAction('CONDITION_LIST')
             },
             _insert: function () {
                 this.pages = '1';
-                this.dispatchAction('CONDITION_LIST')
+                // this.dispatchAction('CONDITION_LIST')
             },
             back_page: function () {
                 this.pages = '0';
