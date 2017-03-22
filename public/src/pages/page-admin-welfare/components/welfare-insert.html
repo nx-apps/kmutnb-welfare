@@ -45,36 +45,33 @@
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
                             <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
                         </gl-grid-col>
-                        <!--[[checkField(item.field,index)]]-->
-                        [[getfield(item.field,index)]]
+                        [[conditionManage(item.field,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-form-dropdown-menu style="margin-top: 15px">
                                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
                                     <template is="dom-repeat" items="{{item.itemField}}">
-                                        <paper-item value="{{item.id}}">{{item.label}}</paper-item>
+                                        <paper-item value="{{item}}">{{item.label}}</paper-item>
                                     </template>
                                 </paper-listbox>
                             </gl-form-dropdown-menu>
-                            [[conditionManage(item.field,index)]]
-                            <!--<gl-combo-box id="field-[[index]]" items="[[item.itemField]]" item-label-path="label" item-value-path="id" value="{{item.field}}"></gl-combobox>-->
+                            <!--<vaadin-combo-box id="field-[[index]]" placeholder="[[item.itemField.length]]" items="[[item.itemField]]" value="{{item.field}}"></vaadin-combo-box>-->
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            
                             <gl-form-dropdown-menu style="margin-top: 15px">
                                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.logic_show}}">
-                                    <template is="dom-repeat" items="{{item.itemLogic}}">
+                                    <template is="dom-repeat" items="{{item.field.conditions}}">
                                         <paper-item value="{{item.symbol}}">{{item.name}}</paper-item>
                                     </template>
                                 </paper-listbox>
                             </gl-form-dropdown-menu>
                             <!--<gl-combo-box id="symbo-[[index]]" items="[[item.itemLogic]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}"></gl-combobox>-->
                         </gl-grid-col>
-                        [[checkValue(item.field,index)]]
+                        [[checkValue(item.field.id,index)]]
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                             <div id="combobox-[[index]]" hidden>
                                 <gl-form-dropdown-menu style="margin-top:15px;width:100%;">
                                     <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.value_show}}">
-                                        <template is="dom-repeat" items="{{item.itemValue}}">
+                                        <template is="dom-repeat" items="{{item.field.data}}">
                                             <paper-item value="{{item.id}}">{{item.name}}</paper-item>
                                         </template>
                                     </paper-listbox>
@@ -105,124 +102,91 @@
         Polymer({
             is: 'welfare-insert',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
-            observers:[''],
+            observers: [''],
             properties: {
                 condition: {
-                    statePath: 'welfare.condition',
-                    // observer:'setCondition'
+                    statePath: 'welfare.condition'
                 },
                 active: {
                     type: Boolean,
                     value: true
                 },
-                data:{
+                data: {
                     type: Object,
-                    value:{
-                        condition:[],
+                    value: {
+                        condition: [],
                     }
                 }
-                // value: {
-                //     type: Array,
-                //     value: [{}]
-                // }
             },
-            conditionManage:function(val,index){
-                if(val != ""){
-                    var getfield = this.data.condition.map((item)=>{
-                        return item.field;
+            conditionManage: function (val, index) {
+                if (val != "") {
+                    var data = this.condition;
+                    var use = this.data.condition.map((item) => {
+                        return item.field
                     })
-                    var storeCondition = this.condition.filter((item)=>{
-                        return getfield.indexOf(item.id) < 0;
+                    var diff = data.filter((item) => {
+                        return use.indexOf(item) < 0;
                     })
-                     this.data.condition.map((item,count)=>{
-                        if(index != count){
-                            console.log(count);
-                            this.set('data.condition.'+count+'.itemField',storeCondition);
-                            // this.set('data.condition.'+count+'.field',val);
+                    for (var x in this.data.condition) {
+                        var a = [];
+                        for (var i in diff) {
+                            a.push(diff[i]);
                         }
-                     })
+                        a.push(this.data.condition[x].field); //a
+                        // console.log('this.data.condition[', x, ']', this.data.condition[x]);
+                        this.set('data.condition.' + x + '.itemField', a);
+                        // console.log(this.data.condition[x].itemField);
+                        // console.log('x', x, this.data.condition[x]);
+                    }
+
+                    // console.log('----------------');
+                    // console.log('original', data);
+                    // console.log('use', use);
+                    // console.log('diff', diff);
+                    // console.log(this.data.condition);
                 }
-            
-             
+
+
             },
-            add_condition:function () {
-                var getfield = this.data.condition.map((item)=>{
+            add_condition: function () {
+                var data = this.condition;
+                var use = this.data.condition.map((item) => {
                     return item.field
                 })
-                // console.log(getfield);
-                var storeCondition = this.condition.filter((item)=>{
-                    return getfield.indexOf(item.id) < 0
+                var diff = data.filter((item) => {
+                    return use.indexOf(item) < 0;
                 })
-                console.log(storeCondition);
                 this.push('data.condition', {
-                    itemField: storeCondition,
-                    field:'',
-                    itemLogic: '',
-                    logic_show: '',
-                    itemValue:'',
-                    value_show:''
+                    itemField: diff,
+                    // itemLogic: '',
+                    // logic_show: '',
+                    // itemValue: '',
+                    // value_show: ''
                 })
             },
-            setCondition:function(data){
-                // console.log(data);
-                if(data.length != 0){
-                    this.push('data.condition', {
-                        itemField: this.condition,
-                        field:'',
-                        itemLogic: '',
-                        logic_show: '',
-                        itemValue:'',
-                        value_show:''
-                    })
-                }
-               
-            },
-            getfield:function(id,index){
-                this.set('data.condition.'+index+'.logic_show','');
-                this.set('data.condition.'+index+'.value_show','');
-                if(id != ""){
-                    //  console.log(id);
-                     var filter = this.condition.filter((item)=>{
-                         return item.id == id;
-                     })
-                     var getcodition
-                     var getitemValue 
-                     filter.map((item)=>{
-                        getcodition = item.conditions;
-                        getitemValue = item.data;
+            checkValue: function (e, index) {
+                try {
+                    var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
+                    var id = e;
+                    var value = this.condition.filter((val) => val.id == id)[0]
+                    // combobox.items = value.data;
+                    if (value.data.length == 0) {
+                        Polymer.dom(this.root).querySelector('#input-' + index).hidden = false;
+                        Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = true;
+                    } else {
+                        Polymer.dom(this.root).querySelector('#input-' + index).hidden = true;
+                        Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = false;
+                        // combobox.items = [];
+                        combobox.items = value.data;
+                    }
+                } catch (error) {
 
-                     })
-                    //  console.log(getcodition);
-                     this.set('data.condition.'+index+'.itemLogic',getcodition);
-                     this.set('data.condition.'+index+'.itemValue',getitemValue);
-                    //  console.log(this.data.condition);
                 }
-                // console.log('*',filed);
-                // for (var index = 0; index < filed.base.length; index++) {
-                //     var id = filed.base[index].field;
-                //     // console.log(filter);
-                //     // console.log(id);
-                //     // var condition = this.condition[index]
-                //     if(typeof this.condition != 'undefined'){
-                //         // console.log(this.condition);
-                //         var filter = this.condition.filter((item)=>{
-                //             return id == item.id
-                //         })
-                //         var getCondition = [];
-                //         filter.map((item)=>{
-                //             getCondition = item.conditions;
-                //         });
-                //         console.log(getCondition);
-                //         // console.log(filter);
-                //         this.set('data.condition.'+index+'.itemLogic',getCondition)
-                //     }
-                    
-                // }
             },
             save: function () {
                 for (var i = 0; i < this.data.condition.length; i++) {
                     // console.log(this.data.condition[i].field);
-                    var id = this.data.condition[i].field;
+                    var id = this.data.condition[i].field.id;
                     var item = this.condition.filter((val) => val.id == id)[0]
                     var field = item.field;
                     // console.log(field);
@@ -255,75 +219,46 @@
                         this.data.condition[i].value = this.data.condition[i].value_show;
                         this.data.condition[i].logic = this.data.condition[i].logic_show;
                     }
-
                 }
                 this.data.budget = this.unFormat(this.data.budget);
                 this.set('data.group_id', this.datas.id);
-                // console.log(this.data);
-                var newItem = {
-                    budget:this.data.budget,
-                    group_id: this.data.group_id,
-                    welfare_name: this.data.welfare_name,
-                    condition: this.data.condition.map((item)=>{
-                        var newItem = {
-                            field: item.field,
-                            logic: item.logic,
-                            logic_show: item.logic_show,
-                            value: item.value,
-                            value_show: item.value_show
-                        }
-                        return newItem;
-                    })
-                  
+                // console.log('before',this.data);
+                for (var i in this.data.condition) {
+                    this.data.condition[i].field = this.data.condition[i].field.id;
+                    delete this.data.condition[i].itemField;
                 }
-                // console.log(newItem);
+                // console.log('after',this.data);
+                // var newItem = {
+                //     budget: this.data.budget,
+                //     group_id: this.data.group_id,
+                //     welfare_name: this.data.welfare_name,
+                //     condition: this.data.condition.map((item) => {
+                //         var newItem = {
+                //             field: item.field,
+                //             logic: item.logic,
+                //             logic_show: item.logic_show,
+                //             value: item.value,
+                //             value_show: item.value_show
+                //         }
+                //         return newItem;
+                //     })
+                // }
                 this.fire('back');
-                this.dispatchAction('WELFARE_INSERT', newItem);
+                this.dispatchAction('WELFARE_INSERT', this.data);
             },
             delete_condition: function (e) {
                 // console.log(e.target.index);
                 this.splice('data.condition', e.target.index, 1);
+                this.conditionManage();
             },
             back: function () {
                 this.fire('back');
                 this.data = {};
                 this.data = {
                     condition: [
-                //         { field: '', logic: '', value: '' }
+                        //{ field: '', logic: '', value: '' }
                     ]
                 };
-            },
-            checkField: function (e, index) {
-                try {
-                    var combobox = Polymer.dom(this.root).querySelector('#symbo-' + index);
-                    // console.log(combobox.items);
-                    var id = e;
-                    var symbol = this.condition.filter((val) => val.id == id)[0]
-                    // console.log(symbol);
-                    combobox.items = symbol.conditions;
-
-                } catch (error) {
-
-                }
-            },
-            checkValue: function (e, index) {
-                try {
-                    var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
-                    var id = e;
-                    var value = this.condition.filter((val) => val.id == id)[0]
-                    // combobox.items = value.data;
-                    if (value.data.length == 0) {
-                        Polymer.dom(this.root).querySelector('#input-' + index).hidden = false;
-                        Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = true;
-                    } else {
-                        Polymer.dom(this.root).querySelector('#input-' + index).hidden = true;
-                        Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = false;
-                        // combobox.items = [];
-                        combobox.items = value.data;
-                    }
-                } catch (error) {
-
-                }
             },
             count: function (val) {
                 return val + 1;
