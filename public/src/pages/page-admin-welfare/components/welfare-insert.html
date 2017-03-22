@@ -102,7 +102,6 @@
         Polymer({
             is: 'welfare-insert',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
-            observers: [''],
             properties: {
                 condition: {
                     statePath: 'welfare.condition'
@@ -114,7 +113,7 @@
                 data: {
                     type: Object,
                     value: {
-                        condition: [],
+                        condition: []
                     }
                 }
             },
@@ -138,15 +137,7 @@
                         // console.log(this.data.condition[x].itemField);
                         // console.log('x', x, this.data.condition[x]);
                     }
-
-                    // console.log('----------------');
-                    // console.log('original', data);
-                    // console.log('use', use);
-                    // console.log('diff', diff);
-                    // console.log(this.data.condition);
                 }
-
-
             },
             add_condition: function () {
                 var data = this.condition;
@@ -227,22 +218,6 @@
                     this.data.condition[i].field = this.data.condition[i].field.id;
                     delete this.data.condition[i].itemField;
                 }
-                // console.log('after',this.data);
-                // var newItem = {
-                //     budget: this.data.budget,
-                //     group_id: this.data.group_id,
-                //     welfare_name: this.data.welfare_name,
-                //     condition: this.data.condition.map((item) => {
-                //         var newItem = {
-                //             field: item.field,
-                //             logic: item.logic,
-                //             logic_show: item.logic_show,
-                //             value: item.value,
-                //             value_show: item.value_show
-                //         }
-                //         return newItem;
-                //     })
-                // }
                 this.fire('back');
                 this.dispatchAction('WELFARE_INSERT', this.data);
             },
