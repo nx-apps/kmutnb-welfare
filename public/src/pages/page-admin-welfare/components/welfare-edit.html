@@ -197,6 +197,9 @@
                     value:false
                 }
             },
+            changeisEnabled(){
+                this.isEnabled = false
+            },
             checkSelected: function (val, index) {
                 this.async(() => {
                     var data = this.condition;
@@ -319,6 +322,7 @@
                     ]
                 };
                 this.tableStatus = false;
+                 this.isEnabled = false
             },
             cancle: function () {
                 this.set('disabled', this.active = true);
