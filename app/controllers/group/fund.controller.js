@@ -72,3 +72,18 @@ exports.delete = function (req, res) {
             res.status(500).json(err);
         })
 }
+exports.groupYear = function (req, res) {
+    var r = req.r;
+    r.db('welfare').table('group_fund')
+        .group('year')
+        .ungroup()
+        .map(function (y_map) {
+            return {
+                year: y_map('group').add(543)
+            }
+        })
+        .run()
+        .then(function (data) {
+            res.json(data)
+        })
+}
