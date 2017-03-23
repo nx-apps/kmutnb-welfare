@@ -1,0 +1,15 @@
+{
+    "name":"group_fund",
+    "properties": {
+        "group_fund_name": {
+            "type": "string"
+        },
+        "group_fund_type": {
+            "type": "string"
+        },
+        "year": {
+            "type": "number"
+        }
+    },
+    "required": ["group_fund_name", "group_fund_type", "year"]
+}
