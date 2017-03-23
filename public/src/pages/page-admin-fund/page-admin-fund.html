@@ -1,0 +1,137 @@
+<link rel="import" href="components/fund-form.html">
+<link rel="import" href="components/fund-manage.html">
+
+<dom-module id="page-admin-fund">
+    <template>
+        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+            paper-material {
+                /*background-color: var(--gl-white-color);*/
+                padding: 0px;
+            }
+            
+            .table-detail {
+                margin: auto;
+                width: 80%;
+                padding: 20px;
+            }
+            
+            table.gl-table-default {
+                width: 100%;
+                border: 1px solid #ddd;
+            }
+        </style>
+        <div class="horizontal justified layout">
+            <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_print">
+                <iron-icon icon="print"></iron-icon>ออกรายงาน</paper-button>
+            <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="openFundForm">
+                <iron-icon icon="add"></iron-icon>เพิ่มกองทุน</paper-button>
+        </div>
+        <div style="margin-left:140px;">
+            <!--<gl-combo-box item-label-path="year" item-value-path="year" items="{{list_year}}" value="{{selectYear}}"></gl-combo-box>-->
+            <gl-form-dropdown-menu label="ปี" placeholder="เลือกปี">
+                <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
+                    <template is="dom-repeat" items={{year}}>
+                        <paper-item value="[[toAD(item.year)]]">[[item.year]]</paper-item>
+                    </template>
+                </paper-menu>
+            </gl-form-dropdown-menu>
+        </div>
+        <div class="container">
+            <div class="table-detail">
+                <paper-material elevation="1">
+                    <table class="gl-table-default">
+                        <thead class="table-head">
+                            <tr>
+                                <th style="text-align:center; width:15%;">ปี</th>
+                                <th>ชื่อกองทุน</th>
+                                <th style="text-align:center">จำนวนผู้มีสิทธิ</th>
+                                <th style="text-align:center">จำนวนผู้ใช้สิทธิ</th>
+                                <th style="text-align:center;width:15%;">ยอดเต็ม (บาท)</th>
+                                <th style="text-align:center;width:15%;">ยอดที่ใช้ (บาท)</th>
+                                <th style="width:15%;text-align:center;">เครื่องมือ</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body">
+                            <template is="dom-repeat" items="{{dataList}}">
+                                <tr style="cursor:pointer;">
+                                    <td style="text-align:center">[[item.year]]</td>
+                                    <td>[[item.group_fund_name]]</td>
+                                    <td style="text-align:center">[[item.emp_budget]]</td>
+                                    <td style="text-align:center">[[item.emp_use]]</td>
+                                    <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
+                                    <td style="text-align:right">[[formatNumber(item.value_use)]]</td>
+                                    <td style="text-align:center">
+                                        <paper-icon-button data="[[item]]" icon="icons:list" on-tap="select_welfare" title="เงื่อนไข"></paper-icon-button>
+                                        <paper-icon-button data="[[item]]" icon="icons:create" on-tap="openFundManage" title="แก้ไขสวัสดิการ"></paper-icon-button>
+                                        <!--<paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info">แก้ไข</paper-button>-->
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </paper-material>
+            </div>
+        </div>
+
+        <panel-right title="{{title}}">
+            <iron-pages selected="{{pages}}">
+                <section>
+                    <div style="padding:20px;">
+                        <paper-material elevation="1">
+                            <fund-form></fund-form>
+                        </paper-material>
+                    </div>
+                </section>
+                <section>
+                    <fund-manage></fund-manage>
+                </section>
+            </iron-pages>
+        </panel-right>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-admin-fund',
+            behaviors: [ReduxBehavior,FormatNumberBehavior, groupFundAction,nylonBehavior, nylonLocalizeBehavior],
+            observers: ['getDataFundList(selectYear)'],
+            properties:{
+                year:{
+                    statePath:'groupFund.year'
+                },
+                dataList:{
+                    statePath:'groupFund.dataList'
+                }
+            },
+            toAD:function(year){
+                return parseInt(year)-543;
+            },
+            nylonPageActive:function(){
+                this.GROUP_FUND_GET_YEAR();
+            },
+            getDataFundList:function(year){
+                if(typeof year != 'undefined' && year != ''){
+                    // var newYear = parseInt(year)-543;
+                    this.GROUP_FUND_GET_DATA_LIST(year)
+                }
+            },  
+            openFundForm:function(){
+                this.pages = 0; //set Page 
+                var foundForm = this.$$('fund-form');
+                var panelRight = this.$$('panel-right');
+                foundForm.editForm = false; // on || off edit form 
+                foundForm.resetComponents();
+                this.GROUP_FUND_CLEAR_DATA();
+                panelRight.open();
+            },
+            openFundManage:function(e){
+                this.pages = 1; //set Page 
+                var id = e.target.data.id;
+                var panelRight = this.$$('panel-right');
+                var element = this.$$('fund-manage');
+                this.GROUP_FUND_SELECT_DATA(id);
+                element.editForm(true);
+                element.statusApprove = true;
+                panelRight.open();
+            }
+        });
+    </script>
+</dom-module>
