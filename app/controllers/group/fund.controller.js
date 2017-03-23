@@ -1,8 +1,35 @@
 exports.list = function (req, res) {
     var r = req.r
     req.params.year = parseInt(req.params.year);
-    r.db('welfare').table('group_fund')
-        .filter({ year: req.params.year })
+    r.expr({
+        employees: r.db('welfare').table('employee').coerceTo('array'),
+        group: []
+    })
+        .merge(function (group_fund) {
+            return {
+                group: r.db('welfare').table('group_fund')
+                    .getAll(req.params.year, { index: 'year' })
+                    .merge(function (m) {
+                        return {
+                            year: m('year').add(543),
+                            start_date: m('start_date').split('T')(0),
+                            end_date: m('end_date').split('T')(0),
+                            fund: r.db('welfare').table('fund').getAll(m('id'), { index: 'group_fund_id' }).coerceTo('array')
+                                .merge(function (fund_merge) {
+                                    return {
+                                        condition: fund_merge('condition')
+                                            .merge(function (con_merge) {
+                                                return {
+                                                    field: r.db('welfare').table('condition').get(con_merge('field')).getField('field')
+                                                }
+                                            })
+                                    }
+                                })
+                        }
+                    })
+                    .coerceTo('array')
+            }
+        })
         .run()
         .then(function (result) {
             res.json(result);
@@ -82,6 +109,7 @@ exports.groupYear = function (req, res) {
                 year: y_map('group').add(543)
             }
         })
+        .orderBy(r.desc('year'))
         .run()
         .then(function (data) {
             res.json(data)
