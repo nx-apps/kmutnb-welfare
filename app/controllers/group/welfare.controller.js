@@ -204,7 +204,6 @@ exports.listId = function (req, res) {
                     })
                     .merge(function (wel_merge) {
                         return {
-                            value_budget: wel_merge('employee').count().mul(wel_merge('budget')),
                             emp_budget: wel_merge('employee').count()
                         }
                     })

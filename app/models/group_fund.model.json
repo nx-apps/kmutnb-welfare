@@ -5,7 +5,7 @@
             "type": "string"
         },
         "group_fund_type": {
-            "type": "string"
+            "type": "boolean"
         },
         "year": {
             "type": "number"
