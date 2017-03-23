@@ -1,0 +1,140 @@
+<link rel="import" href="./user-welfare.html">
+
+<link rel="import" href="./user-fund.html">
+
+<dom-module id="user-detail">
+    <template>
+        <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
+             :host {
+                display: block;
+            }
+            
+            fieldset {
+                margin: 15px;
+            }
+            
+            main {
+                min-width: 320px;
+                /*max-width: 1000px;*/
+                padding: 5px;
+                margin: 0 auto;
+                background: #fff;
+            }
+            
+            section {
+                display: none;
+                padding: 20px 0 0;
+                border-top: 1px solid #ddd;
+            }
+            
+            input {
+                display: none;
+            }
+            
+            label {
+                display: inline-block;
+                margin: 0 0 -1px;
+                padding: 15px 25px;
+                font-weight: 600;
+                text-align: center;
+                color: #bbb;
+                border: 1px solid transparent;
+            }
+            
+            label:before {
+                font-family: fontawesome;
+                font-weight: normal;
+                margin-right: 10px;
+            }
+            /*label[for*='1']:before { content: '\f1cb'; }
+            label[for*='2']:before { content: '\f17d'; }*/
+            
+            label:hover {
+                color: #888;
+                cursor: pointer;
+            }
+            
+            input:checked+label {
+                color: #555;
+                border: 1px solid #ddd;
+                border-top: 3px solid orange;
+                border-bottom: 1px solid #fff;
+            }
+            
+            #tab1:checked~#content1,
+            #tab2:checked~#content2 {
+                display: block;
+            }
+        </style>
+        <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
+            <gl-form-panel-head label="" set-padding="10px" set-border="1px">
+                <paper-button class="gl-btn-info" on-tap="editData" raised>ดูข้อมูลส่วนตัว</paper-button>
+            </gl-form-panel-head>
+            <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+                <fieldset>
+                    <legend>ข้อมูลพนักงาน :</legend>
+                    <div class="flex content horizontal start-justified layout">
+                        <div class="flex">ชื่อ : [[data.prefix_name]] [[data.firstname]] [[data.lastname]]</div>
+                        <div class="flex">รหัสพนักงาน : [[data.emp_no]]</div>
+                    </div>
+                    <div class="flex content horizontal start-justified layout">
+                        <div class="flex">สถานภาพการทำงาน : [[data.active_name]]</div>
+                        <div class="flex">ตำแหน่ง : [[data.position_name]]</div>
+                    </div>
+                    <div class="flex content horizontal start-justified layout">
+                        <div class="flex">ภาควิชา : [[data.department_name]]</div>
+                        <div class="flex">คณะ : [[data.faculty_name]]</div>
+                    </div>
+                </fieldset>
+                <div class="content horizontal start-justified layout">
+                    [[setYear(year)]]
+                    <gl-combo-box no-label-float items="{{year}}" value="{{seleterYear}}" item-label-path="year" item-value-path="year" on-value-changed="gerYearWelfare"></gl-combo-box>
+                </div>
+            </gl-form-panel-body>
+            <main>
+                <input id="tab1" type="radio" name="tabs" checked>
+                <label for="tab1">สวัสดิการ</label>
+
+                <input id="tab2" type="radio" name="tabs">
+                <label for="tab2">กองทุน</label>
+                <section id="content1">
+                    <user-welfare data="[[data]]"></user-welfare>
+                </section>
+
+                <section id="content2">
+                    <user-fund></user-fund>
+                </section>
+            </main>
+            
+
+        </gl-form-panel>
+    </template>
+    <script>
+        Polymer({
+            is: 'user-detail',
+            behaviors: [ReduxBehavior],
+            properties: {
+                data: {
+                    statePath: 'users.select_welefares'
+                },
+                year: {
+                    statePath: 'userWelfare.list',
+                    type: Number,
+                },
+            },
+            setYear(year) {
+                try {
+                    this.set('seleterYear', year[year.length - 1].year)
+                    // console.log(year[year.length-1].year);
+                    // console.log(this.seleterYear);
+                } catch (error) {
+
+                }
+            },
+            gerYearWelfare(e) {
+                if (e.detail.value)
+                    this.dispatchAction('USER_GET_WELFARES', window.location.pathname.split('/')[2], true, e.detail.value - 543);
+            },
+        });
+    </script>
+</dom-module>
