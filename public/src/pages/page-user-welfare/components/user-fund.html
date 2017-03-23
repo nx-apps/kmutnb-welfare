@@ -1,12 +1,35 @@
 
 <dom-module id="user-fund">
     <template>
-        <style>
+        <style include="page-style gl-styles gl-size">
             :host {
                 display: block;
             }
         </style>
-        user-fund
+        <table class="gl-table-default">
+            <thead class="table-head">
+                <tr>
+                    <th style="width:5%;">ลำดับ</th>
+                    <th style="width:15%;">เดือน</th>
+                    <th style="width:15%;">ตัวเอง</th>
+                    <th style="width:15%;">มหาวิทยาลัย</th>
+                    <th style="width:15%;">รวม</th>
+                    <th style="width:15%;">ยอดเดิม</th>
+                    <th style="width:20%;">รวมทั้งหมด</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            </tbody>
+        </table>
     </template>
     <script>
         Polymer({
