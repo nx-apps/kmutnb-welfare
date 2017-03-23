@@ -25,11 +25,86 @@ exports.list = function (req, res) {
                                             })
                                     }
                                 })
+                                .merge(function (fund_merge) {
+                                    return {
+                                        countCon: fund_merge('condition').count(),
+                                        employee: r.branch(fund_merge('condition').count().eq(0),
+                                            [group_fund('employees')],
+                                            fund_merge('condition').map(function (con_map) {
+                                                return group_fund('employees').filter(function (f) {
+                                                    return f(con_map('field')).do(function (d) {
+                                                        return r.branch(con_map('logic').eq(">="),
+                                                            d.ge(con_map('value')),
+                                                            r.branch(con_map('logic').eq(">"),
+                                                                d.gt(con_map('value')),
+                                                                r.branch(con_map('logic').eq("<="),
+                                                                    d.le(con_map('value')),
+                                                                    r.branch(con_map('logic').eq("<"),
+                                                                        d.lt(con_map('value')),
+                                                                        r.branch(con_map('logic').eq("=").or(con_map('logic').eq("==")),
+                                                                            d.eq(con_map('value')),
+                                                                            d.ne(con_map('value'))
+                                                                        )
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    })
+                                                })
+                                                    .coerceTo('array')
+                                            })
+                                        )
+                                    }
+                                })
+                                .merge(function (fund_merge) {
+                                    return {
+                                        employee: fund_merge('employee').reduce(function (l, r) {
+                                            return l.add(r)
+                                        })
+                                    }
+                                })
+                                .merge(function (fund_merge) {
+                                    return {
+                                        employee: fund_merge('employee').merge(function (emp2_merge) {
+                                            return {
+                                                count: fund_merge('employee').filter(function (f) {
+                                                    return f('id').eq(emp2_merge('id'))
+                                                }).count()
+                                            }
+                                        })
+                                    }
+                                })
+                                .merge(function (fund_merge) {
+                                    return {
+                                        employee: fund_merge('employee')
+                                            .filter(function (emp_filter) {
+                                                return r.branch(fund_merge('countCon').eq(0),
+                                                    emp_filter('count').eq(fund_merge('countCon').add(1)),
+                                                    emp_filter('count').eq(fund_merge('countCon'))
+                                                )
+                                            }).coerceTo('array')
+                                            .distinct()
+                                    }
+                                })
+                                .merge(function (fund_merge) {
+                                    return {
+                                        emp_budget: fund_merge('employee').count()
+                                    }
+                                })
                         }
                     })
+                    .merge(function (m) {
+                        return {
+                            emp_budget: m('fund').sum('emp_budget'),
+                            emp_use: r.db('welfare').table('history_fund').getAll(m('id'), { index: 'group_fund_id' }).coerceTo('array')
+                                .pluck('emp_id').distinct().count()
+                        }
+                    })
+                    .without('fund')
                     .coerceTo('array')
             }
         })
+        .getField('group')
         .run()
         .then(function (result) {
             res.json(result);
@@ -44,7 +119,8 @@ exports.insert = function (req, res) {
             {
                 year: req.body.year - 543,
                 date_create: new Date().toISOString(),
-                date_update: new Date().toISOString()
+                date_update: new Date().toISOString(),
+                status_approve: false
             }
         );
         r.db('welfare').table('group_fund').insert(req.body)
