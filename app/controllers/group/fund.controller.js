@@ -2,7 +2,7 @@ exports.list = function (req, res) {
     var r = req.r
     req.params.year = parseInt(req.params.year);
     r.db('welfare').table('group_fund')
-        .filter(req.params.year)
+        .filter({ year: req.params.year })
         .run()
         .then(function (result) {
             res.json(result);
