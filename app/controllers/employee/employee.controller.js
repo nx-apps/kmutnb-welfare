@@ -255,99 +255,99 @@ exports.welfaresYear = function (req, res) {
                 // 
             }
         })
-        .merge((withOutHistorty) => {
-            return {
-                history_welfare: withOutHistorty('history_welfare').filter({ status: true })
-            }
-        })
+        // .merge((withOutHistorty) => {
+        //     return {
+        //         history_welfare: withOutHistorty('history_welfare').filter({ status: true })
+        //     }
+        // })
         .without('group_welfare')
         // fund
-        .merge((group_fund) => {
-            return {
-                fund:r.db('welfare').table('fund')
-                        .merge((conditions) => {
-                                return {
-                                    condition: conditions('condition').merge((changeName) => {
-                                        return {
-                                            field: r.db('welfare').table('condition').get(changeName('field')).getField('field')
-                                        }
-                                    })
-                                }
-                            })
-                        .merge((we_m)=>{
-                            return {
-                                count:we_m('condition').count(),
-                                countpass: we_m('condition').map(function (con_map) {
-                                return {
-                                    pass: group_fund(con_map('field')).do(function (d) {
-                                        return r.branch(con_map('logic').eq(">="),
-                                            d.ge(con_map('value')),
-                                            r.branch(con_map('logic').eq(">"),
-                                                d.gt(con_map('value')),
-                                                r.branch(con_map('logic').eq("<="),
-                                                    d.le(con_map('value')),
-                                                    r.branch(con_map('logic').eq("<"),
-                                                        d.lt(con_map('value')),
-                                                        r.branch(con_map('logic').eq("=="),
-                                                            d.eq(con_map('value')),
-                                                            d.ne(con_map('value'))
-                                                        )
-                                                    )
-                                                )
-                                            )
-                                        )
-                                    })
-                                }
-                            })
+        // .merge((group_fund) => {
+        //     return {
+        //         fund:r.db('welfare').table('fund')
+        //                 .merge((conditions) => {
+        //                         return {
+        //                             condition: conditions('condition').merge((changeName) => {
+        //                                 return {
+        //                                     field: r.db('welfare').table('condition').get(changeName('field')).getField('field')
+        //                                 }
+        //                             })
+        //                         }
+        //                     })
+        //                 .merge((we_m)=>{
+        //                     return {
+        //                         count:we_m('condition').count(),
+        //                         countpass: we_m('condition').map(function (con_map) {
+        //                         return {
+        //                             pass: group_fund(con_map('field')).do(function (d) {
+        //                                 return r.branch(con_map('logic').eq(">="),
+        //                                     d.ge(con_map('value')),
+        //                                     r.branch(con_map('logic').eq(">"),
+        //                                         d.gt(con_map('value')),
+        //                                         r.branch(con_map('logic').eq("<="),
+        //                                             d.le(con_map('value')),
+        //                                             r.branch(con_map('logic').eq("<"),
+        //                                                 d.lt(con_map('value')),
+        //                                                 r.branch(con_map('logic').eq("=="),
+        //                                                     d.eq(con_map('value')),
+        //                                                     d.ne(con_map('value'))
+        //                                                 )
+        //                                             )
+        //                                         )
+        //                                     )
+        //                                 )
+        //                             })
+        //                         }
+        //                     })
 
-                            }
-                        })
-                        .merge((e) => {
-                            return {
-                                countpass_total: e('countpass').filter({ "pass": true }).count()
-                            }
-                        })
-                        .merge((status) => {
-                            return {
-                                count_pass_status: status('countpass_total').eq(status('count')),
-                            }
-                        })
-                        .filter({ "count_pass_status": true })
+        //                     }
+        //                 })
+        //                 .merge((e) => {
+        //                     return {
+        //                         countpass_total: e('countpass').filter({ "pass": true }).count()
+        //                     }
+        //                 })
+        //                 .merge((status) => {
+        //                     return {
+        //                         count_pass_status: status('countpass_total').eq(status('count')),
+        //                     }
+        //                 })
+        //                 .filter({ "count_pass_status": true })
                         
-                        .merge((group_name)=>{
-                            return {
-                                group_fund_name : r.db('welfare').table('group_fund').get(group_name('group_fund_id')).getField('group_fund_name')
-                            }
-                        })
-                        .merge((count_his)=>{
-                            return {
-                                //เช็คว่ามีข้อมูลในhis ไหม
-                                history_fund_count : r.db('welfare').table('history_fund').getAll(group_fund('id'),{index:'emp_id'})
-                                .filter({group_fund_id:count_his('group_fund_id')})
-                                .coerceTo('ARRAY').count()
-                            }
-                        })
-                        .merge((check_his)=>{
-                            return {
-                                history_fund : check_his('history_fund_count').gt(0),
-                                emp_pay : check_his('history_fund_count').mul(check_his('budget_employee')),
-                                company_pay : check_his('history_fund_count').mul(check_his('budget_company')),
-                            }
-                        })
-                        .without('condition','count','countpass','count_pass_status','countpass_total')
-                    .coerceTo('ARRAY')
-                // group_fund : r.db('welfare').table('group_fund')
-                // .merge((fund)=>{
-                //     return {
-                //         fund:r.db('welfare').table('fund').getAll(fund('id'), { index: 'group_fund_id' })
-                //             .coerceTo('ARRAY')
-                //     }
-                // })
-                // .coerceTo('array')
+        //                 .merge((group_name)=>{
+        //                     return {
+        //                         group_fund_name : r.db('welfare').table('group_fund').get(group_name('group_fund_id')).getField('group_fund_name')
+        //                     }
+        //                 })
+        //                 .merge((count_his)=>{
+        //                     return {
+        //                         //เช็คว่ามีข้อมูลในhis ไหม
+        //                         history_fund_count : r.db('welfare').table('history_fund').getAll(group_fund('id'),{index:'emp_id'})
+        //                         .filter({group_fund_id:count_his('group_fund_id')})
+        //                         .coerceTo('ARRAY').count()
+        //                     }
+        //                 })
+        //                 .merge((check_his)=>{
+        //                     return {
+        //                         history_fund : check_his('history_fund_count').gt(0),
+        //                         emp_pay : check_his('history_fund_count').mul(check_his('budget_employee')),
+        //                         company_pay : check_his('history_fund_count').mul(check_his('budget_company')),
+        //                     }
+        //                 })
+        //                 .without('condition','count','countpass','count_pass_status','countpass_total')
+        //             .coerceTo('ARRAY')
+        //         // group_fund : r.db('welfare').table('group_fund')
+        //         // .merge((fund)=>{
+        //         //     return {
+        //         //         fund:r.db('welfare').table('fund').getAll(fund('id'), { index: 'group_fund_id' })
+        //         //             .coerceTo('ARRAY')
+        //         //     }
+        //         // })
+        //         // .coerceTo('array')
 
                         
-            }
-        })
+        //     }
+        // })
         // end fund
         .run()
         .then(function (result) {
