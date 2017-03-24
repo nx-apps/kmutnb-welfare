@@ -1,14 +1,16 @@
 exports.list = function (req, res) {
     var r = req.r
-    r.db('welfare').table('fund')
-        .run()
-        .then(function (result) {
-            res.json(result);
+    r.db('welfare').table('fund_type')
+        .merge(function (m) {
+            return {
+                date_create: m('date_create').split('T')(0),
+                date_update: m('date_update').split('T')(0),
+                emp_type: m('emp_type').merge(function (emp_merge) {
+                    return r.db('welfare_common').table('type_employee').get(emp_merge('emp_type_id')).without('id')
+                    
+                })
+            }
         })
-}
-exports.listId = function (req, res) {
-    var r = req.r
-    r.db('welfare').table('fund').get(req.params.id)
         .run()
         .then(function (result) {
             res.json(result);
@@ -16,17 +18,16 @@ exports.listId = function (req, res) {
 }
 exports.insert = function (req, res) {
     var r = req.r
-    var valid = req.ajv.validate('fund', req.body);
+    var valid = req.ajv.validate('fund_type', req.body);
     var result = { result: false, message: null, id: null };
     if (valid) {
         req.body = Object.assign(req.body,
             {
                 date_create: new Date().toISOString(),
-                date_update: new Date().toISOString(),
-                status_approve: false
+                date_update: new Date().toISOString()
             }
         );
-        r.db('welfare').table('fund').insert(req.body)
+        r.db('welfare').table('fund_type').insert(req.body)
             .run()
             .then((response) => {
                 result.message = response;
@@ -53,7 +54,7 @@ exports.update = function (req, res) {
             date_update: new Date().toISOString()
         }
     );
-    r.db('welfare').table('fund')
+    r.db('welfare').table('fund_type')
         .get(req.body.id)
         .update(req.body)
         .run()
@@ -66,7 +67,7 @@ exports.update = function (req, res) {
 }
 exports.delete = function (req, res) {
     var r = req.r;
-    r.db('welfare').table('fund')
+    r.db('welfare').table('fund_type')
         .get(req.params.id)
         .delete()
         .run()

@@ -13,6 +13,8 @@ import {usersReducer,usersAction} from './reducer/users'
 import {conditionReadWelfareReducer,conditionReadWelfareAction} from './reducer/conditionReadWelfare'
 import {uploadReducer,uploadAction} from './reducer/upload'
 import {groupFundReducer,groupFundAction} from './reducer/groupFund'
+import {fundTypeReducer,fundTypeAction} from './reducer/fundType'
+import {fundReducer,fundAction} from './reducer/fund'
 
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
@@ -25,7 +27,9 @@ const rootReducer = combineReducers({
     users:usersReducer,
     conditionReadWelfare:conditionReadWelfareReducer,
     upload:uploadReducer,
-    groupFund:groupFundReducer
+    groupFund:groupFundReducer,
+    fundType:fundTypeReducer,
+    fund:fundReducer
 });
 const storeApp = createStore(
     rootReducer,
@@ -46,3 +50,5 @@ window.usersAction = usersAction(storeApp);
 window.conditionReadWelfareAction = conditionReadWelfareAction(storeApp);
 window.uploadAction = uploadAction(storeApp);
 window.groupFundAction = groupFundAction(storeApp);
+window.fundTypeAction = fundTypeAction(storeApp);
+window.fundAction = fundAction(storeApp);
