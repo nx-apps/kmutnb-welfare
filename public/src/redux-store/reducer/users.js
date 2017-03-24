@@ -8,7 +8,8 @@ const initialState = {
     select_use_welefares:{date_use:new Date().toISOString().split('T')[0]},
     disabled:true,
     insert_view:true,
-    lisyUserFalse:[]
+    lisyUserFalse:[],
+    rvp_fund:[]
 }
 const clearData = (data,callback)=>{
 
@@ -60,7 +61,9 @@ export function usersReducer(state = initialState,action){
         case 'USER_USE_SELETE_WELFARE' :
             return Object.assign({},state,{select_use_welefares:action.payload});
         case 'USERS_FALSE_LIST' : 
-            return Object.assign({},state,{lisyUserFalse:action.payload});          
+            return Object.assign({},state,{lisyUserFalse:action.payload});      
+        case 'USER_RVP_FUND' :
+            return Object.assign({},state,{rvp_fund:action.payload});     
         default:
             return state
     }
@@ -281,7 +284,24 @@ export function usersAction(store){
                     .catch(err=>{
                         console.log(err);
                     })
-            }
+            },
+            USER_RVP_FUND(pid){
+                axios.get(`./employee/rvd/pid/${pid}`)
+                    .then(res=>{
+                        // console.log(res)
+                        store.dispatch({type:'USER_RVP_FUND',payload:res.data})
+                        // this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
+                        //     callback:()=>{
+                        //         store.dispatch({type:'USER_RVP_FUND',payload:res.data})
+                        //         // if(!otherFunction)
+                        //         //     this.$$('panel-right').open();
+                        //     }
+                        // });
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    })
+            },
         },
         
     ]
