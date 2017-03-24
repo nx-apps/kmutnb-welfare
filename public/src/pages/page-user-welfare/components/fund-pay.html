@@ -1,7 +1,7 @@
 
 <link rel="import" href="./user-fund.html">
 
-<dom-module id="fund-list">
+<dom-module id="fund-pay">
     <template>
         <style include="page-style gl-styles gl-size">
             :host {
@@ -14,9 +14,9 @@
                 <tr>
                     <th rowspan="2" style="width:5%;">ลำดับ</th>
                     <th rowspan="2" style="width:30%;">ชื่อกองทุน</th>
-                    <th colspan="2" style="width:25%;">ปี 2559</th>
+                    <th colspan="2" style="width:25%;border-bottom: 1px solid #f1f1f1">ปี 2559</th>
                     <!--<th>ชื่อกองทุน</th>-->
-                    <th colspan="2" style="width:25%;">ปี 2560</th>
+                    <th colspan="2" style="width:25%;border-bottom: 1px solid #f1f1f1">ปี 2560</th>
                     <th rowspan="2" style="width:15%;">รวม</th>
                 </tr>
                 <tr>
@@ -45,7 +45,7 @@
     </template>
     <script>
         Polymer({
-            is: 'fund-list'
+            is: 'fund-pay'
         });
     </script>
 </dom-module>
