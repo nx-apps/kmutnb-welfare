@@ -1,9 +1,6 @@
 {
     "name":"fund",
     "properties": {
-        "group_fund_id": {
-            "type": "string"
-        },
         "fund_name": {
             "type": "string"
         },
@@ -12,7 +9,10 @@
         },
         "budget_company": {
             "type": "number"
+        },
+        "fund_type_id": {
+            "type": "string"
         }
     },
-    "required": ["group_fund_id", "fund_name", "budget_employee", "budget_company"]
+    "required": ["fund_name", "budget_employee", "budget_company", "fund_type_id"]
 }

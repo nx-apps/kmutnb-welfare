@@ -1,0 +1,9 @@
+{
+    "name":"fund_type",
+    "properties": {
+        "emp_type": {
+            "type": "array"
+        }
+    },
+    "required": ["emp_type"]
+}
