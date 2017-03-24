@@ -58,7 +58,7 @@
                 });
             },
            FUND_TYPE_GET_DATA_LIST:function(){
-               axios.get('./common/type_employee')
+               axios.get('./fund_type/')
                .then((response)=>{
                    store.dispatch({type:'FUND_TYPE_GET_DATA_LIST',payload: response.data});
                })

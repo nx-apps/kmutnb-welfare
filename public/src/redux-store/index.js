@@ -15,6 +15,7 @@ import {uploadReducer,uploadAction} from './reducer/upload'
 import {groupFundReducer,groupFundAction} from './reducer/groupFund'
 import {fundTypeReducer,fundTypeAction} from './reducer/fundType'
 import {fundReducer,fundAction} from './reducer/fund'
+import {fundRvdReducer,fundRvdAction} from './reducer/fundRvd'
 
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
     upload:uploadReducer,
     groupFund:groupFundReducer,
     fundType:fundTypeReducer,
-    fund:fundReducer
+    fund:fundReducer,
+    fundRvd: fundRvdReducer
 });
 const storeApp = createStore(
     rootReducer,
@@ -52,3 +54,4 @@ window.uploadAction = uploadAction(storeApp);
 window.groupFundAction = groupFundAction(storeApp);
 window.fundTypeAction = fundTypeAction(storeApp);
 window.fundAction = fundAction(storeApp);
+window.fundRvdAction = fundRvdAction(storeApp);

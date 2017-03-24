@@ -16,6 +16,9 @@
             .btn-bottom {
                 margin: 30px;
             }
+            .container{
+                padding: 20px;
+            }
             paper-material {
                 background-color: var(--gl-white-color);
             }
@@ -24,49 +27,30 @@
                 -webkit-font-smoothing: antialiased;
             }
         </style>
+            <div class="container">
+            <paper-material elevation="1"> 
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="ปี" allowed-pattern="[0-9]" maxlength="4" value="{{data.year}}" placeholder="กรุณากรอกปี พ.ศ."></gl-form-input>
+                        <gl-form-input id="form" disabled="{{editForm}}" label="ชื่อ" value="{{data.rvd_name}}" placeholder="กรุณากรอกชื่อนโยบาย"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
-                <gl-grid-row>
+                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="ชื่อกองทุน" value="{{data.group_fund_name}}" placeholder="กรุณากรอกชื่อกองทุน"></gl-form-input>
+                        <gl-form-input id="form" disabled="{{editForm}}" label="CODE" value="{{data.rvd_code}}" placeholder="กรุณากรอก CODE"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
-                <gl-grid-row>
+                <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-combo-box id="form" label="ประเภทกองทุน" placeholder="กรุณาเลือกประเภทกองทุน" disabled="{{editForm}}" items="{{fundType}}" item-label-path="label" item-value-path="id" value="{{data.group_fund_type}}"></gl-combo-box>
+                        <gl-form-textarea id="form" disabled="{{editForm}}" label="รายละเอียด" always-float-label rows="2" value="{{data.description}}" placeholder=""></gl-form-textarea>
                     </gl-grid-col>
                 </gl-grid-row>
-                <gl-grid-row>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker id="form" disabled="{{editForm}}" label="วันที่เริ่มใช้งาน :" value="{{data.start_date}}"></vaadin-date-picker>
-                    </gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker id="form" disabled="{{editForm}}" label="วันที่สิ้นสุดใช้งาน :" value="{{data.end_date}}"></vaadin-date-picker>
-                    </gl-grid-col>
-                </gl-grid-row>
-                <gl-grid-row>
+                <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-textarea id="form" disabled="{{editForm}}" style="margin-top:15px;" label="รายละเอียด" value="{{data.description}}" placeholder="เพิ่มรายละเอียด"></gl-form-textarea>
-                    </gl-grid-col>
-                </gl-grid-row>
-                <gl-grid-row style="margin-top: 10px">
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                       <paper-checkbox disabled="{{editForm}}" checked="{{data.onetime}}">ใช้ครั้งเดียว (เต็มจำนวน)</paper-checkbox>
-                    </gl-grid-col>
-                </gl-grid-row>
-                <gl-grid-row style="margin-top: 10px">
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                       <paper-checkbox disabled="{{editForm}}" checked="{{data.admin_use}}">admin เป็นผู้อนุมัติ</paper-checkbox>
+                      <gl-combo-box label="สถานะ" items="[[statusType]]" placeholder="กรุณาระบุสถานะ" always-float-label item-label-path="label" item-value-path="value" value="{{data.status}}"></gl-combo-box>
                     </gl-grid-col>
                 </gl-grid-row>
 
@@ -74,60 +58,35 @@
                     <paper-button raised hidden="{{editForm}}" class="gl-btn-danger" on-tap="cancel">ยกเลิก</paper-button>
                     <paper-button raised hidden="{{editForm}}" class="gl-btn-success" on-tap="getForm">บันทึก</paper-button>
                 </div>
+            </paper-material>
+            </div>
     </template>
     <script>
         Polymer({
             is: 'fund-form',
-            behaviors: [ReduxBehavior,ReduxBehavior,FormatNumberBehavior],
+            behaviors: [ReduxBehavior,FormatNumberBehavior],
             properties:{
                 data:{
-                    statePath:'groupFund.data'
-                },
-                fundType:{
+                    statePath: 'fundRvd.data'
+                },  
+                statusType:{
                     type:Array,
-                    value: [
+                    value:[
                         {
-                            label: 'สมัครใจ',
-                            id: true
+                            label:'เปิดการใช้งาน',
+                            value: true
                         },
                         {
-                            label: 'บังคับ',
-                            id: false
+                            label: 'ปิดการใช้งาน',
+                            value: false
                         }
                     ]
                 }
             },
-            converToIsoStringDate:function(val){
-                var date = new Date(val);
-                return date.toISOString();
-            },
             getForm:function(){
-                var newData = {
-                    group_fund_name: this.data.group_fund_name,
-                    group_fund_type : this.data.group_fund_type,
-                    start_date : this.converToIsoStringDate(this.data.start_date),
-                    end_date: this.converToIsoStringDate(this.data.end_date),
-                    year: parseInt(this.data.year),
-                    admin_use: this.data.admin_use,
-                    onetime: this.data.onetime,
-                    description: this.data.description,
-                }
-                if(typeof this.data.id != 'undefined'){
-                    newData.id = this.data.id;
-                    this.dispatchAction('GROUP_FUND_UPDATE',newData);
-                }
-                else{   
-                    this.dispatchAction('GROUP_FUND_INSERT',newData);
-                }
-            },
-            cancel:function(){
-                this.resetComponents();
-                if(typeof this.data.id != 'undefined'){
-                    this.dispatchAction('GROUP_FUND_SELECT_DATA',this.data.id);
-                }
-                else{
-                    this.dispatchAction('GROUP_FUND_CLEAR_DATA');
-                }
+                var data = this.data;   
+                // console.log(data);
+                this.dispatchAction('FUND_RVD_INSERT',data);
             },
             resetComponents:function(){
                 var elements =  Polymer.dom(this.root).querySelectorAll('#form');

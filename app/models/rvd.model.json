@@ -5,7 +5,7 @@
             "type": "string"
         },
         "rvd_code": {
-            "type": "number"
+            "type": "string"
         }
     },
     "required": ["rvd_name", "rvd_code"]

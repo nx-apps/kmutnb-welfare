@@ -3,7 +3,7 @@
  const initialState = {
     year:[],
     data:{},
-    dataList:[]
+    dataList:[],
  }
  export function groupFundReducer(state = initialState, action) {
       switch (action.type) {
