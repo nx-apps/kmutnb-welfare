@@ -1,0 +1,12 @@
+{
+    "name":"rvd",
+    "properties": {
+        "rvd_name": {
+            "type": "string"
+        },
+        "rvd_code": {
+            "type": "number"
+        }
+    },
+    "required": ["rvd_name", "rvd_code"]
+}

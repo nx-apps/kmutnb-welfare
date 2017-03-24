@@ -1,6 +1,6 @@
 exports.list = function (req, res) {
     var r = req.r
-    r.db('welfare').table('fund')
+    r.db('welfare').table('rvd')
         .run()
         .then(function (result) {
             res.json(result);
@@ -8,7 +8,7 @@ exports.list = function (req, res) {
 }
 exports.listId = function (req, res) {
     var r = req.r
-    r.db('welfare').table('fund').get(req.params.id)
+    r.db('welfare').table('rvd').get(req.params.id)
         .run()
         .then(function (result) {
             res.json(result);
@@ -16,17 +16,16 @@ exports.listId = function (req, res) {
 }
 exports.insert = function (req, res) {
     var r = req.r
-    var valid = req.ajv.validate('fund', req.body);
+    var valid = req.ajv.validate('rvd', req.body);
     var result = { result: false, message: null, id: null };
     if (valid) {
         req.body = Object.assign(req.body,
             {
                 date_create: new Date().toISOString(),
-                date_update: new Date().toISOString(),
-                status_approve: false
+                date_update: new Date().toISOString()
             }
         );
-        r.db('welfare').table('fund').insert(req.body)
+        r.db('welfare').table('rvd').insert(req.body)
             .run()
             .then((response) => {
                 result.message = response;
@@ -53,7 +52,7 @@ exports.update = function (req, res) {
             date_update: new Date().toISOString()
         }
     );
-    r.db('welfare').table('fund')
+    r.db('welfare').table('rvd')
         .get(req.body.id)
         .update(req.body)
         .run()
@@ -66,7 +65,7 @@ exports.update = function (req, res) {
 }
 exports.delete = function (req, res) {
     var r = req.r;
-    r.db('welfare').table('fund')
+    r.db('welfare').table('rvd')
         .get(req.params.id)
         .delete()
         .run()
