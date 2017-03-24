@@ -1,0 +1,50 @@
+<link rel="import" href="./../../components/common-logic.html">
+
+<link rel="import" href="./../../components/month-behavior.html">
+<dom-module id="fund-rvd">
+    <template>
+        <style include="page-style  gl-size iron-flex iron-flex-factors iron-flex-alignment">
+            :host {
+                display: block;
+            }
+        </style>
+        <table class="gl-table-default">
+            <thead class="table-head">
+                <tr>
+                    <th>ลำดับ</th>
+                    <th>ชื่อ</th>
+                    <th>รายละเอียด</th>
+                    <th>วันที่สมัคร</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+                
+                <template is="dom-repeat" items={{data}} >
+                    <tr>
+                        <td>[[_Obindex(index)]]</td>
+                        <td>[[item.rvd_name]]</td>
+                        <td>[[item.description]]</td>
+                        <td>[[toThaiDate(item.date_signup)]]</td>
+                    </tr>
+                </template>
+                <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
+                                <tr>
+                                    <td colspan="4" style="text-align: center">สมัครกองทุนสำรองเลี้ยงชีพ</td>
+                                </tr>
+                 </template>
+                
+            </tbody>
+        </table>
+    </template>
+    <script>
+        Polymer({
+            is: 'fund-rvd',
+            behaviors: [ReduxBehavior,commonLogic,MonthBehavior],
+            properties: {
+                data: {
+                    statePath: 'users.rvp_fund',
+                },
+            },
+        });
+    </script>
+</dom-module>

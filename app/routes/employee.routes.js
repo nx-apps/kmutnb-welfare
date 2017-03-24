@@ -1,6 +1,7 @@
 module.exports = function (app) {
     var controller = require('../controllers/employee/employee.controller');
     var upload = require('../controllers/employee/upload.controller');
+    var fundcontroller = require('../controllers/employee/rvd_fund.controller')
     app.get('/list', controller.list);
     app.post('/insert', controller.insert);
     app.put('/update', controller.update);
@@ -23,6 +24,8 @@ module.exports = function (app) {
     app.route('/admin/:emp_id/history/file/:history_id').post(upload.uploadFileadmin);
     // app.route().get(upload.listFilePath);
     // app.delete('/use_welfare/delete/id/:id', controller.deleteWelfare);
+
+    app.get('/rvd/pid/:pid', fundcontroller.getRvdFund);
 
 
 }

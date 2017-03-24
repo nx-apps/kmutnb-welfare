@@ -2,6 +2,8 @@
 
 <link rel="import" href="./fund-pay.html">
 
+<link rel="import" href="./fund-rvd.html">
+
 <dom-module id="user-detail">
     <template>
         <style include="page-style  gl-size iron-flex iron-flex-factors iron-flex-alignment">
@@ -107,7 +109,8 @@
                 </section>
 
                 <section id="content2">
-                    <fund-pay></fund-pay>
+                    <fund-rvd></fund-rvd>
+                    <!--<fund-pay></fund-pay>-->
                 </section>
                 <section id="content3">
                     <fund-pay></fund-pay>
@@ -123,7 +126,8 @@
             behaviors: [ReduxBehavior],
             properties: {
                 data: {
-                    statePath: 'users.select_welefares'
+                    statePath: 'users.select_welefares',
+                    observer: '_obRvpFund'
                 },
                 year: {
                     statePath: 'userWelfare.list',
@@ -139,9 +143,16 @@
 
                 }
             },
+            _obRvpFund(data){
+                console.log(data);
+                this.dispatchAction('USER_RVP_FUND',data.personal_id)
+            },
             gerYearWelfare(e) {
-                if (e.detail.value)
+                if (e.detail.value) {
                     this.dispatchAction('USER_GET_WELFARES', window.location.pathname.split('/')[2], true, e.detail.value - 543);
+                    // this.dispatchAction('USER_RVP_FUND',
+                }
+                    
             },
             editData(){
                 this.fire('_get-user-edit',this.data)
