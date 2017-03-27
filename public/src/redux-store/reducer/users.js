@@ -9,6 +9,7 @@ const initialState = {
     disabled:true,
     insert_view:true,
     lisyUserFalse:[],
+    listRvpFund:[],
     rvp_fund:[]
 }
 const clearData = (data,callback)=>{
@@ -61,7 +62,11 @@ export function usersReducer(state = initialState,action){
         case 'USER_USE_SELETE_WELFARE' :
             return Object.assign({},state,{select_use_welefares:action.payload});
         case 'USERS_FALSE_LIST' : 
-            return Object.assign({},state,{lisyUserFalse:action.payload});      
+            return Object.assign({},state,{lisyUserFalse:action.payload});
+        case 'USER_RVP_FUND_LIST' :
+        Object.assign({},state,{listRvpFund:action.payload});
+        console.log(state.listRvpFund);
+            return Object.assign({},state,{listRvpFund:action.payload});         
         case 'USER_RVP_FUND' :
             return Object.assign({},state,{rvp_fund:action.payload});     
         default:
@@ -280,6 +285,16 @@ export function usersAction(store){
                                 //     this.$$('panel-right').open();
                             }
                         });
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    })
+            },
+            USER_RVP_FUND_LIST(pid){
+                axios.get(`./employee/rvd/list/`)
+                    .then(res=>{
+                        console.log('>>>>>',res)
+                        store.dispatch({type:'USER_RVP_FUND_LIST',payload:res.data})
                     })
                     .catch(err=>{
                         console.log(err);

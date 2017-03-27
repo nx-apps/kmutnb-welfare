@@ -64,7 +64,7 @@ export function conditionReadWelfareAction(store){
                 store.dispatch({type:'CONDITIONREADWELFARE_INSERT_VIEW',payload:data})
             },
             CONDITIONREADWELFARE_LIST(){
-                axios.get('/condition_read_welfare/list')
+                axios.get('/conditions/list')
                 .then(res=>{
                     store.dispatch({type:'CONDITIONREADWELFARE_LIST',payload:res.data})
                 })
@@ -74,7 +74,7 @@ export function conditionReadWelfareAction(store){
             },
             CONDITIONREADWELFARE_TABLE_LIST(){
                 // console.log(1);
-                axios.get('/condition_read_welfare/listTable/')
+                axios.get('/conditions/Table/')
                 .then(res=>{
                     store.dispatch({type:'CONDITIONREADWELFARE_TABLE_LIST',payload:res.data})
                 })
@@ -83,7 +83,7 @@ export function conditionReadWelfareAction(store){
                 })
             },
             CONDITIONREADWELFARE_FIEID_LIST(){
-                axios.get('/condition_read_welfare/listField/')
+                axios.get('/conditions/Field/')
                 .then(res=>{
                     store.dispatch({type:'CONDITIONREADWELFARE_FIEID_LIST',payload:res.data})
                 })
@@ -95,7 +95,7 @@ export function conditionReadWelfareAction(store){
                 console.log(data);
                 clearData(data,(newData)=>{
                 this.fire('toast',{status:'load'});
-                axios.post(`./condition_read_welfare/insert`,newData)
+                axios.post(`./conditions/insert`,newData)
                     .then(res=>{
                         this.CONDITIONREADWELFARE_LIST();
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -123,7 +123,7 @@ export function conditionReadWelfareAction(store){
                             clearData(data,(newData)=>{
                                 this.fire('toast',{status:'load'});
                                 newData.id = data.id
-                                axios.put(`/condition_read_welfare/update`,newData)
+                                axios.put(`/conditions/update`,newData)
                                 .then(res=>{
                                     this.CONDITIONREADWELFARE_LIST();
                                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -147,7 +147,7 @@ export function conditionReadWelfareAction(store){
                     text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
                     confirmed:(result)=>{
                         if(result == true){
-                            axios.delete(`./condition_read_welfare/delete/id/${id}`)
+                            axios.delete(`./conditions/delete/id/${id}`)
                             .then(res=>{
                                 this.CONDITIONREADWELFARE_LIST();
                                 this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',

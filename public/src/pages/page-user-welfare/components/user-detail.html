@@ -97,7 +97,7 @@
             <main>
                 <input id="tab1" type="radio" name="tabs" checked>
                 <label for="tab1">สวัสดิการ</label>
-
+                <!--//พนักงานมหาวิยาลัย ถึงจะเห็น-->
                 <input id="tab2" type="radio" name="tabs">
                 <label for="tab2">กองทุนสำรองเลี้ยงชีพ</label>
 
@@ -109,7 +109,7 @@
                 </section>
 
                 <section id="content2">
-                    <fund-rvd></fund-rvd>
+                    <fund-rvd personal-id=[[data.personal_id]]></fund-rvd>
                     <!--<fund-pay></fund-pay>-->
                 </section>
                 <section id="content3">
@@ -144,8 +144,9 @@
                 }
             },
             _obRvpFund(data){
-                console.log(data);
+                // console.log(data);
                 this.dispatchAction('USER_RVP_FUND',data.personal_id)
+                this.dispatchAction('USER_RVP_FUND_LIST')
             },
             gerYearWelfare(e) {
                 if (e.detail.value) {
