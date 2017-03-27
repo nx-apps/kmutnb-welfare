@@ -55,7 +55,7 @@
                                 <th style="text-align:center">ผลตอบแทน</th>
                                 <th style="text-align:center">มูลค่าทรัพสิน</th>
                                 <th style="text-align:center;">รายละเอียด</th>
-                                <th style="text-align:center;">จัดการ</th>
+                                <th style="text-align:center; width: 15%;">จัดการ</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">  
@@ -66,7 +66,7 @@
                              </template>
                             <template is="dom-repeat" items="{{dataList}}">
                                 <tr style="cursor:pointer;">
-                                    <td style="text-align:center">[[index]]</td>
+                                    <td style="text-align:center">[[cont(index)]]</td>
                                     <td>[[item.rvd_name]]</td>
                                     <td style="text-align:center"></td>
                                     <td style="text-align:center"></td>
@@ -75,6 +75,7 @@
                                     <td style="text-align:center"></td>
                                     <td style="text-align:center">
                                         <paper-icon-button icon="create" id="[[item.id]]" on-tap="edit"></paper-icon-button>
+                                        <paper-icon-button icon="delete" id="[[item.id]]" on-tap="confirmDelete"></paper-icon-button>
                                     </td>
                                 </tr>
                             </template>
@@ -101,6 +102,13 @@
             nylonPageActive:function(){
                 this.FUND_RVD_GET_LIST();
             },
+            cont:function(index){
+                return parseInt(index) +1;
+            },
+            ready:function(){
+                this.fundForm = this.$$('fund-form');
+                this.panelRight = this.$$('panel-right');
+            },
             checkDataList:function(data){
                 if(data.length == 0){
                     return true;
@@ -110,7 +118,26 @@
                 }
             },  
             add:function(){
-                this.$$('panel-right').open();
+                this.fundForm.resetComponents();
+                this.fundForm.editForm = false;
+                this.FUND_RVD_CLEAR_DATA();
+                this.panelRight.open();
+            },
+            confirmDelete:function(e){
+                var id = e.target.id;
+                this.fire('toast',{ 
+                    status:'openDialog',
+                    text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                    confirmed:this.deleteData.bind(this),
+                    data:id 
+                })
+            },
+            deleteData:function(check,data){
+                if(check == true){
+                //   console.log(data.data);
+                  var id = data.data;
+                  this.FUND_RVD_DELETE(id)
+                }
             },
             edit:function(e){
                 var id = e.target.id;

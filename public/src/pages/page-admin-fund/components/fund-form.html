@@ -1,7 +1,7 @@
 <link rel="import" href="../../components/format-number-behavior.html">
 <dom-module id="fund-form">
     <template>
-        <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+        <style is="custom-style" include="page-style flex-style">
             gl-form-input,
             vaadin-date-picker,
             gl-combo-box{
@@ -29,6 +29,13 @@
         </style>
             <div class="container">
             <paper-material elevation="1"> 
+                <div class="container flex-equal-justified">
+                    <div></div>
+                    <div></div>
+                    <div>
+                        <paper-icon-button icon="create" on-tap="openEditForm"></paper-icon-button>
+                    </div>
+                </div>
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
@@ -50,7 +57,7 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                      <gl-combo-box label="สถานะ" items="[[statusType]]" placeholder="กรุณาระบุสถานะ" always-float-label item-label-path="label" item-value-path="value" value="{{data.status}}"></gl-combo-box>
+                      <gl-combo-box label="สถานะ" disabled="{{editForm}}" items="[[statusType]]" placeholder="กรุณาระบุสถานะ" always-float-label item-label-path="label" item-value-path="value" value="{{data.status}}"></gl-combo-box>
                     </gl-grid-col>
                 </gl-grid-row>
 
@@ -85,14 +92,21 @@
             },
             getForm:function(){
                 var data = this.data;   
-                // console.log(data);
-                this.dispatchAction('FUND_RVD_INSERT',data);
+                if(typeof data.id != 'undefined'){
+                    this.dispatchAction('FUND_RVD_UPDATE',data);
+                } 
+                else {
+                    this.dispatchAction('FUND_RVD_INSERT',data);
+                } 
             },
             resetComponents:function(){
                 var elements =  Polymer.dom(this.root).querySelectorAll('#form');
                 elements.map((item)=>{
                     item.reset();
                 })
+            },
+            openEditForm:function(){
+                this.editForm = false;
             }
         });
     </script>
