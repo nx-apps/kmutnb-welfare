@@ -135,7 +135,7 @@ export function welfareAction(store) {
         },
         WELFARE_LIST_EMPLOYEE: function (id) {
             // console.log(id);
-            axios.get('/welfare/id/' + id)
+            axios.get('/welfare/employee/' + id)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'WELFARE_LIST_EMPLOYEE', payload: result.data })
