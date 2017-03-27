@@ -5,7 +5,5 @@ module.exports = function (app) {
     app.post('/insert', controller.insert);
     app.put('/update', controller.update);
     app.delete('/delete/id/:id', controller.delete);
-
-
-    app.get('/id/:id', controller.listId);
+    app.get('/employee/:welfare_id', controller.listId);
 }

@@ -170,7 +170,7 @@ exports.delete = function (req, res) {
 exports.listId = function (req, res) {
     var r = req.r
     r.db('welfare').table('welfare')
-        .get(req.params.id)
+        .get(req.params.welfare_id)
         .merge(function (m) {
             return r.db('welfare').table('group_welfare').get(m('group_id')).without('id')
         })
