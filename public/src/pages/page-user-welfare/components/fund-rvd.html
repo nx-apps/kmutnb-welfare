@@ -18,21 +18,28 @@
                 </tr>
             </thead>
             <tbody class="table-body">
-                
-                <template is="dom-repeat" items={{data}} >
-                    <tr>
-                        <td>[[_Obindex(index)]]</td>
-                        <td>[[item.rvd_name]]</td>
-                        <td>[[item.description]]</td>
-                        <td>[[toThaiDate(item.date_signup)]]</td>
-                    </tr>
-                </template>
+                <!-- ชื่อที่สมัคร -->
                 <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
-                                <tr>
-                                    <td colspan="4" style="text-align: center">สมัครกองทุนสำรองเลี้ยงชีพ</td>
-                                </tr>
+                    <template is="dom-repeat" items={{data}} >
+                        <tr>
+                            <td>[[_Obindex(index)]]</td>
+                            <td>[[item.rvd_name]]</td>
+                            <td>[[item.description]]</td>
+                            <td>[[toThaiDate(item.date_signup)]]</td>
+                        </tr>
+                    </template>
+                </template>
+                <!-- สมัคร -->
+                <template is="dom-repeat" items={{forRegrvp}} >
+                        <tr>
+                            <td>[[_Obindex(index)]]</td>
+                            <td>[[item.rvd_name]]</td>
+                            <td>[[item.description]]</td>
+                            <td>
+                                <paper-button class="gl-btn-primary" data="[[item]]" on-tap="regFund" raised>สมัคร</paper-button>
+                            </td>
+                        </tr>
                  </template>
-                
             </tbody>
         </table>
     </template>
@@ -44,7 +51,14 @@
                 data: {
                     statePath: 'users.rvp_fund',
                 },
+                forRegrvp: {
+                    statePath :'users.listRvpFund',
+                },
             },
+            regFund(e){
+                console.log(this.personalId);
+                // this.set('fundSeleted',e.currentTarget.id)
+            }
         });
     </script>
 </dom-module>
