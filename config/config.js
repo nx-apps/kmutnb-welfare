@@ -10,7 +10,7 @@ var config = {
       servers: [
         { host: 'rdb.codeunbug.com', port: 28015, username: 'admin', password: 'next@2017' }
       ],
-      db: 'oauth'
+      db: 'welfare'
     },
 
     oauth: {

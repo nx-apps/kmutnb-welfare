@@ -137,7 +137,6 @@ exports.welById = function (req, res) {
             res.json(data);
         })
 }
-
 exports.employees = function (req, res) {
     var r = req.r;
     r.db('welfare').table('employee')
@@ -497,7 +496,6 @@ exports.adminEmployee = function (req, res) {
         })
 
 }
-
 exports.condition = function (req, res) {
     var r = req.r;
 
@@ -533,5 +531,19 @@ exports.condition = function (req, res) {
         })
         .catch(function (err) {
             res.status(500).json(err);
+        })
+}
+exports.fundAdd = function (req, res) {
+    var r = req.r;
+    r.table('fund').getAll(true, { index: 'status' })
+        .merge(function (f_merge) {
+            return {
+                emp: r.table('fund_registion').getAll(f_merge('id'), { index: 'fund_id' })
+                    .filter({ status: true }).coerceTo('array')
+            }
+        })
+        .run()
+        .then(function (data) {
+            res.json(data)
         })
 }

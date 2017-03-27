@@ -7,4 +7,6 @@ module.exports = function (app) {
     app.put('/update', controller.update);
     app.delete('/delete/id/:id', controller.delete);
     app.put('/approve', controller.approve);
+    app.get('/groupByYear/year/:year', controller.groupByYear);
+     app.get('/adminEmployee/:welId', controller.adminEmployee); 
 }

@@ -1,25 +1,25 @@
 module.exports = function (app) {
-    var dateController = require('../controllers/common_data/date.controller');
-    var academicController = require('../controllers/common_data/academic.controller');
-    var activeController = require('../controllers/common_data/active.controller');
-    var departmentController = require('../controllers/common_data/department.controller');
-    var facultyController = require('../controllers/common_data/faculty.controller');
-    var genderController = require('../controllers/common_data/gender.controller');
-    var matierController = require('../controllers/common_data/matier.controller');
-    var positionController = require('../controllers/common_data/position.controller');
-    var prefixnameController = require('../controllers/common_data/prefixname.controller');
-    var relationController = require('../controllers/common_data/relation.controller');
-    var type_employeeController = require('../controllers/common_data/type_employee.controller');
+    var dateController = require('../controllers/common/date.controller');
+    var academicController = require('../controllers/common/academic.controller');
+    var activeController = require('../controllers/common/active.controller');
+    var departmentController = require('../controllers/common/department.controller');
+    var facultyController = require('../controllers/common/faculty.controller');
+    var genderController = require('../controllers/common/gender.controller');
+    var matierController = require('../controllers/common/matier.controller');
+    var positionController = require('../controllers/common/position.controller');
+    var prefixnameController = require('../controllers/common/prefixname.controller');
+    var relationController = require('../controllers/common/relation.controller');
+    var type_employeeController = require('../controllers/common/type_employee.controller');
 
 
     app.get('/date', dateController.date);
-// Exsample 
-// https://localhost:3000/api/common/academic/
-// https://localhost:3000/api/common/academic/insert/
-// ส่ง id มาด้วยเพื่ออัพเดตได้
-// https://localhost:3000/api/common/academic/update/
-// https://localhost:3000/api/common/academic/delete/id/:id
-// เปลี่ยนแค่ academic เป็นอย่างอื่น
+    // Exsample 
+    // https://localhost:3000/api/common/academic/
+    // https://localhost:3000/api/common/academic/insert/
+    // ส่ง id มาด้วยเพื่ออัพเดตได้
+    // https://localhost:3000/api/common/academic/update/
+    // https://localhost:3000/api/common/academic/delete/id/:id
+    // เปลี่ยนแค่ academic เป็นอย่างอื่น
     // app.get('/read', controller.read);
     app.get('/academic', academicController.academic);
     app.post('/academic/insert', academicController.academicInsert);
@@ -30,7 +30,7 @@ module.exports = function (app) {
     app.post('/active/insert', activeController.activeInsert);
     app.put('/active/update', activeController.activeUpdate);
     app.delete('/active/delete/id/:id', activeController.activeDelete);
-    
+
     app.get('/department', departmentController.department);
     app.post('/department/insert', departmentController.departmentInsert);
     app.put('/department/update', departmentController.departmentUpdate);
@@ -61,7 +61,7 @@ module.exports = function (app) {
     app.post('/prefix/insert', prefixnameController.prefixnameInsert);
     app.put('/prefix/update', prefixnameController.prefixnameUpdate);
     app.delete('/prefix/delete/id/:id', prefixnameController.prefixnameDelete);
-    
+
     app.get('/relation', relationController.relation);
     app.post('/relation/insert', relationController.relationInsert);
     app.put('/relation/update', relationController.relationUpdate);

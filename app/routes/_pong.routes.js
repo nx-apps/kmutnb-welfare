@@ -9,4 +9,5 @@ module.exports = function (app) {
     app.get('/groupByYear/:year', controller.groupByYear);
     app.get('/adminEmployee/:welId', controller.adminEmployee);
     app.get('/condition', controller.condition);
+    app.post('/fund/add',controller.fundAdd);
 }
