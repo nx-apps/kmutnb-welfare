@@ -8,7 +8,7 @@ module.exports = function (app) {
     app.delete('/delete/:id', controller.delete);
 
     // app.get('/unapprove', controller.unapprove); //history.route
-    app.get('/:id/welfares/year/:year', controller.welfaresYear);
+    app.get('/:id/:year', controller.welfaresYear);
     // app.post('/request/welfare/', controller.requestWelfare);  //history.route
     // app.put('/update/welfare/', controller.updateWelfare);  //history.route
 

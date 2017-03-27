@@ -126,8 +126,9 @@
             getList:function(){
                 // console.log(this.welfareId);
               if (this.refPath != {} && this.empId != '' && this.empId != undefined && this.historyWelfareId != '') {
+                  console.log(this.historyWelfareId);
                 // this.dispatchAction('UPLOAD_LISTFILE', this.refPath, this.requestId);
-                    axios.get('/employee/list/upload/history/'+this.historyWelfareId)
+                    axios.get('/history/list/upload/history/'+this.historyWelfareId)
                 .then( (response)=>{
                     this.listFiles = response.data;
                 })
@@ -148,7 +149,7 @@
                         idFile = e.currentTarget.fileId
                     }
                     // window.location = '/api/upload/download/'+idFile;
-                    window.open('/api/employee/download/'+idFile);
+                    window.open('/api/file/download/'+idFile);
                 }
             },
             _deleteFile:function(e){

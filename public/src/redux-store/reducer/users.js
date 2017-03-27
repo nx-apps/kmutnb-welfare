@@ -64,8 +64,6 @@ export function usersReducer(state = initialState,action){
         case 'USERS_FALSE_LIST' : 
             return Object.assign({},state,{lisyUserFalse:action.payload});
         case 'USER_RVP_FUND_LIST' :
-        Object.assign({},state,{listRvpFund:action.payload});
-        console.log(state.listRvpFund);
             return Object.assign({},state,{listRvpFund:action.payload});         
         case 'USER_RVP_FUND' :
             return Object.assign({},state,{rvp_fund:action.payload});     
@@ -172,7 +170,7 @@ export function usersAction(store){
             USER_GET_WELFARES(id,otherFunction=false,year=new Date().getFullYear()){
                 console.log('otherFunctioncdddd',year)
                  this.fire('toast',{status:'load'});
-                    axios.get(`./employee/${id}/welfares/year/${year}`)
+                    axios.get(`./employee/${id}/${year}`)
                     .then(res=>{
                         console.log(res)
                         this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
@@ -194,7 +192,7 @@ export function usersAction(store){
                 
                 this.fire('toast',{status:'load'});
                 // newData.status = true;
-                    axios.post(`./employee/request/welfare/`,newData)
+                    axios.post(`./history/request/welfare/`,newData)
                     .then(res=>{
                         this.USER_GET_WELFARES(newData.emp_id,true);
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -216,7 +214,7 @@ export function usersAction(store){
                 this.fire('toast',{status:'load'});
                 newData.status = 'approve';
                 newData.date_approve = new Date().toISOString();
-                    axios.put(`./employee/update/welfare`,newData)
+                    axios.put(`./history/update/welfare`,newData)
                     .then(res=>{
                         this.dispatchAction('USERS_FALSE_LIST');
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -237,7 +235,7 @@ export function usersAction(store){
                 this.fire('toast',{status:'load'});
                 newData.status = 'reject';
                 newData.date_approve = new Date().toISOString();
-                    axios.put(`./employee/update/welfare`,newData)
+                    axios.put(`./history/update/welfare`,newData)
                     .then(res=>{
                         this.dispatchAction('USERS_FALSE_LIST');
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -275,7 +273,7 @@ export function usersAction(store){
             },
             USERS_FALSE_LIST(data){
                 this.fire('toast',{status:'load'});
-                    axios.get(`./employee/unapprove/`)
+                    axios.get(`./history/unapprove/`)
                     .then(res=>{
                         // console.log(res)
                         this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
