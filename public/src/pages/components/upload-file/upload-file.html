@@ -124,7 +124,7 @@
                 // this.dispatchAction('UPLOAD_LISTFILE', this.refPath, this.requestId);
                 // axios.defaults.headers.common['ref-path'] = this.refPath;
                 // axios.defaults.headers.common['welfare-id'] = this.welfareId;
-                axios.get('/document/list/file/?emp_id='+this.empId+'&refPath='+this.refPath+'&welfareId='+this.welfareId)
+                axios.get('/document/path/?emp_id='+this.empId+'&refPath='+this.refPath+'&welfareId='+this.welfareId)
                 .then( (response)=>{
                     this.listFiles = response.data;
                 })

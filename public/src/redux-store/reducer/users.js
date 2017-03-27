@@ -192,7 +192,7 @@ export function usersAction(store){
                 
                 this.fire('toast',{status:'load'});
                 // newData.status = true;
-                    axios.post(`./history/request/welfare/`,newData)
+                    axios.post(`./history/request/`,newData)
                     .then(res=>{
                         this.USER_GET_WELFARES(newData.emp_id,true);
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -214,7 +214,7 @@ export function usersAction(store){
                 this.fire('toast',{status:'load'});
                 newData.status = 'approve';
                 newData.date_approve = new Date().toISOString();
-                    axios.put(`./history/update/welfare`,newData)
+                    axios.put(`./history/update`,newData)
                     .then(res=>{
                         this.dispatchAction('USERS_FALSE_LIST');
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -235,7 +235,7 @@ export function usersAction(store){
                 this.fire('toast',{status:'load'});
                 newData.status = 'reject';
                 newData.date_approve = new Date().toISOString();
-                    axios.put(`./history/update/welfare`,newData)
+                    axios.put(`./history/update`,newData)
                     .then(res=>{
                         this.dispatchAction('USERS_FALSE_LIST');
                         this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
