@@ -99,6 +99,15 @@
                     this.dispatchAction('FUND_RVD_INSERT',data);
                 } 
             },
+            cancel:function(){
+                if(typeof this.data.id != 'undefined'){
+                    this.dispatchAction('FUND_RVD_SELECT',this.data.id);
+                }
+                else{
+                    this.dispatchAction('FUND_RVD_CLEAR_DATA');
+                }
+                this.resetComponents();
+            },
             resetComponents:function(){
                 var elements =  Polymer.dom(this.root).querySelectorAll('#form');
                 elements.map((item)=>{
