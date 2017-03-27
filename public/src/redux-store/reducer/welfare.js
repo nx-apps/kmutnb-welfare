@@ -101,7 +101,7 @@ export function welfareAction(store) {
             axios.put(`./welfare/update`, datas)
                 .then((result) => {
                     // console.log(result);
-                    this.WELFARE_LIST();
+                    this.LIST_WELFARE_ID(data.group_id);
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: function () {
                             console.log('success');
