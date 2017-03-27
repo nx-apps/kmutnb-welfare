@@ -124,7 +124,7 @@ export function welfareAction(store) {
                 })
         },
         CONDITION_LIST: function () {
-            axios.get('/condition_read_welfare/list/conditions')
+            axios.get('/conditions/list')
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'CONDITION_LIST', payload: result.data })
@@ -135,7 +135,7 @@ export function welfareAction(store) {
         },
         WELFARE_LIST_EMPLOYEE: function (id) {
             // console.log(id);
-            axios.get('/user_welfare/id/' + id)
+            axios.get('/welfare/id/' + id)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'WELFARE_LIST_EMPLOYEE', payload: result.data })

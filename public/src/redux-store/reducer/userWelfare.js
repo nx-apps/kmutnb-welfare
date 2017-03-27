@@ -77,7 +77,7 @@ export function userWelfareAction(store) {
     return [commonAction(),
     {
         WELFARE_LIST_YEAR: function () {
-            axios.get('./user_welfare/groupYear')
+            axios.get('./group/welfare/year')
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'WELFARE_LIST_YEAR', payload: result.data })
@@ -88,7 +88,7 @@ export function userWelfareAction(store) {
         },
         WELFARE_LIST: function (data) {
             // console.log(data);
-            axios.get('./user_welfare/groupByYear/year/' + data)
+            axios.get('./group/welfare/groupByYear/year/' + data)
                 .then(function (result) {
                     console.log(result.data);
                     // console.log(JSON.stringify(result.data));
@@ -119,7 +119,7 @@ export function userWelfareAction(store) {
         },
         LIST_USER_SERARCH: function (id) {
             this.userSearch = id;
-            axios.get('./user_welfare/adminEmployee/' + id)
+            axios.get('./group/welfare/adminEmployee/' + id)
                 .then((response) => {
                     //  console.log(JSON.stringify(response.data));
                     var newData = response.data.map((item) => {
@@ -157,7 +157,7 @@ export function userWelfareAction(store) {
         },
         LIST_EMPLOYEE_WELFARE: function (data) {
             // console.log(data);
-            axios.get('./user_welfare/welfaresEmployee/' + data)
+            axios.get('./employee/welfaresEmployee/' + data)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEE_WELFARE', payload: result.data })
