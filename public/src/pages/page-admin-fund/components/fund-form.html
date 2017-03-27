@@ -39,15 +39,35 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="ชื่อ" value="{{data.rvd_name}}" placeholder="กรุณากรอกชื่อนโยบาย"></gl-form-input>
+                        <gl-form-textarea id="form" disabled="{{editForm}}" label="ชื่อ" value="{{data.rvd_name}}" placeholder="กรุณากรอกชื่อนโยบาย"></gl-form-textarea>
                     </gl-grid-col>
                 </gl-grid-row>
-                 <gl-grid-row width="{{getWidth}}">
+                <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                         <gl-form-input id="form" disabled="{{editForm}}" label="CODE" value="{{data.rvd_code}}" placeholder="กรุณากรอก CODE"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
+                <!-- // -->
+                  <gl-grid-row width="{{getWidth}}">
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <gl-form-input id="form" disabled="{{editForm}}" label="มูลค่าต่อหน่อย" value="{{data.unit_value}}" placeholder="มูลค่าต่อหน่อย"></gl-form-input>
+                    </gl-grid-col>
+                </gl-grid-row>
+                  <gl-grid-row width="{{getWidth}}">
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <gl-form-input id="form" disabled="{{editForm}}" label="ผลตอบแทน" value="{{data.reward}}" placeholder="ผลตอบแทน"></gl-form-input>
+                    </gl-grid-col>
+                </gl-grid-row>
+                  <gl-grid-row width="{{getWidth}}">
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <gl-form-input id="form" disabled="{{editForm}}" label="มูลค่าทรัพสิน" value="{{data.property_value}}" placeholder="มูลค่าทรัพสิน"></gl-form-input>
+                    </gl-grid-col>
+                </gl-grid-row>
+                <!-- /// -->
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
@@ -92,6 +112,10 @@
             },
             getForm:function(){
                 var data = this.data;   
+                data.unit_value = parseFloat(this.data.unit_value);
+                data.reward = parseFloat(this.data.reward);
+                data.property_value = parseFloat(this.data.property_value);
+                // console.log(data);
                 if(typeof data.id != 'undefined'){
                     this.dispatchAction('FUND_RVD_UPDATE',data);
                 } 
@@ -105,6 +129,7 @@
                 }
                 else{
                     this.dispatchAction('FUND_RVD_CLEAR_DATA');
+                    this.fire('close')
                 }
                 this.resetComponents();
             },

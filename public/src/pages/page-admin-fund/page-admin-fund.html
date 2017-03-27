@@ -54,7 +54,6 @@
                                 <th style="text-align:center">มูลค่าต่อหน่วย</th>
                                 <th style="text-align:center">ผลตอบแทน</th>
                                 <th style="text-align:center">มูลค่าทรัพสิน</th>
-                                <th style="text-align:center;">รายละเอียด</th>
                                 <th style="text-align:center; width: 15%;">จัดการ</th>
                             </tr>
                         </thead>
@@ -68,11 +67,10 @@
                                 <tr style="cursor:pointer;">
                                     <td style="text-align:center">[[cont(index)]]</td>
                                     <td>[[item.rvd_name]]</td>
-                                    <td style="text-align:center"></td>
-                                    <td style="text-align:center"></td>
-                                    <td style="text-align:center"></td>
-                                    <td style="text-align:center"></td>
-                                    <td style="text-align:center"></td>
+                                    <td style="text-align:center">[[item.count_emp]]</td>
+                                    <td style="text-align:center">[[item.unit_value]]</td>
+                                    <td style="text-align:center">[[item.reward]]</td>
+                                    <td style="text-align:center">[[item.property_value]]</td>
                                     <td style="text-align:center">
                                         <paper-icon-button icon="create" id="[[item.id]]" on-tap="edit"></paper-icon-button>
                                         <paper-icon-button icon="delete" id="[[item.id]]" on-tap="confirmDelete"></paper-icon-button>
@@ -98,6 +96,9 @@
                 dataList:{
                     statePath: 'fundRvd.dataList'
                 }
+            },
+            listeners:{
+                  'close':'closePanelRight'
             },
             nylonPageActive:function(){
                 this.FUND_RVD_GET_LIST();
@@ -142,6 +143,9 @@
             edit:function(e){
                 var id = e.target.id;
                 this.FUND_RVD_SELECT(id);
+            },
+            closePanelRight:function(){
+                this.panelRight.close();
             }
         });
     </script>
