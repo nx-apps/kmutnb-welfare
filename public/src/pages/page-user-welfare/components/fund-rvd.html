@@ -4,33 +4,52 @@
 <dom-module id="fund-rvd">
     <template>
         <style include="page-style  gl-size iron-flex iron-flex-factors iron-flex-alignment">
-            :host {
+             :host {
                 display: block;
             }
         </style>
-        <table class="gl-table-default">
-            <thead class="table-head">
-                <tr>
-                    <th>ลำดับ</th>
-                    <th>ชื่อ</th>
-                    <th>รายละเอียด</th>
-                    <th>วันที่สมัคร</th>
-                </tr>
-            </thead>
-            <tbody class="table-body">
-                <!-- ชื่อที่สมัคร -->
-                <!--<template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>-->
-                    <template is="dom-repeat" items={{data}} >
+        <template is="dom-if" if={{!_ObIsHave(data)}}>
+            <table class="gl-table-default">
+                <thead class="table-head">
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อ</th>
+                        <th>รายละเอียด</th>
+                        <th>วันที่สมัคร</th>
+                        <th>กระทำการ</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <!-- ชื่อที่สมัคร -->
+                    <!--<template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>-->
+                    <template is="dom-repeat" items={{data}}>
                         <tr>
                             <td>[[_Obindex(index)]]</td>
                             <td>[[item.rvd_name]]</td>
                             <td>[[item.description]]</td>
                             <td>[[toThaiDate(item.date_signup)]]</td>
+                            <td>
+                                <paper-button raised class="gl-btn-primary">มี</paper-button>
+                            </td>
                         </tr>
                     </template>
-                <!--</template>-->
-                <!-- สมัคร -->
-                <template is="dom-repeat" items={{forRegrvp}} >
+                    <!--</template>-->
+
+                </tbody>
+            </table>
+        </template>
+        <template is="dom-if" if={{_ObIsHave(data)}}>
+            <table class="gl-table-default">
+                <thead class="table-head">
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อ</th>
+                        <th>รายละเอียด</th>
+                        <th>กระทำการ</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <template is="dom-repeat" items={{forRegrvp}}>
                         <tr>
                             <td>[[_Obindex(index)]]</td>
                             <td>[[item.rvd_name]]</td>
@@ -39,30 +58,35 @@
                                 <paper-button class="gl-btn-primary" data="[[item]]" on-tap="regFund" raised>สมัคร</paper-button>
                             </td>
                         </tr>
-                 </template>
-            </tbody>
-        </table>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+
+
     </template>
     <script>
         Polymer({
             is: 'fund-rvd',
-            behaviors: [ReduxBehavior,commonLogic,MonthBehavior],
+            behaviors: [ReduxBehavior, commonLogic, MonthBehavior],
             properties: {
                 data: {
                     statePath: 'users.rvp_fund',
                 },
                 forRegrvp: {
-                    statePath :'fundRvd.dataList',
+                    statePath: 'fundRvd.dataList',
                 },
             },
-            regFund(e){
+            regFund(e) {
                 console.log(this.personalId);
                 console.log(e.currentTarget.data.id);
                 let obj = {
-                    personal_id : this.personalId,
-                    rvd_id : e.currentTarget.data.id
+                    personal_id: this.personalId,
+                    rvd_id: e.currentTarget.data.id
                 }
-                console.log(this.dispatchAction('USER_RVP_SIGNUP',obj));
+                this.dispatchAction('USER_RVP_SIGNUP', obj);
+
+                this.dispatchAction('USER_RVP_FUND', this.personalId);
                 // this.dispatchAction('USER_RVP_SIGNUP',obj)
                 // this.set('fundSeleted',e.currentTarget.id)
             }
