@@ -9,23 +9,28 @@
             gl-combo-box {
                 margin-top: 15px;
             }
+            
             .label_condition {
                 font-weight: bold;
                 text-align: right;
                 margin-top: 35px;
                 font-size: 20px;
             }
+            
             .btn-bottom {
                 margin: 30px;
             }
+            
             paper-material {
                 background-color: var(--gl-white-color);
             }
+            
             .table-detail {
                 margin: auto;
                 width: 96%;
                 padding: 20px 20px 100px 20px;
             }
+            
             table.gl-table-default {
                 border: 1px solid #ddd;
             }
@@ -129,7 +134,7 @@
             </paper-material>
 
         </div>
-        
+
         <template is="dom-if" if="{{tableStatus}}">
             <div class="horizontal end-justified layout">
                 <div style="margin-right:30px;font-weight: bold;font-size: 20px;">จำนวนผู้ได้รับสิทธิ [[employees.count_employee]] คน</div>
@@ -192,29 +197,33 @@
             },
             checkSelected: function (val, index) {
                 this.async(() => {
-                    var data = this.condition;
-                    var use = this.data.condition.map((item) => {
-                        return item.field
-                    })
-                    var diff = data.filter((item) => {
-                        return use.indexOf(item) < 0;
-                    })
-                    for (var i in this.data.condition) {
-                        for (var ii in data) {
-                            if (data[ii].id == this.data.condition[i].field) {
-                                this.data.condition[i].field = data[ii]
+                    try {
+                        var data = this.condition;
+                        var use = this.data.condition.map((item) => {
+                            return item.field
+                        })
+                        var diff = data.filter((item) => {
+                            return use.indexOf(item) < 0;
+                        })
+                        for (var i in this.data.condition) {
+                            for (var ii in data) {
+                                if (data[ii].id == this.data.condition[i].field) {
+                                    this.data.condition[i].field = data[ii]
+                                }
                             }
+                            var a = [];
+                            for (var ii in diff) {
+                                a.push(diff[ii]);
+                            }
+                            a.push(this.data.condition[i].field);
+                            this.set('data.condition.' + i + '.itemField', a);
                         }
-                        var a = [];
-                        for (var ii in diff) {
-                            a.push(diff[ii]);
-                        }
-                        a.push(this.data.condition[i].field);
-                        this.set('data.condition.' + i + '.itemField', a);
+                        // console.log(this.data.condition);
+                        // console.log(this.isEnabled)
+                        this.isEnabled = true
+                    } catch (error) {
+
                     }
-                    // console.log(this.data.condition);
-                    // console.log(this.isEnabled)
-                    this.isEnabled = true
                 }, 1);
             },
             checkValue: function (e, index) {
@@ -224,7 +233,7 @@
                         var id = e;
                         var value = this.condition.filter((val) => val.id == id)[0]
                         // combobox.items = value.data;
-                        console.log(value.data.length);
+                        // console.log(value.data.length);
                         if (value.data.length == 0) {
                             Polymer.dom(this.root).querySelector('#input-' + index).hidden = false;
                             Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = true;
