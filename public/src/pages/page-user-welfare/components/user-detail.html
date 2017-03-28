@@ -97,27 +97,34 @@
             <main>
                 <input id="tab1" type="radio" name="tabs" checked>
                 <label for="tab1">สวัสดิการ</label>
-                
+
                 <!--//พนักงานมหาวิยาลัย ถึงจะเห็น-->
-                <input id="tab2" type="radio" name="tabs">
-                <label for="tab2">กองทุนสำรองเลี้ยงชีพ</label>
+
+                <template is="dom-if" if=[[data.rvd_status]]>
+                    <input id="tab2" type="radio" name="tabs">
+                    <label for="tab2">กองทุนสำรองเลี้ยงชีพ</label>
+                </template>
+
+
 
                 <input id="tab3" type="radio" name="tabs">
                 <label for="tab3">กองทุน</label>
 
                 <section id="content1">
-                    <user-welfare data="[[data]]"></user-welfare>
+                    <user-welfare data="[[data]]" year="[[seleterYear]]"></user-welfare>
                 </section>
-
-                <section id="content2">
-                    <fund-rvd personal-id=[[data.personal_id]]></fund-rvd>
-                    <!--<fund-pay></fund-pay>-->
-                </section>
+                <template is="dom-if" if=[[data.rvd_status]]>
+                    [[_obRvpFund(data)]]
+                    <section id="content2">
+                        <fund-rvd personal-id=[[data.personal_id]]></fund-rvd>
+                        <!--<fund-pay></fund-pay>-->
+                    </section>
+                </template>
                 <section id="content3">
                     <fund-pay></fund-pay>
                 </section>
             </main>
-            
+
 
         </gl-form-panel>
     </template>
@@ -128,7 +135,6 @@
             properties: {
                 data: {
                     statePath: 'users.select_welefares',
-                    observer: '_obRvpFund'
                 },
                 year: {
                     statePath: 'userWelfare.list',
@@ -144,9 +150,9 @@
 
                 }
             },
-            _obRvpFund(data){
+            _obRvpFund(data) {
                 // console.log(data);
-                this.dispatchAction('USER_RVP_FUND',data.personal_id)
+                this.dispatchAction('USER_RVP_FUND', data.personal_id)
                 this.dispatchAction('USER_RVP_FUND_LIST')
             },
             gerYearWelfare(e) {
@@ -154,10 +160,10 @@
                     this.dispatchAction('USER_GET_WELFARES', window.location.pathname.split('/')[2], true, e.detail.value - 543);
                     // this.dispatchAction('USER_RVP_FUND',
                 }
-                    
+
             },
-            editData(){
-                this.fire('_get-user-edit',this.data)
+            editData() {
+                this.fire('_get-user-edit', this.data)
                 // this.dispatchAction('USER_SELECT',e.detail);
             },
         });
