@@ -1,0 +1,67 @@
+<link rel="import" href="./../../components/common-logic.html">
+
+<dom-module id="rvd-approve">
+    <style include="iron-flex iron-flex-factors iron-flex-alignment page-style">
+         :host {
+            display: block;
+        }
+        
+        .contentHeader {
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .container {
+            padding: 10px;
+        }
+    </style>
+    <template>
+
+        <div class="container">
+            <div class="contentHeader" style="margin-bottom: 20px;">รายชื่อผู้สมัครกองทุนสำรองเลี้ยงชีพ</div>
+            <table class="gl-table-default" style="margin:auto">
+                <thead class="table-head">
+                    <tr>
+                        <th>ลำดับ</th>
+                        <th>ชื่อ - นามสกุล</th>
+                        <th>สวัสดิการที่ขอใช้</th>
+                        <th>กอง</th>
+                        <th>คณะ</th>
+                        <th>กระทำ</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+
+                    <template is="dom-repeat" items={{listUserFalse}}>
+                        <tr>
+                            <td>[[_Obindex(index)]]</td>
+                            <td>[[item.prefixname_id]] [[item.firstname]] [[item.lastname]]</td>
+                            <td>[[item.group_welfare_name]]</td>
+                            <td>[[item.department]]</td>
+                            <td>[[item.faculty]]</td>
+                            <td>
+                                <paper-button raised class="gl-btn-info gl-small" on-tap="userwelfare" data="[[item]]"> ดูข้อมูล </paper-button>
+                            </td>
+                        </tr>
+                    </template>
+                    <template is="dom-if" if={{_ObIsHave(listUserFalse)}}>
+                        <tr>
+                            <td colspan="6" style="text-align: center">ยังไม่มีการขอใช้สวัสดิการ</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'rvd-approve',
+            behaviors: [
+                ReduxBehavior, commonLogic
+            ],
+            properties: {
+                
+            }
+        });
+    </script>
+</dom-module>
