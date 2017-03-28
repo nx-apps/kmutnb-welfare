@@ -11,17 +11,17 @@ const initialState = {
     select_use_welefares: {},
     faculty_list: []
 }
-const clearData = (data,callback)=>{
+const clearData = (data, callback) => {
 
-    let {prefix_id,firstname,lastname,gender_id,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,emp_no,personal_id}=data;
-    let newData={prefix_id,firstname,lastname,gender_id,type_employee_id,active_id,position_id,matier_id,academic_id,department_id,faculty_id,emp_no,personal_id};
+    let { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id } = data;
+    let newData = { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id };
     // newData.period = new Array();
     // data.period.map((tag)=>{
     //     newData.period.push({no:tag.no,quality:tag.quality});
     // });
-    newData.start_work_date = new Date (data.start_work_date).toISOString();
-    newData.birthdate = new Date (data.birthdate).toISOString();
-        callback(newData)
+    newData.start_work_date = new Date(data.start_work_date).toISOString();
+    newData.birthdate = new Date(data.birthdate).toISOString();
+    callback(newData)
     // callback(data)
 }
 const clearDatawelfare = (data, callback) => {
@@ -103,12 +103,12 @@ export function userWelfareAction(store) {
             axios.get('./employee/list')
                 .then(function (result) {
                     // console.log(result.data);
-                    var newData = result.data.map((item)=>{
-                        if(item.academic_name == ""){
+                    var newData = result.data.map((item) => {
+                        if (item.academic_name == "") {
                             item.fullName = item.prefix_name + " " + item.firstname + " " + item.lastname
                         }
-                        else{
-                             item.fullName = item.academic_name + " " + item.firstname + " " + item.lastname
+                        else {
+                            item.fullName = item.academic_name + " " + item.firstname + " " + item.lastname
                         }
                     })
                     store.dispatch({ type: 'LIST_USER', payload: result.data })
@@ -123,11 +123,11 @@ export function userWelfareAction(store) {
                 .then((response) => {
                     //  console.log(JSON.stringify(response.data));
                     var newData = response.data.map((item) => {
-                        if(item.academic_name == ""){
+                        if (item.academic_name == "") {
                             item.fullName = item.prefix_name + " " + item.firstname + " " + item.lastname
                         }
-                        else{
-                             item.fullName = item.academic_name + " " + item.firstname + " " + item.lastname
+                        else {
+                            item.fullName = item.academic_name + " " + item.firstname + " " + item.lastname
                         }
                         item.check = false;
                         return item;
@@ -159,7 +159,7 @@ export function userWelfareAction(store) {
             // console.log(data);
             axios.get('./employee/' + data)
                 .then(function (result) {
-                    console.log(result.data);
+                    // console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEE_WELFARE', payload: result.data })
                 })
                 .catch(err => {
@@ -168,7 +168,7 @@ export function userWelfareAction(store) {
         },
         LIST_EMPLOYEES_WELFARE: function (data) {
             // console.log(data);
-            axios.get('./employee/'+ data.id+'/' + data.year)
+            axios.get('./employee/' + data.id + '/' + data.year)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEES_WELFARE', payload: result.data })
@@ -204,10 +204,8 @@ export function userWelfareAction(store) {
             // console.log(data);
             clearDatawelfare(data, (newData) => {
                 // console.log(newData);
-
                 this.fire('toast', { status: 'load' });
-                // newData.status = true;
-                axios.post(`./employee/request/welfare/`, newData)
+                axios.post(`./history/approve`, newData)
                     .then(res => {
                         this.EMPLOYEE_GET_WELFARES(newData.emp_id);
                         this.fire('toast', {
@@ -232,33 +230,35 @@ export function userWelfareAction(store) {
                     console.log(error);
                 });
         },
-        EMPLOYEE_UPDATE(data){
+        EMPLOYEE_UPDATE(data) {
             // console.log(data);
-            this.fire('toast',{
-                    status:'openDialog',
-                    text:'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
-                    confirmed:(result)=>{
-                        if(result == true){
-                            this.fire('toast',{status:'load'})
-                            clearData(data,(newData)=>{
-                                this.fire('toast',{status:'load'});
-                                newData.id = data.id
-                                axios.put(`/employee/update`,newData)
-                                .then(res=>{
+            this.fire('toast', {
+                status: 'openDialog',
+                text: 'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
+                confirmed: (result) => {
+                    if (result == true) {
+                        this.fire('toast', { status: 'load' })
+                        clearData(data, (newData) => {
+                            this.fire('toast', { status: 'load' });
+                            newData.id = data.id
+                            axios.put(`/employee/update`, newData)
+                                .then(res => {
                                     this.EMPLOYEE_USE_SELETE_WELFARE();
-                                    this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
-                                        callback:()=>{
-                                            this.fire('select-page', 0);
+                                    this.LIST_USER();
+                                    this.fire('toast', {
+                                        status: 'success', text: 'บันทึกสำเร็จ',
+                                        callback: () => {
+                                            this.fire('select-page', 1);
                                         }
                                     });
                                 })
-                                .catch(err=>{
+                                .catch(err => {
                                     console.log(err);
                                 })
-                            })
-                        }
+                        })
                     }
-                })
+                }
+            })
         }
     }
     ]
