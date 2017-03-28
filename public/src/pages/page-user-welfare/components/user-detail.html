@@ -154,6 +154,7 @@
                 // console.log(data);
                 this.dispatchAction('USER_RVP_FUND', data.personal_id)
                 this.dispatchAction('USER_RVP_FUND_LIST')
+                this.dispatchAction('FUND_RVD_GET_LIST',true)
             },
             gerYearWelfare(e) {
                 if (e.detail.value) {

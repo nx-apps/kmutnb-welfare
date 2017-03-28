@@ -299,17 +299,10 @@ export function usersAction(store){
                     })
             },
             USER_RVP_FUND(pid){
-                axios.get(`./employee/rvd/pid/${pid}`)
+                axios.get(`./rvd/signup/pid/${pid}`)
                     .then(res=>{
                         // console.log(res)
                         store.dispatch({type:'USER_RVP_FUND',payload:res.data})
-                        // this.fire('toast',{status:'success',text:'โหลดข้อมูลสำเร็จ',
-                        //     callback:()=>{
-                        //         store.dispatch({type:'USER_RVP_FUND',payload:res.data})
-                        //         // if(!otherFunction)
-                        //         //     this.$$('panel-right').open();
-                        //     }
-                        // });
                     })
                     .catch(err=>{
                         console.log(err);

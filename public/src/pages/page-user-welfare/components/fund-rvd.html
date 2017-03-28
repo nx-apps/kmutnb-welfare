@@ -19,7 +19,7 @@
             </thead>
             <tbody class="table-body">
                 <!-- ชื่อที่สมัคร -->
-                <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
+                <!--<template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>-->
                     <template is="dom-repeat" items={{data}} >
                         <tr>
                             <td>[[_Obindex(index)]]</td>
@@ -28,9 +28,11 @@
                             <td>[[toThaiDate(item.date_signup)]]</td>
                         </tr>
                     </template>
-                </template>
+                <!--</template>-->
                 <!-- สมัคร -->
+                12121
                 <template is="dom-repeat" items={{forRegrvp}} >
+                    11111
                         <tr>
                             <td>[[_Obindex(index)]]</td>
                             <td>[[item.rvd_name]]</td>
@@ -52,7 +54,7 @@
                     statePath: 'users.rvp_fund',
                 },
                 forRegrvp: {
-                    statePath :'users.listRvpFund',
+                    statePath :'fundRvd.dataList',
                 },
             },
             regFund(e){
