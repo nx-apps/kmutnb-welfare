@@ -49,6 +49,12 @@
                     </gl-grid-col>
                 </gl-grid-row>
                 <!-- // -->
+                 <gl-grid-row width="{{getWidth}}">
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <gl-form-input id="form" disabled="{{editForm}}" label="จำนวนสมาชิก" value="{{data.count_emp}}" placeholder="จำนวนสมาชิก"></gl-form-input>
+                    </gl-grid-col>
+                </gl-grid-row>
                   <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
@@ -112,6 +118,7 @@
             },
             getForm:function(){
                 var data = this.data;   
+                data.count_emp = parseInt(this.data.count_emp);
                 data.unit_value = parseFloat(this.data.unit_value);
                 data.reward = parseFloat(this.data.reward);
                 data.property_value = parseFloat(this.data.property_value);
