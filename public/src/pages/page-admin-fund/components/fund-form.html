@@ -32,7 +32,9 @@
                 --paper-input-container-label:{
                     font-family: 'CSChatThaiUI', sans-serif;
                     -webkit-font-smoothing: antialiased;
-                    font-size:20px;
+                }
+                --paper-input-container-label-floating:{
+                    font-size: 18px;
                 }
                 --paper-input-container-input:{
                      font-family: 'CSChatThaiUI', sans-serif;
@@ -58,11 +60,11 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-textarea required  style="margin-top:15px;" id="form" disabled="{{editForm}}" label="ชื่อ" value="{{data.rvd_name}}" placeholder="กรุณากรอกชื่อนโยบาย"></paper-textarea>
+                        <paper-textarea required  style="margin-top:15px;" id="form" disabled="{{editForm}}" label="ชื่อ" value="{{data.rvd_name}}"></paper-textarea>
                     </gl-grid-col>
                     <div style="margin: 10px;"></div>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-input required  id="form" disabled="{{editForm}}" label="CODE" value="{{data.rvd_code}}" placeholder="กรุณากรอก CODE"></paper-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="CODE" value="{{data.rvd_code}}"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <!--<gl-grid-row width="{{getWidth}}">
@@ -75,11 +77,11 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-input required  id="form" disabled="{{editForm}}" label="จำนวนสมาชิก" value="{{data.count_emp}}" placeholder="จำนวนสมาชิก"></paper-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="จำนวนสมาชิก" value="{{data.count_emp}}"></paper-input>
                     </gl-grid-col>
                     <div style="margin: 10px;"></div>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-input required  id="form" disabled="{{editForm}}" label="มูลค่าต่อหน่อย" value="{{data.unit_value}}" placeholder="มูลค่าต่อหน่อย"></paper-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="มูลค่าต่อหน่อย" value="{{data.unit_value}}"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <!--<gl-grid-row width="{{getWidth}}">
@@ -91,11 +93,11 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-input required  id="form" disabled="{{editForm}}" label="ผลตอบแทน" value="{{data.reward}}" placeholder="ผลตอบแทน"></paper-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="ผลตอบแทน" value="{{data.reward}}"></paper-input>
                     </gl-grid-col>
                     <div style="margin: 10px;"></div>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-input required  id="form" disabled="{{editForm}}" label="มูลค่าทรัพสิน" value="{{data.property_value}}" placeholder="มูลค่าทรัพสิน"></paper-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="มูลค่าทรัพสิน" value="{{data.property_value}}"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <!--<gl-grid-row width="{{getWidth}}">
@@ -108,13 +110,12 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <vaadin-combo-box required  style="margin-top: 15px;" id="form" label="สถานะ" disabled="{{editForm}}" items="[[statusType]]" placeholder="กรุณาระบุสถานะ" always-float-label
+                        <vaadin-combo-box required  style="margin-top: 15px;" id="form" label="สถานะ" disabled="{{editForm}}" items="[[statusType]]"
                             item-label-path="label" item-value-path="value" value="{{data.status}}"></vaadin-combo-box>
                     </gl-grid-col>
                     <div style="margin: 10px;"></div>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-textarea style="margin-top:15px;" disabled="{{editForm}}" label="รายละเอียด" always-float-label value="{{data.description}}"
-                            placeholder="ใส่รายละเอียด"></paper-textarea>
+                        <paper-textarea style="margin-top:15px;" disabled="{{editForm}}" label="รายละเอียด" value="{{data.description}}"></paper-textarea>
                     </gl-grid-col>
                 </gl-grid-row>
                 <!--<gl-grid-row width="{{getWidth}}">
