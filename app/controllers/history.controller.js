@@ -113,3 +113,24 @@ exports.listUploadHistory = function (req, res) {
             res.json(err);
         })
 }
+exports.adminApprove = function (req, res){
+    var r = req.r;
+    req.body = Object.assign(req.body,
+        {
+            date_approve: new Date().toISOString()
+        }
+    );
+    r.db('welfare').table('history_welfare').insert(req.body)('generated_keys')(0)
+        .do((history_id) => {
+            return r.db('welfare').table('history_welfare').get(history_id).getField('document_ids').forEach((doc_update) => {
+                return r.db('welfare').table('document_file').get(doc_update).update({ doc_status: true })
+            })
+        })
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}

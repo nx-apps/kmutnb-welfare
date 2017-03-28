@@ -4,4 +4,5 @@ module.exports = function (app) {
     app.post('/request', controller.requestWelfare); ///request/welfare/
     app.put('/update', controller.updateWelfare); ///update/welfare/
     app.get('/file/:id', controller.listUploadHistory); ///list/upload/history/:id
+    app.post('/approve', controller.adminApprove);
 }
