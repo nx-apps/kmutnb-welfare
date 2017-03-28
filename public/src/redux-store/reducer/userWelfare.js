@@ -159,7 +159,7 @@ export function userWelfareAction(store) {
             // console.log(data);
             axios.get('./employee/' + data)
                 .then(function (result) {
-                    // console.log(result.data);
+                    console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEE_WELFARE', payload: result.data })
                 })
                 .catch(err => {
@@ -168,7 +168,7 @@ export function userWelfareAction(store) {
         },
         LIST_EMPLOYEES_WELFARE: function (data) {
             // console.log(data);
-            axios.get('./employee/'+ data.id+'/welfares/year/' + data.year)
+            axios.get('./employee/'+ data.id+'/' + data.year)
                 .then(function (result) {
                     // console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEES_WELFARE', payload: result.data })
@@ -180,7 +180,7 @@ export function userWelfareAction(store) {
         EMPLOYEE_GET_WELFARES(id, year = new Date().getFullYear()) {
             // console.log(id, year);
             // this.fire('toast', { status: 'load' });
-            axios.get(`./employee/${id}/welfares/year/${year}`)
+            axios.get(`./employee/${id}/${year}`)
                 .then(res => {
                     // console.log(res)
                     this.fire('toast', {

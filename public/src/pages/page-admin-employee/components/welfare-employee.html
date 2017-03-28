@@ -103,13 +103,7 @@
                                             <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                             <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
                                             <td>
-                                                <template is="dom-if" if=[[_checkAdmin(item.status_approve,item.admin_use,index)]]>
-                                                    <!--<div class="approve-[[index]] ff">-->
-                                                    [[_wordApprove(item.status_approve,item.admin_use)]]
-                                                    <!--</div>-->
-
-                                                </template>
-                                                <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" hidden="[[_checkAdmin(item.status_approve,item.admin_use)]]">ขอใช้</paper-button>
+                                                <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" >ขอใช้</paper-button>
                                             </td>
                                         </tr>
                                     </template>
@@ -234,11 +228,6 @@
                     }
                 }
             },
-            _checkAdmin(status_user, status_admin) {
-                // (status_admin || status_user ? {return true} : false)
-                if (status_admin || status_user)
-                    return true
-            },
             back: function () {
                 // console.log(55);
                 this.fire('select-page', 0)
@@ -267,10 +256,6 @@
                 if (this.$$('#dialog-use-welfare').validateForm('.required')) {
                     this.dispatchAction('EMPLOYEE_USE_WELFARE', this.usewelfareProp);
                 }
-            },
-            _wordApprove(status_approve, admin_use) {
-                // let word;
-                return (admin_use ? 'ผู้ดูแลระบบอนุมัติเท่านั้น' : 'รออนุมัติ');
             },
             _checkApprove(status) {
                 switch (status) {
