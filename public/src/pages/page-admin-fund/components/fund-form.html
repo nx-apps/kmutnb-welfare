@@ -1,8 +1,10 @@
 <link rel="import" href="../../components/format-number-behavior.html">
+<link rel="import" href="./../../components/validateFormBehaviors.html">
+
 <dom-module id="fund-form">
     <template>
         <style is="custom-style" include="page-style flex-style">
-            gl-form-input,
+            paper-input,
             vaadin-date-picker,
             gl-combo-box {
                 margin-top: 15px;
@@ -26,6 +28,23 @@
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
             }
+            paper-input,paper-textarea,paper-button,vaadin-combo-box{
+                --paper-input-container-label:{
+                    font-family: 'CSChatThaiUI', sans-serif;
+                    -webkit-font-smoothing: antialiased;
+                    font-size:20px;
+                }
+                --paper-input-container-input:{
+                     font-family: 'CSChatThaiUI', sans-serif;
+                    -webkit-font-smoothing: antialiased;
+                }
+                --paper-input-container-disabled:{
+                    opacity:1;
+                }
+                --paper-input-container-underline-disabled:{
+                    border: 0px solid white;
+                }
+            }
         </style>
         <div class="container">
             <paper-material elevation="1">
@@ -39,70 +58,70 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-textarea style="margin-top:15px;" id="form" disabled="{{editForm}}" label="ชื่อ" value="{{data.rvd_name}}" placeholder="กรุณากรอกชื่อนโยบาย"></gl-form-textarea>
+                        <paper-textarea required  style="margin-top:15px;" id="form" disabled="{{editForm}}" label="ชื่อ" value="{{data.rvd_name}}" placeholder="กรุณากรอกชื่อนโยบาย"></paper-textarea>
                     </gl-grid-col>
                     <div style="margin: 10px;"></div>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="CODE" value="{{data.rvd_code}}" placeholder="กรุณากรอก CODE"></gl-form-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="CODE" value="{{data.rvd_code}}" placeholder="กรุณากรอก CODE"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <!--<gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="CODE" value="{{data.rvd_code}}" placeholder="กรุณากรอก CODE"></gl-form-input>
+                        <paper-input id="form" disabled="{{editForm}}" label="CODE" value="{{data.rvd_code}}" placeholder="กรุณากรอก CODE"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>-->
                 <!-- // -->
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="จำนวนสมาชิก" value="{{data.count_emp}}" placeholder="จำนวนสมาชิก"></gl-form-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="จำนวนสมาชิก" value="{{data.count_emp}}" placeholder="จำนวนสมาชิก"></paper-input>
                     </gl-grid-col>
                     <div style="margin: 10px;"></div>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="มูลค่าต่อหน่อย" value="{{data.unit_value}}" placeholder="มูลค่าต่อหน่อย"></gl-form-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="มูลค่าต่อหน่อย" value="{{data.unit_value}}" placeholder="มูลค่าต่อหน่อย"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <!--<gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="มูลค่าต่อหน่อย" value="{{data.unit_value}}" placeholder="มูลค่าต่อหน่อย"></gl-form-input>
+                        <paper-input id="form" disabled="{{editForm}}" label="มูลค่าต่อหน่อย" value="{{data.unit_value}}" placeholder="มูลค่าต่อหน่อย"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>-->
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="ผลตอบแทน" value="{{data.reward}}" placeholder="ผลตอบแทน"></gl-form-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="ผลตอบแทน" value="{{data.reward}}" placeholder="ผลตอบแทน"></paper-input>
                     </gl-grid-col>
                     <div style="margin: 10px;"></div>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="มูลค่าทรัพสิน" value="{{data.property_value}}" placeholder="มูลค่าทรัพสิน"></gl-form-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="มูลค่าทรัพสิน" value="{{data.property_value}}" placeholder="มูลค่าทรัพสิน"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <!--<gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input id="form" disabled="{{editForm}}" label="มูลค่าทรัพสิน" value="{{data.property_value}}" placeholder="มูลค่าทรัพสิน"></gl-form-input>
+                        <paper-input id="form" disabled="{{editForm}}" label="มูลค่าทรัพสิน" value="{{data.property_value}}" placeholder="มูลค่าทรัพสิน"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>-->
                 <!-- /// -->
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-combo-box id="form" label="สถานะ" disabled="{{editForm}}" items="[[statusType]]" placeholder="กรุณาระบุสถานะ" always-float-label
-                            item-label-path="label" item-value-path="value" value="{{data.status}}"></gl-combo-box>
+                        <vaadin-combo-box required  style="margin-top: 15px;" id="form" label="สถานะ" disabled="{{editForm}}" items="[[statusType]]" placeholder="กรุณาระบุสถานะ" always-float-label
+                            item-label-path="label" item-value-path="value" value="{{data.status}}"></vaadin-combo-box>
                     </gl-grid-col>
                     <div style="margin: 10px;"></div>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-textarea style="margin-top:15px;" id="form" disabled="{{editForm}}" label="รายละเอียด" always-float-label value="{{data.description}}"
-                            placeholder="ใส่รายละเอียด"></gl-form-textarea>
+                        <paper-textarea style="margin-top:15px;" disabled="{{editForm}}" label="รายละเอียด" always-float-label value="{{data.description}}"
+                            placeholder="ใส่รายละเอียด"></paper-textarea>
                     </gl-grid-col>
                 </gl-grid-row>
                 <!--<gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-combo-box id="form" label="สถานะ" disabled="{{editForm}}" items="[[statusType]]" placeholder="กรุณาระบุสถานะ" always-float-label
-                            item-label-path="label" item-value-path="value" value="{{data.status}}"></gl-combo-box>
+                        <vaadin-combo-box id="form" label="สถานะ" disabled="{{editForm}}" items="[[statusType]]" placeholder="กรุณาระบุสถานะ" always-float-label
+                            item-label-path="label" item-value-path="value" value="{{data.status}}"></vaadin-combo-box>
                     </gl-grid-col>
                 </gl-grid-row>-->
 
@@ -116,7 +135,7 @@
     <script>
         Polymer({
             is: 'fund-form',
-            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior,ValidateFormBehavior],
             properties: {
                 data: {
                     statePath: 'fundRvd.data'
@@ -136,18 +155,23 @@
                 }
             },
             getForm: function () {
-                var data = this.data;
-                data.count_emp = parseInt(this.data.count_emp);
-                data.unit_value = parseFloat(this.data.unit_value);
-                data.reward = parseFloat(this.data.reward);
-                data.property_value = parseFloat(this.data.property_value);
-                // console.log(data);
-                if (typeof data.id != 'undefined') {
-                    this.dispatchAction('FUND_RVD_UPDATE', data);
+                var validate = this.validateForm('#form');
+                // console.log(validate);
+                if(validate == true){
+                    var data = this.data;
+                    data.count_emp = parseInt(this.data.count_emp);
+                    data.unit_value = parseFloat(this.data.unit_value);
+                    data.reward = parseFloat(this.data.reward);
+                    data.property_value = parseFloat(this.data.property_value);
+                    // console.log(data);
+                    if (typeof data.id != 'undefined') {
+                        this.dispatchAction('FUND_RVD_UPDATE', data);
+                    }
+                    else {
+                        this.dispatchAction('FUND_RVD_INSERT', data);
+                    }
                 }
-                else {
-                    this.dispatchAction('FUND_RVD_INSERT', data);
-                }
+              
             },
             cancel: function () {
                 if (typeof this.data.id != 'undefined') {
@@ -159,10 +183,12 @@
                 }
                 this.resetComponents();
             },
-            resetComponents: function () {
+            resetComponents: function () {    
                 var elements = Polymer.dom(this.root).querySelectorAll('#form');
                 elements.map((item) => {
-                    item.reset();
+                    item.removeAttribute("required");
+                    item.validate();
+                    item.setAttribute("required", true);
                 })
             },
             openEditForm: function () {
