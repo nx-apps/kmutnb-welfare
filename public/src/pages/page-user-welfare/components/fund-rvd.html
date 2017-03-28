@@ -30,9 +30,7 @@
                     </template>
                 <!--</template>-->
                 <!-- สมัคร -->
-                12121
                 <template is="dom-repeat" items={{forRegrvp}} >
-                    11111
                         <tr>
                             <td>[[_Obindex(index)]]</td>
                             <td>[[item.rvd_name]]</td>
@@ -59,6 +57,13 @@
             },
             regFund(e){
                 console.log(this.personalId);
+                console.log(e.currentTarget.data.id);
+                let obj = {
+                    personal_id : this.personalId,
+                    rvd_id : e.currentTarget.data.id
+                }
+                console.log(this.dispatchAction('USER_RVP_SIGNUP',obj));
+                // this.dispatchAction('USER_RVP_SIGNUP',obj)
                 // this.set('fundSeleted',e.currentTarget.id)
             }
         });

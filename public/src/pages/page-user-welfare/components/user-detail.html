@@ -117,7 +117,6 @@
                     [[_obRvpFund(data)]]
                     <section id="content2">
                         <fund-rvd personal-id=[[data.personal_id]]></fund-rvd>
-                        <!--<fund-pay></fund-pay>-->
                     </section>
                 </template>
                 <section id="content3">
@@ -153,7 +152,6 @@
             _obRvpFund(data) {
                 // console.log(data);
                 this.dispatchAction('USER_RVP_FUND', data.personal_id)
-                this.dispatchAction('USER_RVP_FUND_LIST')
                 this.dispatchAction('FUND_RVD_GET_LIST',true)
             },
             gerYearWelfare(e) {
