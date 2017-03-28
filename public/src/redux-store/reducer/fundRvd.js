@@ -19,13 +19,15 @@
  export function fundRvdAction(store) {
     return [commonAction(),
         {
-            FUND_RVD_GET_LIST:function(){
+            FUND_RVD_GET_LIST:function(otheruser=false){
                 this.fire('toast',{status:'load'});
                 axios.get('rvd')
                 .then((response)=>{
                    this.fire('toast',{status:'success',
                      callback:()=>{
-                         this.fundForm.resetComponents();
+                         if (!otheruser) 
+                             this.fundForm.resetComponents();
+                         
                          store.dispatch({ type: 'FUND_RVD_GET_LIST', payload: response.data })
                      }
                     });
