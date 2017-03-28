@@ -1,5 +1,4 @@
 <link rel="import" href="../../components/format-number-behavior.html">
-
 <link rel="import" href="../../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 
 <dom-module id="welfare-edit">
@@ -39,7 +38,7 @@
         <div style="padding:20px;">
             <!--[[setCondition(condition)]]-->
             <paper-material elevation="1">
-//{{isEnabled}}//
+                <!--//{{isEnabled}}//-->
                 <div class="horizontal end-justified layout">
                     <div style="margin:20px 20px 0px 0px;" hidden="{{status}}">
                         <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
@@ -59,11 +58,7 @@
                         <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน" disabled="{{active}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
-                
-               
-                    
-                
-                
+
                 <template is="dom-repeat" items="{{data.condition}}">
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
@@ -71,50 +66,50 @@
                             <div class="label_condition">เงื่อนไข</div>
                         </gl-grid-col>
                         [[checkSelected(item.field, index)]]
-                         <template is="dom-if" if={{isEnabled}}>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-form-dropdown-menu style="margin-top: 15px">
-                                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
-                                    <template is="dom-repeat" items="{{item.itemField}}">
-                                        <paper-item value="{{item}}">{{item.label}}</paper-item>
-                                    </template>
-                                </paper-listbox>
-                            </gl-form-dropdown-menu>
-                            <!--<gl-combo-box id="name-[[index]]" on-value-changed="setCondition" id="[[index]]"  item-label-path="label" item-value-path="id" items="[[ee.0]].[[index]]"
-                                value="{{item.field}}" disabled="{{active}}"></gl-combo-box>-->
-                        </gl-grid-col>
-                        
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-form-dropdown-menu style="margin-top: 15px">
-                                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.logic_show}}">
-                                    <template is="dom-repeat" items="{{item.field.conditions}}">
-                                        <paper-item value="{{item.symbol}}">{{item.name}}</paper-item>
-                                    </template>
-                                </paper-listbox>
-                            </gl-form-dropdown-menu>
-                            <!--<gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}" disabled="{{active}}"></gl-combobox>-->
-                        </gl-grid-col>
-                        [[checkValue(item.field.id,index)]]
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
-                            <div id="combobox-[[index]]" hidden>
-                                <gl-form-dropdown-menu style="margin-top:15px;width:100%;">
-                                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.value_show}}">
-                                        <template is="dom-repeat" items="{{item.field.data}}">
-                                            <paper-item value="{{item.id}}">{{item.name}}</paper-item>
+                        <template is="dom-if" if={{isEnabled}}>
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                                <gl-form-dropdown-menu style="margin-top: 15px" disabled="{{active}}">
+                                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
+                                        <template is="dom-repeat" items="{{item.itemField}}">
+                                            <paper-item value="{{item}}">{{item.label}}</paper-item>
                                         </template>
                                     </paper-listbox>
                                 </gl-form-dropdown-menu>
-                                <!--<gl-combobox id="value-combo-[[index]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}" disabled="{{active}}"></gl-combobox>-->
-                            </div>
-                            <div id="input-[[index]]" hidden>
-                                <gl-form-input value="{{item.value_show}}" disabled="{{active}}"></gl-form-input>
-                            </div>
-                        </gl-grid-col>
-                        <div hidden="{{active}}">
-                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                                <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
+                                <!--<gl-combo-box id="name-[[index]]" on-value-changed="setCondition" id="[[index]]"  item-label-path="label" item-value-path="id" items="[[ee.0]].[[index]]"
+                                value="{{item.field}}" disabled="{{active}}"></gl-combo-box>-->
                             </gl-grid-col>
-                        </div>
+
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                                <gl-form-dropdown-menu style="margin-top: 15px" disabled="{{active}}">
+                                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.logic_show}}">
+                                        <template is="dom-repeat" items="{{item.field.conditions}}">
+                                            <paper-item value="{{item.symbol}}">{{item.name}}</paper-item>
+                                        </template>
+                                    </paper-listbox>
+                                </gl-form-dropdown-menu>
+                                <!--<gl-combo-box id="symbo-[[index]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}" disabled="{{active}}"></gl-combobox>-->
+                            </gl-grid-col>
+                            [[checkValue(item.field.id,index)]]
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
+                                <div id="combobox-[[index]]" hidden>
+                                    <gl-form-dropdown-menu style="margin-top:15px;width:100%;" disabled="{{active}}">
+                                        <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.value_show}}">
+                                            <template is="dom-repeat" items="{{item.field.data}}">
+                                                <paper-item value="{{item.id}}">{{item.name}}</paper-item>
+                                            </template>
+                                        </paper-listbox>
+                                    </gl-form-dropdown-menu>
+                                    <!--<gl-combobox id="value-combo-[[index]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}" disabled="{{active}}"></gl-combobox>-->
+                                </div>
+                                <div id="input-[[index]]" hidden>
+                                    <gl-form-input disabled="{{active}}" value="{{item.value_show}}"></gl-form-input>
+                                </div>
+                            </gl-grid-col>
+                            <div hidden="{{active}}">
+                                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
+                                    <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
+                                </gl-grid-col>
+                            </div>
                         </template>
                     </gl-grid-row>
                 </template>
@@ -139,9 +134,6 @@
             </paper-material>
 
         </div>
-
-
-
 
         <template is="dom-if" if="{{tableStatus}}">
             <div class="horizontal end-justified layout">
@@ -183,7 +175,10 @@
                 },
                 data: {
                     statePath: 'welfare.dataSelect',
-                    type: Object
+                    type: Object,
+                    value: {
+                        condition: []
+                    }
                 },
                 active: {
                     type: Boolean,
@@ -192,59 +187,66 @@
                 employees: {
                     statePath: 'welfare.employees'
                 },
-                isEnabled :{
-                    type:Boolean,
-                    value:false
+                isEnabled: {
+                    type: Boolean,
+                    value: false
                 }
             },
-            changeisEnabled(){
+            changeisEnabled() {
                 this.isEnabled = false
             },
             checkSelected: function (val, index) {
                 this.async(() => {
-                    var data = this.condition;
-                    var use = this.data.condition.map((item) => {
-                        return item.field
-                    })
-                    var diff = data.filter((item) => {
-                        return use.indexOf(item) < 0;
-                    })
-                    for (var i in this.data.condition) {
-                        for (var ii in data) {
-                            if (data[ii].id == this.data.condition[i].field) {
-                                this.data.condition[i].field = data[ii]
+                    try {
+                        var data = this.condition;
+                        var use = this.data.condition.map((item) => {
+                            return item.field
+                        })
+                        var diff = data.filter((item) => {
+                            return use.indexOf(item) < 0;
+                        })
+                        for (var i in this.data.condition) {
+                            for (var ii in data) {
+                                if (data[ii].id == this.data.condition[i].field) {
+                                    this.data.condition[i].field = data[ii]
+                                }
                             }
+                            var a = [];
+                            for (var ii in diff) {
+                                a.push(diff[ii]);
+                            }
+                            a.push(this.data.condition[i].field);
+                            this.set('data.condition.' + i + '.itemField', a);
                         }
-                        var a = [];
-                        for (var ii in diff) {
-                            a.push(diff[ii]);
-                        }
-                        a.push(this.data.condition[i].field);
-                        this.set('data.condition.' + i + '.itemField', a);
+                        // console.log(this.data.condition);
+                        // console.log(this.isEnabled)
+                        this.isEnabled = true
+                    } catch (error) {
+
                     }
-                    console.log(this.data.condition);
-                    console.log(this.isEnabled)
-                    this.isEnabled = true
                 }, 1);
             },
             checkValue: function (e, index) {
-                try {
-                    var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
-                    var id = e;
-                    var value = this.condition.filter((val) => val.id == id)[0]
-                    // combobox.items = value.data;
-                    if (value.data.length == 0) {
-                        Polymer.dom(this.root).querySelector('#input-' + index).hidden = false;
-                        Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = true;
-                    } else {
-                        Polymer.dom(this.root).querySelector('#input-' + index).hidden = true;
-                        Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = false;
-                        // combobox.items = [];
-                        combobox.items = value.data;
-                    }
-                } catch (error) {
+                this.async(() => {
+                    try {
+                        // var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
+                        var id = e;
+                        var value = this.condition.filter((val) => val.id == id)[0]
+                        // combobox.items = value.data;
+                        // console.log(value.data.length);
+                        if (value.data.length == 0) {
+                            Polymer.dom(this.root).querySelector('#input-' + index).hidden = false;
+                            Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = true;
+                        } else {
+                            Polymer.dom(this.root).querySelector('#input-' + index).hidden = true;
+                            Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = false;
+                            // combobox.items = [];
+                            combobox.items = value.data;
+                        }
+                    } catch (error) {
 
-                }
+                    }
+                }, 1);
             },
             add_condition: function () {
                 var data = this.condition;
@@ -322,7 +324,7 @@
                     ]
                 };
                 this.tableStatus = false;
-                 this.isEnabled = false
+                this.isEnabled = false
             },
             cancle: function () {
                 this.set('disabled', this.active = true);

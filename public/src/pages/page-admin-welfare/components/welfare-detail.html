@@ -6,13 +6,11 @@
             /*background-color: var(--gl-white-color);*/
             padding: 0px;
         }
-        
         .table-detail {
             margin: auto;
             width: 80%;
             padding: 20px;
         }
-        
         table.gl-table-default {
             width: 100%;
             border: 1px solid #ddd;
@@ -103,17 +101,19 @@
             },
             _edit: function (e) {
                 // console.log(e.currentTarget.data);
-                this.fire('toast',{status:'load',text:'กำลังค้นหาข้อมูล...'})
+                this.fire('toast', { status: 'load', text: 'กำลังค้นหาข้อมูล...' })
                 var id = e.currentTarget.data.id;
                 this.dispatchAction('WELFARE_DATA_SELECT', id)
                 this.dispatchAction('CONDITION_LIST')
-                
-                this.fire('toast',{status:'success',text:'ค้นหาสำเร็จ',callback(){
-                    
-                    console.log(0)
-                    console.log(this.pages)
-                }});
-                console.log(this.$$('welfare-edit').changeisEnabled())
+
+                this.fire('toast', {
+                    status: 'success', text: 'ค้นหาสำเร็จ', callback() {
+
+                        // console.log(0)
+                        // console.log(this.pages)
+                    }
+                });
+                // console.log(this.$$('welfare-edit').changeisEnabled())
                 this.pages = '2';
             },
             _delete: function (e) {
@@ -122,8 +122,8 @@
                     text: 'คุณต้องการลบเงื่อนไขนี้ใช่หรือไม่ ?',
                     confirmed: this._confirmToast.bind(this),
                     datas: {
-                        id : e.currentTarget.data.id,
-                        group_id : e.currentTarget.data.group_id
+                        id: e.currentTarget.data.id,
+                        group_id: e.currentTarget.data.group_id
                     }
                 });
             },
