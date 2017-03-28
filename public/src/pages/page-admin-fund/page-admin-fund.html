@@ -49,12 +49,12 @@
                         <thead class="table-head">
                             <tr>
                                 <th style="text-align:center;">#</th>
-                                <th>ชื่อนโยบาย</th>
+                                <th style="width:38%;">ชื่อนโยบาย</th>
                                 <th style="text-align:center">จำนวนสมาชิก(คน)</th>
                                 <th style="text-align:center">มูลค่าต่อหน่วย</th>
                                 <th style="text-align:center">ผลตอบแทน</th>
                                 <th style="text-align:center">มูลค่าทรัพสิน</th>
-                                <th style="text-align:center; width: 15%;">จัดการ</th>
+                                <th style="text-align:center; width: 11%;">จัดการ</th>
                             </tr>
                         </thead>
                         <tbody class="table-body">  
@@ -67,10 +67,10 @@
                                 <tr style="cursor:pointer;">
                                     <td style="text-align:center">[[cont(index)]]</td>
                                     <td>[[item.rvd_name]]</td>
-                                    <td style="text-align:center">[[item.count_emp]]</td>
-                                    <td style="text-align:center">[[item.unit_value]]</td>
-                                    <td style="text-align:center">[[item.reward]]</td>
-                                    <td style="text-align:center">[[item.property_value]]</td>
+                                    <td style="text-align:right">[[item.count_emp]]</td>
+                                    <td style="text-align:right">[[item.unit_value]]</td>
+                                    <td style="text-align:right">[[item.reward]]</td>
+                                    <td style="text-align:right">[[item.property_value]]</td>
                                     <td style="text-align:center">
                                         <paper-icon-button icon="create" id="[[item.id]]" on-tap="edit"></paper-icon-button>
                                         <paper-icon-button icon="delete" id="[[item.id]]" on-tap="confirmDelete"></paper-icon-button>

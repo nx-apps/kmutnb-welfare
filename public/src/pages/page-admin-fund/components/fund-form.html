@@ -77,11 +77,11 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-input required  id="form" disabled="{{editForm}}" label="จำนวนสมาชิก" value="{{data.count_emp}}"></paper-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="จำนวนสมาชิก" value="{{data.count_emp}}" placeholder="จำนวนสมาชิก" allowed-pattern="[0-9]"></paper-input>
                     </gl-grid-col>
                     <div style="margin: 10px;"></div>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-input required  id="form" disabled="{{editForm}}" label="มูลค่าต่อหน่อย" value="{{data.unit_value}}"></paper-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="มูลค่าต่อหน่อย" value="{{data.unit_value}}" placeholder="มูลค่าต่อหน่อย" allowed-pattern="[0-9,.]"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <!--<gl-grid-row width="{{getWidth}}">
@@ -93,11 +93,11 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-input required  id="form" disabled="{{editForm}}" label="ผลตอบแทน" value="{{data.reward}}"></paper-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="ผลตอบแทน" value="{{data.reward}}" placeholder="ผลตอบแทน" allowed-pattern="[0-9,.]"></paper-input>
                     </gl-grid-col>
                     <div style="margin: 10px;"></div>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-input required  id="form" disabled="{{editForm}}" label="มูลค่าทรัพสิน" value="{{data.property_value}}"></paper-input>
+                        <paper-input required  id="form" disabled="{{editForm}}" label="มูลค่าทรัพสิน" value="{{data.property_value}}" placeholder="มูลค่าทรัพสิน" allowed-pattern="[0-9,.]"></paper-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <!--<gl-grid-row width="{{getWidth}}">
