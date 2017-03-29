@@ -306,79 +306,55 @@ export function usersAction(store) {
                     console.log(err);
                 })
         },
-        USER_RVP_SIGNUP(data,pid) {
-            this.fire('toast', {
-                status: 'openDialog',
-                text: 'ต้องการสมัครกองทุนนี้ใช่หรือไม่ ?',
-                confirmed: (result) => {
-                    if (result == true) {
-                        this.fire('toast', { status: 'load' })
-                        axios.post(`./rvd/signup/`, data)
-                            .then(res => {
-                                if (res.data.insert_status) {
-                                    console.log(1);
-                                    this.fire('toast', {
-                                        status: 'success', text: 'สมัครสำเร็จ',
-                                        callback: () => {
-                                            this.dispatchAction('USER_RVP_FUND', pid);
-                                        }
-                                    });
-                                } else {
-                                    console.log(2);
-                                    this.fire('toast', {
-                                        status: 'error', text: 'ไม่สามารถสมัครได้',
-                                        callback: () => {
-                                        }
-                                    });
-                                }
-                            })
-                            .catch(err => {
-                                console.log(err);
-                            })
+        USER_RVP_SIGNUP(data, pid) {
+            this.fire('toast', { status: 'load' })
+            axios.post(`./rvd/signup/`, data)
+                .then(res => {
+                    if (res.data.insert_status) {
+                        console.log(1);
+                        this.fire('toast', {
+                            status: 'success', text: 'สมัครสำเร็จ',
+                            callback: () => {
+                                this.dispatchAction('USER_RVP_FUND', pid);
+                            }
+                        });
+                    } else {
+                        console.log(2);
+                        this.fire('toast', {
+                            status: 'error', text: 'ไม่สามารถสมัครได้',
+                            callback: () => {
+                            }
+                        });
                     }
-                }
-            })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
 
         },
-        USER_RVP_LEAVE_FUND(fid,pid) {
-            this.fire('toast', {
-                status: 'openDialog',
-                text: 'ต้องการออกจากกองทุนใช่หรือไม่ ? (ลาออกจากงานด้วย)',
-                confirmed: (result) => {
-                    if (result == true) {
-                        axios.put(`./rvd/signup/leave/`, fid)
-                            .then(res => {
-                                this.fire('toast', {
-                                        status: 'success', text: 'บันทึกสำเร็จ',
-                                        callback: () => {
-                                            this.dispatchAction('USER_RVP_FUND', pid);
-                                        }
-                                    });
-                            })
-                            .catch(err => {
-                                console.log(err);
-                            })
-                    }
-                }
-            })
+        USER_RVP_LEAVE_FUND(fid, pid) {
+            axios.put(`./rvd/signup/leave/`, fid)
+                .then(res => {
+                    this.fire('toast', {
+                        status: 'success', text: 'บันทึกสำเร็จ',
+                        callback: () => {
+                            this.dispatchAction('USER_RVP_FUND', pid);
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         },
-        USER_RVP_FUND_OUT(fid,pid) {
-            this.fire('toast', {
-                status: 'openDialog',
-                text: 'ต้องการออกจากกองทุนใช่หรือไม่ ? (ออกจากกองทุนอย่างเดียว)',
-                confirmed: (result) => {
-                    if (result == true) {
-                        axios.put(`./rvd/signup/fund/out/`, fid)
-                            .then(res => {
-                                console.log(res)
-                                this.dispatchAction('USER_RVP_FUND', pid);
-                            })
-                            .catch(err => {
-                                console.log(err);
-                            })
-                    }
-                }
-            })
+        USER_RVP_FUND_OUT(fid, pid) {
+            axios.put(`./rvd/signup/fund/out/`, fid)
+                .then(res => {
+                    console.log(res)
+                    this.dispatchAction('USER_RVP_FUND', pid);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
 
         },
     },

@@ -78,15 +78,22 @@
                                 <td>[[item.description]]</td>
                                 <td>[[toThaiDate(item.date_approve)]]</td>
                                 <td>
-                                    
+
                                     <template is="dom-if" if={{isActive(item.status)}}>
-                                        <paper-button raised class="gl-btn-info" data="[[item]]" on-tap="fundOut">ออกจากกองทุน</paper-button>
-                                    <paper-button raised class="gl-btn-danger" data="[[item]]" on-tap="leaveWork">เปลี่ยนกองทุน/ลาออก</paper-button>
+                                        <!--<paper-button raised class="gl-btn-info" data="[[item]]" on-tap="fundOut">ออกจากกองทุน</paper-button>
+                                        <paper-button raised class="gl-btn-danger" data="[[item]]" on-tap="leaveWork">เปลี่ยนกองทุน</paper-button>-->
+                                        <paper-menu-button>
+                                            <paper-icon-button icon="settings" class="dropdown-trigger"></paper-icon-button>
+                                            <paper-menu class="dropdown-content">
+                                                <paper-item data="[[item]]" on-tap="fundOut">ออกจากกองทุน</paper-item>
+                                                <paper-item data="[[item]]" on-tap="leaveWork">เปลี่ยนกองทุน</paper-item>
+                                            </paper-menu>
+                                        </paper-menu-button>
                                     </template>
                                     <template is="dom-if" if={{!isActive(item.status)}}>
                                         -
                                     </template>
-                                    
+
                                 </td>
                             </tr>
                         </template>
@@ -117,35 +124,63 @@
                 },
             },
             regFund(e) {
-                console.log(this.personalId);
-                console.log(e.currentTarget.data.id);
-                let obj = {
-                    personal_id: this.personalId,
-                    rvd_id: e.currentTarget.data.id
-                }
-                this.dispatchAction('USER_RVP_SIGNUP', obj,this.personalId);
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการสมัครกองทุนนี้ใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            console.log(this.personalId);
+                            console.log(e.currentTarget.data.id);
+                            let obj = {
+                                personal_id: this.personalId,
+                                rvd_id: e.currentTarget.data.id
+                            }
+                            this.dispatchAction('USER_RVP_SIGNUP', obj, this.personalId);
+                            // this.dispatchAction('USER_RVP_FUND', this.personalId);
+                        }
+                    }
+                })
+
 
                 // this.dispatchAction('USER_RVP_FUND', this.personalId);
                 // this.dispatchAction('USER_RVP_SIGNUP',obj)
                 // this.set('fundSeleted',e.currentTarget.id)
             },
             leaveWork(e) {
-                console.log(e.currentTarget.data.id);
-                let obj = {
-                    id: e.currentTarget.data.id
-                }
-                this.dispatchAction('USER_RVP_LEAVE_FUND', obj,this.personalId);
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการเปลี่ยนกองทุนใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            console.log(e.currentTarget.data.id);
+                            let obj = {
+                                id: e.currentTarget.data.id
+                            }
+                            this.dispatchAction('USER_RVP_LEAVE_FUND', obj, this.personalId);
+                        }
+                    }
+                })
+
                 // this.dispatchAction('USER_RVP_FUND', this.personalId);
             },
             fundOut(e) {
-                console.log(e.currentTarget.data.id);
-                let obj = {
-                    id: e.currentTarget.data.id
-                }
-                this.dispatchAction('USER_RVP_FUND_OUT', obj,this.personalId);
-                // this.dispatchAction('USER_RVP_FUND', this.personalId);
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการออกจากกองทุนใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            console.log(e.currentTarget.data.id);
+                            let obj = {
+                                id: e.currentTarget.data.id
+                            }
+                            this.dispatchAction('USER_RVP_FUND_OUT', obj, this.personalId);
+                            // this.dispatchAction('USER_RVP_FUND', this.personalId);
+                        }
+                    }
+                })
+
             },
-            isActive(active){
+            isActive(active) {
 
                 return active == 'active'
             }
