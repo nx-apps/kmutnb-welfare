@@ -73,7 +73,8 @@ exports.signup = function (req, res) {
         })
 }
 exports.list = function (req, res) {
-    r.db('welfare').table('rvd_signup').getAll('sign', { index: 'status' })
+    console.log(req.params.status);
+    r.db('welfare').table('rvd_signup').getAll(req.params.status, { index: 'status' })
         .eqJoin('personal_id', r.db('welfare').table('employee'), { index: 'personal_id' })
         .without({ right: ['id'] })
         .zip()
@@ -208,6 +209,9 @@ exports.leave = function (req,res) {
     var r = req.r
     r.db('welfare').table('rvd_signup')
     .get(req.body.id)
+    .update(
+        {"status":  "leave"}
+    )
     .run()
         .then(function (result) {
             res.json(result);
