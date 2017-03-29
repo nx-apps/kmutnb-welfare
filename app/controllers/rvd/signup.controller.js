@@ -1,6 +1,7 @@
 exports.getrvd = function (req, res) {
     var r = req.r
     r.db('welfare').table('rvd_signup').getAll(req.params.pid, { index: 'personal_id' })
+        .filter({ status: "active" })
         .eqJoin('rvd_id', r.db('welfare').table('rvd'))
         .without({ right: ['id', 'status'] })
         .zip()
