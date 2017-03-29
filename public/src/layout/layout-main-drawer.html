@@ -1,113 +1,151 @@
-
 <link rel="import" href="./../../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="./../../bower_components/paper-item/paper-icon-item.html">
 <link rel="import" href="./../../bower_components/iron-icon/iron-icon.html">
 
 <dom-module id="layout-main-drawer">
     <template>
-    <style>
-        *{
-            font-family: 'rsuregular', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-        app-toolbar{
-            color: white;
-            background-color: #FF753F;
-            font-size: 22px;
-            /*user-drag: none; 
+        <style>
+            * {
+                font-family: 'rsuregular', sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+            
+            app-toolbar {
+                color: white;
+                background-color: #FF753F;
+                font-size: 22px;
+                /*user-drag: none; 
             user-select: none;
             -moz-user-select: none;
             -webkit-user-drag: none;
             -webkit-user-select: none;
             -ms-user-select: none;*/
-        }
-        iron-image,iron-icon{
-            padding-right: 10px;
-        }
-        paper-icon-item{
-            font-family: 'CSChatThaiUI', sans-serif;
-        }
-        paper-icon-item:hover{
-            background-color: #F1F1F1;
-            cursor:pointer;
-            font-weight:bold;
-        }
-        paper-icon-item>div{
-            position: absolute;
-            top: 4px;
-            right: 10px;
-        }
-
-        paper-icon-item[selected]{
-            background-color: #DDD;
-        }
-
-        .mymask {
-            width: 32px;
-            height: 32px;
-            mask: url(#mymask);
-            -webkit-mask-box-image: url(/images/icon/default/app-icon-32.png);
-        }
-    </style>
+            }
+            
+            iron-image,
+            iron-icon {
+                padding-right: 10px;
+            }
+            
+            paper-icon-item {
+                font-family: 'CSChatThaiUI', sans-serif;
+            }
+            
+            paper-icon-item:hover {
+                background-color: #F1F1F1;
+                cursor: pointer;
+                font-weight: bold;
+            }
+            
+            paper-icon-item>div {
+                position: absolute;
+                top: 4px;
+                right: 10px;
+            }
+            
+            paper-icon-item[selected] {
+                background-color: #DDD;
+            }
+            
+            .mymask {
+                width: 32px;
+                height: 32px;
+                mask: url(#mymask);
+                -webkit-mask-box-image: url(/images/icon/default/app-icon-32.png);
+            }
+            .submenu {
+                    margin-left: 30px;
+            }
+        </style>
         <div class="menu">
-                
-                <paper-material elevation="1">
-                    <app-toolbar>
 
-                        <div style="background-color:#FFFFFF; margin-right: 10px" class="mymask"></div>
-                        <svg height="0" width="0">
+            <paper-material elevation="1">
+                <app-toolbar>
+
+                    <div style="background-color:#FFFFFF; margin-right: 10px" class="mymask"></div>
+                    <svg height="0" width="0">
                         <mask id="mymask">
                             <image id="img" xlink:href="/images/icon/default/app-icon-32.png" x="0" y="0" height="50px" width="50px" />
                         </mask>
-                        </svg>
-                        <!--<iron-icon icon="home" item-icon></iron-icon>-->
-                            ระบบสวัสดิการ
-                    </app-toolbar>
-                </paper-material>
-				<div role="listbox">
+                    </svg>
+                    <!--<iron-icon icon="home" item-icon></iron-icon>-->
+                    ระบบสวัสดิการ
+                </app-toolbar>
+            </paper-material>
+            <div role="listbox">
+                <paper-menu>
                     <template is="dom-repeat" items="{{listMenu}}">
-                        <paper-icon-item on-tap="selectPage" path$="{{item.path}}" focused  index="{{index}}" selected$="{{_checkSelect(path,item.path)}}">
-                            <iron-icon icon="chevron-right" item-icon></iron-icon>
-                            [[item.name]]
-                            <div hidden$="{{!item.loading}}">
-                                <paper-spinner active></paper-spinner>
-                            </div>
-                        </paper-icon-item>
+                        <paper-submenu>
+                            <paper-icon-item on-tap="selectPage" class="menu-trigger" data="[[item]]" path$="{{item.path}}" focused index="{{index}}"
+                                selected$="{{_checkSelect(path,item.path)}}">
+                                <iron-icon icon="chevron-right" item-icon></iron-icon>
+                                [[item.name]]
+                                <div hidden$="{{!item.loading}}">
+                                    <paper-spinner active></paper-spinner>
+                                </div>
+                            </paper-icon-item>
+                            <paper-menu class="menu-content">
+                                <template is="dom-repeat" items="{{item.submenu}}">
+                                    <paper-icon-item on-tap="selectPage" class="submenu" data="[[item]]" path$="{{item.path}}" focused index="{{index}}" selected$="{{_checkSelect(path,item.path)}}">
+                                        <iron-icon icon="chevron-right" item-icon></iron-icon>
+                                        [[item.name]]
+                                        <div hidden$="{{!item.loading}}">
+                                            <paper-spinner active></paper-spinner>
+                                        </div>
+                                    </paper-icon-item>
+                                </template>
+                            </paper-menu>
+                        </paper-submenu>
                     </template>
-                    
-				</div>
-			</div>
+                </paper-menu>
+                <!--<template is="dom-repeat" items="{{listMenu}}">
+                    <paper-icon-item on-tap="selectPage" data="[[item]]" path$="{{item.path}}" focused index="{{index}}" selected$="{{_checkSelect(path,item.path)}}">
+                        <iron-icon icon="chevron-right" item-icon></iron-icon>
+                        [[item.name]]
+                        <div hidden$="{{!item.loading}}">
+                            <paper-spinner active></paper-spinner>
+                        </div>
+
+                    </paper-icon-item>
+                </template>-->
+
+            </div>
+        </div>
     </template>
     <script>
         Polymer({
             is: 'layout-main-drawer',
-            behaviors:[ReduxBehavior],
-            properties:{
-                user:{
-                    statePath:'auth.user'
+            behaviors: [ReduxBehavior],
+            properties: {
+                user: {
+                    statePath: 'auth.user'
                 },
-                listMenu:{
-                    type:Array,
-                    value:[
+                listMenu: {
+                    type: Array,
+                    value: [
                         {
                             name: 'ผู้ใช้งาน',
                             path: '/user-welfare/411e54dd-b808-4d4d-9984-201b68c70dff',
-                            role: ''
+                            role: '',
+                            submenu: []
                         },
                         {
                             name: 'จัดการพนักงาน',
                             path: '/list-user',
-                            role: ''
+                            role: '',
+                            submenu: []
                         },
                         {
                             name: 'จัดการคำขอใช้',
                             path: '/admin-approve',
-                            role: ''
+                            role: '',
+                            submenu: []
                         },
                         {
-                            name:'จัดการกองทุน',
+                            name: 'จัดการกองทุน',
                             path: '/admin-fund',
-                            role: ''
+                            role: '',
+                            submenu: []
                         },
                         // {
                         //     name: 'จัดการ Module',
@@ -117,22 +155,36 @@
                         {
                             name: 'จัดการข้อมูล',
                             path: '/back-end',
-                            role: ''
+                            role: '',
+                            submenu: []
                         },
                         {
                             name: 'จัดการสวัสดิการ',
                             path: '/admin-welfare',
-                            role: ''
+                            role: '',
+                            submenu: [
+                                {
+                                    name: 'เพิ่ม',
+                                    path: '/admin-employee',
+                                    submenu: []
+                                },
+                                {
+                                    name: 'เพิ่ม2',
+                                    path: '/admin-2',
+                                    submenu: []
+                                }
+                            ]
                         },
                         {
                             name: 'รายชื่อผู้ได้สวัสดิการ',
                             path: '/admin-employee',
-                            role: ''
+                            role: '',
+                            submenu: []
                         }
                     ]
                 },
-                sendElement:{
-                    type:'Boolean',
+                sendElement: {
+                    type: 'Boolean',
                     value: false
                 }
             },
@@ -146,38 +198,64 @@
             //         };
             //     }
             // },
-            selectPage:function(e){
-                if((('/'+this.path) != e.currentTarget.getAttribute('path')) && (e.currentTarget.getAttribute('path')!='')){
-                    this.set('listMenu.'+e.currentTarget.index+'.loading',true);
-                    if(!this.sendElement){
-                        this.fire('send-element-layout-main-drawer',this);
-                        this.sendElement = true;
-                    }
-                    this.fire('nylon-change-page',{
-                        path:e.currentTarget.getAttribute('path') 
-                    });
-                }else{
-                    this.fire('close-drawer');
-                }
-
-                this.async(
-                    ()=>{
+            selectPage: function (e) {
+                console.log(e.currentTarget.data.submenu);
+                console.log(e.currentTarget.data.submenu.length < 1);
+                if (e.currentTarget.data.submenu.length < 1) {
+                    if ((('/' + this.path) != e.currentTarget.getAttribute('path')) && (e.currentTarget.getAttribute('path') != '')) {
+                        this.set('listMenu.' + e.currentTarget.index + '.loading', true);
+                        if (!this.sendElement) {
+                            this.fire('send-element-layout-main-drawer', this);
+                            this.sendElement = true;
+                        }
+                        this.fire('nylon-change-page', {
+                            path: e.currentTarget.getAttribute('path')
+                        });
+                    } else {
                         this.fire('close-drawer');
-                        this._loaded();
                     }
-                ,'500')
-                
+
+                    this.async(
+                        () => {
+                            this.fire('close-drawer');
+                            this._loaded();
+                        }
+                        , '500')
+
+                }
+                // console.log(e.currentTarget.class);
+                // menu-trigger
+                // if((('/'+this.path) != e.currentTarget.getAttribute('path')) && (e.currentTarget.getAttribute('path')!='')){
+                //     this.set('listMenu.'+e.currentTarget.index+'.loading',true);
+                //     if(!this.sendElement){
+                //         this.fire('send-element-layout-main-drawer',this);
+                //         this.sendElement = true;
+                //     }
+                //     this.fire('nylon-change-page',{
+                //         path:e.currentTarget.getAttribute('path') 
+                //     });
+                // }else{
+                //     this.fire('close-drawer');
+                // }
+
+                // this.async(
+                //     ()=>{
+                //         this.fire('close-drawer');
+                //         this._loaded();
+                //     }
+                // ,'500')
+
             },
-            _loaded:function(){
-                this.async(()=>{
-                    this.listMenu.map((item,i)=>{
-                        this.set('listMenu.'+i+'.loading',false);
+            _loaded: function () {
+                this.async(() => {
+                    this.listMenu.map((item, i) => {
+                        this.set('listMenu.' + i + '.loading', false);
                     });
                     this.fire('close-drawer');
-                },200)
-                
+                }, 200)
+
             },
-            _checkSelect:function(route,itemRoute){
+            _checkSelect: function (route, itemRoute) {
                 return (route == itemRoute.split('/')[1]);
             }
         });
