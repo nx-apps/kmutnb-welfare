@@ -124,18 +124,19 @@
                 },
             },
             regFund(e) {
+                console.log(this.personalId);
+                let personalId = this.personalId
+                let obj = {
+                    personal_id: this.personalId,
+                    rvd_id: e.currentTarget.data.id
+                }
                 this.fire('toast', {
                     status: 'openDialog',
                     text: 'ต้องการสมัครกองทุนนี้ใช่หรือไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
-                            console.log(this.personalId);
-                            console.log(e.currentTarget.data.id);
-                            let obj = {
-                                personal_id: this.personalId,
-                                rvd_id: e.currentTarget.data.id
-                            }
-                            this.dispatchAction('USER_RVP_SIGNUP', obj, this.personalId);
+
+                            this.dispatchAction('USER_RVP_SIGNUP', obj, personalId);
                             // this.dispatchAction('USER_RVP_FUND', this.personalId);
                         }
                     }
@@ -147,16 +148,18 @@
                 // this.set('fundSeleted',e.currentTarget.id)
             },
             leaveWork(e) {
+                let personalId = this.personalId
+                let obj = {
+                    personal_id: this.personalId,
+                    rvd_id: e.currentTarget.data.id
+                }
                 this.fire('toast', {
                     status: 'openDialog',
                     text: 'ต้องการเปลี่ยนกองทุนใช่หรือไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
-                            console.log(e.currentTarget.data.id);
-                            let obj = {
-                                id: e.currentTarget.data.id
-                            }
-                            this.dispatchAction('USER_RVP_LEAVE_FUND', obj, this.personalId);
+                            
+                            this.dispatchAction('USER_RVP_LEAVE_FUND', obj, personalId);
                         }
                     }
                 })
@@ -164,6 +167,11 @@
                 // this.dispatchAction('USER_RVP_FUND', this.personalId);
             },
             fundOut(e) {
+                let personalId = this.personalId
+                let obj = {
+                    personal_id: this.personalId,
+                    rvd_id: e.currentTarget.data.id
+                }
                 this.fire('toast', {
                     status: 'openDialog',
                     text: 'ต้องการออกจากกองทุนใช่หรือไม่ ?',
@@ -173,7 +181,7 @@
                             let obj = {
                                 id: e.currentTarget.data.id
                             }
-                            this.dispatchAction('USER_RVP_FUND_OUT', obj, this.personalId);
+                            this.dispatchAction('USER_RVP_FUND_OUT', obj, personalId);
                             // this.dispatchAction('USER_RVP_FUND', this.personalId);
                         }
                     }
