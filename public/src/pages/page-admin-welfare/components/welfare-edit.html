@@ -58,20 +58,18 @@
                         <gl-form-input label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน" disabled="{{active}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
-
                 <template is="dom-repeat" items="{{data.condition}}">
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
                             <div class="label_condition">เงื่อนไข</div>
                         </gl-grid-col>
-                        [[checkSelected(item.field, index)]]
-                        <template is="dom-if" if={{isEnabled}}>
+                        [[conditionManage(item.field.id,index)]]
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                                 <gl-form-dropdown-menu style="margin-top: 15px" disabled="{{active}}">
-                                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
-                                        <template is="dom-repeat" items="{{item.itemField}}">
-                                            <paper-item value="{{item}}">{{item.label}}</paper-item>
+                                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field.id}}">
+                                        <template is="dom-repeat" items="{{item.itemField}}" as="item2">
+                                            <paper-item value="{{item2.id}}">{{item2.label}}</paper-item>
                                         </template>
                                     </paper-listbox>
                                 </gl-form-dropdown-menu>
@@ -110,7 +108,7 @@
                                     <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
                                 </gl-grid-col>
                             </div>
-                        </template>
+                        <!--</template>-->
                     </gl-grid-row>
                 </template>
                 <div class="horizontal center-justified layout">
@@ -195,67 +193,63 @@
             changeisEnabled() {
                 this.isEnabled = false
             },
-            checkSelected: function (val, index) {
-                this.async(() => {
-                    try {
-                        var data = this.condition;
-                        var use = this.data.condition.map((item) => {
-                            return item.field
-                        })
-                        var diff = data.filter((item) => {
-                            return use.indexOf(item) < 0;
-                        })
-                        for (var i in this.data.condition) {
-                            for (var ii in data) {
-                                if (data[ii].id == this.data.condition[i].field) {
-                                    this.data.condition[i].field = data[ii]
-                                }
-                            }
-                            var a = [];
-                            for (var ii in diff) {
-                                a.push(diff[ii]);
-                            }
-                            a.push(this.data.condition[i].field);
-                            this.set('data.condition.' + i + '.itemField', a);
-                        }
-                        // console.log(this.data.condition);
-                        // console.log(this.isEnabled)
-                        this.isEnabled = true
-                    } catch (error) {
-
-                    }
-                }, 1);
-            },
             checkValue: function (e, index) {
                 this.async(() => {
                     try {
-                        // var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
-                        var id = e;
-                        var value = this.condition.filter((val) => val.id == id)[0]
-                        // combobox.items = value.data;
-                        // console.log(value.data.length);
-                        if (value.data.length == 0) {
-                            Polymer.dom(this.root).querySelector('#input-' + index).hidden = false;
-                            Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = true;
-                        } else {
-                            Polymer.dom(this.root).querySelector('#input-' + index).hidden = true;
-                            Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = false;
-                            // combobox.items = [];
-                            combobox.items = value.data;
+                        if (e != "") {
+                            // var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
+                            var id = e;
+                            var value = this.condition.filter((val) => val.id == id)[0]
+                            // combobox.items = value.data;
+                            // console.log(value.data.length);
+                            if (value.data.length == 0) {
+                                Polymer.dom(this.root).querySelector('#input-' + index).hidden = false;
+                                Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = true;
+                            } else {
+                                Polymer.dom(this.root).querySelector('#input-' + index).hidden = true;
+                                Polymer.dom(this.root).querySelector('#combobox-' + index).hidden = false;
+                                // combobox.items = [];
+                                combobox.items = value.data;
+                            }
                         }
+
                     } catch (error) {
 
                     }
                 }, 1);
             },
+            conditionManage: function (val, index) {
+                if (val != "") {
+                    var condition = this.condition;
+                    var use = this.data.condition.map((item) => {
+                        return item.field
+                    })
+                    var diff = condition.filter((item) => {
+                        return use.indexOf(item) < 0;
+                    })
+                    for (var x in this.data.condition) {
+                        var a = [];
+                        for (var i in diff) {
+                            a.push(diff[i]);
+                        }
+                        a.push(this.data.condition[x].field); //a
+                        // console.log('this.data.condition[', x, ']', this.data.condition[x]);
+                        this.set('data.condition.' + x + '.itemField', a);
+                        // console.log(this.data.condition[x].itemField);
+                        // console.log('x', x, this.data.condition[x]);
+                    }
+                }
+            },
             add_condition: function () {
-                var data = this.condition;
+                var condition = this.condition;
                 var use = this.data.condition.map((item) => {
                     return item.field
                 })
-                var diff = data.filter((item) => {
+                // console.log(use);
+                var diff = condition.filter((item) => {
                     return use.indexOf(item) < 0;
                 })
+                // console.log(diff);
                 this.push('data.condition', {
                     itemField: diff,
                     // itemLogic: '',
@@ -263,6 +257,39 @@
                     // itemValue: '',
                     // value_show: ''
                 })
+                // console.log(this.data.condition);
+            },
+            delete_condition: function (e) {
+                // console.log(e.target.index);
+                this.splice('data.condition', e.target.index, 1);
+                this.checkSelected();
+            },
+            back: function () {
+                this.fire('back');
+                this.set('disabled', this.active = true);
+                // this.data = {
+                //     condition: [
+                //         { field: '', logic: '', value: '' }
+                //     ]
+                // };
+                this.tableStatus = false;
+                this.isEnabled = false
+            },
+            cancle: function () {
+                this.set('disabled', this.active = true);
+                this.dispatchAction('WELFARE_DATA_SELECT', this.data.id)
+            },
+            _edit: function () {
+                this.set('disabled', this.active = false);
+            },
+            list_users: function () {
+                var id = this.data.id;
+                this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
+                this.tableStatus = true;
+            },
+            print: function () {
+                var id = this.data.id;
+                window.open('api/report/report1/' + id);
             },
             save: function () {
                 for (var i = 0; i < this.data.condition.length; i++) {
@@ -310,37 +337,6 @@
                 // console.log(this.data);
                 this.dispatchAction('WELFARE_EDIT', this.data)
                 this.set('disabled', this.active = true);
-            },
-            delete_condition: function (e) {
-                // console.log(e.target.index);
-                this.splice('data.condition', e.target.index, 1);
-            },
-            back: function () {
-                this.fire('back');
-                this.set('disabled', this.active = true);
-                this.data = {
-                    condition: [
-                        { field: '', logic: '', value: '' }
-                    ]
-                };
-                this.tableStatus = false;
-                this.isEnabled = false
-            },
-            cancle: function () {
-                this.set('disabled', this.active = true);
-                this.dispatchAction('WELFARE_DATA_SELECT', this.data.id)
-            },
-            _edit: function () {
-                this.set('disabled', this.active = false);
-            },
-            list_users: function () {
-                var id = this.data.id;
-                this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
-                this.tableStatus = true;
-            },
-            print: function () {
-                var id = this.data.id;
-                window.open('api/report/report1/' + id);
             }
         });
     </script>

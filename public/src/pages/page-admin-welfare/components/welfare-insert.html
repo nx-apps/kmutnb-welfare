@@ -153,7 +153,7 @@
             },
             checkValue: function (e, index) {
                 try {
-                    var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
+                    // var combobox = Polymer.dom(this.root).querySelector('#value-combo-' + index);
                     var id = e;
                     var value = this.condition.filter((val) => val.id == id)[0]
                     // combobox.items = value.data;
@@ -169,6 +169,23 @@
                 } catch (error) {
 
                 }
+            },
+            delete_condition: function (e) {
+                // console.log(e.target.index);
+                this.splice('data.condition', e.target.index, 1);
+                this.conditionManage();
+            },
+            back: function () {
+                this.fire('back');
+                this.data = {};
+                this.data = {
+                    condition: [
+                        //{ field: '', logic: '', value: '' }
+                    ]
+                };
+            },
+            count: function (val) {
+                return val + 1;
             },
             save: function () {
                 for (var i = 0; i < this.data.condition.length; i++) {
@@ -216,23 +233,6 @@
                 }
                 this.fire('back');
                 this.dispatchAction('WELFARE_INSERT', this.data);
-            },
-            delete_condition: function (e) {
-                // console.log(e.target.index);
-                this.splice('data.condition', e.target.index, 1);
-                this.conditionManage();
-            },
-            back: function () {
-                this.fire('back');
-                this.data = {};
-                this.data = {
-                    condition: [
-                        //{ field: '', logic: '', value: '' }
-                    ]
-                };
-            },
-            count: function (val) {
-                return val + 1;
             }
         });
     </script>
