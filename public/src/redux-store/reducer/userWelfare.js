@@ -177,18 +177,14 @@ export function userWelfareAction(store) {
 
                 })
         },
-        EMPLOYEE_GET_WELFARES(id, year = new Date().getFullYear()) {
-            // console.log(id, year);
-            // this.fire('toast', { status: 'load' });
-            axios.get(`./employee/${id}/${year}`)
+        EMPLOYEE_GET_WELFARES: function(id, year = new Date().getFullYear()) {
+            axios.get('./employee/'+id+'/'+year)
                 .then(res => {
-                    // console.log(res)
+                    // store.dispatch({ type: 'EMPLOYEE_GET_WELFARES', payload: res.data })
                     this.fire('toast', {
                         status: 'success', text: 'โหลดข้อมูลสำเร็จ',
                         callback: () => {
                             store.dispatch({ type: 'EMPLOYEE_GET_WELFARES', payload: res.data })
-                            // if (!otherFunction)
-                            //     this.$$('panel-right').open();
                         }
                     });
                 })
@@ -249,6 +245,8 @@ export function userWelfareAction(store) {
                                         status: 'success', text: 'บันทึกสำเร็จ',
                                         callback: () => {
                                             this.fire('select-page', 1);
+                                            this.EMPLOYEE_GET_WELFARES(newData.id);
+                                            this.LIST_EMPLOYEE_WELFARE(newData.id);
                                         }
                                     });
                                 })
