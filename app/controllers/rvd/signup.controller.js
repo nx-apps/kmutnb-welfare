@@ -1,15 +1,17 @@
 exports.getrvd = function (req, res) {
     var r = req.r
     r.db('welfare').table('rvd_signup').getAll(req.params.pid, { index: 'personal_id' })
-        .filter({ status: "active" })
+        // .filter({ status: "active" })
         .eqJoin('rvd_id', r.db('welfare').table('rvd'))
         .without({ right: ['id', 'status'] })
         .zip()
         .merge((date) => {
             return {
-                date_signup: date('date_signup').split('T')(0)
+                date_signup: date('date_signup').split('T')(0),
+                date_approve: date('date_approve').split('T')(0)
             }
         })
+        .orderBy('date_approve')
         .run()
         .then(function (result) {
             res.json(result);
@@ -22,6 +24,7 @@ exports.signup = function (req, res) {
     var r = req.r
     let data = {
         date_signup: new Date().toISOString(),
+        date_approve: new Date().toISOString(),
         status: 'sign'
     }
     Object.assign(req.body, data)
@@ -52,7 +55,9 @@ exports.signup = function (req, res) {
                                     return r.db('welfare').table('rvd_signup').insert(req.body)
                                 })
                         })
-                        , r.db('welfare').table('rvd_signup').insert(req.body))
+                        ,check('emp').filter({ status: "sign" }).count().gt(0).branch(false,
+                         r.db('welfare').table('rvd_signup').insert(req.body))
+                        )
                 )
             }
         })

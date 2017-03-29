@@ -3,66 +3,104 @@
 <link rel="import" href="./../../components/month-behavior.html">
 <dom-module id="fund-rvd">
     <template>
-        <style include="page-style  gl-size iron-flex iron-flex-factors iron-flex-alignment">
+        <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
              :host {
                 display: block;
             }
+            
+            .head-text {
+                font-size: var(--font-size-h4);
+                margin: 15px 15px 15px 15px;
+            }
+            
+            table.gl-table-default {
+                width: 98%;
+                border: 1px solid #ddd;
+                /*margin: 15px;*/
+            }
         </style>
-        <template is="dom-if" if={{!_ObIsHave(data)}}>
-            <table class="gl-table-default">
-                <thead class="table-head">
-                    <tr>
-                        <th>ลำดับ</th>
-                        <th>ชื่อ</th>
-                        <th>รายละเอียด</th>
-                        <th>วันที่สมัคร</th>
-                        <th>กระทำการ</th>
-                    </tr>
-                </thead>
-                <tbody class="table-body">
-                    <!-- ชื่อที่สมัคร -->
-                    <!--<template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>-->
-                    <template is="dom-repeat" items={{data}}>
+        <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+            <div class="head-text">
+                รายชื่อกองทุนสำรองเลี้ยงชีพ
+            </div>
+            <div class="content horizontal center-justified layout">
+                <table class="gl-table-default">
+                    <thead class="table-head">
                         <tr>
-                            <td>[[_Obindex(index)]]</td>
-                            <td>[[item.rvd_name]]</td>
-                            <td>[[item.description]]</td>
-                            <td>[[toThaiDate(item.date_signup)]]</td>
-                            <td>
-                                <paper-button raised class="gl-btn-info" data="[[item]]" on-tap="fundOut">ออกจากกองทุน</paper-button>
-                                <paper-button raised class="gl-btn-danger"  data="[[item]]"on-tap="leaveWork">ลาออก</paper-button>
-                            </td>
+                            <th>ลำดับ</th>
+                            <th>ชื่อ</th>
+                            <th>รายละเอียด</th>
+                            <th>กระทำการ</th>
                         </tr>
-                    </template>
-                    <!--</template>-->
+                    </thead>
+                    <tbody class="table-body">
+                        <template is="dom-repeat" items={{forRegrvp}}>
+                            <tr>
+                                <td>[[_Obindex(index)]]</td>
+                                <td>[[item.rvd_name]]</td>
+                                <td>[[item.description]]</td>
+                                <td>
+                                    <paper-button class="gl-btn-primary" data="[[item]]" on-tap="regFund" raised>สมัคร</paper-button>
+                                </td>
+                            </tr>
+                        </template>
+                        <template is="dom-if" if={{_ObIsHave(forRegrvp)}}>
+                            <tr>
+                                <td colspan="4">ไม่มีข้อมูล</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </gl-form-panel-body>
+        <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+            <div class="head-text">
+                รายชื่อกองทุนสำรองเลี้ยงชีพที่สมัครแล้ว
+            </div>
+            <div class="content horizontal center-justified layout">
+                <table class="gl-table-default">
+                    <thead class="table-head">
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>ชื่อ</th>
+                            <th>รายละเอียด</th>
+                            <th>วันที่เป็นสมาชิก</th>
+                            <th>กระทำการ</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        <!-- ชื่อที่สมัคร -->
+                        <!--<template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>-->
+                        <template is="dom-repeat" items={{data}}>
+                            <tr>
+                                <td>[[_Obindex(index)]]</td>
+                                <td>[[item.rvd_name]]</td>
+                                <td>[[item.description]]</td>
+                                <td>[[toThaiDate(item.date_approve)]]</td>
+                                <td>
+                                    
+                                    <template is="dom-if" if={{isActive(item.status)}}>
+                                        <paper-button raised class="gl-btn-info" data="[[item]]" on-tap="fundOut">ออกจากกองทุน</paper-button>
+                                    <paper-button raised class="gl-btn-danger" data="[[item]]" on-tap="leaveWork">เปลี่ยนกองทุน/ลาออก</paper-button>
+                                    </template>
+                                    <template is="dom-if" if={{!isActive(item.status)}}>
+                                        -
+                                    </template>
+                                    
+                                </td>
+                            </tr>
+                        </template>
+                        <template is="dom-if" if={{_ObIsHave(data)}}>
+                            <tr>
+                                <td colspan="6">ไม่มีข้อมูล</td>
+                            </tr>
+                        </template>
 
-                </tbody>
-            </table>
-        </template>
-        <template is="dom-if" if={{_ObIsHave(data)}}>
-            <table class="gl-table-default">
-                <thead class="table-head">
-                    <tr>
-                        <th>ลำดับ</th>
-                        <th>ชื่อ</th>
-                        <th>รายละเอียด</th>
-                        <th>กระทำการ</th>
-                    </tr>
-                </thead>
-                <tbody class="table-body">
-                    <template is="dom-repeat" items={{forRegrvp}}>
-                        <tr>
-                            <td>[[_Obindex(index)]]</td>
-                            <td>[[item.rvd_name]]</td>
-                            <td>[[item.description]]</td>
-                            <td>
-                                <paper-button class="gl-btn-primary" data="[[item]]" on-tap="regFund" raised>สมัคร</paper-button>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-        </template>
+                    </tbody>
+                </table>
+            </div>
+        </gl-form-panel-body>
+
 
 
     </template>
@@ -85,27 +123,31 @@
                     personal_id: this.personalId,
                     rvd_id: e.currentTarget.data.id
                 }
-                this.dispatchAction('USER_RVP_SIGNUP', obj);
+                this.dispatchAction('USER_RVP_SIGNUP', obj,this.personalId);
 
-                this.dispatchAction('USER_RVP_FUND', this.personalId);
+                // this.dispatchAction('USER_RVP_FUND', this.personalId);
                 // this.dispatchAction('USER_RVP_SIGNUP',obj)
                 // this.set('fundSeleted',e.currentTarget.id)
             },
-            leaveWork(e){
+            leaveWork(e) {
                 console.log(e.currentTarget.data.id);
                 let obj = {
-                    id:e.currentTarget.data.id
+                    id: e.currentTarget.data.id
                 }
-                this.dispatchAction('USER_RVP_LEAVE_FUND', obj);
-                this.dispatchAction('USER_RVP_FUND', this.personalId);
+                this.dispatchAction('USER_RVP_LEAVE_FUND', obj,this.personalId);
+                // this.dispatchAction('USER_RVP_FUND', this.personalId);
             },
-            fundOut(e){
+            fundOut(e) {
                 console.log(e.currentTarget.data.id);
                 let obj = {
-                    id:e.currentTarget.data.id
+                    id: e.currentTarget.data.id
                 }
-                this.dispatchAction('USER_RVP_FUND_OUT', obj);
-                this.dispatchAction('USER_RVP_FUND', this.personalId);
+                this.dispatchAction('USER_RVP_FUND_OUT', obj,this.personalId);
+                // this.dispatchAction('USER_RVP_FUND', this.personalId);
+            },
+            isActive(active){
+
+                return active == 'active'
             }
         });
     </script>
