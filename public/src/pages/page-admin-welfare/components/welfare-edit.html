@@ -60,11 +60,12 @@
                 </gl-grid-row>
                 <template is="dom-repeat" items="{{data.condition}}">
                     <gl-grid-row>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
-                            <div class="label_condition">เงื่อนไข</div>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                            <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
                         </gl-grid-col>
                         [[conditionManage(item.field.id,index)]]
+                        <!--{{item.field.id}}-->
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                                 <gl-form-dropdown-menu style="margin-top: 15px" disabled="{{active}}">
                                     <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field.id}}">
@@ -219,6 +220,7 @@
                 }, 1);
             },
             conditionManage: function (val, index) {
+                // console.log(this.data);
                 if (val != "") {
                     var condition = this.condition;
                     var use = this.data.condition.map((item) => {
@@ -233,6 +235,7 @@
                             a.push(diff[i]);
                         }
                         a.push(this.data.condition[x].field); //a
+                        console.log(a);
                         // console.log('this.data.condition[', x, ']', this.data.condition[x]);
                         this.set('data.condition.' + x + '.itemField', a);
                         // console.log(this.data.condition[x].itemField);
@@ -245,11 +248,9 @@
                 var use = this.data.condition.map((item) => {
                     return item.field
                 })
-                // console.log(use);
                 var diff = condition.filter((item) => {
                     return use.indexOf(item) < 0;
                 })
-                // console.log(diff);
                 this.push('data.condition', {
                     itemField: diff,
                     // itemLogic: '',
@@ -257,12 +258,11 @@
                     // itemValue: '',
                     // value_show: ''
                 })
-                // console.log(this.data.condition);
             },
             delete_condition: function (e) {
                 // console.log(e.target.index);
                 this.splice('data.condition', e.target.index, 1);
-                this.checkSelected();
+                this.conditionManage();
             },
             back: function () {
                 this.fire('back');
@@ -337,6 +337,9 @@
                 // console.log(this.data);
                 this.dispatchAction('WELFARE_EDIT', this.data)
                 this.set('disabled', this.active = true);
+            },
+            count: function (val) {
+                return val + 1;
             }
         });
     </script>
