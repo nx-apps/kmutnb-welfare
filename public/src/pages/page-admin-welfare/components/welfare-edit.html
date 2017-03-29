@@ -64,13 +64,13 @@
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
                         </gl-grid-col>
-                        [[conditionManage(item.field.id,index)]]
+                        [[conditionManage(item.field,index)]]
                         <!--{{item.field.id}}-->
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                                 <gl-form-dropdown-menu style="margin-top: 15px" disabled="{{active}}">
-                                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field.id}}">
+                                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
                                         <template is="dom-repeat" items="{{item.itemField}}" as="item2">
-                                            <paper-item value="{{item2.id}}">{{item2.label}}</paper-item>
+                                            <paper-item value="{{item2}}">{{item2.label}}</paper-item>
                                         </template>
                                     </paper-listbox>
                                 </gl-form-dropdown-menu>
@@ -220,28 +220,30 @@
                 }, 1);
             },
             conditionManage: function (val, index) {
-                // console.log(this.data);
-                if (val != "") {
-                    var condition = this.condition;
-                    var use = this.data.condition.map((item) => {
-                        return item.field
-                    })
-                    var diff = condition.filter((item) => {
-                        return use.indexOf(item) < 0;
-                    })
-                    for (var x in this.data.condition) {
-                        var a = [];
-                        for (var i in diff) {
-                            a.push(diff[i]);
+                this.async(() => {
+                    console.log(val);
+                    if (val != "") {
+                        var condition = this.condition;
+                        var use = this.data.condition.map((item) => {
+                            return item.field
+                        })
+                        var diff = condition.filter((item) => {
+                            return use.indexOf(item) < 0;
+                        })
+                        for (var x in this.data.condition) {
+                            var a = [];
+                            for (var i in diff) {
+                                a.push(diff[i]);
+                            }
+                            a.push(this.data.condition[x].field); //a
+                            console.log(a);
+                            // console.log('this.data.condition[', x, ']', this.data.condition[x]);
+                            this.set('data.condition.' + x + '.itemField', a);
+                            // console.log(this.data.condition[x].itemField);
+                            // console.log('x', x, this.data.condition[x]);
                         }
-                        a.push(this.data.condition[x].field); //a
-                        console.log(a);
-                        // console.log('this.data.condition[', x, ']', this.data.condition[x]);
-                        this.set('data.condition.' + x + '.itemField', a);
-                        // console.log(this.data.condition[x].itemField);
-                        // console.log('x', x, this.data.condition[x]);
                     }
-                }
+                }, 1);
             },
             add_condition: function () {
                 var condition = this.condition;
