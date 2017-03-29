@@ -29,7 +29,8 @@
                             <td>[[item.description]]</td>
                             <td>[[toThaiDate(item.date_signup)]]</td>
                             <td>
-                                <paper-button raised class="gl-btn-primary">มี</paper-button>
+                                <paper-button raised class="gl-btn-info" data="[[item]]" on-tap="fundOut">ออกจากกองทุน</paper-button>
+                                <paper-button raised class="gl-btn-danger"  data="[[item]]"on-tap="leaveWork">ลาออก</paper-button>
                             </td>
                         </tr>
                     </template>
@@ -89,6 +90,22 @@
                 this.dispatchAction('USER_RVP_FUND', this.personalId);
                 // this.dispatchAction('USER_RVP_SIGNUP',obj)
                 // this.set('fundSeleted',e.currentTarget.id)
+            },
+            leaveWork(e){
+                console.log(e.currentTarget.data.id);
+                let obj = {
+                    id:e.currentTarget.data.id
+                }
+                this.dispatchAction('USER_RVP_LEAVE_FUND', obj);
+                this.dispatchAction('USER_RVP_FUND', this.personalId);
+            },
+            fundOut(e){
+                console.log(e.currentTarget.data.id);
+                let obj = {
+                    id:e.currentTarget.data.id
+                }
+                this.dispatchAction('USER_RVP_FUND_OUT', obj);
+                this.dispatchAction('USER_RVP_FUND', this.personalId);
             }
         });
     </script>

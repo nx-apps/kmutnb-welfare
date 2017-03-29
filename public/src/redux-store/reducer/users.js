@@ -302,18 +302,38 @@ export function usersAction(store){
                 this.fire('toast',{status:'load'})
                 axios.post(`./rvd/signup/`,data)
                     .then(res=>{
-                        console.log(res)
                         if (res.data.insert_status) {
-                          this.fire('toast',{status:'success',text:'บันทึกข้อมูลสำเร็จ',
+                            console.log(1);
+                              this.fire('toast',{status:'success',text:'สมัครสำเร็จ',
+                                callback:()=>{
+                                }
+                            }); 
+                        }else {
+                            console.log(2);
+                            this.fire('toast',{status:'error',text:'ไม่สามารถสมัครได้',
                             callback:()=>{
-
-                                // store.dispatch({type:'USERS_FALSE_LIST',payload:res.data})
-                                // if(!otherFunction)
-                                //     this.$$('panel-right').open();
                             }
-                        });  
+                        }); 
                         }
-                        
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    })
+            },
+            USER_RVP_LEAVE_FUND(fid){
+                axios.put(`./rvd/signup/leave/`,fid)
+                    .then(res=>{
+                        console.log(res)
+                        // store.dispatch({type:'USER_RVP_FUND',payload:res.data})
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                    })
+            },
+            USER_RVP_FUND_OUT(fid){
+                axios.put(`./rvd/signup/fund/out/`,fid)
+                    .then(res=>{
+                        console.log(res)
                         // store.dispatch({type:'USER_RVP_FUND',payload:res.data})
                     })
                     .catch(err=>{
