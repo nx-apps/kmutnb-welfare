@@ -8,5 +8,6 @@ module.exports = function (app) {
     app.delete('/delete/id/:id',controller.delete)
 
     //ลิงตคนลาออก
-    
+    app.get('/list/active',controller.listactive)
+    app.put('/leave',controller.leave)
 }
