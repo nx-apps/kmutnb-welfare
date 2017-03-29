@@ -110,6 +110,7 @@ exports.list = function (req, res) {
 }
 exports.update = function (req, res) {
     var r = req.r
+    let now = new Date().toISOString()
     r.expr({})
         .merge((fund) => {
             return {
@@ -122,17 +123,28 @@ exports.update = function (req, res) {
                     })
                     .merge((start_work_date_stamp) => {
                         return {
-                            start_work_date_stamp: start_work_date_stamp('start_work_date').toEpochTime()
+                            check_date_work: r.ISO8601(start_work_date_stamp('start_work_date')).add(2592000).le(now).branch(
+                                r.db('welfare').table('rvd_signup')
+                                    .get(req.body.id)
+                                    .update({
+                                        date_approve: now,
+                                        status: 'active'
+                                    }),
+                                r.db('welfare').table('rvd_signup')
+                                    .get(req.body.id)
+                                    .update({
+                                        date_approve: start_work_date_stamp('start_work_date'),
+                                        status: 'active'
+                                    })
+                            ),
                         }
                     })
             }
         })
-
-        //    r.db('welfare').table('rvd_signup').get(req.body.id)
-        //    .eqJoin('personal_id', r.db('welfare').table('employee'), { index: 'personal_id' })
-        // .get
-        // .get(req.body.id)
-        // .update(req.body)
+        .merge((getF) => {
+            return getF('rvd').getField('check_date_work')
+        })
+        .without('rvd')
         .run()
         .then(function (result) {
             res.json(result);
@@ -142,7 +154,9 @@ exports.update = function (req, res) {
         })
 }
 exports.delete = function (req, res) {
-    r.db('welfare').table('rvd_signup').get(req.body.id)
+    var r = req.r
+    console.log(req.params);
+    r.db('welfare').table('rvd_signup').get(req.params.id)
         .delete()
         .run()
         .then(function (result) {
