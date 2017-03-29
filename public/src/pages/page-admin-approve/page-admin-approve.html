@@ -110,10 +110,11 @@
         Polymer({
             is: 'page-admin-approve',
             behaviors: [
-                ReduxBehavior, nylonBehavior, usersAction
+                ReduxBehavior, nylonBehavior, usersAction,fundRvdAction
             ],
             nylonPageActive() {
                 this.dispatchAction('USERS_FALSE_LIST');
+                this.FUND_RVD_GET_USER_LIST();
             }
         });
     </script>
