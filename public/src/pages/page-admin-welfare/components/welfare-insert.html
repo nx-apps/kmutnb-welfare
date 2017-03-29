@@ -37,8 +37,8 @@
                 </gl-grid-row>
                 <template is="dom-repeat" items="{{data.condition}}">
                     <gl-grid-row>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]"></gl-grid-col>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
                         </gl-grid-col>
                         [[conditionManage(item.field,index)]]
