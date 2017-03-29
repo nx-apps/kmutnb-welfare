@@ -10,4 +10,5 @@ module.exports = function (app) {
 
     //ลิงตคนลาออก
     app.put('/leave',controller.leave)
+    app.put('/fund/out',controller.fundOut)
 }

@@ -190,3 +190,17 @@ exports.leave = function (req,res) {
             res.status(500).json(err);
         })
 }
+exports.fundOut = function (req,res) {
+   r.db('welfare').table('rvd_signup')
+    .get(req.body.id)
+    .update(
+        {"status":  "not"}
+    )
+    .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        }) 
+}
