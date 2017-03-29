@@ -55,9 +55,9 @@ exports.signup = function (req, res) {
                                     return r.db('welfare').table('rvd_signup').insert(req.body)
                                 })
                         })
-                        ,check('emp').filter({ status: "sign" }).count().gt(0).branch(false,
-                         r.db('welfare').table('rvd_signup').insert(req.body))
-                        )
+                        , check('emp').filter({ status: "sign" }).count().gt(0).branch(false,
+                            r.db('welfare').table('rvd_signup').insert(req.body))
+                    )
                 )
             }
         })
@@ -91,12 +91,12 @@ exports.list = function (req, res) {
         .eqJoin('rvd_id', r.db('welfare').table('rvd'))
         .pluck('left', { right: ['rvd_code', 'rvd_name'] })
         .zip()
-        .merge((check_statue)=>{
+        .merge((check_statue) => {
             return {
-                status_thai : check_statue('status').eq('sign').branch('รอการยืนยัน',
-                              check_statue('status').eq('active').branch('สมาชิก',
-                              check_statue('status').eq('leave').branch('ลาออก','ออกจากกองทุน')
-                              )
+                status_thai: check_statue('status').eq('sign').branch('รอการยืนยัน',
+                    check_statue('status').eq('active').branch('สมาชิก',
+                        check_statue('status').eq('leave').branch('ลาออก', 'ออกจากกองทุน')
+                    )
                 )
             }
         })
@@ -117,7 +117,7 @@ exports.list = function (req, res) {
         })
         .orderBy('firstname')
         .run()
-        
+
         .then(function (result) {
             res.json(result);
         })
@@ -138,12 +138,13 @@ exports.listAll = function (req, res) {
         .eqJoin('rvd_id', r.db('welfare').table('rvd'))
         .pluck('left', { right: ['rvd_code', 'rvd_name'] })
         .zip()
-        .merge((check_statue)=>{
+        .merge((check_statue) => {
             return {
-                status_thai : check_statue('status').eq('sign').branch('รอการยืนยัน',
-                              check_statue('status').eq('active').branch('สมาชิก',
-                              check_statue('status').eq('leave').branch('ลาออก','ออกจากกองทุน')
-                              )
+                status_thai: check_statue('status').eq('sign').branch('รอการยืนยัน',
+                    check_statue('status').eq('active').branch('สมาชิก',
+                        check_statue('status').eq('leave').branch('ลาออก', 
+                        check_statue('status').eq('reject').branch('ไม่ผ่าน','ออกจากกองทุน'))
+                    )
                 )
             }
         })
@@ -171,7 +172,7 @@ exports.listAll = function (req, res) {
             res.status(500).json(err);
         })
 }
-exports.update = function (req, res) {
+exports.approve = function (req, res) {
     var r = req.r
     let now = new Date().toISOString()
     r.expr({})
@@ -216,10 +217,12 @@ exports.update = function (req, res) {
             res.status(500).json(err);
         })
 }
-exports.delete = function (req, res) {
+exports.reject = function (req, res) {
     var r = req.r
-    r.db('welfare').table('rvd_signup').get(req.params.id)
-        .delete()
+    r.db('welfare').table('rvd_signup').get(req.body.id)
+        .update(
+        { "status": "reject" }
+        )
         .run()
         .then(function (result) {
             res.json(result);
@@ -228,15 +231,14 @@ exports.delete = function (req, res) {
             res.status(500).json(err);
         })
 }
-
-exports.leave = function (req,res) {
+exports.fundChange = function (req, res) {
     var r = req.r
     r.db('welfare').table('rvd_signup')
-    .get(req.body.id)
-    .update(
-        {"status":  "leave"}
-    )
-    .run()
+        .get(req.body.id)
+        .update(
+        { "status": "change" }
+        )
+        .run()
         .then(function (result) {
             res.json(result);
         })
@@ -244,17 +246,32 @@ exports.leave = function (req,res) {
             res.status(500).json(err);
         })
 }
-exports.fundOut = function (req,res) {
-   r.db('welfare').table('rvd_signup')
-    .get(req.body.id)
-    .update(
-        {"status":  "not"}
-    )
-    .run()
+exports.leave = function (req, res) {
+    var r = req.r
+    r.db('welfare').table('rvd_signup')
+        .get(req.body.id)
+        .update(
+        { "status": "leave" }
+        )
+        .run()
         .then(function (result) {
             res.json(result);
         })
         .catch(function (err) {
             res.status(500).json(err);
-        }) 
+        })
+}
+exports.fundOut = function (req, res) {
+    r.db('welfare').table('rvd_signup')
+        .get(req.body.id)
+        .update(
+        { "status": "not" }
+        )
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
 }
