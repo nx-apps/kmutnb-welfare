@@ -109,7 +109,9 @@ exports.list = function (req, res) {
                 type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
             }
         })
+        .orderBy('firstname')
         .run()
+        
         .then(function (result) {
             res.json(result);
         })
@@ -154,6 +156,7 @@ exports.listAll = function (req, res) {
                 type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
             }
         })
+        .orderBy('firstname')
         .run()
         .then(function (result) {
             res.json(result);
