@@ -124,34 +124,55 @@
 		
     </template>
     <script>
-        Polymer({
+       Polymer({
             is: 'nylon-toast',
             listeners: {
                 'toast': '_toastManage',
             },
             _toastManage:function(e){
 				this.data = e.detail.status;
-				//console.log('_toastManage');
-				//console.log(e.detail.status);
+				
 				if(e.detail.status == 'load'){
 					//console.log('load');
 					this.openToastLoading();
+					this.status = {
+						content : e.detail.text || 'กำลังโหลด...'
+					}
 				}
 				else if(e.detail.status == 'loadSuccess'){
 					this.closeToastLoading();
 				}
 				if(e.detail.status == 'success'){
 					this.closeToastLoading(e.detail.callback);
-					// console.log(e.detail.text);
 					//Polymer.dom(this.root).setAttribute('class', 'toastSuccess')
 					this.status = {
 						class : 'toastSuccess',
 						icon : 'done',
 						content : e.detail.text || 'โหลดข้อมูลสำเร็จ'
 					}
+					// console.log(e.detail.timer);
+					this.timer = e.detail.timer || 800;
+					// console.log(this.timer);
+				}
+				else if(e.detail.status == 'warning'){
+					this.status = {
+						class : 'toastWarning',
+						icon : 'warning',
+						content : e.detail.text || 'แจ้งเตือน !!'
+					}
+					this.timer = e.detail.timer || 2000;
+					this.openToastStatus();
+				}
+				else if(e.detail.status == 'error'){
+					this.status = {
+						class : 'toastError',
+						icon : 'error',
+						content : e.detail.text || 'ผิดพลาด !!'
+					}
+					this.timer = e.detail.timer || 4000;
+					this.openToastStatus();
 				}
 				if(e.detail.status == 'connectError'){
-					// console.log(e.detail.text);
 					this.status = {
 						content : e.detail.text
 					}
@@ -163,16 +184,15 @@
 						icon : 'done',
 						content : e.detail.text || 'โหลดข้อมูลสำเร็จ'
 					}
-
 					this.openToastDialog(e.detail)
 				}
 			},
 			openToastLoading:function(){
-                this.$.toastLoading.open();
+                this.$.toastLoading.toggle();
             },
             closeToastLoading:function(callback){
                 this.async(function(){
-                    this.$.toastLoading.hide();
+                    // this.$.toastLoading.hide();
 					this.openToastStatus();
 					callback();
                 }.bind(this),500);
@@ -202,9 +222,9 @@
 			},
 			openToastStatus:function(){
 				this.$.toastStatus.open();
-				 this.async(function(){
-					 this.$.toastStatus.close();
-                }.bind(this),800);
+				this.async(function(){
+					this.$.toastStatus.close();
+				}.bind(this),this.timer)
 			}
         });
     </script>
