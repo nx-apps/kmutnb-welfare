@@ -104,8 +104,7 @@
                 this.fire('toast', { status: 'load', text: 'กำลังค้นหาข้อมูล...' })
                 var id = e.currentTarget.data.id;
                 this.dispatchAction('WELFARE_DATA_SELECT', id)
-                this.dispatchAction('CONDITION_LIST')
-
+                // this.dispatchAction('CONDITION_LIST')
                 this.fire('toast', {
                     status: 'success', text: 'ค้นหาสำเร็จ', callback() {
 
