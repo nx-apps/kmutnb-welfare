@@ -84,6 +84,12 @@
                         </template>
                     </div>
 
+                    <div hidden="{{!active}}">
+                        <template is="dom-if" if={{data.status_approve}}>
+                            <paper-button raised style="margin-bottom:15px;" class="gl-btn-danger" on-tap="unapprove">ยกเลิกการใช้งาน</paper-button>
+                        </template>
+                    </div>
+
                 </div>
             </paper-material>
 
@@ -148,6 +154,22 @@
                 });
             },
             _confirmToast: function (result, detail) {
+                if (result == true) {
+                    this.dispatchAction('APPROVE_WELFARE', detail.datas);
+                }
+            },
+            unapprove: function () {
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'คุณต้องการที่ยกเลิกใช้ใช่หรือไม่ ?',
+                    confirmed: this._toastUnapprove.bind(this),
+                    datas: {
+                        id : this.data.id,
+                        status_approve : false
+                    }
+                });
+            },
+            _toastUnapprove: function (result, detail) {
                 if (result == true) {
                     this.dispatchAction('APPROVE_WELFARE', detail.datas);
                 }

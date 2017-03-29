@@ -72,6 +72,7 @@ export function groupWelfareAction(store) {
                             console.log('success');
                             this.clearData();
                             this.GET_YEAR();
+                            this.fire('closePanel');
                         }
                     });
                 })
@@ -141,7 +142,7 @@ export function groupWelfareAction(store) {
                 })
         },
         APPROVE_WELFARE: function (data) {
-            console.log(data);
+            // console.log(data);
             this.fire('toast', { status: 'load' });
             axios.put(`./group/welfare/approve`, data)
                 .then((result) => {

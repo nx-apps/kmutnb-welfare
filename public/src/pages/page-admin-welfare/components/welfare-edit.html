@@ -163,6 +163,7 @@
                 </paper-material>
             </div>
         </template>
+        
     </template>
     <script>
         Polymer({
@@ -221,7 +222,7 @@
             },
             conditionManage: function (val, index) {
                 this.async(() => {
-                    console.log(val);
+                    // console.log(val);
                     if (val != "") {
                         var condition = this.condition;
                         var use = this.data.condition.map((item) => {
@@ -236,7 +237,7 @@
                                 a.push(diff[i]);
                             }
                             a.push(this.data.condition[x].field); //a
-                            console.log(a);
+                            // console.log(a);
                             // console.log('this.data.condition[', x, ']', this.data.condition[x]);
                             this.set('data.condition.' + x + '.itemField', a);
                             // console.log(this.data.condition[x].itemField);

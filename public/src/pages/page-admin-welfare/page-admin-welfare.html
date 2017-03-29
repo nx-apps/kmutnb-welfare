@@ -19,10 +19,18 @@
                 width: 100%;
                 border: 1px solid #ddd;
             }
+            .title-text{
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                font-weight: bold;
+                margin-top: 35px;
+                font-size: 20px;
+            }
         </style>
         <div class="horizontal justified layout">
             <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_print">
                 <iron-icon icon="print"></iron-icon>ออกรายงาน</paper-button>
+            <div class="title-text">จัดการสวัสดิการ</div>
             <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
                 <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการ</paper-button>
         </div>
@@ -146,7 +154,8 @@
                 this.data = {
                     year: '',
                     name: '',
-                    condition: []
+                    start_date : new Date().toISOString().split('-')[0]+'-01-01',
+                    end_date : new Date().toISOString().split('-')[0]+'-12-31'
                 };
             },
             _edit: function (e) {
