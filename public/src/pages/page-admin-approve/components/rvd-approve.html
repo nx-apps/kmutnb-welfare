@@ -163,7 +163,8 @@
                     return false
                 }
                 else {
-                    this.dataList[index].check = true;
+                    this.set('dataList.'+index+'.check',true);
+                    // this.dataList[index].check = true;
                 }
             }
         });
