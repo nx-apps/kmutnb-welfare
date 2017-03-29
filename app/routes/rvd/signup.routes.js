@@ -4,6 +4,7 @@ module.exports = function (app) {
     app.get('/pid/:pid',controller.getrvd)
     app.post('/',controller.signup)
     app.get('/list/:status',controller.list)
+    app.get('/list/',controller.listAll)
     // sign active leave not 
     app.put('/update',controller.update)
     app.delete('/delete/id/:id',controller.delete)
