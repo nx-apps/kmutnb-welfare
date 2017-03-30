@@ -213,11 +213,12 @@
         Polymer({
             is: 'employee-manage',
             behaviors: [ReduxBehavior, ValidateFormBehavior],
-            observers:['getDepartment(data.faculty_id,faculty)','cloneData(data)'],
+            observers:['getDepartment(data.faculty_id,faculty)'],
             properties: {
                 data: {
-                    type: Object,
-                    value: {},
+                    statePath: 'userWelfare.welfare_employee'
+                    // type: Object,
+                    // value: {},
                     // notify: true
                 },
                 academic: {
@@ -257,15 +258,19 @@
                 }
             },
             save:function(){
-                // console.log(this.data);
-                this.dispatchAction('EMPLOYEE_UPDATE', this.data);
+                if(typeof this.data.id === 'undefined' && this.data.id == undefined){
+                    this.dispatchAction('EMPLOYEE_INSERT', this.data);
+                }
+                else{
+                    this.dispatchAction('EMPLOYEE_UPDATE', this.data);
+                }
             },
             cancle:function(){
                 if(typeof this.data.id === 'undefined' && this.data.id == undefined){
                     this.fire('select-page',0);
                 }
                 else{
-                    this.data = this.dataClone;
+                    this.dispatchAction('LIST_EMPLOYEE_WELFARE', this.data.id);
                     this.fire('back-page',0);
                 }
             },
@@ -277,9 +282,6 @@
                     // console.log(faculty);
                     this.department = faculty.department;
                 }
-            },
-            cloneData:function(data){
-                this.dataClone = JSON.parse(JSON.stringify(data));
             }
         });
     </script>
