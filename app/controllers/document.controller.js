@@ -35,7 +35,7 @@ exports.deleteFile = function (req, res) {
     var r = req.r;
     var params = req.params;
     r.db('welfare').table('document_file').getAll(params.id, { index: 'file_id' })
-        .update({ file_status: false, date_update: new Date() })
+        .update({ file_status: 'delete', date_update: new Date().toISOString() })
         .run().then(function (result) {
             res.json(result);
         }).catch(function (err) {

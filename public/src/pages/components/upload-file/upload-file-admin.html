@@ -18,6 +18,8 @@
             files="{{listFiles}}"
             method="POST"
             timeout="300000"
+            accept="application/pdf,image,zip/*"
+            max-file-size="2400000"
             accept="[[accept]]"
             on-upload-request="_addHeader"
             on-upload-success="getList"

@@ -8,7 +8,14 @@ exports.unapprove = function (req, res) {
                 data: r.db('welfare').table('employee').get(user('emp_id'))
             }
         })
-
+        .merge((getFileName) => {
+            return {
+                file: getFileName('document_ids').map((doc_id) => {
+                    return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
+                    .without('contents')
+                })
+            }
+        })
         .merge((userName) => {
             return {
                 budget: r.db('welfare').table('welfare').get(userName('welfare_id')).getField('budget'),
@@ -23,7 +30,8 @@ exports.unapprove = function (req, res) {
         })
         .merge((money) => {
             return {
-                budget_cover: money('budget').sub(money('history_welfare_budget'))
+                budget_cover: money('budget').sub(money('history_welfare_budget')),
+
             }
         })
         .without('data')
@@ -42,7 +50,12 @@ exports.requestWelfare = function (req, res) {
     //      req.body[prop] = req.body[prop].replace(/ /g,'').trim()
     //   }   
     // console.log(req.body.document_ids);
+    let data = {
+        date_use: new Date().toISOString()
+    }
+    Object.assign(req.body, data)
 
+    console.log(req.body);
     var r = req.r;
     r.db('welfare').table('history_welfare').insert(req.body)('generated_keys')(0)
         .do((history_id) => {
@@ -113,7 +126,7 @@ exports.listUploadHistory = function (req, res) {
             res.json(err);
         })
 }
-exports.adminApprove = function (req, res){
+exports.adminApprove = function (req, res) {
     var r = req.r;
     req.body = Object.assign(req.body,
         {
