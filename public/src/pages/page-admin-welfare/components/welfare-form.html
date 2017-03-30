@@ -340,8 +340,8 @@
             },
             _selectUser:function(e){
                 var id = e.target.data.id;
-                console.log(id);
-                this.fire('nylon-change-page',{path:'/admin-employee/'+id})
+                window.open('https://localhost:3000/admin-manage/'+id);
+                // this.fire('nylon-change-page',{path:'/admin-employee/'+id})
             }
         });
     </script>
