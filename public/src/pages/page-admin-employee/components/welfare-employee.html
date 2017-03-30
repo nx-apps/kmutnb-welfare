@@ -103,7 +103,7 @@
                                             <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                             <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
                                             <td>
-                                                <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" >ขอใช้</paper-button>
+                                                <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]">ขอใช้</paper-button>
                                             </td>
                                         </tr>
                                     </template>
@@ -133,7 +133,6 @@
                                         <th style="width: 10%">วันที่ตรวจ</th>
                                         <th style="width: 15%">สถานะการขอ</th>
                                         <th style="width: 15%">ไฟล์</th>
-
                                     </tr>
                                 </thead>
                                 <tbody class="table-body">
@@ -157,7 +156,16 @@
                                                 </div>
                                             </td>
                                             <td>[[_checkApprove(item.status)]]</td>
-                                            <td><iron-icon style="cursor:pointer" icon="list" on-tap="usewelfare" data="[[item]]"></iron-icon></td>
+                                            <td style="text-align: left;">
+                                                <template is="dom-if" if={{item.file}}>
+                                                    <template is="dom-repeat" items={{item.file}}>
+                                                        <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                                                    </template>
+                                                </template>
+                                                <template is="dom-if" if={{_ObIsHave(item.file)}}>
+                                                    <div style="text-align: center;">ไม่ได้อัพโหลดไฟล์</div>
+                                                </template>
+                                            </td>
                                         </tr>
                                     </template>
                                     <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
@@ -191,8 +199,8 @@
         Polymer({
             is: 'welfare-employee',
             behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic, MonthBehavior],
-            listeners:{
-                'back-page' : 'changePage'
+            listeners: {
+                'back-page': 'changePage'
             },
             properties: {
                 data: {
@@ -277,13 +285,19 @@
             editData() {
                 this.pages = 1;
             },
-            changePage:function(page){
-                if(page.detail != 0){
+            changePage: function (page) {
+                if (page.detail != 0) {
                     this.pages = page.detail;
                 }
-                else{
+                else {
                     this.pages = page.detail;
                 }
+            },
+            downloadFile(e) {
+                console.log(e.currentTarget.data);
+                window.open('/api/file/download/' + e.currentTarget.data.id);
+                // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
+
             }
         });
     </script>
