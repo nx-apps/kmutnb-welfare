@@ -177,8 +177,8 @@ export function userWelfareAction(store) {
 
                 })
         },
-        EMPLOYEE_GET_WELFARES: function(id, year = new Date().getFullYear()) {
-            axios.get('./employee/'+id+'/'+year)
+        EMPLOYEE_GET_WELFARES: function (id, year = new Date().getFullYear()) {
+            axios.get('./employee/' + id + '/' + year)
                 .then(res => {
                     // store.dispatch({ type: 'EMPLOYEE_GET_WELFARES', payload: res.data })
                     this.fire('toast', {
@@ -237,22 +237,40 @@ export function userWelfareAction(store) {
                         clearData(data, (newData) => {
                             this.fire('toast', { status: 'load' });
                             newData.id = data.id
-                            axios.put(`/employee/update`, newData)
-                                .then(res => {
-                                    this.EMPLOYEE_USE_SELETE_WELFARE();
-                                    this.LIST_USER();
-                                    this.fire('toast', {
-                                        status: 'success', text: 'บันทึกสำเร็จ',
-                                        callback: () => {
-                                            this.fire('select-page', 1);
-                                            this.EMPLOYEE_GET_WELFARES(newData.id);
-                                            this.LIST_EMPLOYEE_WELFARE(newData.id);
-                                        }
-                                    });
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                })
+                            if (typeof newData.id === 'undefined' && newData.id == undefined) {
+                                console.log(newData);
+                                // axios.post('./employee/insert', newData)
+                                //     .then(res => {
+                                //         this.LIST_USER();
+                                //         this.fire('toast', {
+                                //             status: 'success', text: 'บันทึกสำเร็จ',
+                                //             callback: () => {
+                                //                 this.fire('select-page', 0);
+                                //             }
+                                //         });
+                                //     })
+                                //     .catch(err => {
+                                //         console.log(err);
+                                //     })
+                            }
+                            else {
+                                axios.put(`/employee/update`, newData)
+                                    .then(res => {
+                                        this.EMPLOYEE_USE_SELETE_WELFARE();
+                                        this.LIST_USER();
+                                        this.fire('toast', {
+                                            status: 'success', text: 'บันทึกสำเร็จ',
+                                            callback: () => {
+                                                this.fire('select-page', 1);
+                                                this.EMPLOYEE_GET_WELFARES(newData.id);
+                                                this.LIST_EMPLOYEE_WELFARE(newData.id);
+                                            }
+                                        });
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                    })
+                            }
                         })
                     }
                 }

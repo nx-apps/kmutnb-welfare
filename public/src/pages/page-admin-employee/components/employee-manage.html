@@ -34,7 +34,7 @@
                                 <label for="personal_id">รหัสบัตรประชาชน :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                                <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]" class="required" required allowed-pattern="[0-9]" maxlength="13"></gl-form-input>
                             </div>
 
                         </div>
@@ -82,8 +82,8 @@
                             <div class="flex label">
                                 <label for="birthdate">วันเกิด :</label>
                             </div>
-                            <div class="flex-2">
-                                <vaadin-date-picker id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]" class="required"
+                            <div class="flex-5">
+                                <vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]" class="required"
                                     required></vaadin-date-picker>
                             </div>
                         </div>
@@ -257,11 +257,17 @@
                 }
             },
             save:function(){
+                // console.log(this.data);
                 this.dispatchAction('EMPLOYEE_UPDATE', this.data);
             },
             cancle:function(){
-                this.data = this.dataClone;
-                this.fire('back-page',0);
+                if(typeof this.data.id === 'undefined' && this.data.id == undefined){
+                    this.fire('select-page',0);
+                }
+                else{
+                    this.data = this.dataClone;
+                    this.fire('back-page',0);
+                }
             },
             getDepartment:function(id,item){
                 if(typeof id != 'undefined' && item[0].faculty != ""){

@@ -273,20 +273,9 @@
                 }
             },
             editData() {
-                // console.log(this.data);
                 this.pages = 1;
-                this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
-                this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
-                this.dispatchAction('COMMONDATA_DATA_ACTIVE');
-                this.dispatchAction('COMMONDATA_DATA_FACULTY');
-                this.dispatchAction('COMMONDATA_DATA_GENDER');
-                this.dispatchAction('COMMONDATA_DATA_MATIER');
-                this.dispatchAction('COMMONDATA_DATA_POSITION');
-                this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
-                this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             },
             changePage:function(page){
-                // console.log(page.detail.data);
                 if(page.detail != 0){
                     this.pages = page.detail;
                 }

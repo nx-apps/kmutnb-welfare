@@ -1,5 +1,6 @@
 <link rel="import" href="components/list-welfare.html">
 <link rel="import" href="components/welfare-employee.html">
+<link rel="import" href="components/employee-manage.html">
 <link rel="import" href="./components/list-user.html">
 
 <dom-module id="page-admin-employee">
@@ -20,6 +21,11 @@
         }
         table.gl-table-default {
             border: 1px solid #ddd;
+        }
+        .btn-insert{
+            margin-right: 10px;
+            background-color: deepskyblue;
+            color: white;
         }
     </style>
     <template>
@@ -71,6 +77,14 @@
                     </paper-material>
                     
                 </div>
+                
+                <div class="horizontal end-justified layout">
+                    <paper-button class="btn-insert" on-tap="_insert">
+                        <iron-icon icon="add"></iron-icon>เพิ่มพนักงาน
+                    </paper-button>
+                </div>
+                
+                
                 <div>
                     <list-user></list-user>
                 </div>
@@ -79,6 +93,10 @@
                 <!--pages-->
                 <welfare-employee></welfare-employee>
             </section>  
+            <section>
+                <!--pages-->
+                <employee-manage></employee-manage>
+            </section>
        
         </iron-pages>
         
@@ -129,6 +147,9 @@
                 'back_page' : 'back_page',
                 'select-page' : 'changePage',
                 'reset-search' : 'resetSearch'
+            },
+            ready:function(){
+                this._getcommon();
             },
             resetSearch:function(){
                 this.selectYear = "";
@@ -214,6 +235,20 @@
                 else{
                     this.selected = page.detail;
                 }
+            },
+            _insert:function(){
+                this.selected = 2;
+            },
+            _getcommon:function(){
+                this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
+                this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
+                this.dispatchAction('COMMONDATA_DATA_ACTIVE');
+                this.dispatchAction('COMMONDATA_DATA_FACULTY');
+                this.dispatchAction('COMMONDATA_DATA_GENDER');
+                this.dispatchAction('COMMONDATA_DATA_MATIER');
+                this.dispatchAction('COMMONDATA_DATA_POSITION');
+                this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
+                this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             }
         });
     </script>
