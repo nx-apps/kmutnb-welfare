@@ -162,10 +162,21 @@
                             name: 'จัดการสวัสดิการ',
                             path: '/admin-welfare',
                             role: '',
+                        },
+                        {
+                            name: 'รายชื่อผู้ได้สวัสดิการ',
+                            path: '/admin-employee',
+                            role: '',
+                            submenu: []
+                        },
+                        {
+                            name: 'รายงาน',
+                            path: '/admin-welfaresss',
+                            role: '',
                             submenu: [
                                 {
                                     name: 'เพิ่ม',
-                                    path: '/admin-employee',
+                                    path: '/admin-employeeffd',
                                     submenu: []
                                 },
                                 {
@@ -175,12 +186,6 @@
                                 }
                             ]
                         },
-                        {
-                            name: 'รายชื่อผู้ได้สวัสดิการ',
-                            path: '/admin-employee',
-                            role: '',
-                            submenu: []
-                        }
                     ]
                 },
                 sendElement: {
@@ -199,8 +204,8 @@
             //     }
             // },
             selectPage: function (e) {
-                console.log(e.currentTarget.data.submenu);
-                console.log(e.currentTarget.data.submenu.length < 1);
+                // console.log(e.target.firstChild.nextSibling.icon='expand-more');
+                // console.log(e.currentTarget.data.submenu.length < 1);
                 if (e.currentTarget.data.submenu.length < 1) {
                     if ((('/' + this.path) != e.currentTarget.getAttribute('path')) && (e.currentTarget.getAttribute('path') != '')) {
                         this.set('listMenu.' + e.currentTarget.index + '.loading', true);

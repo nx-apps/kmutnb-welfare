@@ -8,7 +8,8 @@ exports.downloadFile = function (req, res) {
     // console.log(params)
 
     r.db('welfare').table('files').get(params.id)
-        .run().then(function (result) {
+        .run()
+        .then(function (result) {
             res.writeHead(200, {
                 'Content-Type': result.type,
                 'Content-Length': result.contents.length,
@@ -51,8 +52,8 @@ exports.uploadFile = function (req, res) {
                         emp_id: params.emp_id,
                         welfare_id: req.headers['welfare-id'],
                         doc_status: false,
-                        date_upload: new Date(),
-                        date_update: new Date()
+                        date_upload: new Date().toISOString(),
+                        date_update: new Date().toISOString()
                     })
                 })
                 .run().then(function (result) {
@@ -92,8 +93,8 @@ exports.uploadFileadmin = function (req, res) {
                         emp_id: params.emp_id,
                         welfare_id: req.headers['welfare-id'],
                         doc_status: true,
-                        date_upload: new Date(),
-                        date_update: new Date()
+                        date_upload: new Date().toISOString(),
+                        date_update: new Date().toISOString()
                     })
                 })('generated_keys')(0)
                 .do((doc_id) => {

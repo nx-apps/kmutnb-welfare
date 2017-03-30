@@ -1,8 +1,13 @@
 <link rel="import" href="./../components/panel-right/panel-right.html">
 <link rel="import" href="./../components/page-style.html">
 <link rel="import" href="./../components/format-number-behavior.html">
-<link rel="import" href="./components/user-list-unapprove.html">
-<link rel="import" href="./components/rvd-approve.html">
+<!--<link rel="import" href="./components/user-list-unapprove.html">
+<link rel="import" href="./components/rvd-approve.html">-->
+
+<link rel="import" href="./components/list-of-welfare.html">
+
+<link rel="import" href="./components/list-of-rvd.html">
+
 
 <!--<link rel="import" href="./../components/common-logic.html">-->
 <dom-module id="page-admin-approve">
@@ -12,106 +17,48 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        user-list-unapprove,rvd-approve {
-            margin-top: 15px;
-            width: 98%;
-        }
-        .header{
+        .header {
             padding: 10px;
             font-size: 35px;
         }
-        .container{
+        
+        .container {
             padding: 20px;
-        }
-        main {
-            /*min-width: 320px;*/
-            /*max-width: 1000px;*/
-            padding: 5px;
-            margin: 0 auto;
-            
-        }
-        
-        section {
-            display: none;
-            /*padding: 20px 0 0;*/
-            border-top: 1px solid #ddd;
-        }
-        
-        input {
-            display: none;
-        }
-        
-        label {
-            display: inline-block;
-            margin: 0 0 -1px;
-            padding: 15px 25px;
-            font-weight: 600;
-            text-align: center;
-            color: #bbb;
-            border: 1px solid transparent;
-            background: #D5D8DC;
-        }
-        
-        label:before {
-            font-family: fontawesome;
-            font-weight: normal;
-            margin-right: 10px;
-        }
-        /*label[for*='1']:before { content: '\f1cb'; }
-            label[for*='2']:before { content: '\f17d'; }*/
-        
-        label:hover {
-            color: #888;
-            cursor: pointer;
-        }
-        
-        input:checked+label {
-            color: #555;
-            border: 1px solid #ddd;
-            border-top: 3px solid orange;
-            border-bottom: 1px solid #fff;
-            background: #fff;
-        }
-        
-        #tab1:checked~#content1,
-        #tab2:checked~#content2 {
-            display: block;
         }
     </style>
     <template>
         <div class="xcontainer">
-        <div class="header container">รายการคำขอใช้</div>
-        <main>
-            <input id="tab1" type="radio" name="tabs" checked>
-            <label for="tab1">สวัสดิการ</label>
+            <div class="header container">รายการคำขอใช้
+                <paper-dropdown-menu no-label-float>
+                    <paper-listbox class="dropdown-content" selected="{{pageComponents}}">
+                        <paper-item>สวัสดิการ</paper-item>
+                        <paper-item>กองทุนสำรองเลี้ยงชีพ</paper-item>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+            </div>
 
-            <input id="tab2" type="radio" name="tabs">
-            <label for="tab2">กองทุน</label>
-            <section id="content1">
-                 <paper-material elevation="1">
-                    <div class="list horizontal center-justified layout">
-                        <user-list-unapprove></user-list-unapprove>
-                    </div>
-                </paper-material>
-            </section>
+            <iron-pages selected="{{pageComponents}}">
+                <list-of-welfare></list-of-welfare>
+                <list-of-rvd></list-of-rvd>
+            </iron-pages>
 
-            <section id="content2">
-                <paper-material elevation="1">
-                    <div class="list horizontal center-justified layout">
-                        <rvd-approve></rvd-approve>
-                       <!--<user-list-unapprove></user-list-unapprove>-->
-                    </div>
-                </paper-material>
-            </section>
-        </main>
+
+            <!---->
         </div>
     </template>
     <script>
         Polymer({
             is: 'page-admin-approve',
             behaviors: [
-                ReduxBehavior, nylonBehavior, usersAction,fundRvdAction
+                ReduxBehavior, nylonBehavior, usersAction, fundRvdAction
             ],
+            properties: {
+                pageComponents: {
+                    type: Number,
+                    value: 0
+                },
+            },
+
             nylonPageActive() {
                 this.dispatchAction('USERS_FALSE_LIST');
                 this.FUND_RVD_GET_USER_LIST();
