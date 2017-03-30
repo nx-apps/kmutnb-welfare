@@ -1,0 +1,323 @@
+<link rel="import" href="../../components/format-number-behavior.html">
+<dom-module id="welfare-form">
+    <template>
+        <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+            gl-form-input,
+            vaadin-date-picker,
+            gl-combo-box {
+                margin-top: 15px;
+            }
+            
+            .label_condition {
+                font-weight: bold;
+                text-align: right;
+                margin-top: 35px;
+                font-size: 20px;
+            }
+            
+            .btn-bottom {
+                margin: 30px;
+            }
+            
+            paper-material {
+                background-color: var(--gl-white-color);
+            }
+        </style>
+
+        <div style="padding:20px;">
+            <paper-material elevation="1">
+                <template is="dom-if" if="{{checkMenu(data)}}">
+                    <div hidden="{{!isEnable}}">
+                        <div class="horizontal end-justified layout">
+                            <div style="margin:20px 20px 0px 0px;">
+                                <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
+                                <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <gl-grid-row width="{{getWidth}}">
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <gl-form-input disabled="{{isEnable}}" label="ชื่อสวัสดิการย่อย" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
+                    </gl-grid-col>
+                </gl-grid-row>
+                <gl-grid-row>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <gl-form-input disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                    </gl-grid-col>
+                </gl-grid-row>
+                <template is="dom-repeat" items="{{data.condition}}">
+                    [[conditionManage(item.field,index)]]
+                    <gl-grid-row>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                            <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
+                        </gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                            <gl-form-dropdown-menu disabled="{{isEnable}}" style="margin-top: 15px">
+                                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
+                                    <template is="dom-repeat" items="{{item.itemField}}">
+                                        <paper-item value="{{item}}">{{item.label}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                            </gl-form-dropdown-menu>
+                            <!--<vaadin-combo-box id="field-[[index]]" placeholder="[[item.itemField.length]]" items="[[item.itemField]]" value="{{item.field}}"></vaadin-combo-box>-->
+                        </gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                            <gl-form-dropdown-menu disabled="{{isEnable}}" style="margin-top: 15px">
+                                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.logic_show}}">
+                                    <template is="dom-repeat" items="{{item.field.conditions}}">
+                                        <paper-item value="{{item.symbol}}">{{item.name}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                            </gl-form-dropdown-menu>
+                            <!--<gl-combo-box id="symbo-[[index]]" items="[[item.itemLogic]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}"></gl-combobox>-->
+                        </gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
+
+                            <template is="dom-if" if="{{!getFiled(item.field,index)}}">
+                                <!--<div id="combobox-[[index]]" hidden>-->
+                                <gl-form-dropdown-menu disabled="{{isEnable}}" style="margin-top:15px;width:100%;">
+                                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.value_show}}">
+                                        <template is="dom-repeat" items="{{item.field.data}}">
+                                            <paper-item value="{{item.id}}">{{item.name}}</paper-item>
+                                        </template>
+                                    </paper-listbox>
+                                </gl-form-dropdown-menu>
+                                <!--<gl-combo-box id="value-combo-[[index]]" items="[[item.itemValue]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}"></gl-combobox>-->
+                                <!--</div>-->
+                            </template>
+                            <template is="dom-if" if="{{getFiled(item.field,index)}}">
+                                <!--<div id="input-[[index]]" hidden>-->
+                                <gl-form-input disabled="{{isEnable}}" value="{{item.value_show}}"></gl-form-input>
+                                <!--</div>-->
+                            </template>
+                        </gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
+                            <div hidden$="{{isEnable}}">
+                                <paper-icon-button icon="delete" style="margin-top:25px;" index="{{index}}" on-tap="delete_condition"></paper-icon-button>
+                            </div>
+                        </gl-grid-col>
+                    </gl-grid-row>
+                </template>
+                <div class="horizontal center-justified layout">
+                    <div hidden$="{{isEnable}}">
+                        <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
+                    </div>
+                </div>
+                <div class="horizontal end-justified layout btn-bottom">
+                    <div hidden$="{{isEnable}}">
+                        <paper-button raised class="gl-btn-danger" on-tap="cancel">ยกเลิก</paper-button>
+                        <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                    </div>
+                </div>
+                <template is="dom-if" if="{{checkMenu(data)}}">
+                    <div class="horizontal layout">
+                        <div hidden="{{!isEnable}}" class="btn-bottom">
+                            <paper-button raised class="gl-btn-danger" on-tap="back">ย้อนกลับ</paper-button>
+                            <paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
+                            <paper-button raised class="gl-btn-warning" on-tap="print">Print</paper-button>
+                        </div>
+                    </div>
+                </template>
+            </paper-material>
+
+            <template is="dom-if" if="{{tableStatus}}">
+                <div class="horizontal end-justified layout">
+                    <div style="margin-right:30px;font-weight: bold;font-size: 20px;">จำนวนผู้ได้รับสิทธิ [[employees.count_employee]] คน</div>
+                </div>
+                <div class="table-detail">
+                    <paper-material elevation="1">
+                        <table class="gl-table-default">
+                            <thead class="table-head">
+                                <tr>
+                                    <th style="text-align:center">เลขบัตรประชาชน</th>
+                                    <th style="text-align:center">ชื่อ</th>
+                                    <th style="text-align:center">ตำแหน่ง</th>
+                                    <th style="text-align:center">แผนก</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+                                <template is="dom-repeat" items="{{employees.employee}}">
+                                    <tr>
+                                        <td>[[item.personal_id]]</td>
+                                        <td>[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
+                                        <td>[[item.position_name]]</td>
+                                        <td>[[item.department_name]]</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </paper-material>
+                </div>
+        </template>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'welfare-form',
+            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            properties: {
+                condition: {
+                    statePath: 'welfare.condition'
+                },
+                data: {
+                    statePath: 'welfare.dataSelect'
+                },
+                employees: {
+                    statePath: 'welfare.employees'
+                },
+                isEnable: {
+                    type: Boolean,
+                    value: false
+                }
+            },
+            checkMenu: function (data) {
+                // console.log('data',data);
+                if (typeof data.id == 'undefined') {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            },
+            count: function (index) {
+                return index + 1;
+            },
+            getFiled: function (data, index) {
+                if (typeof data != 'undefined') {
+                    if (typeof data.data == 'string') {
+                        return true;
+                    }
+                    else if (typeof data.data == 'object') {
+                        return false;
+                    }
+                }
+            },
+            add_condition: function () {
+                var data = this.condition;
+                var use = this.data.condition.map((item) => {
+                    return item.field
+                })
+                var diff = data.filter((item) => {
+                    return use.indexOf(item) < 0;
+                })
+                var condition = this.condition;
+                this.push('data.condition', {
+                    itemField: diff
+                })
+            },
+            delete_condition: function (e) {
+                var index = e.target.index;
+                this.splice('data.condition', index, 1);
+            },
+            conditionManage: function (val, index) {
+                if (val != "") {
+                    var data = this.condition;
+                    var use = this.data.condition.map((item) => {
+                        return item.field
+                    })
+                    var diff = data.filter((item) => {
+                        return use.indexOf(item) < 0;
+                    })
+                    for (var x in this.data.condition) {
+                        var a = [];
+                        for (var i in diff) {
+                            a.push(diff[i]);
+                        }
+                        a.push(this.data.condition[x].field); //a
+                        // console.log('this.data.condition[', x, ']', this.data.condition[x]);
+                        this.set('data.condition.' + x + '.itemField', a);
+                        // console.log(this.data.condition[x].itemField);
+                        // console.log('x', x, this.data.condition[x]);
+                    }
+                }
+            },
+            save: function () {
+                for (var i = 0; i < this.data.condition.length; i++) {
+                    // console.log(this.data.condition[i].field);
+                    var id = this.data.condition[i].field.id;
+                    var item = this.condition.filter((val) => val.id == id)[0]
+                    var field = item.field;
+                    // console.log(field);
+                    // console.log(this.data.condition[i].logic.search("<"))
+                    if (field == 'start_work_date') {
+                        if (this.data.condition[i].logic_show.search(">") >= 0) {
+                            var d = this.date.start_date.split("-");
+                            this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
+                            this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
+                        } else if (this.data.condition[i].logic_show.search("<") >= 0) {
+                            var d = this.date.end_date.split("-");
+                            this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
+                            this.data.condition[i].logic = this.data.condition[i].logic_show.replace("<", ">");
+                        }
+                    }
+                    else if (field == 'birthday') {
+                        if (this.data.condition[i].logic_show.search(">") >= 0) {
+                            var date = new Date().toISOString().split("T")(0);
+                            var d = date.split('-');
+                            // console.log(d);
+                            this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
+                            this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
+                        } else if (this.data.condition[i].logic_show.search("<") >= 0) {
+                            var date = new Date().toISOString().split("T")(0);
+                            var d = date.split('-');
+                            this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
+                            this.data.condition[i].logic = this.data.condition[i].logic_show.replace("<", ">");
+                        }
+                    } else {
+                        this.data.condition[i].value = this.data.condition[i].value_show;
+                        this.data.condition[i].logic = this.data.condition[i].logic_show;
+                    }
+                }
+                this.data.budget = this.unFormat(this.data.budget);
+                this.data.status = true;
+                this.set('data.group_id', this.date.id);
+                // console.log('before',this.data);
+                for (var i in this.data.condition) {
+                    this.data.condition[i].field = this.data.condition[i].field.id;
+                    delete this.data.condition[i].itemField;
+                }
+                // console.log(JSON.stringify(this.data));
+
+                if (typeof this.data.id == 'undefined') {
+                    this.dispatchAction('WELFARE_INSERT', this.data);
+                    this.fire('back');
+                }
+                else {
+                    this.dispatchAction('WELFARE_EDIT', this.data);
+                    this.isEnable = true;
+                    // this.fire('back');
+                }
+            },
+            _edit: function () {
+                this.isEnable = false;
+            },
+            cancel: function () {
+                if (typeof this.data.id == 'undefined') {
+                    this.dispatchAction('WELFARE_DATA_SELECT_CLEAR');
+                    this.fire('back');
+                }
+                else {
+                    this.dispatchAction('WELFARE_DATA_SELECT', this.data.id);
+                    this.isEnable = true;
+                }
+            },
+            back: function () {
+                this.fire('back');
+                this.tableStatus = false;
+            },
+            list_users: function () {
+                var id = this.data.id;
+                this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
+                this.tableStatus = true;
+            },
+            print: function () {
+                var id = this.data.id;
+                window.open('api/report/report1/' + id);
+            },
+        });
+    </script>
+</dom-module>
