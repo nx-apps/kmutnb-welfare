@@ -77,13 +77,6 @@ exports.updateWelfare = function (req, res) {
         upStatus.date_approve = new Date().toISOString()
         upStatus.status = "approve"
     })
-    // req.body = Object.assign(req.body,
-    //     {
-    //         date_approve: new Date().toISOString(),
-    //         status:  "approve"
-    //     }
-    // );
-    console.log('>>>>>>>>>>>>', req.body);
     r.expr(req.body).forEach(function (fe) {
         return r.db('welfare').table('history_welfare').get(fe('id'))
             .update({
