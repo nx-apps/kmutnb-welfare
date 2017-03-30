@@ -312,24 +312,26 @@
                     id: item.emp_id,
                     year: item.year
                 }
+                 window.open('https://localhost:3000/admin-manage/'+datas.id);
                 // console.log(datas);
-                this.dispatchAction('LIST_EMPLOYEES_WELFARE', datas);
-                var check = e.target.is;
-                if (check != 'paper-checkbox') {
-                    this.fire('select-page', 1)
-                }
+                // this.dispatchAction('LIST_EMPLOYEES_WELFARE', datas);
+                // var check = e.target.is;
+                // if (check != 'paper-checkbox') {
+                //     this.fire('select-page', 1)
+                // }
                 // console.log(e.target.is);
             },
             chagePageDetail: function (e) {
                 var item = e.currentTarget.data;
                 var id = item.id;
-                this.seleterYear = '';
-                this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
-                this.dispatchAction('LIST_EMPLOYEE_WELFARE', id);
-                var check = e.target.is;
-                if (check != 'paper-checkbox') {
-                    this.fire('select-page', 1)
-                }
+                window.open('https://localhost:3000/admin-manage/'+id);
+                // this.seleterYear = '';
+                // this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
+                // this.dispatchAction('LIST_EMPLOYEE_WELFARE', id);
+                // var check = e.target.is;
+                // if (check != 'paper-checkbox') {
+                //     this.fire('select-page', 1)
+                // }
             },
             getList:function(list){
                 this.newList = list;
