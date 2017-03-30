@@ -12,7 +12,7 @@ exports.unapprove = function (req, res) {
             return {
                 file: getFileName('document_ids').map((doc_id) => {
                     return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
-                    .without('contents')
+                        .without('contents')
                 })
             }
         })
@@ -73,10 +73,24 @@ exports.requestWelfare = function (req, res) {
 }
 exports.updateWelfare = function (req, res) {
     var r = req.r;
-    console.log(req.body);
-    r.db('welfare').table('history_welfare')
-        .get(req.body.id)
-        .update(req.body)
+    req.body.map((upStatus) => {
+        upStatus.date_approve = new Date().toISOString()
+        upStatus.status = "approve"
+    })
+    // req.body = Object.assign(req.body,
+    //     {
+    //         date_approve: new Date().toISOString(),
+    //         status:  "approve"
+    //     }
+    // );
+    console.log('>>>>>>>>>>>>', req.body);
+    r.expr(req.body).forEach(function (fe) {
+        return r.db('welfare').table('history_welfare').get(fe('id'))
+            .update({
+                date_approve: fe('date_approve'),
+                status: fe('status')
+            }, {nonAtomic: true})
+    })
         .run()
         .then(function (result) {
             res.json(result);
