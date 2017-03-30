@@ -141,7 +141,7 @@ export function userWelfareAction(store) {
         },
         USER_INSERT: function (data) {
             this.fire('toast', { status: 'load' });
-            axios.post('./employee/request/welfare/', data)
+            axios.post('./history/request/', data)
                 .then((response) => {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ',

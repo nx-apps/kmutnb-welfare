@@ -289,10 +289,12 @@
                             use_budget: item.value_budget - item.value_use,
                             date_approve: new Date().toISOString(),
                             date_use: new Date().toISOString(),
+                            document_ids:[],
                             status: true
                         };
                         return newItem;
                     })
+                        console.log(JSON.stringify(saveData));
                     //    console.log(saveData);
                     this.dispatchAction('USER_INSERT', saveData)
                 }
