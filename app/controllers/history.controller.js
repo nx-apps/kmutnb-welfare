@@ -8,7 +8,14 @@ exports.unapprove = function (req, res) {
                 data: r.db('welfare').table('employee').get(user('emp_id'))
             }
         })
-
+        .merge((getFileName) => {
+            return {
+                file: getFileName('document_ids').map((doc_id) => {
+                    return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
+                    .without('contents')
+                })
+            }
+        })
         .merge((userName) => {
             return {
                 budget: r.db('welfare').table('welfare').get(userName('welfare_id')).getField('budget'),
@@ -23,7 +30,8 @@ exports.unapprove = function (req, res) {
         })
         .merge((money) => {
             return {
-                budget_cover: money('budget').sub(money('history_welfare_budget'))
+                budget_cover: money('budget').sub(money('history_welfare_budget')),
+
             }
         })
         .without('data')

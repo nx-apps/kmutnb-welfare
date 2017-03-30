@@ -46,7 +46,16 @@
                             <td>[[item.group_welfare_name]]</td>
                             <td>[[item.budget_cover]]</td>
                             <td>[[item.use_budget]]</td>
-                            <td>[[item.department_name]]</td>
+                            <td>
+                                <template is="dom-if" if={{item.file}}>
+                                    <template is="dom-repeat" items={{item.file}}>
+                                        <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                                    </template>
+                                </template>
+                                <template is="dom-if" if={{_ObIsHave(item.file)}}>
+                                    ไม่ได้อัพโหลดไฟล์
+                                </template>
+                            </td>
                             <td>[[item.faculty_name]]</td>
                             <td>
                                 <paper-button raised class="gl-btn-info gl-small" on-tap="userwelfare" data="[[item]]"> ดูข้อมูล </paper-button>
@@ -98,6 +107,10 @@
                 // console.log(this.usewelfareProp.id);
                 this.dispatchAction('USER_DELETE_USE_WELFARE', this.usewelfareProp);
                 this.$$('#welfare_budget').close()
+            },
+            downloadFile(e) {
+                console.log(e.currentTarget.data);
+                window.open('/api/file/download/' + e.currentTarget.data.id)
             }
         });
     </script>
