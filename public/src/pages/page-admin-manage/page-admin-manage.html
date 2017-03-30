@@ -42,13 +42,7 @@
             <section>
                 <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
                     <gl-form-panel-body label="" set-padding="10px" set-border="1px">
-                        <div class="horizontal justified layout">
-                            <paper-button on-tap="back" raised>
-                                <iron-icon icon="arrow-back"></iron-icon>
-                                <span style="margin-left: 5px">ย้อนกลับ</span>
-                            </paper-button>
-                            <!--<paper-icon-button icon="arrow-back" on-tap="back"></paper-icon-button>-->
-                            <!--<paper-button on-tap="back" raised>back</paper-button>-->
+                        <div class="horizontal end-justified layout">
                             <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลส่วนตัว</paper-button>
                         </div>
 
@@ -255,10 +249,6 @@
                         this.dispatchAction('EMPLOYEE_GET_WELFARES', id, e.detail.value - 543);
                     }
                 }
-            },
-            back: function () {
-                // console.log(55);
-                this.fire('select-page', 0)
             },
             usewelfare(e) {
                 let data = new Object();
