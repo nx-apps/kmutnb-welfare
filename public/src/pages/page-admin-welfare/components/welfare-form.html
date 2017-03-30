@@ -126,9 +126,9 @@
 
             <template is="dom-if" if="{{tableStatus}}">
                 <div class="horizontal end-justified layout">
-                    <div style="margin-right:30px;font-weight: bold;font-size: 20px;">จำนวนผู้ได้รับสิทธิ [[employees.count_employee]] คน</div>
+                    <div style="margin:30px 30px 10px 0px;font-weight: bold;font-size: 20px;">จำนวนผู้ได้รับสิทธิ [[employees.count_employee]] คน</div>
                 </div>
-                <div class="table-detail">
+                <div class="table-detail" style="margin-bottom:30px;">
                     <paper-material elevation="1">
                         <table class="gl-table-default">
                             <thead class="table-head">
@@ -294,6 +294,7 @@
             },
             _edit: function () {
                 this.isEnable = false;
+                this.tableStatus = false;
             },
             cancel: function () {
                 if (typeof this.data.id == 'undefined') {
@@ -318,6 +319,23 @@
                 var id = this.data.id;
                 window.open('api/report/report1/' + id);
             },
+            _delete: function () {
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'คุณต้องการลบเงื่อนไขนี้ใช่หรือไม่ ?',
+                    confirmed: this._confirmToast.bind(this),
+                    datas: {
+                        id: this.data.id,
+                        group_id: this.data.group_id
+                    }
+                });
+            },
+            _confirmToast: function (result, detail) {
+                if (result == true) {
+                    this.dispatchAction('WELFARE_DELETE', detail.datas)
+                    this.fire('back');
+                }
+            }
         });
     </script>
 </dom-module>
