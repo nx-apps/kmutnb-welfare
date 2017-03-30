@@ -5,7 +5,9 @@ const initialState = {
     list: [],
     select: {},
     list_id: [],
-    dataSelect: {},
+    dataSelect: {
+        condition:[]
+    },
     condition: [],
     employees: []
 }
@@ -113,6 +115,7 @@ export function welfareAction(store) {
                 })
         },
         WELFARE_DATA_SELECT: function (val) {
+            this.WELFARE_DATA_SELECT_CLEAR();
             // this.id = val
             // console.log(store.getState().welfare.condition);
             axios.get('/welfare/' + val)
@@ -153,6 +156,9 @@ export function welfareAction(store) {
                 .catch(err => {
 
                 })
+        },
+        WELFARE_DATA_SELECT_CLEAR:function() {
+               store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: {condition:[]}})
         },
         CONDITION_LIST: function () {
             axios.get('/conditions/list')
