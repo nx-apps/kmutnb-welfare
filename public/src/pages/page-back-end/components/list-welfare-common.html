@@ -1,8 +1,8 @@
 
 <dom-module id="list-welfare-common">
     <template>
-        <style include="gl-table">
-            table{
+        <style include="page-style">
+            /*table{
                 margin: auto;
                 border: 1px solid #ddd;
             }
@@ -12,9 +12,17 @@
             paper-material{
                 background-color: white;
                 padding: 20px;
-            }
+            }*/
+            .head-text {
+            font-size: var(--font-size-h4);
+            margin: 15px 15px 15px 15px;
+        }
         </style>
         <paper-material elevation="1">
+            <div class="head-text">
+                 ฐานข้อมูลตั้งต้น
+            </div>
+            <div class="content horizontal center-justified layout">
             <table class="gl-table-default">
                 <thead class="table-head">
                     <tr>
@@ -33,15 +41,16 @@
                 <tbody>
                     <template is="dom-repeat" items="[[dataList]]">
                     <tr>
-                        <td>[[count(index)]]</td>
+                        <td style="text-align: center">[[count(index)]]</td>
                         <td>[[item]]</td>
-                        <td>
+                        <td style="text-align: center">
                             <paper-icon-button icon="create" item="[[item]]" on-tap="selectData"></paper-icon-button>
                         </td>
                     </tr>
                     </template>
                 </tbody>
             </table>
+            </div>
         </paper-material>
     </template>
     <script>
