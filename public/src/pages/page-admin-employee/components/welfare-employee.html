@@ -132,6 +132,7 @@
                                         <th style="width: 10%">วันที่ขอใช้งาน</th>
                                         <th style="width: 10%">วันที่ตรวจ</th>
                                         <th style="width: 15%">สถานะการขอ</th>
+                                        <th style="width: 15%">ไฟล์</th>
 
                                     </tr>
                                 </thead>
@@ -156,6 +157,7 @@
                                                 </div>
                                             </td>
                                             <td>[[_checkApprove(item.status)]]</td>
+                                            <td><iron-icon style="cursor:pointer" icon="list" on-tap="usewelfare" data="[[item]]"></iron-icon></td>
                                         </tr>
                                     </template>
                                     <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>

@@ -38,6 +38,7 @@ exports.list = function (req, res) {
 }
 exports.insert = function (req, res) {
     var r = req.r;
+    var result = { result: false, message: null, id: null };
     r.db('welfare').table('employee').insert(req.body)
         .run()
         .then((response) => {
@@ -48,8 +49,9 @@ exports.insert = function (req, res) {
             }
             res.json(result);
         })
-        .catch(function (err) {
-            res.status(500).json(err);
+        .error(function (err) {
+            result.message = err;
+            res.json(result);
         })
 }
 exports.delete = function (req, res) {
