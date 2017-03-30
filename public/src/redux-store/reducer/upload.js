@@ -23,7 +23,7 @@ export function uploadAction(store){
     return [commonAction(),{
       UPLOAD_DELETE(data){
         this.fire('toast',{status:'load',text:'กำลังบันทึกข้อมูล...'})
-        axios.delete('/employee/delete/'+data)
+        axios.delete('/document/delete/'+data)
         .then( (response)=>{
             console.log(response);
             // store.dispatch({type:'UPLOAD_DELETE',payload:response.data})
@@ -34,6 +34,21 @@ export function uploadAction(store){
         .catch(function (error) {
             console.log(error);
         });
+      },
+      UPLOAD_GET_FILE(fileId){
+        // this.fire('toast',{status:'load',text:'กำลังบันทึกข้อมูล...'})
+        // axios.get('/file/download/'+fileId)
+        // .then( (response)=>{
+        //     console.log(response);
+            
+        //     // store.dispatch({type:'UPLOAD_DELETE',payload:response.data})
+        //     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',callback:function(){
+        //       console.log('success');
+        //     }});
+        // })
+        // .catch(function (error) {
+        //     console.log(error);
+        // });
       }
    }]
 };

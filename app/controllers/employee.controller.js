@@ -217,6 +217,11 @@ exports.welfaresYear = function (req, res) {
                                 budget_balance_check: balance('budget').sub(balance('budget_use')).le(0).branch(true, false)
                             }
                         })
+                        .merge((check_onetime) => {
+                            return {
+                                check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว','ใช้ได้หลายครั้ง')
+                            }
+                        })
                         // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
                         .filter({ "budget_balance_check": false })
                         .without('condition', 'countpass')
@@ -236,9 +241,23 @@ exports.welfaresYear = function (req, res) {
                             date_use: name_welfare('date_use').split('T')(0),
                             date_approve: name_welfare.hasFields('date_approve').branch(name_welfare('date_approve').split('T')(0), false),//,
                             name: r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('group_welfare_name'),
-                            history_welfare_id: name_welfare('id')
+                            history_welfare_id: name_welfare('id'),
+                            onetime: r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('onetime'),
                         }
                     })
+                    .merge((files)=>{
+                        return {
+                            file:files('document_ids').map((doc_id)=>{
+                                return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
+                                .without('contents')
+                            })
+                        }
+                    })
+                    .merge((check_onetime) => {
+                            return {
+                                check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว','ใช้ได้หลายครั้ง')
+                            }
+                        })
                     .without('id')
                     .orderBy('date_use')
                     .coerceTo('array')
@@ -396,6 +415,7 @@ exports.welfaresEmployee = function (req, res) {
                             budget_balance_check: balance('budget').sub(balance('budget_use')).le(0).branch(true, false)
                         }
                     })
+
                     // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
                     .filter({ "budget_balance_check": false })
                     .without('condition', 'countpass')

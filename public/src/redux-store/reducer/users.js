@@ -36,12 +36,12 @@ const clearDatawelfare = (data, callback) => {
         newData.document_ids.push(file)
     })
 
-    if (data.date_use == '' || data.date_use == undefined) {
-        newData.date_use = new Date().toISOString();
-    } else {
-        // console.log(data.date_use);
-        newData.date_use = new Date(data.date_use).toISOString();
-    }
+    // if (data.date_use == '' || data.date_use == undefined) {
+    //     newData.date_use = new Date().toISOString();
+    // } else {
+    //     // console.log(data.date_use);
+    //     newData.date_use = new Date(data.date_use).toISOString();
+    // }
     // console.log(newData);
     callback(newData)
 }

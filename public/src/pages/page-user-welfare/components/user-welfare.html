@@ -79,7 +79,7 @@
 
         <gl-form-panel-body label="" set-padding="10px" set-border="1px">
             <div class="head-text">
-                สวัสดิการที่ได้รับสิทธิ์ 
+                สวัสดิการที่ได้รับสิทธิ์
             </div>
             <div class="content horizontal center-justified layout">
                 <table class="gl-table-default">
@@ -106,8 +106,8 @@
                         <template is="dom-repeat" items={{data.welfare}}>
                             <tr>
                                 <td>[[_Obindex(index)]]</td>
-                                <td>[[item.group_welfare_name]]</td>
-                                <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
+                                <td style="text-align: left;">[[item.group_welfare_name]] ([[item.check_onetime_thai]])</td>
+                                <td style="text-align: right;">[[formatNumber(item.budget)]] </td>
                                 <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                 <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
                                 <td>
@@ -141,11 +141,12 @@
                     <thead class="table-head">
                         <tr>
                             <th style="width: 10%">ลำดับ</th>
-                            <th style="width: 40%">สวัสดิการที่ใช้</th>
+                            <th style="width: 25%">สวัสดิการที่ใช้</th>
+                            <th style="width: 25%">ไฟล์</th>
                             <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
-                            <th style="width: 10%">วันที่ขอใช้งาน</th>
-                            <th style="width: 10%">วันที่ตรวจ</th>
-                            <th style="width: 15%">สถานะ</th>
+                            <th style="width: 10%">วันขออนุมัติ</th>
+                            <th style="width: 10%">วันอนุมัติ</th>
+                            <th style="width: 10%">สถานะ</th>
 
                         </tr>
                     </thead>
@@ -153,8 +154,20 @@
                         <template is="dom-repeat" items={{data.history_welfare}}>
                             <tr>
                                 <td>[[_Obindex(index)]]</td>
-                                <td>[[item.name]]</td>
+                                <td style="text-align: left;">[[item.name]] ([[item.check_onetime_thai]])</td>
+                                <td>
+
+                                    <template is="dom-if" if={{item.file}}>
+                                        <template is="dom-repeat" items={{item.file}}>
+                                            <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                                        </template>
+                                    </template>
+                                    <template is="dom-if" if={{_ObIsHave(item.file)}}>
+                                        ไม่ได้อัพโหลดไฟล์
+                                    </template>
+                                </td>
                                 <td style="text-align: right;">[[formatNumber(item.use_budget)]]</td>
+
                                 <td>
                                     [[toThaiDate(item.date_use)]]
                                 </td>
@@ -174,7 +187,7 @@
                         </template>
                         <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
                             <tr>
-                                <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
+                                <td colspan="7" style="text-align: center">ไม่มีข้อมูล</td>
                             </tr>
                         </template>
                     </tbody>
@@ -190,7 +203,7 @@
         <paper-dialog id="welfare_budget">
             <dialog-use-welfare id="dialog-use-welfare" data="{{usewelfareProp}}" disabled="[[disabled]]"></dialog-use-welfare>
             <div class="flex horizontal end-justified layout">
-                <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้งาน</paper-button>
+                <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ขอใช้</paper-button>
             </div>
         </paper-dialog>
 
@@ -278,6 +291,7 @@
                 data.group_id = e.currentTarget.data.group_id
                 this.set('disabled', e.currentTarget.data.onetime)
                 this.$$('#welfare_budget').open()
+
                 this.dispatchAction('USER_USE_SELETE_WELFARE', data);
             },
             getwelfare() {
@@ -288,15 +302,19 @@
                 console.log(this.usewelfareProp);
                 // console.log(this.$$('#dialog-use-welfare'));
                 // console.log(this.usewelfareProp.use_budget);
+                // console.log();
                 if (this.$$('#dialog-use-welfare').validateForm('.required'))
                     this.dispatchAction('USER_USE_WELFARE', this.usewelfareProp);
-
-                // 
             },
-
             deleteHistoryWelfare(e) {
                 // console.log(e.currentTarget.data);
                 this.dispatchAction('USER_DELETE_USE_WELFARE', e.currentTarget.data);
+            },
+            downloadFile(e) {
+                console.log(e.currentTarget.data);
+                window.open('/api/file/download/' + e.currentTarget.data.id);
+                // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
+
             }
         });
     </script>

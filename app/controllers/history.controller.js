@@ -42,7 +42,12 @@ exports.requestWelfare = function (req, res) {
     //      req.body[prop] = req.body[prop].replace(/ /g,'').trim()
     //   }   
     // console.log(req.body.document_ids);
+    let data = {
+        date_use: new Date().toISOString()
+    }
+    Object.assign(req.body, data)
 
+    console.log(req.body);
     var r = req.r;
     r.db('welfare').table('history_welfare').insert(req.body)('generated_keys')(0)
         .do((history_id) => {
@@ -113,7 +118,7 @@ exports.listUploadHistory = function (req, res) {
             res.json(err);
         })
 }
-exports.adminApprove = function (req, res){
+exports.adminApprove = function (req, res) {
     var r = req.r;
     req.body = Object.assign(req.body,
         {
