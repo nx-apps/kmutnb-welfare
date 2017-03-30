@@ -214,12 +214,12 @@ export function usersAction(store) {
         },
         USER_USE_WELFARE_APPROVE(data) {
             // console.log(data);
-            clearDatawelfare(data, (newData) => {
-                newData.id = data.id;
+            // clearDatawelfare(data, (newData) => {
+            //     newData.id = data.id;
+            console.log(data);
                 this.fire('toast', { status: 'load' });
-                newData.status = 'approve';
-                newData.date_approve = new Date().toISOString();
-                axios.put(`./history/update`, newData)
+                
+                axios.put(`./history/update`, data)
                     .then(res => {
                         this.dispatchAction('USERS_FALSE_LIST');
                         this.fire('toast', {
@@ -233,7 +233,7 @@ export function usersAction(store) {
                     .catch(err => {
                         console.log(err);
                     })
-            })
+            // })
         },
         USER_DELETE_USE_WELFARE(data) {
             clearDatawelfare(data, (newData) => {

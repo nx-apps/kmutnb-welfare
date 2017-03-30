@@ -10,6 +10,10 @@
             display: block;
         }
         
+        .dropdown-width {
+            width: 100%;
+        }
+        
         .contentHeader {
             font-size: 22px;
             font-weight: bold;
@@ -22,52 +26,57 @@
         .search {
             width: 30%;
         }
+        
+        .combo-box {
+            margin-top: -31px;
+        }
     </style>
     <template>
         <!--<paper-material elevation="1">-->
         <!--<div class="head">รายชื่อคนที่ขอสมัครใช้สวัสดิการ</div>-->
         <!--<div class="content horizontal center-justified layout">-->
         <!--<div>-->
-        <div class="horizontal end-justified layout">
+        <!--<div class="horizontal end-justified layout">
             <paper-input class="search" no-label-float value="vvv" placeholder="ค้นหา">
                 <paper-icon-button suffix icon="search"></paper-icon-button>
             </paper-input>
-        </div>
+        </div>-->
 
         <div class="container">
-            <div class="horizontal layout">
+            <div class="contentHeader" style="margin-bottom: 20px;">รายชื่อผู้ขอใช้สวัสดิการ</div>
+            <!--<div class="horizontal layout">
                 <div class="flex layout horizontal">
-                    <div class="flex self-center">
-                        แสดงโดย
+                    <div class="flex center-justified horizontal layout self-center">
+                        ปีสวัสดิการ :
                     </div>
-                    <div class="flex-2 self-center">
-                        <paper-dropdown-menu no-label-float class="dropdown-width">
-                            <paper-listbox class="dropdown-content" selected="1">
-                                <paper-item>allosaurus</paper-item>
-                                <paper-item>brontosaurus</paper-item>
-                            </paper-listbox>
-                        </paper-dropdown-menu>
+                    <div class="flex-2 center-justified horizontal layout self-center">
+                        [[setYear(years)]]
+                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.year}}" item-label-path="year" item-value-path="year"
+                            items="{{years}}"></gl-combo-box>
                     </div>
                 </div>
                 <div class="flex layout horizontal">
-                    <div class="flex self-center">
+                    <div class="flex center-justified horizontal layout self-center">
+                        สวัสดิการ :
+                    </div>
+                    <div class="flex-3 center-justified horizontal layout self-center">
+                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.group_id}}" item-label-path="group_welfare_name" item-value-path="id"
+                            items="{{welfares}}"></gl-combo-box>
+                    </div>
+                </div>
+                <div class="flex layout horizontal">
+                    <div class="flex center-justified horizontal layout self-center">
                         เรียงโดย
                     </div>
-                    <div class="flex-2 self-center">
-                        <paper-dropdown-menu no-label-float class="dropdown-width">
-                            <paper-listbox class="dropdown-content" selected="1">
-                                <paper-item>allosaurus</paper-item>
-                                <paper-item>brontosaurus</paper-item>
-                            </paper-listbox>
-                        </paper-dropdown-menu>
+                    <div class="flex-2 center-justified horizontal layout self-center">
+                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.sortBy}}" 
+                            items="{{sortBy}}"></gl-combo-box>
                     </div>
                 </div>
-                <!--<div class="flex-1"></div>-->
-
-            </div>
+            </div>-->
 
 
-            <div class="contentHeader" style="margin-bottom: 20px;">รายชื่อผู้ขอใช้สวัสดิการ</div>
+
             <table class="gl-table-default" style="margin:auto">
                 <thead class="table-head">
                     <tr>
@@ -81,7 +90,7 @@
                         <th>จำนวนเงินที่เหลือ</th>
                         <th>จำนวนเงินที่ใช้งาน</th>
                         <th>เอกสาร</th>
-                        
+
                     </tr>
                 </thead>
                 <tbody class="table-body">
@@ -110,18 +119,17 @@
                                 </template>
                             </td>
 
-                            
+
                         </tr>
                     </template>
                     <template is="dom-if" if={{_ObIsHave(listUserFalse)}}>
                         <tr>
-                            <td colspan="6" style="text-align: center">ยังไม่มีการขอใช้สวัสดิการ</td>
+                            <td colspan="10" style="text-align: center">ยังไม่มีการขอใช้สวัสดิการ</td>
                         </tr>
                     </template>
                 </tbody>
             </table>
 
-            <paper-button raised on-tap="checkBox"></paper-button>
             <div class="flex horizontal end-justified layout">
                 <paper-button raised class="gl-btn-primary" on-tap="getwelfare" disabled="{{btnStatus}}">อนุมัติ</paper-button>
                 <paper-button raised class="gl-btn-danger" on-tap="delwelfare" disabled="{{btnStatus}}">ไม่อนุมัติ</paper-button>
@@ -154,11 +162,43 @@
                     type: Boolean,
                     value: true,
                     // observer: '_setBtn'
+                },
+                dataSearch: {
+                    type: Object,
+                    value: {}
+                },
+                years: {
+                    statePath: 'userWelfare.list',
+                    type: Array,
+                },
+                welfares: {
+                    statePath: 'userWelfare.list_id',
+                    type: Array,
+                },
+                sortBy: {
+                    type: Array,
+                    value: [
+                        {id:'firstname',label:'ชื่อ'},
+                        {id:'personal_id',label:'รหัสประชาชน'},
+                        {id:'use_budget',label:'จำนวนเงินที่ใช้'},
+                        {id:'date_use',label:'วันที่ขอ'}
+                    ]
                 }
             },
             observers: [
                 '_setBtn(listUserFalse.*)'
             ],
+            setYear(year) {
+                //  console.log(year);
+                try {
+                    this.set('dataSearch.year', year[year.length - 1].year)
+                    this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
+                    // this.dispatchAction('FACULTY_LIST')
+                    // this.dataSearch.year = 2559
+                } catch (error) {
+
+                }
+            },
             userwelfare(e) {
                 // console.log(e.currentTarget.data);
                 this.set('usewelfareProp', e.currentTarget.data)
@@ -166,8 +206,16 @@
                 // this.dispatchAction('USER_USE_SELETE_WELFARE',data);
             },
             getwelfare() {
-                this.dispatchAction('USER_USE_WELFARE_APPROVE', this.usewelfareProp);
-                this.$$('#welfare_budget').close()
+                let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
+                let newData = []
+                sd.map((newDa)=>{
+                    // console.log(newDa.id);
+                    newData.push({id:newDa.id})
+                })
+                
+                // console.log(sd)
+                this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
+                // this.$$('#welfare_budget').close()
             },
             delwelfare() {
                 // console.log(this.usewelfareProp.id);
@@ -180,13 +228,13 @@
             },
             _setBtn(e) {
                 let status = this.listUserFalse.filter((fil) => fil.statusCheckBox == true).length < 1
-                console.log(status)
+                // console.log(status)
                 this.set('btnStatus', status)
             },
             checkBox() {
                 // let dataR2r = this.listUserFalse
                 let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
-                console.log(sd)
+                // console.log(sd)
             }
         });
     </script>

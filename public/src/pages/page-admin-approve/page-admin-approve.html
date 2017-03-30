@@ -50,7 +50,7 @@
         Polymer({
             is: 'page-admin-approve',
             behaviors: [
-                ReduxBehavior, nylonBehavior, usersAction, fundRvdAction
+                ReduxBehavior, nylonBehavior, usersAction, fundRvdAction ,userWelfareAction
             ],
             properties: {
                 pageComponents: {
@@ -62,6 +62,7 @@
             nylonPageActive() {
                 this.dispatchAction('USERS_FALSE_LIST');
                 this.FUND_RVD_GET_USER_LIST();
+                this.dispatchAction('WELFARE_LIST_YEAR');
             }
         });
     </script>
