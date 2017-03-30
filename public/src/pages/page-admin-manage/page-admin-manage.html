@@ -1,8 +1,8 @@
 <link rel="import" href="../components/format-number-behavior.html">
 <link rel="import" href="../components/common-logic.html">
 <link rel="import" href="../components/month-behavior.html">
-<!--<link rel="import" href="../components/dialog-use-welfare.html">-->
-<!--<link rel="import" href="employee-manage.html">-->
+<link rel="import" href="components/dialog-use-welfare.html">
+<link rel="import" href="components/employee-manage.html">
 
 <dom-module id="page-admin-manage">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
@@ -193,22 +193,24 @@
                 <employee-manage data="{{data}}"></employee-manage>
             </section>
         </iron-pages>
-
     </template>
     <script>
         Polymer({
             is: 'page-admin-manage',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic, MonthBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
+             commonLogic, userWelfareAction, uploadAction, commonDataAction,
+             MonthBehavior],
             listeners: {
                 'back-page': 'changePage'
             },
+            observers: ['checkData(seleterYear,id)'],
             properties: {
                 data: {
                     statePath: 'userWelfare.welfare_employee'
                 },
                 year: {
                     statePath: 'userWelfare.list',
-                    type: Number,
+                    type: Number
                 },
                 usewelfareProp: {
                     statePath: 'userWelfare.select_use_welefares',
@@ -217,6 +219,22 @@
                 pages: {
                     type: Number,
                     value: 0
+                }
+            },
+            ready:function(){
+                this._getcommon();
+            },
+            nylonPageActive:function(){
+                this.id = window.location.pathname.split('/')[2];
+                this.WELFARE_LIST_YEAR();
+            },
+            checkData(year,id){
+                if(year != ''){
+                    var datas = {
+                        id : id,
+                        year : year-543
+                    }
+                    this.dispatchAction('LIST_EMPLOYEES_WELFARE', datas);
                 }
             },
             setYear(year) {
@@ -297,7 +315,17 @@
                 console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id);
                 // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
-
+            },
+            _getcommon:function(){
+                this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
+                this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
+                this.dispatchAction('COMMONDATA_DATA_ACTIVE');
+                this.dispatchAction('COMMONDATA_DATA_FACULTY');
+                this.dispatchAction('COMMONDATA_DATA_GENDER');
+                this.dispatchAction('COMMONDATA_DATA_MATIER');
+                this.dispatchAction('COMMONDATA_DATA_POSITION');
+                this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
+                this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             }
         });
     </script>
