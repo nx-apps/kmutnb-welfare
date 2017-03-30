@@ -37,16 +37,15 @@ exports.list = function (req, res) {
         })
 }
 exports.insert = function (req, res) {
-    //   console.log('>>>>>>>>',req.body)
-    // let newData = new Object()
-    for (let prop in req.body) {
-        req.body[prop] = req.body[prop].replace(/ /g, '').trim()
-    }
-    // console.log(req.body);
     var r = req.r;
     r.db('welfare').table('employee').insert(req.body)
         .run()
-        .then(function (result) {
+        .then((response) => {
+            result.message = response;
+            if (response.errors == 0) {
+                result.result = true;
+                result.id = response.generated_keys;
+            }
             res.json(result);
         })
         .catch(function (err) {
