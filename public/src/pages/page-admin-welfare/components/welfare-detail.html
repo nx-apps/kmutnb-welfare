@@ -1,5 +1,8 @@
-<link rel="import" href="welfare-insert.html">
-<link rel="import" href="welfare-edit.html">
+<!--<link rel="import" href="welfare-insert.html">
+<link rel="import" href="welfare-edit.html">-->
+
+<link rel="import" href="./welfare-form.html">
+
 <dom-module id="welfare-detail">
     <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
         paper-material {
@@ -64,10 +67,12 @@
                 </div>
             </div>
             <div>
-                <welfare-insert datas="{{data}}"></welfare-insert>
+               <welfare-form date="{{list}}" is-enable="{{active}}"></welfare-form>
+                <!--<welfare-insert datas="{{data}}"></welfare-insert>-->
             </div>
             <div>
-                <welfare-edit datas="{{data}}" status="[[list.status_approve]]"></welfare-edit>
+                <welfare-form date="{{list}}" is-enable="{{active}}"></welfare-form>
+                <!--<welfare-edit datas="{{data}}" status="[[list.status_approve]]"></welfare-edit>-->
             </div>
         </iron-pages>
     </template>
@@ -89,11 +94,13 @@
                 }
             },
             getData: function (data) {
-                // console.log('11111', data);
+                // console.log(data);
                 this.dispatchAction('CONDITION_LIST')
             },
             _insert: function () {
                 this.pages = '1';
+                this.dispatchAction('WELFARE_DATA_SELECT_CLEAR');
+                this.active = false;
                 // this.dispatchAction('CONDITION_LIST')
             },
             back_page: function () {
@@ -104,14 +111,16 @@
                 this.fire('toast', { status: 'load', text: 'กำลังค้นหาข้อมูล...' })
                 var id = e.currentTarget.data.id;
                 this.dispatchAction('WELFARE_DATA_SELECT', id)
+                this.active = true;
                 // this.dispatchAction('CONDITION_LIST')
                 this.fire('toast', {
                     status: 'success', text: 'ค้นหาสำเร็จ', callback() {
-
+                         this.dataSelectId = id;
                         // console.log(0)
                         // console.log(this.pages)
                     }
                 });
+               
                 // console.log(this.$$('welfare-edit').changeisEnabled())
                 this.pages = '2';
             },
