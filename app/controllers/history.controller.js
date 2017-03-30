@@ -24,7 +24,7 @@ exports.unapprove = function (req, res) {
                 prefix_name: r.db('welfare_common').table('prefix').get(userName('data').getField('prefix_id')).getField('prefix_name'),
                 firstname: userName('data').getField('firstname'),
                 lastname: userName('data').getField('lastname'),
-                department_name: r.db('welfare_common').table('department').get(userName('data').getField('department_id')).getField('department_name'),
+                personal_id: userName('data').getField('personal_id'),
                 faculty_name: r.db('welfare_common').table('faculty').get(userName('data').getField('faculty_id')).getField('faculty_name')
             }
         })
