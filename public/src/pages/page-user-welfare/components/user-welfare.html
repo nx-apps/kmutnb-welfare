@@ -142,11 +142,12 @@
                         <tr>
                             <th style="width: 10%">ลำดับ</th>
                             <th style="width: 25%">สวัสดิการที่ใช้</th>
-                            <th style="width: 25%">ไฟล์</th>
+                            
                             <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
                             <th style="width: 10%">วันขออนุมัติ</th>
                             <th style="width: 10%">วันอนุมัติ</th>
                             <th style="width: 10%">สถานะ</th>
+                            <th style="width: 25%">ไฟล์</th>
 
                         </tr>
                     </thead>
@@ -155,17 +156,7 @@
                             <tr>
                                 <td>[[_Obindex(index)]]</td>
                                 <td style="text-align: left;">[[item.name]] ([[item.check_onetime_thai]])</td>
-                                <td>
-
-                                    <template is="dom-if" if={{item.file}}>
-                                        <template is="dom-repeat" items={{item.file}}>
-                                            <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
-                                        </template>
-                                    </template>
-                                    <template is="dom-if" if={{_ObIsHave(item.file)}}>
-                                        ไม่ได้อัพโหลดไฟล์
-                                    </template>
-                                </td>
+                                
                                 <td style="text-align: right;">[[formatNumber(item.use_budget)]]</td>
 
                                 <td>
@@ -183,6 +174,17 @@
                                     </div>
                                 </td>
                                 <td>[[_checkApprove(item.status)]]</td>
+                                <td>
+
+                                    <template is="dom-if" if={{item.file}}>
+                                        <template is="dom-repeat" items={{item.file}}>
+                                            <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                                        </template>
+                                    </template>
+                                    <template is="dom-if" if={{_ObIsHave(item.file)}}>
+                                        ไม่ได้อัพโหลดไฟล์
+                                    </template>
+                                </td>
                             </tr>
                         </template>
                         <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>

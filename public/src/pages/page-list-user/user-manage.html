@@ -40,10 +40,10 @@
                 <div class="from layout horizontal">  
                     <div class="flex layout horizontal">
                         <div class="flex label">
-                            <label for="prefixname">คำนำหน้าชื่อ :</label>
+                            <label for="prefix_name">คำนำหน้าชื่อ :</label>
                         </div>
                         <div class="flex-2">
-                            <gl-combo-box id="prefixname" no-label-float items="{{prefixname}}" value="{{data.prefixname_id}}"  item-label-path="prefixname" item-value-path="id" 
+                            <gl-combo-box id="prefix_name" no-label-float items="{{prefixname}}" value="{{data.prefix_id}}"  item-label-path="prefix_name" item-value-path="id" 
                             disabled="[[disabled]]" class="required" required></gl-combo-box>
                         </div> 
                     </div>
@@ -63,7 +63,7 @@
                             <label for="name" >ชื่อ :</label>
                         </div>
                         <div class="flex-2">
-                        <gl-form-input id="name" no-label-float value="{{data.name}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                        <gl-form-input id="name" no-label-float value="{{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                         </div> 
                     </div>
                     <div class="flex layout horizontal">
@@ -71,17 +71,17 @@
                             <label for="name" >นามสกุล :</label>
                         </div>
                         <div class="flex-2">
-                        <gl-form-input id="name" no-label-float value="{{data.surname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                        <gl-form-input id="name" no-label-float value="{{data.lastname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                         </div> 
                     </div>
                 </div>
                 <div class="from layout horizontal">  
                     <div class="flex layout horizontal">
                         <div class="flex label">
-                            <label for="birthday">วันเกิด :</label>
+                            <label for="birthdate">วันเกิด :</label>
                         </div>
                         <div class="flex-2">
-                            <vaadin-date-picker id="birthday"always-float-label  value="{{data.birthday}}"disabled="[[disabled]]" class="required" required></vaadin-date-picker>
+                            <vaadin-date-picker id="birthdate"always-float-label  value="{{data.birthdate}}"disabled="[[disabled]]" class="required" required></vaadin-date-picker>
                         </div> 
                     </div>
                     <div class="flex layout horizontal">
@@ -120,7 +120,7 @@
                             <label for="emp_id">รหัสพนักงาน :</label>
                         </div>
                         <div class="flex-2">
-                            <gl-form-input id="emp_id" no-label-float value="{{data.emp_id}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                            <gl-form-input id="emp_no" no-label-float value="{{data.emp_id}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                         </div>    
                     </div> 
                     <div class="flex layout horizontal">
@@ -146,8 +146,8 @@
                         <div class="flex label">
                             <label for="type_emp_name" >ประเภทลูกจ้าง :</label>
                         </div>
-                        <div class="flex-2">
-                            <gl-combo-box id="type_emp_name"no-label-float items="{{type_employee}}" value="{{data.type_employee_id}}" item-label-path="type_emp_name" item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                        <div class="flex-2">{{data.type_employee_id}}
+                            <gl-combo-box id="type_emp_name"no-label-float items="{{type_employee}}" value="{{data.type_employee_id}}" item-label-path="type_employee_name" item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
                         </div> 
                     </div> 
                     
@@ -253,7 +253,7 @@
                 }
             },
             _checkFaculty(dataSelete){
-                // console.log(dataSelete)
+                console.log(dataSelete)
                 if(dataSelete){
                 let departmentID = this.department.find((departmentID)=>departmentID.id == dataSelete);
                 // console.log(departmentID)

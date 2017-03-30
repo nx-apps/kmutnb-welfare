@@ -45,10 +45,10 @@
                     <template is="dom-repeat" items=[[lists]]>
                         <tr data=[[item]] on-tap="userClick">
                             <td>[[_Obindex(index)]]</td>
-                            <td>[[item.emp_id]]</td>
+                            <td>[[item.emp_no]]</td>
                             <!--<td>[[item.prefixname]]</td>-->
-                            <td>[[item.prefixname]] [[item.name]]</td>
-                            <td>[[item.surname]]</td>
+                            <td>[[item.prefix_name]] [[item.firstname]]</td>
+                            <td>[[item.lastname]]</td>
                             <td>[[item.position_name]]</td>
                             <td>[[item.active_name]]</td>
                         </tr>
