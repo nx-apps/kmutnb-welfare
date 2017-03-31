@@ -61,7 +61,7 @@
                             item-value-path="id"></gl-combo-box>
                     </div>
                 </div>
-                <div class="flex layout horizontal">
+                <div class="layout horizontal">
 
                     <paper-button raised class="gl-btn-primary" style="height: 40px;" on-tap="searchBtn">ค้นหา
                         <paper-icon-button suffix icon="search"></paper-icon-button>
@@ -75,7 +75,7 @@
                 <table class="gl-table-default" style="margin:auto">
                     <thead class="table-head">
                         <tr>
-                            <th>เลือก</th>
+                            <th><paper-checkbox on-tap="checkBoxAll"></paper-checkbox></th>
                             <th>ลำดับ</th>
                             <th>วันที่ขอ</th>
                             <th>สถานนะ</th>
@@ -94,7 +94,7 @@
                         <template is="dom-repeat" items={{listUserFalse}}>
                             <tr>
                                 <td>
-                                    <paper-checkbox checked="{{item.statusCheckBox}}"></paper-checkbox>
+                                    <paper-checkbox id="checkBox-[[index]]" checked="{{item.statusCheckBox}}"></paper-checkbox>
                                 </td>
                                 <td>[[_Obindex(index)]]</td>
                                 <td>[[toThaiDate(item.date_use)]]</td>
@@ -178,6 +178,21 @@
             observers: [
                 '_setBtn(listUserFalse.*)'
             ],
+            checkBoxAll(e){
+                console.log(e.currentTarget.checked);
+                this.listUserFalse.map((m,index)=>{
+                    // this.set('listUserFalse'+index+'statusCheckBox',true)
+                    m.statusCheckBox = e.currentTarget.checked
+                    this.$$('#checkBox-'+index).checked = e.currentTarget.checked
+                })
+                // var box = document.querySelector("#checkBox")
+                // document.g
+                // console.log(this.$$('#checkBox-1').checked);
+                // console.log(this.$.checkBox);
+                // console.log(box);
+                // box.checked = true;
+                // console.log(this.listUserFalse);
+            },
             setYear(year) {
 
                 try {
