@@ -91,7 +91,9 @@
                             </template>
                             <template is="dom-if" if="{{getFiled(item.field,index)}}">
                                 <!--<div id="input-[[index]]" hidden>-->
-                                <gl-form-input disabled="{{isEnable}}" value="{{item.value_show}}"></gl-form-input>
+                                <gl-form-input disabled="{{isEnable}}" pattern="[0-9]*" value="{{item.value_show}}">
+                                    <div suffix>ปี</div>
+                                </gl-form-input>
                                 <!--</div>-->
                             </template>
                         </gl-grid-col>
@@ -190,6 +192,9 @@
             },
             getFiled: function (data, index) {
                 if (typeof data != 'undefined') {
+                    // if(this.resetData == false){
+                        // this.set('data.condition.'+index+'.value_show','')
+                    // }
                     if (typeof data.data == 'string') {
                         return true;
                     }

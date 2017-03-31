@@ -32,6 +32,7 @@
 
                         <gl-form-dropdown-menu label="ชื่อสวัสดิการ" placeholder="เลือกสวัสดิการ" style="margin-top:15px;">
                             <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{select.welfare_id}}">
+                                <paper-item value="">ทั้งหมด</paper-item>
                                 <template is="dom-repeat" items={{list}}>
                                     <paper-item value="[[item.id]]">[[item.group_welfare_name]]</paper-item>
                                 </template>
@@ -65,8 +66,8 @@
             },
             getList: function (e) {
                 this.list = e;
-                this.push('list', { id: '', group_welfare_name: 'ทั้งหมด' })
-                this.list.reverse();
+                // this.push('list', { id: '', group_welfare_name: 'ทั้งหมด' })
+                // this.list.reverse();
             },
             nylonPageActive: function () {
                 let year = new Date().getFullYear();
