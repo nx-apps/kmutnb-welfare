@@ -192,24 +192,42 @@
                 // this.dispatchAction('USER_USE_SELETE_WELFARE',data);
             },
             getwelfare() {
-                let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
-                let newData = []
-                sd.map((newDa) => newData.push({ id: newDa.id }))
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการอนุมัติใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
+                            let newData = []
+                            sd.map((newDa) => newData.push({ id: newDa.id }))
 
-                // console.log(sd)
-                this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
-                this.dispatchAction('USERS_FALSE_LIST');
-                this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
+                            // console.log(sd)
+                            this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
+                            this.dispatchAction('USERS_FALSE_LIST');
+                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
+                        }
+                    }
+                })
+
                 // this.$$('#welfare_budget').close()
             },
             delwelfare() {
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการยกเลิกการอนุมัติใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
+                            let newData = []
+                            sd.map((newDa) => newData.push({ id: newDa.id }))
+                            this.dispatchAction('USER_DELETE_USE_WELFARE', newData);
+                            this.dispatchAction('USERS_FALSE_LIST');
+                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
+                        }
+                    }
+                })
                 // console.log(this.usewelfareProp.id);
-                let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
-                let newData = []
-                sd.map((newDa) => newData.push({ id: newDa.id }))
-                this.dispatchAction('USER_DELETE_USE_WELFARE', newData);
-                this.dispatchAction('USERS_FALSE_LIST');
-                this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
+
                 // this.$$('#welfare_budget').close()
             },
             downloadFile(e) {
