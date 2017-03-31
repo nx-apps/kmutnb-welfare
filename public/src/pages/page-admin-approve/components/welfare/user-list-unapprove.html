@@ -5,7 +5,7 @@
 <!--<link rel="import" href="./dialog-approve-welfare.html">-->
 
 <dom-module id="user-list-unapprove">
-    <style include="iron-flex iron-flex-factors iron-flex-alignment page-style">
+    <style include="page-style iron-flex iron-flex-factors iron-flex-alignment page-style">
          :host {
             display: block;
         }
@@ -76,65 +76,66 @@
             </div>-->
 
 
-
-            <table class="gl-table-default" style="margin:auto">
-                <thead class="table-head">
-                    <tr>
-                        <th>เลือก</th>
-                        <th>ลำดับ</th>
-                        <th>วันที่ขอ</th>
-                        <th>รหัสประชาชน</th>
-                        <th>ชื่อ - นามสกุล</th>
-                        <th>คณะ</th>
-                        <th>สวัสดิการที่ขอใช้</th>
-                        <th>จำนวนเงินที่เหลือ</th>
-                        <th>จำนวนเงินที่ใช้งาน</th>
-                        <th>เอกสาร</th>
-
-                    </tr>
-                </thead>
-                <tbody class="table-body">
-
-                    <template is="dom-repeat" items={{listUserFalse}}>
+            <div class="tabe-overflow-x">
+                <table class="gl-table-default" style="margin:auto">
+                    <thead class="table-head">
                         <tr>
-                            <td>
-                                <paper-checkbox checked="{{item.statusCheckBox}}"></paper-checkbox>
-                            </td>
-                            <td>[[_Obindex(index)]]</td>
-                            <td>[[toThaiDate(item.date_use)]]</td>
-                            <td>[[item.personal_id]]</td>
-                            <td>[[item.prefixname_id]] [[item.firstname]] [[item.lastname]]</td>
-                            <td>[[item.faculty_name]]</td>
-                            <td>[[item.group_welfare_name]]</td>
-                            <td>[[formatNumber(item.budget_cover)]]</td>
-                            <td>[[formatNumber(item.use_budget)]]</td>
-                            <td>
-                                <template is="dom-if" if={{item.file}}>
-                                    <template is="dom-repeat" items={{item.file}}>
-                                        <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                            <th>เลือก</th>
+                            <th>ลำดับ</th>
+                            <th>วันที่ขอ</th>
+                            <th>รหัสประชาชน</th>
+                            <th>ชื่อ - นามสกุล</th>
+                            <th>คณะ</th>
+                            <th>สวัสดิการที่ขอใช้</th>
+                            <th>จำนวนเงินที่เหลือ</th>
+                            <th>จำนวนเงินที่ใช้งาน</th>
+                            <th>เอกสาร</th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+
+                        <template is="dom-repeat" items={{listUserFalse}}>
+                            <tr>
+                                <td>
+                                    <paper-checkbox checked="{{item.statusCheckBox}}"></paper-checkbox>
+                                </td>
+                                <td>[[_Obindex(index)]]</td>
+                                <td>[[toThaiDate(item.date_use)]]</td>
+                                <td>[[item.personal_id]]</td>
+                                <td>[[item.prefixname_id]] [[item.firstname]] [[item.lastname]]</td>
+                                <td>[[item.faculty_name]]</td>
+                                <td>[[item.group_welfare_name]]</td>
+                                <td>[[formatNumber(item.budget_cover)]]</td>
+                                <td>[[formatNumber(item.use_budget)]]</td>
+                                <td>
+                                    <template is="dom-if" if={{item.file}}>
+                                        <template is="dom-repeat" items={{item.file}}>
+                                            <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                                        </template>
                                     </template>
-                                </template>
-                                <template is="dom-if" if={{_ObIsHave(item.file)}}>
-                                    ไม่ได้อัพโหลดไฟล์
-                                </template>
-                            </td>
+                                    <template is="dom-if" if={{_ObIsHave(item.file)}}>
+                                        ไม่ได้อัพโหลดไฟล์
+                                    </template>
+                                </td>
 
 
-                        </tr>
-                    </template>
-                    <template is="dom-if" if={{_ObIsHave(listUserFalse)}}>
-                        <tr>
-                            <td colspan="10" style="text-align: center">ยังไม่มีการขอใช้สวัสดิการ</td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-
+                            </tr>
+                        </template>
+                        <template is="dom-if" if={{_ObIsHave(listUserFalse)}}>
+                            <tr>
+                                <td colspan="10" style="text-align: center">ยังไม่มีการขอใช้สวัสดิการ</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
             <div class="flex horizontal end-justified layout">
                 <paper-button raised class="gl-btn-primary" on-tap="getwelfare" disabled="{{btnStatus}}">อนุมัติ</paper-button>
                 <paper-button raised class="gl-btn-danger" on-tap="delwelfare" disabled="{{btnStatus}}">ไม่อนุมัติ</paper-button>
             </div>
         </div>
+
 
         <!--<paper-dialog id="welfare_budget">
             <dialog-approve-welfare data="{{usewelfareProp}}"></dialog-approve-welfare>
@@ -178,10 +179,10 @@
                 sortBy: {
                     type: Array,
                     value: [
-                        {id:'firstname',label:'ชื่อ'},
-                        {id:'personal_id',label:'รหัสประชาชน'},
-                        {id:'use_budget',label:'จำนวนเงินที่ใช้'},
-                        {id:'date_use',label:'วันที่ขอ'}
+                        { id: 'firstname', label: 'ชื่อ' },
+                        { id: 'personal_id', label: 'รหัสประชาชน' },
+                        { id: 'use_budget', label: 'จำนวนเงินที่ใช้' },
+                        { id: 'date_use', label: 'วันที่ขอ' }
                     ]
                 }
             },
@@ -208,19 +209,24 @@
             getwelfare() {
                 let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
                 let newData = []
-                sd.map((newDa)=>{
+                sd.map((newDa) => {
                     // console.log(newDa.id);
-                    newData.push({id:newDa.id})
+                    newData.push({ id: newDa.id })
                 })
-                
+
                 // console.log(sd)
                 this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
+                this.dispatchAction('USERS_FALSE_LIST');
+                this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
                 // this.$$('#welfare_budget').close()
             },
             delwelfare() {
-                // console.log(this.usewelfareProp.id);
-                this.dispatchAction('USER_DELETE_USE_WELFARE', this.usewelfareProp);
-                this.$$('#welfare_budget').close()
+                let newData = []
+                sd.map((newDa) => newData.push({ id: newDa.id }))
+                this.dispatchAction('USER_DELETE_USE_WELFARE', newData);
+                this.dispatchAction('USERS_FALSE_LIST');
+                this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
+                // this.$$('#welfare_budget').close()
             },
             downloadFile(e) {
                 console.log(e.currentTarget.data);

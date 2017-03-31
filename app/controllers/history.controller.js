@@ -71,7 +71,7 @@ exports.requestWelfare = function (req, res) {
             res.status(500).json(err);
         })
 }
-exports.updateWelfare = function (req, res) {
+exports.updateApproveWelfare = function (req, res) {
     var r = req.r;
     req.body.map((upStatus) => {
         upStatus.date_approve = new Date().toISOString()
@@ -82,7 +82,29 @@ exports.updateWelfare = function (req, res) {
             .update({
                 date_approve: fe('date_approve'),
                 status: fe('status')
-            }, {nonAtomic: true})
+            }, { nonAtomic: true })
+    })
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.updateRejectWelfare = function (req, res) {
+    var r = req.r;
+    req.body.map((upStatus) => {
+        upStatus.date_approve = new Date().toISOString()
+        upStatus.status = "reject"
+    })
+    // console.log('>>>>>>',req.body);
+    r.expr(req.body).forEach(function (fe) {
+        return r.db('welfare').table('history_welfare').get(fe('id'))
+            .update({
+                date_approve: fe('date_approve'),
+                status: fe('status')
+            }, { nonAtomic: true })
     })
         .run()
         .then(function (result) {
@@ -146,6 +168,53 @@ exports.adminApprove = function (req, res) {
                 return r.db('welfare').table('document_file').get(doc_update).update({ doc_status: true })
             })
         })
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.listHistory = function (req, res) {
+    var r = req.r;
+    r.db('welfare').table('history_welfare')
+        .merge((user) => {
+            return {
+                date_use: user('date_use').split('T')(0),
+                data: r.db('welfare').table('employee').get(user('emp_id'))
+            }
+        })
+        .merge((getFileName) => {
+            return {
+                file: getFileName('document_ids').map((doc_id) => {
+                    return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
+                        .without('contents')
+                })
+            }
+        })
+        .merge((userName) => {
+            return {
+                budget: r.db('welfare').table('welfare').get(userName('welfare_id')).getField('budget'),
+                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('welfare_id'), { index: 'welfare_id' }).sum('use_budget'),
+                group_welfare_name: r.db('welfare').table('group_welfare').get(userName('group_id')).getField('group_welfare_name'),
+                prefix_name: r.db('welfare_common').table('prefix').get(userName('data').getField('prefix_id')).getField('prefix_name'),
+                firstname: userName('data').getField('firstname'),
+                lastname: userName('data').getField('lastname'),
+                personal_id: userName('data').getField('personal_id'),
+                faculty_name: r.db('welfare_common').table('faculty').get(userName('data').getField('faculty_id')).getField('faculty_name')
+            }
+        })
+        .filter((status)=>{
+            return status('status').eq('approve').or(status('status').eq('reject'))
+        })
+        .merge((money) => {
+            return {
+                budget_cover: money('budget').sub(money('history_welfare_budget')),
+                status_thai : money('status').eq('approve').branch('อนุมัติ','ไม่อนุมัติ')
+            }
+        })
+        .without('data')
         .run()
         .then(function (result) {
             res.json(result);

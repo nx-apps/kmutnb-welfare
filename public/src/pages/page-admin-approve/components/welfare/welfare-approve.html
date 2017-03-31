@@ -1,16 +1,231 @@
+<link rel="import" href="./../../../components/common-logic.html">
+<link rel="import" href="./../../../components/format-number-behavior.html">
 
+<link rel="import" href="./../../../components/month-behavior.html">
 <dom-module id="welfare-approve">
     <template>
-        <style>
-            :host {
+        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment page-style">
+             :host {
                 display: block;
             }
+            
+            .dropdown-width {
+                width: 100%;
+            }
+            
+            .contentHeader {
+                font-size: 22px;
+                font-weight: bold;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .search {
+                width: 30%;
+            }
+            
+            .combo-box {
+                margin-top: -31px;
+            }
         </style>
-        welfare-approve
+        <div class="container">
+            <div class="contentHeader" style="margin-bottom: 20px;">รายชื่อผู้ขอใช้สวัสดิการที่อนุมัติไปแล้ว</div>
+            <!--<div class="horizontal layout">
+                <div class="flex layout horizontal">
+                    <div class="flex center-justified horizontal layout self-center">
+                        ปีสวัสดิการ :
+                    </div>
+                    <div class="flex-2 center-justified horizontal layout self-center">
+                        [[setYear(years)]]
+                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.year}}" item-label-path="year" item-value-path="year"
+                            items="{{years}}"></gl-combo-box>
+                    </div>
+                </div>
+                <div class="flex layout horizontal">
+                    <div class="flex center-justified horizontal layout self-center">
+                        สวัสดิการ :
+                    </div>
+                    <div class="flex-3 center-justified horizontal layout self-center">
+                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.group_id}}" item-label-path="group_welfare_name" item-value-path="id"
+                            items="{{welfares}}"></gl-combo-box>
+                    </div>
+                </div>
+                <div class="flex layout horizontal">
+                    <div class="flex center-justified horizontal layout self-center">
+                        เรียงโดย
+                    </div>
+                    <div class="flex-2 center-justified horizontal layout self-center">
+                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.sortBy}}" 
+                            items="{{sortBy}}"></gl-combo-box>
+                    </div>
+                </div>
+            </div>-->
+
+
+            <div class="tabe-overflow-x">
+                <table class="gl-table-default" style="margin:auto">
+                    <thead class="table-head">
+                        <tr>
+                            <th>เลือก</th>
+                            <th>ลำดับ</th>
+                            <th>วันที่ขอ</th>
+                            <th>สถานนะ</th>
+                            <th>รหัสประชาชน</th>
+                            <th>ชื่อ - นามสกุล</th>
+                            <th>คณะ</th>
+                            <th>สวัสดิการที่ขอใช้</th>
+                            <th>จำนวนเงินที่เหลือ</th>
+                            <th>จำนวนเงินที่ใช้งาน</th>
+                            <th>เอกสาร</th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+
+                        <template is="dom-repeat" items={{listUserFalse}}>
+                            <tr>
+                                <td>
+                                    <paper-checkbox checked="{{item.statusCheckBox}}"></paper-checkbox>
+                                </td>
+                                <td>[[_Obindex(index)]]</td>
+                                <td>[[toThaiDate(item.date_use)]]</td>
+                                <td>[[item.status_thai]]</td>
+                                <td>[[item.personal_id]]</td>
+                                <td>[[item.prefixname_id]] [[item.firstname]] [[item.lastname]]</td>
+                                <td>[[item.faculty_name]]</td>
+                                <td>[[item.group_welfare_name]]</td>
+                                <td>[[formatNumber(item.budget_cover)]]</td>
+                                <td>[[formatNumber(item.use_budget)]]</td>
+                                <td>
+                                    <template is="dom-if" if={{item.file}}>
+                                        <template is="dom-repeat" items={{item.file}}>
+                                            <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                                        </template>
+                                    </template>
+                                    <template is="dom-if" if={{_ObIsHave(item.file)}}>
+                                        ไม่ได้อัพโหลดไฟล์
+                                    </template>
+                                </td>
+
+
+                            </tr>
+                        </template>
+                        <template is="dom-if" if={{_ObIsHave(listUserFalse)}}>
+                            <tr>
+                                <td colspan="10" style="text-align: center">ยังไม่มีการขอใช้สวัสดิการ</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex horizontal end-justified layout">
+                <paper-button raised class="gl-btn-primary" on-tap="getwelfare" disabled="{{btnStatus}}">อนุมัติ</paper-button>
+                <paper-button raised class="gl-btn-danger" on-tap="delwelfare" disabled="{{btnStatus}}">ไม่อนุมัติ</paper-button>
+            </div>
+        </div>
     </template>
     <script>
         Polymer({
-            is: 'welfare-approve'
+            is: 'welfare-approve',
+            behaviors: [
+                ReduxBehavior, commonLogic, FormatNumberBehavior, MonthBehavior
+            ],
+            properties: {
+                listUserFalse: {
+                    statePath: 'users.lisyUserhistoryWelfare',
+                    observer: '_setCheckBox'
+                },
+                usewelfareProp: {
+                    type: Object
+                },
+                btnStatus: {
+                    type: Boolean,
+                    value: true,
+                    // observer: '_setBtn'
+                },
+                dataSearch: {
+                    type: Object,
+                    value: {}
+                },
+                years: {
+                    statePath: 'userWelfare.list',
+                    type: Array,
+                },
+                welfares: {
+                    statePath: 'userWelfare.list_id',
+                    type: Array,
+                },
+                sortBy: {
+                    type: Array,
+                    value: [
+                        { id: 'firstname', label: 'ชื่อ' },
+                        { id: 'personal_id', label: 'รหัสประชาชน' },
+                        { id: 'use_budget', label: 'จำนวนเงินที่ใช้' },
+                        { id: 'date_use', label: 'วันที่ขอ' }
+                    ]
+                }
+            },
+            observers: [
+                '_setBtn(listUserFalse.*)'
+            ],
+            setYear(year) {
+                //  console.log(year);
+                try {
+                    this.set('dataSearch.year', year[year.length - 1].year)
+                    this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
+                    // this.dispatchAction('FACULTY_LIST')
+                    // this.dataSearch.year = 2559
+                } catch (error) {
+
+                }
+            },
+            _setCheckBox(setData) {
+                console.log(setData);
+                return setData.map((CheckBox) => CheckBox.statusCheckBox = false)
+            },
+            userwelfare(e) {
+                // console.log(e.currentTarget.data);
+                this.set('usewelfareProp', e.currentTarget.data)
+                this.$$('#welfare_budget').open()
+                // this.dispatchAction('USER_USE_SELETE_WELFARE',data);
+            },
+            getwelfare() {
+                let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
+                let newData = []
+                sd.map((newDa) => newData.push({ id: newDa.id }))
+
+                // console.log(sd)
+                this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
+                this.dispatchAction('USERS_FALSE_LIST');
+                this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
+                // this.$$('#welfare_budget').close()
+            },
+            delwelfare() {
+                // console.log(this.usewelfareProp.id);
+                let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
+                let newData = []
+                sd.map((newDa) => newData.push({ id: newDa.id }))
+                this.dispatchAction('USER_DELETE_USE_WELFARE', newData);
+                this.dispatchAction('USERS_FALSE_LIST');
+                this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
+                // this.$$('#welfare_budget').close()
+            },
+            downloadFile(e) {
+                console.log(e.currentTarget.data);
+                window.open('/api/file/download/' + e.currentTarget.data.id)
+            },
+            _setBtn(e) {
+                let status = this.listUserFalse.filter((fil) => fil.statusCheckBox == true).length < 1
+                // console.log(status)
+                this.set('btnStatus', status)
+            },
+            checkBox() {
+                // let dataR2r = this.listUserFalse
+                let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
+                // console.log(sd)
+            }
         });
     </script>
 </dom-module>

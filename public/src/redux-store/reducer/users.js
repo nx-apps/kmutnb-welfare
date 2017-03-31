@@ -9,6 +9,7 @@ const initialState = {
     disabled: true,
     insert_view: true,
     lisyUserFalse: [],
+    lisyUserhistoryWelfare:[],
     listRvpFund: [],
     rvp_fund: []
 }
@@ -63,6 +64,8 @@ export function usersReducer(state = initialState, action) {
             return Object.assign({}, state, { select_use_welefares: action.payload });
         case 'USERS_FALSE_LIST':
             return Object.assign({}, state, { lisyUserFalse: action.payload });
+        case 'USERS_LIST_HISTORY_WELFARE':
+            return Object.assign({}, state, { lisyUserhistoryWelfare: action.payload });
         case 'USER_RVP_FUND_LIST':
             return Object.assign({}, state, { listRvpFund: action.payload });
         case 'USER_RVP_FUND':
@@ -219,9 +222,9 @@ export function usersAction(store) {
             console.log(data);
                 this.fire('toast', { status: 'load' });
                 
-                axios.put(`./history/update`, data)
+                axios.put(`./history/update/approve`, data)
                     .then(res => {
-                        this.dispatchAction('USERS_FALSE_LIST');
+                        // this.dispatchAction('USERS_FALSE_LIST');
                         this.fire('toast', {
                             status: 'success', text: 'บันทึกสำเร็จ',
                             callback: () => {
@@ -236,14 +239,15 @@ export function usersAction(store) {
             // })
         },
         USER_DELETE_USE_WELFARE(data) {
-            clearDatawelfare(data, (newData) => {
-                newData.id = data.id;
+            // clearDatawelfare(data, (newData) => {
+            //     newData.id = data.id;
                 this.fire('toast', { status: 'load' });
-                newData.status = 'reject';
-                newData.date_approve = new Date().toISOString();
-                axios.put(`./history/update`, newData)
+            //     newData.status = 'reject';
+            //     newData.date_approve = new Date().toISOString();
+                axios.put(`./history/update/reject`, data)
                     .then(res => {
-                        this.dispatchAction('USERS_FALSE_LIST');
+                        // this.dispatchAction('USERS_FALSE_LIST');
+                        console.log(11111);
                         this.fire('toast', {
                             status: 'success', text: 'บันทึกสำเร็จ',
                             callback: () => {
@@ -253,9 +257,10 @@ export function usersAction(store) {
                         });
                     })
                     .catch(err => {
+                        console.log(2222);
                         console.log(err);
                     })
-            })
+            // })
             // console.log(data);
             //  this.fire('toast',{
             //     status:'openDialog',
@@ -291,6 +296,16 @@ export function usersAction(store) {
                             //     this.$$('panel-right').open();
                         }
                     });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+        USERS_LIST_HISTORY_WELFARE(data) {
+            axios.get(`./history/`)
+                .then(res => {
+                    // console.log(res)
+                   store.dispatch({ type: 'USERS_LIST_HISTORY_WELFARE', payload: res.data })
                 })
                 .catch(err => {
                     console.log(err);
