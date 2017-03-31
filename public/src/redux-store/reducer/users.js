@@ -283,9 +283,9 @@ export function usersAction(store) {
         USER_USE_SELETE_WELFARE(data) {
             store.dispatch({ type: 'USER_USE_SELETE_WELFARE', payload: data })
         },
-        USERS_FALSE_LIST(data) {
+        USERS_FALSE_LIST(data='') {
             this.fire('toast', { status: 'load' });
-            axios.get(`./history/unapprove/`)
+            axios.get(`./history/unapprove?`+data)
                 .then(res => {
                     // console.log(res)
                     this.fire('toast', {
@@ -301,8 +301,8 @@ export function usersAction(store) {
                     console.log(err);
                 })
         },
-        USERS_LIST_HISTORY_WELFARE(data) {
-            axios.get(`./history/`)
+        USERS_LIST_HISTORY_WELFARE(data='') {
+            axios.get(`./history/search?`+data)
                 .then(res => {
                     // console.log(res)
                    store.dispatch({ type: 'USERS_LIST_HISTORY_WELFARE', payload: res.data })

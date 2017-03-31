@@ -32,7 +32,7 @@
         </style>
         <div class="container">
             <div class="contentHeader" style="margin-bottom: 20px;">รายชื่อผู้ขอใช้สวัสดิการที่อนุมัติไปแล้ว</div>
-            <!--<div class="horizontal layout">
+            <div class="horizontal layout">
                 <div class="flex layout horizontal">
                     <div class="flex center-justified horizontal layout self-center">
                         ปีสวัสดิการ :
@@ -57,11 +57,17 @@
                         เรียงโดย
                     </div>
                     <div class="flex-2 center-justified horizontal layout self-center">
-                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.sortBy}}" 
-                            items="{{sortBy}}"></gl-combo-box>
+                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.sortBy}}" items="{{sortBy}}" item-label-path="label" item-value-path="id"></gl-combo-box>
                     </div>
                 </div>
-            </div>-->
+                <div class="flex layout horizontal">
+                    
+                    <paper-button raised class="gl-btn-primary" style="height: 40px;" on-tap="searchBtn">ค้นหา
+                        <paper-icon-button suffix icon="search"></paper-icon-button>
+                    </paper-button>
+
+                </div>
+            </div>
 
 
             <div class="tabe-overflow-x">
@@ -191,6 +197,12 @@
                 this.$$('#welfare_budget').open()
                 // this.dispatchAction('USER_USE_SELETE_WELFARE',data);
             },
+            searchBtn(){
+                // console.log(this.dataSearch);
+                // console.log(this.genUrl(this.dataSearch));
+
+                this.dispatchAction('USERS_LIST_HISTORY_WELFARE',this.genUrl(this.dataSearch));
+            },
             getwelfare() {
                 this.fire('toast', {
                     status: 'openDialog',
@@ -203,8 +215,8 @@
 
                             // console.log(sd)
                             this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
-                            this.dispatchAction('USERS_FALSE_LIST');
-                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
+                            this.dispatchAction('USERS_FALSE_LIST','');
+                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE','');
                         }
                     }
                 })
@@ -221,8 +233,8 @@
                             let newData = []
                             sd.map((newDa) => newData.push({ id: newDa.id }))
                             this.dispatchAction('USER_DELETE_USE_WELFARE', newData);
-                            this.dispatchAction('USERS_FALSE_LIST');
-                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
+                            this.dispatchAction('USERS_FALSE_LIST','');
+                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE','');
                         }
                     }
                 })

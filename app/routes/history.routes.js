@@ -1,7 +1,7 @@
 module.exports = function (app) {
     var controller = require('../controllers/history.controller');
     app.get('/unapprove', controller.unapprove);
-    app.get('/', controller.listHistory);
+    app.get('/search', controller.listHistory);
     app.post('/request', controller.requestWelfare); ///request/welfare/
     app.put('/update/approve', controller.updateApproveWelfare); ///update/welfare/
     app.put('/update/reject', controller.updateRejectWelfare); ///update/welfare/
