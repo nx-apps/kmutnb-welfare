@@ -1,0 +1,86 @@
+<link rel="import" href="../../components/card-search.html">
+<link rel="import" href="../../components/page-style.html">
+<link rel="import" href="../../components/month-behavior.html">
+
+<dom-module id="day-to-day">
+    <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+
+    </style>
+    <template>
+        <div class="layout horizontal center-justified wrap">
+            <card-search>
+                <div class="title-head">
+                    เลือกวันที่ต้องการดูรายงาน
+                </div>
+                <div class="layout horizontal center-justified">
+                    <div class="menu">
+                        วันที่
+                    </div>
+                    <vaadin-date-picker always-float-label style="width:210px;margin-top:15px;" label="" value="{{select.date_start}}"></vaadin-date-picker>
+                    <div class="menu">
+                        ถึงวันที่
+                    </div>
+                    <vaadin-date-picker always-float-label style="width:210px;margin-top:15px;" label="" value="{{select.date_end}}"></vaadin-date-picker>
+                </div>
+                <div class="layout horizontal center-justified">
+                    <gl-form-dropdown-menu label="ปี" placeholder="เลือกปี" style="margin:15px 15px 0px 15px;">
+                        <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
+                            <template is="dom-repeat" items={{list_year}}>
+                                <paper-item value="[[item.year]]">[[item.year]]</paper-item>
+                            </template>
+                        </paper-menu>
+                    </gl-form-dropdown-menu>
+
+                    <gl-form-dropdown-menu label="ชื่อสวัสดิการ" placeholder="เลือกสวัสดิการ" style="margin-top:15px;">
+                        <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{select.welfare_id}}">
+                            <template is="dom-repeat" items={{list}}>
+                                <paper-item value="[[item.id]]">[[item.group_welfare_name]]</paper-item>
+                            </template>
+                        </paper-menu>
+                    </gl-form-dropdown-menu>
+                </div>
+                <paper-button class="gl-btn-info" on-tap="print">Print</paper-button>
+            </card-search>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'day-to-day',
+            behaviors: [ReduxBehavior, MonthBehavior],
+            observers: ['changeYear(selectYear)'],
+            properties: {
+                list: {
+                    statePath: 'groupWelfare.list'
+                },
+                list_year: {
+                    statePath: 'groupWelfare.list_year'
+                },
+                select: {
+                    type: Object,
+                    value: {}
+                }
+            },
+            ready: function(){
+                let year = new Date().getFullYear();
+                var newYear = year + 543;
+                this.selectYear = newYear;
+            },
+            changeYear: function (e) {
+                if (typeof e != 'undefined' && e != undefined) {
+                    var year = e - 543;
+                    this.dispatchAction('LIST_WELFARE',year);
+                }
+            },
+            print: function () {
+                // console.log(this.select);
+                if (this.select.welfare_id == undefined || this.select.welfare_id == '') {
+                    window.open('./api/report/report5?' + this.genUrl(this.select));
+                    // console.log(this.genUrl(this.select));
+                } else {
+                    window.open('./api/report/report5_1?' + this.genUrl(this.select));
+                    // console.log(this.genUrl(this.select));
+                }
+            }
+        });
+    </script>
+</dom-module>
