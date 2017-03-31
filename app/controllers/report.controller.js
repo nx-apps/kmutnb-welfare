@@ -510,7 +510,6 @@ exports.report4 = function (req, res, next) {
         });
 }
 exports.report4_1 = function (req, res, next) {
-    var params = req.query;
     var r = req.r
     var parameters = {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
@@ -536,35 +535,22 @@ exports.report4_1 = function (req, res, next) {
             month_name: arr_month[i]
         });
     }
-    r.do(   
-    r.db('welfare').table('history_welfare').filter({group_id:params.group_id})
-          .merge(function (m){
-            return  r.db('welfare').table('group_welfare').get(m('group_id'))
-          }).coerceTo('array')('group_welfare_name')
-  
-        ,
+ 
     r.expr(data)
         .merge(function (data_merge) {
             return {
                 sum_use: r.db('welfare').table('history_welfare').between(data_merge('date_start'), data_merge('date_end'), { index: 'date_use' }).count(),
-                sum_emp: r.db('welfare').table('history_welfare').between(data_merge('date_start'), data_merge('date_end'), { index: 'date_use' }).group('emp_id').ungroup().count(),
-                sum_budget: r.db('welfare').table('history_welfare').between(data_merge('date_start'), data_merge('date_end'), { index: 'date_use' }).sum('use_budget')
+                // sum_emp: r.db('welfare').table('history_welfare').between(data_merge('date_start'), data_merge('date_end'), { index: 'date_use' }).group('emp_id').ungroup().count(),
+                // sum_budget: r.db('welfare').table('history_welfare').between(data_merge('date_start'), data_merge('date_end'), { index: 'date_use' }).sum('use_budget')
             }
         })
         .without('date_start', 'date_end')
-         ,
-        function (resultA, resultB) {
-            return {
-                welfare_name: resultA,
-                welfare_list: resultB
-            }
-        }
-    )
+        
         .run()
         .then(function (result) {
-            parameters.group_welfare_name = result.welfare_name;
+            // parameters.group_welfare_name = result.welfare_name;
             res.json(result);
-            res.ireport("report4_1.jasper", req.query.export || "pdf", result.welfare_list, parameters);
+            res.ireport("report4_1.jasper", req.query.export || "pdf", result, parameters);
         });
 }
 exports.report5 = function (req, res) {
