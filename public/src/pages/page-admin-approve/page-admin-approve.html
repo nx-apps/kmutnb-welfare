@@ -11,7 +11,7 @@
 
 <!--<link rel="import" href="./../components/common-logic.html">-->
 <dom-module id="page-admin-approve">
-    <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+    <style include="page-style flex-style">
         * {
             font-family: 'CSChatThaiUI', sans-serif;
             -webkit-font-smoothing: antialiased;
@@ -81,14 +81,21 @@
     </style>
     <template>
         <div class="xcontainer">
-            <div class="header container">รายการคำขอใช้
-                <paper-dropdown-menu no-label-float>
-                    <paper-listbox class="dropdown-content" selected="{{pageComponents}}">
-                        <paper-item>สวัสดิการ</paper-item>
-                        <paper-item>กองทุนสำรองเลี้ยงชีพ</paper-item>
-                    </paper-listbox>
-                </paper-dropdown-menu>
+            <div class="flex-equal-justified">
+                <div>
+                    <div class="header container">รายการคำขอใช้</div>
+                </div>
+                <div class="container">
+                    <paper-dropdown-menu no-label-float>
+                        <paper-listbox class="dropdown-content" selected="{{pageComponents}}">
+                            <paper-item>สวัสดิการ</paper-item>
+                            <paper-item>กองทุนสำรองเลี้ยงชีพ</paper-item>
+                        </paper-listbox>
+                    </paper-dropdown-menu>
+                </div>
             </div>
+            
+            
 
             <iron-pages selected="{{pageComponents}}">
                 <list-of-welfare></list-of-welfare>
