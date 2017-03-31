@@ -24,9 +24,6 @@
 	<variable name="SUM" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{use_budget}]]></variableExpression>
 	</variable>
-	<group name="GP">
-		<groupExpression><![CDATA[$F{welfare_id}]]></groupExpression>
-	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -270,7 +267,7 @@
 				<text><![CDATA[จำนวนเงิน]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="90" y="166" width="123" height="20" uuid="a52b398a-a4ba-408e-b150-0ecec90c74ca"/>
+				<reportElement x="90" y="166" width="97" height="20" uuid="a52b398a-a4ba-408e-b150-0ecec90c74ca"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -284,7 +281,7 @@
 				<text><![CDATA[รหัสพนักงาน]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="213" y="166" width="200" height="20" uuid="94200f42-66d2-4dc5-add8-030b06a10b50"/>
+				<reportElement x="187" y="166" width="120" height="20" uuid="94200f42-66d2-4dc5-add8-030b06a10b50"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -364,6 +361,20 @@
 				</textElement>
 				<textFieldExpression><![CDATA[" วันที่  "+new nylon.utility.NumberFormat().toThaiDate($P{date_start})+" ถึงวันที่ "+new nylon.utility.NumberFormat().toThaiDate($P{date_end})]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="307" y="166" width="106" height="20" uuid="1f2725b9-3791-489f-915d-02939babb01f"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[เงื่อนไขสวัสดิการ]]></text>
+			</staticText>
 		</band>
 	</noData>
 </jasperReport>
