@@ -64,14 +64,18 @@
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
-                                            <paper-icon-button on-tap="edit" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="create"></paper-icon-button>
-                                            <paper-icon-button on-tap="confirmDelete" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="delete"></paper-icon-button>
+                                            <paper-tooltip for="editData">แก้ไข</paper-tooltip>
+                                            <paper-icon-button id="editData"  on-tap="edit" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="create"></paper-icon-button>
+                                            <paper-tooltip for="delData">ลบ</paper-tooltip>
+                                            <paper-icon-button id="delData"  on-tap="confirmDelete" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="delete"></paper-icon-button>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
-                                            <paper-icon-button on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
-                                            <paper-icon-button on-tap="close" item=[[item.type_employee_name]] index="[[index]]" icon="clear"></paper-icon-button>
+                                            <paper-tooltip for="upDData">อัพเดต</paper-tooltip>
+                                            <paper-icon-button id="upDData"  on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
+                                            <paper-tooltip for="canData">ยกเลิก</paper-tooltip>
+                                            <paper-icon-button id="canData"  on-tap="close" item=[[item.type_employee_name]] index="[[index]]" icon="clear"></paper-icon-button>
                                         </td>
                                     </template>
                                 </tr>

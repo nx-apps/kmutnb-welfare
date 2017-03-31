@@ -44,7 +44,8 @@
                             <td style="text-align: center">[[count(index)]]</td>
                             <td>[[item]]</td>
                             <td style="text-align: center">
-                                <paper-icon-button icon="create" item="[[item]]" on-tap="selectData"></paper-icon-button>
+                                <paper-tooltip for="editData">แก้ไข</paper-tooltip>
+                                <paper-icon-button id="editData"icon="create" item="[[item]]" on-tap="selectData"></paper-icon-button>
                             </td>
                         </tr>
                     </template>
