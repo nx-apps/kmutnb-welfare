@@ -179,6 +179,13 @@ exports.adminApprove = function (req, res) {
 exports.listHistory = function (req, res) {
     var r = req.r;
     console.log(req.query.year != undefined);
+    if (req.query.sortBy == undefined) {
+        req.query = Object.assign(req.query,
+            {
+                sortBy: 'date_approve'
+            }
+        );
+    }
     if (req.query.year != undefined) {
         // console.log(req.query.year);
         // let year =  parseInt(req.query.year)
@@ -190,7 +197,7 @@ exports.listHistory = function (req, res) {
         );
     }
     // let chengeyear
-    console.log(req.query);
+    // console.log(req.query);
     r.db('welfare').table('history_welfare')
         .filter({ year: req.query.year , group_id:req.query.group_id})
         .merge((user) => {
@@ -229,6 +236,7 @@ exports.listHistory = function (req, res) {
                 status_thai: money('status').eq('approve').branch('อนุมัติ', 'ไม่อนุมัติ')
             }
         })
+        .orderBy(req.query.sortBy)
         .without('data')
         .run()
         .then(function (result) {

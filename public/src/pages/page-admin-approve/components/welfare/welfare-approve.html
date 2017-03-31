@@ -185,19 +185,13 @@
                     m.statusCheckBox = e.currentTarget.checked
                     this.$$('#checkBox-'+index).checked = e.currentTarget.checked
                 })
-                // var box = document.querySelector("#checkBox")
-                // document.g
-                // console.log(this.$$('#checkBox-1').checked);
-                // console.log(this.$.checkBox);
-                // console.log(box);
-                // box.checked = true;
-                // console.log(this.listUserFalse);
             },
             setYear(year) {
 
                 try {
                     if (year.length != 0) {
                         this.set('dataSearch.year', year[year.length - 1].year)
+                        this.set('dataSearch.sortBy','firstname')
                         this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
                         this.searchBtn()
                     }
