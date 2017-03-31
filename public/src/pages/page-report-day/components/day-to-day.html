@@ -32,7 +32,8 @@
                     </gl-form-dropdown-menu>
 
                     <gl-form-dropdown-menu label="ชื่อสวัสดิการ" placeholder="เลือกสวัสดิการ" style="margin-top:15px;">
-                        <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{select.welfare_id}}">
+                        <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{select.group_id}}">
+                            <paper-item value="">ทั้งหมด</paper-item>
                             <template is="dom-repeat" items={{list}}>
                                 <paper-item value="[[item.id]]">[[item.group_welfare_name]]</paper-item>
                             </template>
