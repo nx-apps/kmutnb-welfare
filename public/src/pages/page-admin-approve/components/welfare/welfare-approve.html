@@ -75,7 +75,7 @@
                 <table class="gl-table-default" style="margin:auto">
                     <thead class="table-head">
                         <tr>
-                            <th><paper-checkbox on-tap="checkBoxAll"></paper-checkbox></th>
+                            <th><paper-checkbox id="masterCheck" on-tap="checkBoxAll"></paper-checkbox></th>
                             <th>ลำดับ</th>
                             <th>วันที่ขอ</th>
                             <th>สถานนะ</th>
@@ -226,6 +226,7 @@
                             // console.log(sd)
                             this.dispatchAction('USER_USE_WELFARE_APPROVE', newData, () => {
                                 this.searchBtn()
+                                this.$$('#masterCheck').checked = false
                             })
                         }
                     }
@@ -245,6 +246,7 @@
                             // this.dispatchAction('USER_DELETE_USE_WELFARE', newData);
                             this.dispatchAction('USER_DELETE_USE_WELFARE', newData, () => {
                                 this.searchBtn()
+                                this.$$('#masterCheck').checked = false
                             })
 
                         }
