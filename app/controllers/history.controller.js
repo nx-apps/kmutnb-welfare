@@ -178,11 +178,26 @@ exports.adminApprove = function (req, res) {
 }
 exports.listHistory = function (req, res) {
     var r = req.r;
+    console.log(req.query.year != undefined);
+    if (req.query.year != undefined) {
+        // console.log(req.query.year);
+        // let year =  parseInt(req.query.year)
+        // console.log(year);
+        req.query = Object.assign(req.query,
+            {
+                year: parseInt(req.query.year)
+            }
+        );
+    }
+    // let chengeyear
+    console.log(req.query);
     r.db('welfare').table('history_welfare')
+        .filter({ year: req.query.year , group_id:req.query.group_id})
         .merge((user) => {
             return {
                 date_use: user('date_use').split('T')(0),
-                data: r.db('welfare').table('employee').get(user('emp_id'))
+                data: r.db('welfare').table('employee').get(user('emp_id')),
+                // testtttt:req.query.year.coerceTo('number')
             }
         })
         .merge((getFileName) => {
@@ -205,13 +220,13 @@ exports.listHistory = function (req, res) {
                 faculty_name: r.db('welfare_common').table('faculty').get(userName('data').getField('faculty_id')).getField('faculty_name')
             }
         })
-        .filter((status)=>{
+        .filter((status) => {
             return status('status').eq('approve').or(status('status').eq('reject'))
         })
         .merge((money) => {
             return {
                 budget_cover: money('budget').sub(money('history_welfare_budget')),
-                status_thai : money('status').eq('approve').branch('อนุมัติ','ไม่อนุมัติ')
+                status_thai: money('status').eq('approve').branch('อนุมัติ', 'ไม่อนุมัติ')
             }
         })
         .without('data')
