@@ -50,7 +50,7 @@
                         ปีสวัสดิการ :
                     </div>
                     <div class="flex-2 center-justified horizontal layout self-center">
-                        [[setYear(years)]]
+                        [[]]
                         <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.year}}" item-label-path="year" item-value-path="year"
                             items="{{years}}"></gl-combo-box>
                     </div>
@@ -74,7 +74,6 @@
                     </div>
                 </div>
             </div>-->
-
 
             <div class="tabe-overflow-x">
                 <table class="gl-table-default" style="margin:auto">
@@ -171,6 +170,7 @@
                 years: {
                     statePath: 'userWelfare.list',
                     type: Array,
+                    observer: 'setYear'
                 },
                 welfares: {
                     statePath: 'userWelfare.list_id',
@@ -192,10 +192,14 @@
             setYear(year) {
                 //  console.log(year);
                 try {
-                    this.set('dataSearch.year', year[year.length - 1].year)
-                    this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
-                    // this.dispatchAction('FACULTY_LIST')
-                    // this.dataSearch.year = 2559
+                    if (year.length != 0) {
+                        console.log(year);
+                        this.set('dataSearch.year', year[year.length - 1].year)
+                        this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
+                        this.dispatchAction('USERS_FALSE_LIST')
+                        // this.dispatchAction('FACULTY_LIST')
+                        // this.dataSearch.year = 2559
+                    }
                 } catch (error) {
 
                 }
@@ -206,7 +210,7 @@
                 this.$$('#welfare_budget').open()
                 // this.dispatchAction('USER_USE_SELETE_WELFARE',data);
             },
-           getwelfare() {
+            getwelfare() {
                 this.fire('toast', {
                     status: 'openDialog',
                     text: 'ต้องการอนุมัติใช่หรือไม่ ?',
@@ -218,8 +222,8 @@
 
                             // console.log(sd)
                             this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
-                            this.dispatchAction('USERS_FALSE_LIST','');
-                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE','');
+                            this.dispatchAction('USERS_FALSE_LIST', '');
+                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE', '');
                         }
                     }
                 })
