@@ -1,4 +1,3 @@
-
 <dom-module id="list-welfare-common">
     <template>
         <style include="page-style">
@@ -13,16 +12,17 @@
                 background-color: white;
                 padding: 20px;
             }*/
+            
             .head-text {
-            font-size: var(--font-size-h4);
-            margin: 15px 15px 15px 15px;
-        }
+                font-size: var(--font-size-h4);
+                margin: 15px 15px 15px 15px;
+            }
         </style>
-        <paper-material elevation="1">
-            <div class="head-text">
-                 ฐานข้อมูลตั้งต้น
-            </div>
-            <div class="content horizontal center-justified layout">
+        <!--<paper-material elevation="1">-->
+        <div class="head-text">
+            ฐานข้อมูลตั้งต้น
+        </div>
+        <div class="content horizontal center-justified layout">
             <table class="gl-table-default">
                 <thead class="table-head">
                     <tr>
@@ -30,7 +30,7 @@
                         <th>ชื่อตาราง</th>
                         <th>กระทำ</th>
                     </tr>
-                </thead>  
+                </thead>
                 <!--<template is="dom-if" if="">
                     <tbody>
                         <tr>
@@ -40,33 +40,34 @@
                 </template>-->
                 <tbody>
                     <template is="dom-repeat" items="[[dataList]]">
-                    <tr>
-                        <td style="text-align: center">[[count(index)]]</td>
-                        <td>[[item]]</td>
-                        <td style="text-align: center">
-                            <paper-icon-button icon="create" item="[[item]]" on-tap="selectData"></paper-icon-button>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td style="text-align: center">[[count(index)]]</td>
+                            <td>[[item]]</td>
+                            <td style="text-align: center">
+                                <paper-icon-button icon="create" item="[[item]]" on-tap="selectData"></paper-icon-button>
+                            </td>
+                        </tr>
                     </template>
                 </tbody>
             </table>
-            </div>
-        </paper-material>
+        </div>
+        <!--</paper-material>-->
     </template>
     <script>
         Polymer({
             is: 'list-welfare-common',
-            behaviors:[ReduxBehavior],
-            properties:{
-                dataList:{
-                   statePath:'conditionReadWelfare.listTable'
+            behaviors: [ReduxBehavior],
+            properties: {
+                dataList: {
+                    statePath: 'conditionReadWelfare.listTable'
                 }
             },
-            count:function(index){
-                return index+1;
+            count: function (index) {
+                return index + 1;
             },
-            selectData:function(e){
-                this.fire('open-panel',e.target.item);
+            selectData: function (e) {
+                // console.log(e.target.item);
+                this.fire('open-panel', e.target.item);
             }
         });
     </script>

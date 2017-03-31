@@ -15,124 +15,220 @@
 <link rel="import" href="./components/common-components/TypeEmployee-manage.html">
 
 <dom-module id="page-back-end">
-      <style include="iron-flex iron-flex-factors iron-flex-alignment page-style">
-    :host {
-      --paper-fab-background:var(--paper-light-blue-500);
-      --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
-    }
-    *{
-      font-family: 'CSChatThaiUI', sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-    paper-fab {
-         position: fixed;
-         right: 25px;
-         bottom: 25px;
-         color: #fff;
-    }
-    /*list-of-logic {
+    <style include="iron-flex iron-flex-factors iron-flex-alignment page-style">
+         :host {
+            --paper-fab-background: var(--paper-light-blue-500);
+            --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+        }
+        
+        * {
+            font-family: 'CSChatThaiUI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        paper-fab {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            color: #fff;
+        }
+        /*list-of-logic {
         width: 80%;
     }*/
-        </style>
+        
+        .header {
+            padding: 10px;
+            font-size: 35px;
+        }
+        
+        .container {
+            padding: 20px;
+        }
+           main {
+            /*min-width: 320px;*/
+            /*max-width: 1000px;*/
+            padding: 5px;
+            margin: 0 auto;
+        }
+        
+        section {
+            display: none;
+            /*padding: 20px 0 0;*/
+            border-top: 1px solid #ddd;
+        }
+        
+        input {
+            display: none;
+        }
+        
+        label {
+            display: inline-block;
+            margin: 0 0 -1px;
+            padding: 15px 25px;
+            font-weight: 600;
+            text-align: center;
+            color: #bbb;
+            border: 1px solid transparent;
+            background: #D5D8DC;
+        }
+        
+        label:before {
+            font-family: fontawesome;
+            font-weight: normal;
+            margin-right: 10px;
+        }
+        /*label[for*='1']:before { content: '\f1cb'; }
+            label[for*='2']:before { content: '\f17d'; }*/
+        
+        label:hover {
+            color: #888;
+            cursor: pointer;
+        }
+        
+        input:checked+label {
+            color: #555;
+            border: 1px solid #ddd;
+            border-top: 3px solid orange;
+            border-bottom: 1px solid #fff;
+            background: #fff;
+        }
+        
+        #tab1:checked~#content1,
+        #tab2:checked~#content2 {
+            display: block;
+        }
+        list-of-logic,
+           list-welfare-common {
+                margin-top: 15px;
+                width: 98%;
+            }
+    </style>
     <template>
         <!--<div class="list horizontal center-justified layout">
             <list-of-logic></list-of-logic>
            
         </div>-->
-           
+
 
         <div class="xcontainer">
-             <list-of-logic></list-of-logic>
-            <list-welfare-common></list-welfare-common>
-             
-        </div>
-        
-         <panel-right id="test" title="{{title}}" >
-             <iron-pages selected="{{selected}}">
-                 <section>
-                    <logic-panel></logic-panel>
-                 </section>
-                 <section>
-                    <academic-manage></academic-manage>
-                 </section>
-                 <section>
-                    <active-manage></active-manage>
-                 </section>
-                 <section>
-                    <department-manage></department-manage>
-                 </section>
-                 <section>
-                     <faculty-manage></faculty-manage>
-                 </section>
-                  <section>
-                     <gender-manage></gender-manage>
-                 </section>
-                <section>
-                     <matier-manage></matier-manage>
-                 </section>
-                <section>
-                    <position-manage></position-manage>
-                 </section>
-                 <section>
-                    <prefixname-manage></prefixname-manage>
-                 </section>
-                  <section>
-                    <relation-manage></relation-manage>
-                 </section>
-                <section>
-                    <TypeEmployee-manage></TypeEmployee-manage>
+            <div class="header container">จัดการข้อมูล
+            </div>
+             <main>
+                <input id="tab1" type="radio" name="tabs" checked>
+                <label for="tab1">เงือนไข</label>
+
+                <input id="tab2" type="radio" name="tabs">
+                <label for="tab2">ข้อมูลพื้นฐาน</label>
+                <section id="content1">
+                    <paper-material elevation="1">
+                        <div class="list horizontal center-justified layout">
+                            <list-of-logic></list-of-logic>
+                        </div>
+                    </paper-material>
                 </section>
-             </iron-pages>
-             
-         <!--<iron-pages selected="{{page}}">
+
+                <section id="content2">
+                    <paper-material elevation="1">
+                        <div class="list horizontal center-justified layout">
+                            <list-welfare-common></list-welfare-common>
+                        </div>
+                    </paper-material>
+                </section>
+            </main>
+            
+            
+
+        </div>
+
+        <panel-right id="test" title="{{title}}">
+            <iron-pages selected="{{selected}}">
+                <div>
+                    <logic-panel></logic-panel>
+                </div>
+                <div>
+                    <academic-manage></academic-manage>
+                </div>
+                <div>
+                    <active-manage></active-manage>
+                </div>
+                <div>
+                    <department-manage></department-manage>
+                </div>
+                <div>
+                    <faculty-manage></faculty-manage>
+                </div>
+                <div>
+                    <gender-manage></gender-manage>
+                </div>
+                <div>
+                    <matier-manage></matier-manage>
+                </div>
+                <div>
+                    <position-manage></position-manage>
+                </div>
+                <div>
+                    <prefixname-manage></prefixname-manage>
+                </div>
+                <div>
+                    <relation-manage></relation-manage>
+                </div>
+                <div>
+                    <TypeEmployee-manage></TypeEmployee-manage>
+                </div>
+            </iron-pages>
+
+            <!--<iron-pages selected="{{page}}">
              <div class="horizontal center-justified layout">
                 <user-panel class="sub-component" data="[[dataSelete]]"></user-panel>
         </iron-pages>-->
-         </panel-right>
-         
+        </panel-right>
+
     </template>
     <script>
         Polymer({
             is: 'page-back-end',
-            behaviors:[nylonBehavior,ReduxBehavior,conditionReadWelfareAction,commonDataAction],
-            properties:{
-                data:{
-                    statePath:'conditionReadWelfare.select'
+            behaviors: [nylonBehavior, ReduxBehavior, conditionReadWelfareAction, commonDataAction],
+            properties: {
+                data: {
+                    statePath: 'conditionReadWelfare.select'
                 }
             },
-            nylonPageActive:function(){
+            nylonPageActive: function () {
                 this.dispatchAction('CONDITIONREADWELFARE_LIST');
                 this.dispatchAction('CONDITIONREADWELFARE_TABLE_LIST');
                 this.dispatchAction('CONDITIONREADWELFARE_FIEID_LIST');
-                
+
             },
-            listeners:{
-                'open-panel':'openPanel',
-                '_get-field':'_getField',
-                '_edit-data-condition':'_editDataCondition'
+            listeners: {
+                'open-panel': 'openPanel',
+                '_get-field': '_getField',
+                '_edit-data-condition': '_editDataCondition'
             },
-            _getField(){
+            _getField() {
                 // this.set('dataSelete',{})
                 this.selected = 0;
                 this.$$('panel-right').open();
-                this.set('title','เพิ่มฟิลด์')
-                this.dispatchAction('CONDITIONREADWELFARE_SET'); 
-                this.dispatchAction('CONDITIONREADWELFARE_BTN',false);
-                this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW',true);
+                this.set('title', 'เพิ่มฟิลด์')
+                console.log(111);
+                this.dispatchAction('CONDITIONREADWELFARE_SET');
+                this.dispatchAction('CONDITIONREADWELFARE_BTN', false);
+                this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW', true);
             },
-            _editDataCondition(e){
+            _editDataCondition(e) {
                 this.selected = 0;
-                this.set('title','แก้ไขฟิลด์')
-                this.dispatchAction('CONDITIONREADWELFARE_BTN',true);
-                this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW',false);
-                this.dispatchAction('CONDITIONREADWELFARE_SELECT',e.detail); 
-                this.$$('panel-right').open(); 
+                this.set('title', 'แก้ไขฟิลด์')
+                console.log(2222);
+                this.dispatchAction('CONDITIONREADWELFARE_BTN', true);
+                this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW', false);
+                this.dispatchAction('CONDITIONREADWELFARE_SELECT', e.detail);
+                this.$$('panel-right').open();
             },
-            openPanel:function(e){    
+            openPanel: function (e) {
                 var item = e.detail;
                 switch (item) {
                     case 'academic':
                         this.selected = 1;
+                        console.log(this.selected);
                         this.COMMONDATA_DATA_ACADEMIC();
                         this.$$('panel-right').open();
                         break;
@@ -185,7 +281,7 @@
                         break;
                 }
             }
-            
+
         });
     </script>
 </dom-module>
