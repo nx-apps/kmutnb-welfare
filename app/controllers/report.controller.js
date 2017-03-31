@@ -178,7 +178,7 @@ exports.report2_1 = function (req, res) {
     var r = req.r
     var parameters = {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
-        SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
+        // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
         date_start: params.date_start
         // group_welfare_name:params.group_welfare_name
     };
@@ -505,7 +505,7 @@ exports.report4 = function (req, res, next) {
         .without('date_start', 'date_end')
         .run()
         .then(function (result) {
-            // res.json(result);
+            res.json(result);
             res.ireport("report4.jasper", req.query.export || "pdf", result, parameters);
         });
 }
@@ -557,7 +557,7 @@ exports.report5 = function (req, res) {
     var r = req.r
     var parameters = {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
-        SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
+        // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
         date_start: req.query.date_start,
         date_end: req.query.date_end
     };
@@ -604,7 +604,7 @@ exports.report5_1 = function (req, res) {
     var r = req.r
     var parameters = {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
-        SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
+        // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
         date_start: req.query.date_start,
         date_end: req.query.date_end
     };
