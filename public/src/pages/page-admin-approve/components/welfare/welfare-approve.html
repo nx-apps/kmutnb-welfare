@@ -38,7 +38,7 @@
                         ปีสวัสดิการ :
                     </div>
                     <div class="flex-2 center-justified horizontal layout self-center">
-                        [[setYear(years)]]
+                        <!--[[setYear(years)]]-->
                         <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.year}}" item-label-path="year" item-value-path="year"
                             items="{{years}}"></gl-combo-box>
                     </div>
@@ -57,11 +57,12 @@
                         เรียงโดย
                     </div>
                     <div class="flex-2 center-justified horizontal layout self-center">
-                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.sortBy}}" items="{{sortBy}}" item-label-path="label" item-value-path="id"></gl-combo-box>
+                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.sortBy}}" items="{{sortBy}}" item-label-path="label"
+                            item-value-path="id"></gl-combo-box>
                     </div>
                 </div>
                 <div class="flex layout horizontal">
-                    
+
                     <paper-button raised class="gl-btn-primary" style="height: 40px;" on-tap="searchBtn">ค้นหา
                         <paper-icon-button suffix icon="search"></paper-icon-button>
                     </paper-button>
@@ -120,7 +121,7 @@
                         </template>
                         <template is="dom-if" if={{_ObIsHave(listUserFalse)}}>
                             <tr>
-                                <td colspan="10" style="text-align: center">ยังไม่มีการขอใช้สวัสดิการ</td>
+                                <td colspan="11" style="text-align: center">ยังไม่มีการขอใช้สวัสดิการ</td>
                             </tr>
                         </template>
                     </tbody>
@@ -158,6 +159,7 @@
                 years: {
                     statePath: 'userWelfare.list',
                     type: Array,
+                    observer: 'setYear'
                 },
                 welfares: {
                     statePath: 'userWelfare.list_id',
@@ -177,12 +179,14 @@
                 '_setBtn(listUserFalse.*)'
             ],
             setYear(year) {
-                //  console.log(year);
+
                 try {
-                    this.set('dataSearch.year', year[year.length - 1].year)
-                    this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
-                    // this.dispatchAction('FACULTY_LIST')
-                    // this.dataSearch.year = 2559
+                    if (year.length != 0) {
+                        this.set('dataSearch.year', year[year.length - 1].year)
+                        this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
+                        this.searchBtn()
+                    }
+
                 } catch (error) {
 
                 }
@@ -191,17 +195,8 @@
                 console.log(setData);
                 return setData.map((CheckBox) => CheckBox.statusCheckBox = false)
             },
-            userwelfare(e) {
-                // console.log(e.currentTarget.data);
-                this.set('usewelfareProp', e.currentTarget.data)
-                this.$$('#welfare_budget').open()
-                // this.dispatchAction('USER_USE_SELETE_WELFARE',data);
-            },
-            searchBtn(){
-                // console.log(this.dataSearch);
-                // console.log(this.genUrl(this.dataSearch));
-
-                this.dispatchAction('USERS_LIST_HISTORY_WELFARE',this.genUrl(this.dataSearch));
+            searchBtn() {
+                this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataSearch));
             },
             getwelfare() {
                 this.fire('toast', {
@@ -214,9 +209,9 @@
                             sd.map((newDa) => newData.push({ id: newDa.id }))
 
                             // console.log(sd)
-                            this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
-                            this.dispatchAction('USERS_FALSE_LIST','');
-                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE','');
+                            this.dispatchAction('USER_USE_WELFARE_APPROVE', newData, () => {
+                                this.searchBtn()
+                            })
                         }
                     }
                 })
@@ -232,15 +227,14 @@
                             let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
                             let newData = []
                             sd.map((newDa) => newData.push({ id: newDa.id }))
-                            this.dispatchAction('USER_DELETE_USE_WELFARE', newData);
-                            this.dispatchAction('USERS_FALSE_LIST','');
-                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE','');
+                            // this.dispatchAction('USER_DELETE_USE_WELFARE', newData);
+                            this.dispatchAction('USER_DELETE_USE_WELFARE', newData, () => {
+                                this.searchBtn()
+                            })
+
                         }
                     }
                 })
-                // console.log(this.usewelfareProp.id);
-
-                // this.$$('#welfare_budget').close()
             },
             downloadFile(e) {
                 console.log(e.currentTarget.data);

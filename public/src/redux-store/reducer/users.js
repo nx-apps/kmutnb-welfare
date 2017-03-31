@@ -215,21 +215,21 @@ export function usersAction(store) {
                     })
             })
         },
-        USER_USE_WELFARE_APPROVE(data) {
+        USER_USE_WELFARE_APPROVE(data,url=()=>{}) {
             // console.log(data);
             // clearDatawelfare(data, (newData) => {
             //     newData.id = data.id;
             console.log(data);
                 this.fire('toast', { status: 'load' });
                 
-                axios.put(`./history/update/approve`, data)
+           return     axios.put(`./history/update/approve`, data)
                     .then(res => {
                         // this.dispatchAction('USERS_FALSE_LIST');
                         this.fire('toast', {
                             status: 'success', text: 'บันทึกสำเร็จ',
                             callback: () => {
-                                // this.$$('panel-right').close();
-                                // this.$$('#welfare_budget').close()
+                                // console.log(url);
+                                 url()
                             }
                         });
                     })
@@ -238,21 +238,18 @@ export function usersAction(store) {
                     })
             // })
         },
-        USER_DELETE_USE_WELFARE(data) {
+        USER_DELETE_USE_WELFARE(data,url=()=>{}) {
             // clearDatawelfare(data, (newData) => {
             //     newData.id = data.id;
                 this.fire('toast', { status: 'load' });
-            //     newData.status = 'reject';
-            //     newData.date_approve = new Date().toISOString();
-                axios.put(`./history/update/reject`, data)
+             return   axios.put(`./history/update/reject`, data)
                     .then(res => {
                         // this.dispatchAction('USERS_FALSE_LIST');
-                        console.log(11111);
+                        // console.log(11111);
                         this.fire('toast', {
                             status: 'success', text: 'บันทึกสำเร็จ',
                             callback: () => {
-                                // this.$$('panel-right').close();
-                                // this.$$('#welfare_budget').close()
+                                url()
                             }
                         });
                     })

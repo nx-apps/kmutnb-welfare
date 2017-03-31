@@ -91,7 +91,7 @@
             FUND_RVD_GET_USER_LIST:function(){
                 axios.get('./rvd/signup/list')
                 .then((response)=>{
-                    console.log(response.data);
+                    // console.log(response.data);
                     var newData = response.data;
                     newData.map((item)=>{
                         if (item.academic_name == "") {

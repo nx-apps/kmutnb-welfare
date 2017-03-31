@@ -77,7 +77,7 @@
             url = JSON.parse(JSON.stringify(url))
             for (var variable in url) {
                 if (url[variable] != ''){
-                    (variable == 'year')? console.log(url[variable]= url[variable]-543):''; 
+                    (variable == 'year')? url[variable]= url[variable]-543:''; 
                     data = data+variable+"="+ url[variable];
                     (count < url_length-1) ? data += '&'  :'';
                 }
