@@ -19,7 +19,7 @@ exports.unapprove = function (req, res) {
         .merge((userName) => {
             return {
                 budget: r.db('welfare').table('welfare').get(userName('welfare_id')).getField('budget'),
-                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('welfare_id'), { index: 'welfare_id' }).sum('use_budget'),
+                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('welfare_id'), { index: 'welfare_id' }).filter({status: "approve"}).sum('use_budget'),
                 group_welfare_name: r.db('welfare').table('group_welfare').get(userName('group_id')).getField('group_welfare_name'),
                 prefix_name: r.db('welfare_common').table('prefix').get(userName('data').getField('prefix_id')).getField('prefix_name'),
                 firstname: userName('data').getField('firstname'),
@@ -218,7 +218,7 @@ exports.listHistory = function (req, res) {
         .merge((userName) => {
             return {
                 budget: r.db('welfare').table('welfare').get(userName('welfare_id')).getField('budget'),
-                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('welfare_id'), { index: 'welfare_id' }).sum('use_budget'),
+                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('welfare_id'), { index: 'welfare_id' }).filter({status: "approve"}).sum('use_budget'),
                 group_welfare_name: r.db('welfare').table('group_welfare').get(userName('group_id')).getField('group_welfare_name'),
                 prefix_name: r.db('welfare_common').table('prefix').get(userName('data').getField('prefix_id')).getField('prefix_name'),
                 firstname: userName('data').getField('firstname'),

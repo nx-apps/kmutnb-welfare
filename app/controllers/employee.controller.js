@@ -260,7 +260,7 @@ exports.welfaresYear = function (req, res) {
                             }
                         })
                     .without('id')
-                    .orderBy('date_use')
+                    .orderBy(r.desc('date_use'))
                     .coerceTo('array')
             }
         })

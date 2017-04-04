@@ -38,7 +38,7 @@
                     </div>
                     <div class="flex layout horizontal">
                         <div class="flex label">
-                            <label for="name_field" >ชื่อตารางในฐานข้อมูล :</label>
+                            <label for="name_field" >ชื่อฟิลด์ตารางพนักงาน :</label>
                         </div>
                         <div class="flex-2">
                             <gl-combo-box id="active_id" no-label-float items="{{listField}}" value="{{data.field}}" disabled="[[disabled]]"></gl-combo-box>
@@ -48,7 +48,7 @@
                 <div class="from layout horizontal">
                     <div class="flex layout horizontal">
                         <div class="flex label">
-                            <label for="listTable">แหล่งที่มาของข้อมูล :</label>
+                            <label for="listTable">ชื่อตารางของข้อมูล :</label>
                         </div>
                         <div class="flex-2">
                             <gl-combo-box id="listTable" no-label-float items='[[listTable]]' value="{{data.data_source}}" 
