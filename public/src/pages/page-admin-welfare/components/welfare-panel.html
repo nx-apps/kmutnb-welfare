@@ -4,23 +4,27 @@
         <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
             gl-form-input,
             vaadin-date-picker,
-            gl-combo-box{
+            gl-combo-box {
                 margin-top: 15px;
             }
+            
             .label_condition {
                 font-weight: bold;
                 text-align: right;
                 margin-top: 35px;
                 font-size: 20px;
             }
+            
             .btn-bottom {
                 margin: 30px;
             }
+            
             paper-material {
                 background-color: var(--gl-white-color);
             }
-            paper-checkbox{
-                 font-family: 'CSChatThaiUI', sans-serif;
+            
+            paper-checkbox {
+                font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
             }
         </style>
@@ -59,14 +63,14 @@
                 <gl-grid-row style="margin-top: 10px">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                       <paper-checkbox checked="{{data.onetime}}">ใช้ครั้งเดียว (เต็มจำนวน)</paper-checkbox>
+                        <paper-checkbox disabled="{{checkAdmin}}" checked="{{data.onetime}}">ใช้ครั้งเดียว (เต็มจำนวน)</paper-checkbox>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row style="margin-top: 10px">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     [[checkSelect(data.admin_use)]]
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                       <paper-checkbox checked="{{data.admin_use}}">เจ้าหน้าที่เป็นผู้อนุมัติ</paper-checkbox>
+                        <paper-checkbox checked="{{data.admin_use}}">เจ้าหน้าที่เป็นผู้อนุมัติ</paper-checkbox>
                     </gl-grid-col>
                 </gl-grid-row>
 
@@ -86,11 +90,11 @@
             properties: {
                 data: {
                     type: Object,
-                    value: function(){
+                    value: function () {
                         return {
-                            year : parseInt(new Date().toISOString().split('-')[0])+543,
-                            start_date : new Date().toISOString().split('-')[0]+'-01-01',
-                            end_date : new Date().toISOString().split('-')[0]+'-12-31'
+                            year: parseInt(new Date().toISOString().split('-')[0]) + 543,
+                            start_date: new Date().toISOString().split('-')[0] + '-01-01',
+                            end_date: new Date().toISOString().split('-')[0] + '-12-31'
                         }
                     },
                     notify: true
@@ -99,10 +103,10 @@
             save: function () {
                 this.data.year = this.unFormat(this.data.year);
                 this.data.status_approve = false;
-                if(this.data.onetime != true){
+                if (this.data.onetime != true) {
                     this.data.onetime = false;
                 }
-                if(this.data.admin_use != true){
+                if (this.data.admin_use != true) {
                     this.data.admin_use = false;
                 }
                 // console.log(this.data);
@@ -112,15 +116,22 @@
                 // console.log(e.target.index);
                 this.splice('data.condition', e.target.index, 1);
             },
-            close: function(){
+            close: function () {
                 this.fire('closePanel');
             },
-            checkSelect: function(e){
-                if (e == true) {
-                    if(typeof this.data.onetime == 'undefined'){
-                        this.set('data.onetime', true);
+            checkSelect: function (e) {
+                if(typeof e != 'undefined' && e != undefined){
+                    if (e == true) {
+                        if (typeof this.data.onetime == 'undefined') {
+                            this.set('data.onetime', true);
+                            this.set('checkAdmin', true);
+                        }
+                    }
+                    else{
+                        this.set('checkAdmin', false);
                     }
                 }
+                
             }
         });
     </script>
