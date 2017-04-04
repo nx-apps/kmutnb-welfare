@@ -32,7 +32,7 @@
 		<groupHeader>
 			<band height="20">
 				<textField isStretchWithOverflow="true">
-					<reportElement x="0" y="0" width="191" height="20" uuid="fbaddeb0-7908-4287-b294-08236d008b4c"/>
+					<reportElement x="41" y="0" width="150" height="20" uuid="fbaddeb0-7908-4287-b294-08236d008b4c"/>
 					<box leftPadding="5" rightPadding="5">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -87,6 +87,20 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$F{count_use}]]></textFieldExpression>
 				</textField>
+				<textField>
+					<reportElement x="1" y="0" width="40" height="20" uuid="2df1183b-8b27-4897-9f3d-504d7f35c9e2"/>
+					<box leftPadding="5" rightPadding="5">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="14" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 	</group>
@@ -107,7 +121,7 @@
 				<imageExpression><![CDATA[new java.io.ByteArrayInputStream(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.decode($P{KMUTNB_BASE64}))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement mode="Transparent" x="1" y="146" width="554" height="24" uuid="41909494-733b-47f0-b9a3-c31fb06bfb11"/>
+				<reportElement mode="Transparent" x="0" y="122" width="554" height="24" uuid="41909494-733b-47f0-b9a3-c31fb06bfb11"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -118,10 +132,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ประวัติการใช้สวัสดิการ "+$P{group_welfare_name}+" ประจำเดือน "+new nylon.utility.NumberFormat().toThaiDate($P{month}).split(' ')[1]]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ประวัติการใช้สวัสดิการ "+$P{group_welfare_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="0" y="122" width="554" height="24" uuid="08ce8e1f-a0e4-43dd-bc1f-42e3698f5ee9"/>
+				<reportElement mode="Transparent" x="0" y="146" width="554" height="24" uuid="08ce8e1f-a0e4-43dd-bc1f-42e3698f5ee9"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -132,7 +146,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ปีงบประมาณ "+new nylon.utility.NumberFormat().toThaiDate($P{year}).split(' ')[2]]]></textFieldExpression>
+				<textFieldExpression><![CDATA[" ประจำเดือน "+new nylon.utility.NumberFormat().toThaiDate($P{month}).split(' ')[1]+" ปีงบประมาณ "+new nylon.utility.NumberFormat().toThaiDate($P{year}).split(' ')[2]]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -167,7 +181,7 @@
 				<text><![CDATA[จำนวนเงิน]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="15" width="191" height="20" uuid="6a27851d-9dde-4647-9fa7-22af3331bd60"/>
+				<reportElement x="41" y="15" width="150" height="20" uuid="6a27851d-9dde-4647-9fa7-22af3331bd60"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -194,12 +208,26 @@
 				</textElement>
 				<text><![CDATA[จำนวนที่ใช้ (ครั้ง)]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="1" y="15" width="40" height="20" uuid="f4d691b0-d257-4d02-a372-46c6d32a4011"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ลำดับที่]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<summary>
 		<band height="20">
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="191" height="20" uuid="84ad5f52-39c5-49dc-b9e1-d1308eb2c378"/>
+				<reportElement x="1" y="0" width="190" height="20" uuid="84ad5f52-39c5-49dc-b9e1-d1308eb2c378"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -340,7 +368,7 @@
 				<text><![CDATA[ไม่มีข้อมูล]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Transparent" x="1" y="122" width="554" height="24" uuid="2b4957e5-e4e9-4d92-8940-ce0b975ee9d7"/>
+				<reportElement mode="Transparent" x="1" y="122" width="554" height="24" uuid="1132d2c0-0d9c-407d-a349-12e0b4ff3c4c"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -351,10 +379,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ปีงบประมาณ "+new nylon.utility.NumberFormat().toThaiDate($P{year}).split(' ')[2]]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ประวัติการใช้สวัสดิการ "+$P{group_welfare_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="2" y="146" width="554" height="24" uuid="c7ca5aab-b608-4be8-9a45-b094cc976be1"/>
+				<reportElement mode="Transparent" x="1" y="146" width="554" height="24" uuid="f0889bff-1d29-494f-acb8-95e8a2977214"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -365,7 +393,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ประวัติการใช้สวัสดิการ "+$P{group_welfare_name}+" ประจำเดือน "+new nylon.utility.NumberFormat().toThaiDate($P{month}).split(' ')[1]]]></textFieldExpression>
+				<textFieldExpression><![CDATA[" ประจำเดือน "+new nylon.utility.NumberFormat().toThaiDate($P{month}).split(' ')[1]+" ปีงบประมาณ "+new nylon.utility.NumberFormat().toThaiDate($P{year}).split(' ')[2]]]></textFieldExpression>
 			</textField>
 		</band>
 	</noData>
