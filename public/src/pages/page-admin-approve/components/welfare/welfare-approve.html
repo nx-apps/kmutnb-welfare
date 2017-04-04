@@ -145,8 +145,17 @@
                 </table>
             </div>
             <div class="flex horizontal end-justified layout">
-                <paper-button raised class="gl-btn-primary" on-tap="getwelfare" disabled="{{btnStatus}}">อนุมัติ</paper-button>
-                <paper-button raised class="gl-btn-danger" on-tap="delwelfare" disabled="{{btnStatus}}">ไม่อนุมัติ</paper-button>
+                
+                <template is="dom-if" if={{isNotApprove(dataSearch.status)}}>
+                    <paper-button raised class="gl-btn-primary" on-tap="getwelfare" disabled="{{btnStatus}}">อนุมัติ</paper-button>
+                </template>
+                
+                
+                <template is="dom-if" if={{isNotReject(dataSearch.status)}}>
+                    <paper-button raised class="gl-btn-danger" on-tap="delwelfare" disabled="{{btnStatus}}">ไม่อนุมัติ</paper-button>
+                </template>
+                
+                
             </div>
         </div>
     </template>
@@ -224,6 +233,12 @@
                 } catch (error) {
 
                 }
+            },
+            isNotApprove(approve){
+                return approve  != 'approve'
+            },
+            isNotReject(reject){
+                return reject != 'reject'
             },
             _setCheckBox(setData) {
                 // console.log(setData);
