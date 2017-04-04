@@ -1,9 +1,9 @@
 <link rel="import" href="./../components/panel-right/panel-right.html">
 <link rel="import" href="./user-list.html">
-<link rel="import" href="./user-panel.html">
+<!--<link rel="import" href="./user-panel.html">-->
 <!--<link rel="import" href="./user-welfare.html">-->
 
-<link rel="import" href="./user-manage.html">
+<!--<link rel="import" href="./user-manage.html">-->
 
 
 <link rel="import" href="./../components/format-number-behavior.html">
@@ -45,21 +45,20 @@
             <user-list class="flex"></user-list>
         </div>
 
-     <panel-right id="test" title="{{title}}" >
+     <!--<panel-right id="test" title="{{title}}" >
          <iron-pages selected="{{page}}">
              <div class="horizontal center-justified layout">
                 <user-panel class="sub-component" data="[[dataSelete]]"></user-panel>
              </div>
              <div class="horizontal center-justified layout">
                  <user-manage class="sub-component"></user-manage>
-                <!--<user-welfare class="sub-component"></user-welfare>-->
              </div>
                 <section></section>
             </iron-pages>
          
-      </panel-right>
-      <paper-fab icon="add" title="เพิ่มสมาชิก" id="addQuota" on-tap="addUser"></paper-fab>
-      <paper-tooltip for="addQuota" offset="0">เพิ่มสมาชิก</paper-tooltip>
+      </panel-right>-->
+      <!--<paper-fab icon="add" title="เพิ่มสมาชิก" id="addQuota" on-tap="addUser"></paper-fab>
+      <paper-tooltip for="addQuota" offset="0">เพิ่มสมาชิก</paper-tooltip>-->
     </template>
     <script>
         Polymer({
@@ -78,19 +77,19 @@
                 ReduxBehavior,nylonBehavior,commonDataAction,usersAction
             ],
             nylonPageActive(){
-                this.dispatchAction('COMMONDATA_LIST');
+                // this.dispatchAction('COMMONDATA_LIST');
                 this.dispatchAction('USERS_LIST');
-                this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
-                this.dispatchAction('COMMONDATA_DATA_ACTIVE');
-                this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
-                // this.dispatchAction('COMMONDATA_DATA_EMPLOYEE');
-                this.dispatchAction('COMMONDATA_DATA_FACULTY');
-                this.dispatchAction('COMMONDATA_DATA_GENDER');
-                this.dispatchAction('COMMONDATA_DATA_MATIER');
-                this.dispatchAction('COMMONDATA_DATA_POSITION');
-                this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
-                this.dispatchAction('COMMONDATA_DATA_RELATION');
-                this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
+                // this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
+                // this.dispatchAction('COMMONDATA_DATA_ACTIVE');
+                // this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
+                // // this.dispatchAction('COMMONDATA_DATA_EMPLOYEE');
+                // this.dispatchAction('COMMONDATA_DATA_FACULTY');
+                // this.dispatchAction('COMMONDATA_DATA_GENDER');
+                // this.dispatchAction('COMMONDATA_DATA_MATIER');
+                // this.dispatchAction('COMMONDATA_DATA_POSITION');
+                // this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
+                // this.dispatchAction('COMMONDATA_DATA_RELATION');
+                // this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             },
             listeners: {
                 '_get-user-edit': '_getUserEdit',
