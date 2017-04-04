@@ -43,7 +43,7 @@ export function groupWelfareAction(store) {
         LIST_WELFARE_ID: function (data) {
             axios.get('/group/welfare/' + data)
                 .then(function (result) {
-                    // console.log([result]);
+                    // console.log(result);
                     store.dispatch({ type: 'LIST_WELFARE_ID', payload: result.data })
                 })
                 .catch(err => {
@@ -59,7 +59,8 @@ export function groupWelfareAction(store) {
                 group_welfare_name: data.group_welfare_name,
                 admin_use: data.admin_use,
                 onetime: data.onetime,
-                status_approve: data.status_approve
+                status_approve: data.status_approve,
+                description: data.description
             }
             // console.log(datas);
             this.fire('toast', { status: 'load' });
@@ -99,16 +100,13 @@ export function groupWelfareAction(store) {
         },
         EDIT_WELFARE: function (data) {
             // console.log(data);
-            var datas = {
-                id: data.id,
-                year: data.year,
-                start_date: new Date(data.start_date).toISOString(),
-                end_date: new Date(data.end_date).toISOString(),
-                name: data.name
-            }
-            // console.log(datas);
+            let {id, year, start_date, end_date, group_welfare_name, admin_use, description, onetime} = data;
+            let newData = {id, year, start_date, end_date, group_welfare_name, admin_use, description, onetime};
+            newData.start_date = new Date(newData.start_date).toISOString();
+            newData.end_date = new Date(newData.end_date).toISOString();
+            console.log(newData);
             this.fire('toast', { status: 'load' });
-            axios.put(`./group/welfare/update`, datas)
+            axios.put(`./group/welfare/update`, newData)
                 .then((result) => {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {

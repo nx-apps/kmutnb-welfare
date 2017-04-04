@@ -88,6 +88,7 @@
                     type: Object,
                     value: function(){
                         return {
+                            year : parseInt(new Date().toISOString().split('-')[0])+543,
                             start_date : new Date().toISOString().split('-')[0]+'-01-01',
                             end_date : new Date().toISOString().split('-')[0]+'-12-31'
                         }

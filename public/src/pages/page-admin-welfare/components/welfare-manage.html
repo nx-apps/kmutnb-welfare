@@ -128,8 +128,8 @@
                 this.set('disabled', this.active = false);
             },
             save: function () {
+                // delete this.data.welfare;
                 this.data.year = this.unFormat(this.data.year);
-                // console.log(this.data);
                 this.dispatchAction('EDIT_WELFARE', this.data);
                 this.active = true;
             },
