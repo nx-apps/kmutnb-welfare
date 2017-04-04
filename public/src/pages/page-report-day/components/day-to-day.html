@@ -31,7 +31,7 @@
                         </paper-menu>
                     </gl-form-dropdown-menu>
 
-                    <gl-form-dropdown-menu label="ชื่อสวัสดิการ" placeholder="เลือกสวัสดิการ" style="margin-top:15px;">
+                    <gl-form-dropdown-menu label="สวัสดิการ" placeholder="เลือกสวัสดิการ" style="margin-top:15px;">
                         <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{select.group_id}}">
                             <paper-item value="">ทั้งหมด</paper-item>
                             <template is="dom-repeat" items={{list}}>
@@ -58,7 +58,7 @@
                 },
                 select: {
                     type: Object,
-                    value: {}
+                    value: { group_id:0 }
                 }
             },
             ready: function(){
