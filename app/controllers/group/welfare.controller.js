@@ -111,6 +111,7 @@ exports.list = function (req, res) {
             }
         })
         .getField('group')
+        .orderBy('group_welfare_name')
         .run()
         .then(function (result) {
             res.json(result);

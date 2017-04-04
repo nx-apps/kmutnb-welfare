@@ -27,11 +27,13 @@
         <div style="padding:20px;">
             <paper-material elevation="1">
                 <template is="dom-if" if="{{checkMenu(data)}}">
-                    <div hidden="{{!isEnable}}">
-                        <div class="horizontal end-justified layout">
-                            <div style="margin:20px 20px 0px 0px;">
-                                <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
-                                <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
+                    <div hidden$="{{stApprove}}">       
+                        <div hidden$="{{!isEnable}}">
+                            <div class="horizontal end-justified layout">
+                                <div style="margin:20px 20px 0px 0px;">
+                                    <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
+                                    <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
+                                </div>
                             </div>
                         </div>
                     </div>

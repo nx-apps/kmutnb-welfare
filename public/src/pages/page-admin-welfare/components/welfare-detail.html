@@ -67,11 +67,11 @@
                 </div>
             </div>
             <div>
-               <welfare-form date="{{list}}" is-enable="{{active}}"></welfare-form>
+               <welfare-form date="{{list}}" is-enable="{{active}}" st-approve="{{approve}}"></welfare-form>
                 <!--<welfare-insert datas="{{data}}"></welfare-insert>-->
             </div>
             <div>
-                <welfare-form date="{{list}}" is-enable="{{active}}"></welfare-form>
+                <welfare-form date="{{list}}" is-enable="{{active}}" st-approve="{{approve}}"></welfare-form>
                 <!--<welfare-edit datas="{{data}}" status="[[list.status_approve]]"></welfare-edit>-->
             </div>
         </iron-pages>
@@ -107,6 +107,7 @@
                 this.pages = '0';
             },
             _edit: function (e) {
+                this.approve = this.data.status_approve;
                 // console.log(e.currentTarget.data);
                 this.fire('toast', { status: 'load', text: 'กำลังค้นหาข้อมูล...' })
                 var id = e.currentTarget.data.id;
