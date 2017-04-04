@@ -25,6 +25,10 @@
 	<variable name="sum_budget" class="java.lang.Integer" calculation="Sum">
 		<variableExpression><![CDATA[$F{sum_use_budget}]]></variableExpression>
 	</variable>
+	<variable name="nocount" class="java.lang.Integer" incrementType="Group" incrementGroup="GP" calculation="Count">
+		<variableExpression><![CDATA[new Integer(1)]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
+	</variable>
 	<group name="GP">
 		<groupExpression><![CDATA[$F{group}]]></groupExpression>
 		<groupHeader>
@@ -97,7 +101,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -119,7 +123,7 @@
 				<imageExpression><![CDATA[new java.io.ByteArrayInputStream(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.decode($P{KMUTNB_BASE64}))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement mode="Transparent" x="0" y="122" width="554" height="24" uuid="793f1057-b444-48c2-848e-670bd6eeed85"/>
+				<reportElement mode="Transparent" x="0" y="146" width="554" height="24" uuid="793f1057-b444-48c2-848e-670bd6eeed85"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -133,7 +137,7 @@
 				<textFieldExpression><![CDATA["ปีงบประมาณ "+new nylon.utility.NumberFormat().toThaiDate($P{year}).split(' ')[2]]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="1" y="146" width="554" height="24" uuid="d3ffce95-3831-4b80-90d7-a4de1e617bdc"/>
+				<reportElement mode="Transparent" x="0" y="122" width="554" height="24" uuid="d3ffce95-3831-4b80-90d7-a4de1e617bdc"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -366,7 +370,7 @@
 				<text><![CDATA[ไม่มีข้อมูล]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Transparent" x="2" y="146" width="554" height="24" uuid="85573dc7-3935-460e-a970-06b52401cd5b"/>
+				<reportElement mode="Transparent" x="1" y="122" width="554" height="24" uuid="85573dc7-3935-460e-a970-06b52401cd5b"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -380,7 +384,7 @@
 				<textFieldExpression><![CDATA["รายงานสวัสดิการพนักงานประจำเดือน "+new nylon.utility.NumberFormat().toThaiDate($P{month}).split(' ')[1]]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Transparent" x="1" y="122" width="554" height="24" uuid="4f407aa4-2bdb-4f51-93d8-79b4eb3e7089"/>
+				<reportElement mode="Transparent" x="1" y="146" width="554" height="24" uuid="4f407aa4-2bdb-4f51-93d8-79b4eb3e7089"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
