@@ -22,7 +22,7 @@
 
                         <gl-form-dropdown-menu style="margin-left:15px;margin-top:15px;width:100%;">
                             <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
-                                <template is="dom-repeat" items="{{year}}">
+                                <template is="dom-repeat" items="{{list_year}}">
                                     <paper-item value="{{item.year}}">{{item.year}}</paper-item>
                                 </template>
                             </paper-listbox>
@@ -34,13 +34,27 @@
                         เลือกเดือน
                     </div>
                     <div class="layout horizontal center-justified">
-
                         <gl-form-dropdown-menu style="margin-top:15px;width:100%;">
                             <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectMonth}}">
                                 <template is="dom-repeat" items="{{month}}">
                                     <paper-item value="{{item.id}}">{{item.name}}</paper-item>
                                 </template>
                             </paper-listbox>
+                        </gl-form-dropdown-menu>
+                    </div>
+                </div>
+                <div class="layout horizontal center-justified">
+                    <div class="menu">
+                        เลือกสวัสดิการ
+                    </div>
+                    <div class="layout horizontal center-justified">
+                        <gl-form-dropdown-menu placeholder="เลือกสวัสดิการ" style="margin-top:15px;">
+                            <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{group_id}}">
+                                <paper-item value="">ทั้งหมด</paper-item>
+                                <template is="dom-repeat" items={{list}}>
+                                    <paper-item value="[[item.id]]">[[item.group_welfare_name]]</paper-item>
+                                </template>
+                            </paper-menu>
                         </gl-form-dropdown-menu>
                     </div>
                 </div>
@@ -52,8 +66,12 @@
         Polymer({
             is: 'page-report-month',
             behaviors: [ReduxBehavior, nylonBehavior, groupWelfareAction, MonthBehavior],
+            observers: ['changeYear(selectYear)'],
             properties: {
-                year: {
+                list: {
+                    statePath: 'groupWelfare.list'
+                },
+                list_year: {
                     statePath: 'groupWelfare.list_year'
                 },
                 month: {
@@ -72,21 +90,39 @@
                         { id: '11', name: 'พฤศจิกายน' },
                         { id: '12', name: 'ธันวาคม' }
                     ]
+                },
+                group_id:{
+                    type:Number,
+                    value:0
                 }
             },
             nylonPageActive: function () {
                 let year = new Date().getFullYear();
                 var newYear = year + 543;
                 this.selectYear = newYear;
+                let month = parseInt(new Date().getMonth())+1;
+                this.selectMonth = month;
                 this.GET_YEAR();
+            },
+            changeYear: function (e) {
+                if (typeof e != 'undefined' && e != undefined) {
+                    var year = e - 543;
+                    this.LIST_WELFARE(year);
+                }
             },
             print: function () {
                 var select = {
-                    year: this.selectYear - 543,
-                    month: this.selectMonth
+                    year: this.selectYear,
+                    month: this.selectMonth,
+                    group_id: this.group_id
                 };
-                // console.log(this.genUrl(select));
-                window.open('./api/report/report3?'+this.genUrl(select));
+                if (select.group_id == undefined || select.group_id == '') {
+                    window.open('./api/report/report3?' + this.genUrl(select));
+                    // console.log(this.genUrl(this.select));
+                } else {
+                    window.open('./api/report/report3_1?' + this.genUrl(select));
+                    // console.log(this.genUrl(this.select));
+                }
             }
         });
     </script>

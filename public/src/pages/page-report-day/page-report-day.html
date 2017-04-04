@@ -30,7 +30,7 @@
                             </paper-menu>
                         </gl-form-dropdown-menu>
 
-                        <gl-form-dropdown-menu label="ชื่อสวัสดิการ" placeholder="เลือกสวัสดิการ" style="margin-top:15px;">
+                        <gl-form-dropdown-menu label="สวัสดิการ" placeholder="เลือกสวัสดิการ" style="margin-top:15px;">
                             <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{select.group_id}}">
                                 <paper-item value="">ทั้งหมด</paper-item>
                                 <template is="dom-repeat" items={{list}}>
@@ -52,22 +52,16 @@
             behaviors: [ReduxBehavior, nylonBehavior, groupWelfareAction, MonthBehavior],
             observers: ['changeYear(selectYear)'],
             properties: {
-                storelist: {
-                    statePath: 'groupWelfare.list',
-                    observer: 'getList'
+                list: {
+                    statePath: 'groupWelfare.list'
                 },
                 list_year: {
                     statePath: 'groupWelfare.list_year'
                 },
                 select: {
                     type: Object,
-                    value: {}
+                    value: { group_id: 0}
                 }
-            },
-            getList: function (e) {
-                this.list = e;
-                // this.push('list', { id: '', group_welfare_name: 'ทั้งหมด' })
-                // this.list.reverse();
             },
             nylonPageActive: function () {
                 let year = new Date().getFullYear();
