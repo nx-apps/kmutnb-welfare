@@ -196,10 +196,17 @@ exports.listHistory = function (req, res) {
             }
         );
     }
+    if (req.query.status == undefined) {
+        req.query = Object.assign(req.query,
+            {
+                status: 'approve'
+            }
+        );
+    }
     // let chengeyear
     // console.log(req.query);
     r.db('welfare').table('history_welfare')
-        .filter({ year: req.query.year , group_id:req.query.group_id})
+        .filter({ year: req.query.year , group_id:req.query.group_id, status:req.query.status})
         .merge((user) => {
             return {
                 date_use: user('date_use').split('T')(0),
@@ -236,7 +243,7 @@ exports.listHistory = function (req, res) {
                 status_thai: money('status').eq('approve').branch('อนุมัติ', 'ไม่อนุมัติ')
             }
         })
-        .orderBy(req.query.sortBy)
+        .orderBy(r.desc(req.query.sortBy))
         .without('data')
         .run()
         .then(function (result) {
