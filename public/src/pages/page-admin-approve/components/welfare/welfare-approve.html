@@ -33,16 +33,17 @@
         <div class="container">
             <div class="contentHeader" style="margin-bottom: 20px;">รายชื่อผู้ขอใช้สวัสดิการที่อนุมัติไปแล้ว</div>
             <div class="horizontal layout">
-                <div class="flex layout horizontal">
+                <div class="flex-2 layout horizontal">
                     <div class="flex center-justified horizontal layout self-center">
                         ปีสวัสดิการ :
                     </div>
-                    <div class="flex-2 center-justified horizontal layout self-center">
+                    <div class="flex-3 center-justified horizontal layout self-center">
                         <!--[[setYear(years)]]-->
-                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.year}}" item-label-path="year" item-value-path="year"  items="{{years}}"></gl-combo-box>
+                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.year}}" item-label-path="year" item-value-path="year"
+                            items="{{years}}"></gl-combo-box>
                     </div>
                 </div>
-                <div class="flex layout horizontal">
+                <div class="flex-2 layout horizontal">
                     <div class="flex center-justified horizontal layout self-center">
                         สวัสดิการ :
                     </div>
@@ -52,22 +53,30 @@
                     </div>
                 </div>
                 <div class="flex layout horizontal">
+
+                </div>
+            </div>
+            <div class="horizontal layout">
+
+                <div class="flex-2 layout horizontal">
                     <div class="flex center-justified horizontal layout self-center">
                         สถานะ :
                     </div>
                     <div class="flex-3 center-justified horizontal layout self-center">
-                        <gl-combo-box class="combo-box" placeholder="สถานะ" value="{{dataSearch.status}}" item-label-path="label" item-value-path="id" items="{{status}}"></gl-combo-box>
+                        <gl-combo-box class="combo-box" placeholder="สถานะ" value="{{dataSearch.status}}" item-label-path="label" item-value-path="id"
+                            items="{{status}}"></gl-combo-box>
+                    </div>
+                </div>
+                <div class="flex-2 layout horizontal">
+                    <div class="flex center-justified horizontal layout self-center">
+                        เรียงโดย :
+                    </div>
+                    <div class="flex-3 center-justified horizontal layout self-center">
+                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.sortBy}}" items="{{sortBy}}" item-label-path="label"
+                            item-value-path="id"></gl-combo-box>
                     </div>
                 </div>
                 <div class="flex layout horizontal">
-                    <div class="flex center-justified horizontal layout self-center">
-                        เรียงโดย
-                    </div>
-                    <div class="flex-2 center-justified horizontal layout self-center">
-                        <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.sortBy}}" items="{{sortBy}}" item-label-path="label" item-value-path="id"></gl-combo-box>
-                    </div>
-                </div>
-                <div class="layout horizontal">
 
                     <paper-button raised class="gl-btn-primary" style="height: 40px;" on-tap="searchWelfare">ค้นหา
                         <paper-icon-button suffix icon="search"></paper-icon-button>
@@ -81,7 +90,9 @@
                 <table class="gl-table-default" style="margin:auto">
                     <thead class="table-head">
                         <tr>
-                            <th><paper-checkbox id="masterCheck" on-tap="checkBoxAll"></paper-checkbox></th>
+                            <th>
+                                <paper-checkbox id="masterCheck" on-tap="checkBoxAll"></paper-checkbox>
+                            </th>
                             <th>ลำดับ</th>
                             <th>วันที่ขอ</th>
                             <th>สถานะ</th>
@@ -180,23 +191,23 @@
                         { id: 'date_use', label: 'วันที่ขอ' }
                     ]
                 },
-                status:{
+                status: {
                     type: Array,
-                    value :[
-                        { id : 'approve', label:'อนุมัติ'},
-                        { id : 'reject', label:'ไม่อนุมัติ'}
+                    value: [
+                        { id: 'approve', label: 'อนุมัติ' },
+                        { id: 'reject', label: 'ไม่อนุมัติ' }
                     ]
                 }
             },
             observers: [
                 '_setBtn(listUserFalse.*)'
             ],
-            checkBoxAll(e){
+            checkBoxAll(e) {
                 console.log(e.currentTarget.checked);
-                this.listUserFalse.map((m,index)=>{
+                this.listUserFalse.map((m, index) => {
                     // this.set('listUserFalse'+index+'statusCheckBox',true)
                     m.statusCheckBox = e.currentTarget.checked
-                    this.$$('#checkBox-'+index).checked = e.currentTarget.checked
+                    this.$$('#checkBox-' + index).checked = e.currentTarget.checked
                 })
             },
             setYear(year) {
@@ -204,8 +215,8 @@
                 try {
                     if (year.length != 0) {
                         this.set('dataSearch.year', year[year.length - 1].year)
-                        this.set('dataSearch.sortBy','firstname')
-                        this.set('dataSearch.status','approve')
+                        this.set('dataSearch.sortBy', 'firstname')
+                        this.set('dataSearch.status', 'approve')
                         this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
                         this.searchBtn()
                     }
@@ -218,22 +229,22 @@
                 // console.log(setData);
                 return setData.map((CheckBox) => CheckBox.statusCheckBox = false)
             },
-            searchWelfare(){
+            searchWelfare() {
                 this.fire('toast', { status: 'load' });
                 this.searchBtn()
-                 this.fire('toast', {
-                        status: 'success', text: 'โหลดข้อมูลสำเร็จ',
-                        callback: () => {
-                        }
-                    });
+                this.fire('toast', {
+                    status: 'success', text: 'โหลดข้อมูลสำเร็จ',
+                    callback: () => {
+                    }
+                });
             },
             searchBtn() {
-                console.log(this.dataSearch.status == 'undefined' || this.dataSearch.status =='');
-                if (this.dataSearch.status == 'undefined' || this.dataSearch.status =='') {
-                    this.set('dataSearch.status','approve')
+                console.log(this.dataSearch.status == 'undefined' || this.dataSearch.status == '');
+                if (this.dataSearch.status == 'undefined' || this.dataSearch.status == '') {
+                    this.set('dataSearch.status', 'approve')
                 }
-                if (this.dataSearch.sortBy == 'undefined' || this.dataSearch.sortBy =='') {
-                    this.set('dataSearch.sortBy','firstname')
+                if (this.dataSearch.sortBy == 'undefined' || this.dataSearch.sortBy == '') {
+                    this.set('dataSearch.sortBy', 'firstname')
                 }
                 this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrlYearToThai(this.dataSearch));
             },
