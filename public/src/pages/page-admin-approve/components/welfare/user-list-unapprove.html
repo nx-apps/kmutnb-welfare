@@ -193,10 +193,10 @@
                 //  console.log(year);
                 try {
                     if (year.length != 0) {
-                        console.log(year);
+                        // console.log(year);
                         this.set('dataSearch.year', year[year.length - 1].year)
                         this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
-                        this.dispatchAction('USERS_FALSE_LIST')
+                        this.dispatchAction('USERS_FALSE_LIST', '')
                         // this.dispatchAction('FACULTY_LIST')
                         // this.dataSearch.year = 2559
                     }
@@ -240,8 +240,8 @@
                             let newData = []
                             sd.map((newDa) => newData.push({ id: newDa.id }))
                             this.dispatchAction('USER_DELETE_USE_WELFARE', newData);
-                            this.dispatchAction('USERS_FALSE_LIST');
-                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE');
+                            this.dispatchAction('USERS_FALSE_LIST', '');
+                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE', '');
                         }
                     }
                 })

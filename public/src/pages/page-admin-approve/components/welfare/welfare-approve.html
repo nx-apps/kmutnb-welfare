@@ -4,7 +4,7 @@
 <link rel="import" href="./../../../components/month-behavior.html">
 <dom-module id="welfare-approve">
     <template>
-        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment page-style">
+        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
              :host {
                 display: block;
             }
@@ -201,11 +201,11 @@
                 }
             },
             _setCheckBox(setData) {
-                console.log(setData);
+                // console.log(setData);
                 return setData.map((CheckBox) => CheckBox.statusCheckBox = false)
             },
             searchBtn() {
-                this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataSearch));
+                this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrlYearToThai(this.dataSearch));
             },
             getwelfare() {
                 this.fire('toast', {
@@ -221,6 +221,7 @@
                             this.dispatchAction('USER_USE_WELFARE_APPROVE', newData, () => {
                                 this.searchBtn()
                                 this.$$('#masterCheck').checked = false
+                                this.dispatchAction('USERS_FALSE_LIST', '')
                             })
                         }
                     }
@@ -241,6 +242,7 @@
                             this.dispatchAction('USER_DELETE_USE_WELFARE', newData, () => {
                                 this.searchBtn()
                                 this.$$('#masterCheck').checked = false
+                                this.dispatchAction('USERS_FALSE_LIST', '')
                             })
 
                         }
