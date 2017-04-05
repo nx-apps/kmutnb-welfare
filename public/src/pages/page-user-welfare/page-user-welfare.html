@@ -6,6 +6,8 @@
 
 <link rel="import" href="./../components/page-style.html">
 
+<link rel="import" href="./components/user-list.html">
+
 <dom-module id="page-user-welfare">
     <style include="page-style">
          :host {
@@ -29,16 +31,31 @@
     <template>
         <!--<user-welfare></user-welfare>-->
         <div class="xcontainer">
-            <div class="header container">
-                จัดการข้อมูลส่วนตัว
-            </div>
-            <user-detail></user-detail>
+            <iron-pages selected="{{page}}">
+                <div>
+                    <div class="header container">
+                        รายชื่อพนักงาน
+                    </div>
+                    <user-list></user-list>
+                </div>
+                <div>
+                    <div class="header container">
+                        จัดการข้อมูลส่วนตัว
+                    </div>
+
+                    <user-detail></user-detail>
+                </div>
+            </iron-pages>
+
+
+
+
         </div>
 
         <panel-right id="test" title="{{title}}">
             <user-panel class="sub-component" data="[[dataSelete]]"></user-panel>
         </panel-right>
-        [[setYear(year)]]
+        <!--[[setYear(year)]]-->
     </template>
     <script>
         Polymer({
@@ -58,9 +75,11 @@
             },
             listeners: {
                 '_get-user-edit': '_getUserEdit',
+                '_get-user':'_getUser'
                 // '_close-panel':'btn_closePanelRight'
             },
             nylonPageActive() {
+                this.dispatchAction('USERS_LIST');
                 // this.dispatchAction('COMMONDATA_LIST');
                 // // this.dispatchAction('USERS_LIST');
                 // this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
@@ -68,16 +87,35 @@
                 // this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
                 // // this.dispatchAction('COMMONDATA_DATA_EMPLOYEE');
                 // this.dispatchAction('COMMONDATA_DATA_FACULTY');
-                this.dispatchAction('COMMONDATA_DATA_GENDER');
+               
                 // this.dispatchAction('COMMONDATA_DATA_MATIER');
                 // this.dispatchAction('COMMONDATA_DATA_POSITION');
-                this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
+                console.log(1111);
                 // this.dispatchAction('COMMONDATA_DATA_RELATION');
                 // this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
+                let url = window.location.pathname.split('/')[2]
+                console.log(url);
+                console.log(url == 'undefined' || url == '');
+                // this.set('page', 0)
+                if (url == 'undefined' || url == '') {
+                    this.set('page', 0)
+                } else {
+                    this.set('page', 1)
+                    this._getUser()
+                }
 
 
-                this.dispatchAction('WELFARE_LIST_YEAR');
+               
             },
+            _getUser(){
+                this.set('page', 1)
+                this.dispatchAction('COMMONDATA_DATA_GENDER');
+                this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
+                 this.dispatchAction('WELFARE_LIST_YEAR');
+            },
+            // getuser(){
+                 
+            // },
             // setYear(year){
             //     try {
             //         // this.set('seleterYear',year[year.length-1].year)
