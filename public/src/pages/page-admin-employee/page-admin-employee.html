@@ -19,6 +19,8 @@
         .container {
             padding: 20px;
         }
+        
+        
         /*.table-detail {
             margin: auto;
             width: 70%;
@@ -40,6 +42,9 @@
         <div class="xcontainer">
             <iron-pages selected="{{selected}}">
                 <section>
+                    <div class="header-page container">
+                        จัดการข้อมูลพนักงาน
+                    </div>
                     <div class="container">
                         <paper-material elevation="1">
                             <div>
@@ -117,7 +122,7 @@
                 <employee-manage></employee-manage>
                 <!--<user-panel class="sub-component" data="[[dataSelete]]"></user-panel>-->
             </panel-right>
-            
+
         </div>
     </template>
     <script>
@@ -257,7 +262,7 @@
             },
             _insert: function () {
                 // this.selected = 2;
-                this.set('title','เพิ่มสมาชิก')
+                this.set('title', 'เพิ่มสมาชิก')
                 this.$$('panel-right').open();
             },
             _getcommon: function () {
