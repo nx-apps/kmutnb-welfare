@@ -61,6 +61,11 @@
                                     </tr>
                                 </template>
                                 <!--</template>-->
+                                <template is="dom-if" if={{_ObIsHave(list.welfare)}}>
+                                    <tr>
+                                        <td colspan="6"> ไม่มีข้อมูล</td>
+                                    </tr>
+                                </template>
                             </tbody>
                         </table>
                     </paper-material>
@@ -79,7 +84,7 @@
     <script>
         Polymer({
             is: 'welfare-detail',
-            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior,commonLogic],
             listeners: {
                 'back': 'back_page'
             },
