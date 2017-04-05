@@ -271,7 +271,7 @@ export function userWelfareAction(store) {
                                         status: 'success', text: 'บันทึกสำเร็จ',
                                         callback: () => {
                                             this.LIST_USER();
-                                            this.fire('select-page', 0);
+                                            this.fire('back_page');
                                         }
                                     });
                                 })

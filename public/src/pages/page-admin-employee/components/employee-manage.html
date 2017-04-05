@@ -62,54 +62,35 @@
                                     disabled="[[disabled]]" class="required" required></gl-combo-box>
                             </div>
                         </div>
-                        <div class="from layout horizontal">
-                            <div class="flex layout horizontal">
-                                <div class="flex label">
-                                    <label for="prefixname">คำนำหน้าชื่อ :</label>
-                                </div>
-                                <div class="flex-2">
-                                    <gl-combo-box id="prefixname" no-label-float items="{{prefixname}}" value="{{data.prefix_id}}" item-label-path="prefix_name"
-                                        item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
-                                </div>
+                    </div>
+                    <div class="from layout horizontal">
+                        <div class="flex layout horizontal">
+                            <div class="flex label">
+                                <label for="name">ชื่อ :</label>
                             </div>
-                            <div class="flex layout horizontal">
-                                <div class="flex label">
-                                    <label for="gender">เพศ :</label>
-                                </div>
-                                <div class="flex-2">
-                                    <gl-combo-box no-label-float items="{{gender}}" value="{{data.gender_id}}" item-label-path="gender_name" item-value-path="id"
-                                        disabled="[[disabled]]" class="required" required></gl-combo-box>
-                                </div>
+                            <div class="flex-2">
+                                <gl-form-input id="name" no-label-float value="{{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                             </div>
                         </div>
-                        <div class="from layout horizontal">
-                            <div class="flex layout horizontal">
-                                <div class="flex label">
-                                    <label for="name">ชื่อ :</label>
-                                </div>
-                                <div class="flex-2">
-                                    <gl-form-input id="name" no-label-float value="{{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
-                                </div>
+                        <div class="flex layout horizontal">
+                            <div class="flex label">
+                                <label for="name">นามสกุล :</label>
                             </div>
-                            <div class="flex layout horizontal">
-                                <div class="flex label">
-                                    <label for="name">นามสกุล :</label>
-                                </div>
-                                <div class="flex-2">
-                                    <gl-form-input id="name" no-label-float value="{{data.lastname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
-                                </div>
+                            <div class="flex-2">
+                                <gl-form-input id="name" no-label-float value="{{data.lastname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                             </div>
                         </div>
-                        <div class="from layout horizontal">
-                            <div class="flex layout horizontal">
-                                <div class="flex label">
-                                    <label for="birthdate">วันเกิด :</label>
-                                </div>
-                                <div class="flex-5">
-                                    <vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]"
-                                        class="required" required></vaadin-date-picker>
-                                </div>
+                    </div>
+                    <div class="from layout horizontal">
+                        <div class="flex layout horizontal">
+                            <div class="flex label">
+                                <label for="birthdate">วันเกิด :</label>
                             </div>
+                            <div class="flex-5">
+                                <vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]"
+                                    class="required" required></vaadin-date-picker>
+                            </div>
+                        </div>
                 </fieldset>
                 <fieldset>
                     <legend>ข้อมูลพนักงาน :</legend>

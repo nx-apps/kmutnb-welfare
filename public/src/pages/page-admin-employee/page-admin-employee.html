@@ -235,9 +235,6 @@
                 this.$$('panel-right').close();
                 this.$$('admin-list-user').searchTableByFilterDepartment(id);
             },
-            back_page: function () {
-                this.pages = 0;
-            },
             confirmSend: function () {
                 this.fire('toast', {
                     status: 'openDialog',
