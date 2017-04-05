@@ -2,7 +2,6 @@
 <link rel="import" href="components/welfare-manage.html">
 <link rel="import" href="components/welfare-detail.html">
 <link rel="import" href="./../components/page-style.html">
-<link rel="import" href="../components/common-logic.html">
 
 <link rel="import" href="./../components/common-logic.html">
 
@@ -50,26 +49,8 @@
                             <template is="dom-repeat" items={{list_year}}>
                                 <paper-item value="[[item.year]]">[[item.year]]</paper-item>
                             </template>
-<<<<<<< HEAD
-                            <template is="dom-if" if={{_ObIsHave(list)}}>
-                                <tr>
-                                    <td colspan="10" style="text-align: center">ไม่มีข้อมูลสวัสดิการ</td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </paper-material>
-            </div>
-        </div>
-
-        <panel-right title="{{title}}">
-            <iron-pages selected="{{pages}}">
-                <div>
-                    <welfare-panel data="{{data}}"></welfare-panel>
-=======
                         </paper-menu>
                     </gl-form-dropdown-menu>
->>>>>>> 34143bfd28211c84d1c65cf42f1a2f1f2fff9009
                 </div>
                 <div class="flex horizontal end-justified layout">
                     <div class="">
@@ -162,7 +143,8 @@
             listeners:
             {
                 'closePanel': 'close_panel'
-            },
+            }
+            ,
             nylonPageActive: function () {
                 let year = new Date().getFullYear();
                 // console.log(year);
