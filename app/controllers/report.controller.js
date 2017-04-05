@@ -113,7 +113,8 @@ exports.report1 = function (req, res, next) {
                 employee: m('employee')
                     .merge(function (mm) {
                         return {
-                            name: mm('prefix_name').add(mm('firstname')).add('  ', mm('lastname'))
+                            name: mm('prefix_name').add(mm('firstname')).add('  ', mm('lastname')),
+                            department_fuculty_name: mm('department_name').add('  ',mm('faculty_name'))
                         }
                     })//.without('prefixname','name','surname')
             }
@@ -290,7 +291,7 @@ exports.report3 = function (req, res, next) {
         .orderBy('year')
         .run()
         .then(function (result) {
-            // res.json(result);
+            res.json(result);
             //   if(result.length < 1)
             // console.log('>>>>>',result.length < 1)
             if (result.length > 0) {
@@ -541,23 +542,33 @@ exports.report4_1 = function (req, res, next) {
         });
     }
 
+    // r.expr({
+    //     group_welfare: r.db('welfare').table('history_welfare').getAll(params.group_id, { index: 'group_id' }).filter({status:'approve'}).coerceTo('array'),
+    //     date: data
+    // })
+    //     .merge((root_merge) => {
+    //         return {
+    //             date: root_merge('date').merge((date_merge) => {
+    //                 return {
+    //                     // data_start:date_merge('date_start')
+    //                     data: root_merge('group_welfare').filter(function (data_filter) {
+    //                         return data_filter('date_use').ge(date_merge('date_start')).and(data_filter('date_use').lt(date_merge('date_end')))
+    //                     })
+    //                 }
+    //             })
+    //         }
+    //     })
+    //     .getField('date')
+
     r.expr({
-        group_welfare: r.db('welfare').table('history_welfare').getAll(params.group_id, { index: 'group_id' }).filter({status:'approve'}).coerceTo('array'),
-        date: data
+          group_welfare: r.db('welfare').table('history_welfare')//.getAll(params.group_id, { index: 'group_id' }).filter({status:'approve'}).coerceTo('array')
+        //   date: data 
+        //  r.db('welfare').table('group_welfare')
+        // .merge(function (m) {
+        //     return  r.db('welfare').table('history_welfare').coerceTo('array')
+        // })
     })
-        .merge((root_merge) => {
-            return {
-                date: root_merge('date').merge((date_merge) => {
-                    return {
-                        // data_start:date_merge('date_start')
-                        data: root_merge('group_welfare').filter(function (data_filter) {
-                            return data_filter('date_use').ge(date_merge('date_start')).and(data_filter('date_use').lt(date_merge('date_end')))
-                        })
-                    }
-                })
-            }
-        })
-        .getField('date')
+     
 
 
         .run()
@@ -817,5 +828,65 @@ exports.test = function (req, res) {
             parameters.group_welfare_name = result.group_welfare_name;
             res.json(result);
             res.ireport("report7.jasper", req.query.export || "pdf", result.history_welfare, parameters);
+        });
+}
+exports.report14 = function (req, res, next) {
+    var params = req.query;
+    var r = req.r
+    var parameters = {
+        CURRENT_DATE: new Date().toISOString().slice(0, 10),
+        SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
+        YEAR: req.params.year + "-01-01"
+    };
+    var date_start = "2017-01-01";
+    var date_end = "2017-12-31";
+
+    var year = req.params.year;
+    var arr_month = ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+    var data = [];
+    for (var i = 1; i <= 12; i++) {
+        var month = 0;
+        var nextMonth = 0;
+        if (i < 10) {
+            month = "0" + i;
+            nextMonth = i + 1;
+        } else {
+            month = i;
+            if (i == 12) {
+                nextMonth = 1;
+            } else {
+                nextMonth = i;
+            }
+        }
+        if (nextMonth < 10) {
+            nextMonth = "0" + nextMonth;
+        }
+        data.push({
+            date_start: year + "-" + month + "-01",
+            date_end: year + "-" + nextMonth + "-01",
+            month_name: arr_month[i]
+        });
+    }
+     r.expr({
+        group_welfare: r.db('welfare').table('history_welfare').getAll(params.group_id, { index: 'group_id' }).filter({status:'approve'}).coerceTo('array'),
+        date: data
+    })
+        .merge((root_merge) => {
+            return {
+                date: root_merge('date').merge((date_merge) => {
+                    return {
+                        // data_start:date_merge('date_start')
+                        data: root_merge('group_welfare').filter(function (data_filter) {
+                            return data_filter('date_use').ge(date_merge('date_start')).and(data_filter('date_use').lt(date_merge('date_end')))
+                        })
+                    }
+                })
+            }
+        })
+        .getField('date')
+        .run()
+        .then(function (result) {
+            res.json(result);
+            res.ireport("report4.jasper", req.query.export || "pdf", result, parameters);
         });
 }
