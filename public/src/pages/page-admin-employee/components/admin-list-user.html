@@ -2,7 +2,7 @@
 <link rel="import" href="../../components/month-behavior.html">
 <link rel="import" href="./../../components/format-number-behavior.html">
 
-<dom-module id="list-user">
+<dom-module id="admin-list-user">
     <template>
         <style is="custom-style" include="gl-color gl-table flex-style">
             paper-material {
@@ -182,7 +182,7 @@
     </template>
     <script>
         Polymer({
-            is: 'list-user',
+            is: 'admin-list-user',
             behaviors: [ReduxBehavior, MonthBehavior,FormatNumberBehavior],
             observers: ['showBtn(newListSearch.*)'],
             properties: {

@@ -1,7 +1,7 @@
 <link rel="import" href="components/list-welfare.html">
 <link rel="import" href="components/welfare-employee.html">
 <link rel="import" href="components/employee-manage.html">
-<link rel="import" href="./components/list-user.html">
+<link rel="import" href="./components/admin-list-user.html">
 
 <dom-module id="page-admin-employee">
     <style is="custom-style" include="gl-style gl-color gl-size gl-table flex-style">
@@ -86,7 +86,7 @@
                 
                 
                 <div>
-                    <list-user></list-user>
+                    <admin-list-user></admin-list-user>
                 </div>
             </section>
             <section>
@@ -156,7 +156,7 @@
                 this.selectWelfare = "";
                 this.selectType = "";
                 this.selectDepartment = "";
-                this.$$('list-user').selectTable(true);
+                this.$$('admin-list-user').selectTable(true);
                 this.FACULTY_LIST();
                 this.LIST_USER("");
             },
@@ -164,7 +164,7 @@
                 this.selected = 0;
                 this.WELFARE_LIST_YEAR();
                 this.LIST_USER("");
-                this.$$('list-user').selectTable(true)
+                this.$$('admin-list-user').selectTable(true)
                 this.FACULTY_LIST();
             },
             select_year:function(year) {
@@ -187,9 +187,9 @@
                         getStatus = item.admin_use;
                     })
                     console.log(getStatus);
-                    this.$$('list-user').checkBox = getStatus;
+                    this.$$('admin-list-user').checkBox = getStatus;
                 // if(id != ""){
-                    this.$$('list-user').selectTable(false)
+                    this.$$('admin-list-user').selectTable(false)
                     this.LIST_USER_SERARCH(id);
                 }
             },
@@ -204,13 +204,13 @@
                     newItem.map((item)=>{
                         this.departmentList = item.department;
                     })
-                    this.$$('list-user').searchTableByFilterFaculty(id);
+                    this.$$('admin-list-user').searchTableByFilterFaculty(id);
                     // console.log(this.departmentList);
                 }
             },
             select_department:function(id){
                 console.log('*',id);
-                this.$$('list-user').searchTableByFilterDepartment(id);
+                this.$$('admin-list-user').searchTableByFilterDepartment(id);
             },
             back_page:function(){
                 this.pages = 0;
@@ -224,7 +224,7 @@
             },
             sendUser:function(check){
                 if(check == true)
-                    this.$$('list-user').insertData();
+                    this.$$('admin-list-user').insertData();
             },
             changePage:function(page){
                 // console.log(page.detail.data);
