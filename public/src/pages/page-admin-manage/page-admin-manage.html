@@ -8,48 +8,36 @@
 
 <dom-module id="page-admin-manage">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
-         :host {
-            display: block;
-        }
-        
         * {
             font-family: 'CSChatThaiUI', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        
         .head-text {
             font-size: var(--font-size-h4);
             margin: 15px 15px 15px 15px;
         }
-        
         table.gl-table-default {
             width: 98%;
             border: 1px solid #ddd;
             /*margin: 15px;*/
         }
-        
         .label,
         .inpit {
             font-size: var(--font-size-h5)
         }
-        
         .label {
             text-align: right;
             padding-right: 5px;
         }
-        
         .left {
             text-align: left;
         }
-        
         .right {
             text-align: right;
         }
-        
         fieldset {
             margin: 15px;
         }
-        
         .header {
             padding: 10px;
             font-size: 35px;
@@ -133,14 +121,13 @@
                                 </template>
                                 <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
                                     <tr>
-                                        <td colspan="4" style="text-align: center">ไม่มีข้อมูล</td>
+                                        <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
                                     </tr>
                                 </template>
 
                             </tbody>
                         </table>
                     </div>
-
                 </gl-form-panel-body>
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <div class="head-text">
@@ -152,7 +139,6 @@
                                 <tr>
                                     <th style="width: 10%">ลำดับ</th>
                                     <th style="width: 25%">สวัสดิการที่ใช้</th>
-
                                     <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
                                     <th style="width: 10%">วันขออนุมัติ</th>
                                     <th style="width: 10%">วันอนุมัติ</th>
@@ -362,12 +348,13 @@
                 this.$$('panel-right').open();
             },
             changePage: function (page) {
-                if (page.detail != 0) {
-                    this.pages = page.detail;
-                }
-                else {
-                    this.pages = page.detail;
-                }
+                this.$$('panel-right').close();
+                // if (page.detail != 0) {
+                //     this.pages = page.detail;
+                // }
+                // else {
+                //     this.pages = page.detail;
+                // }
             },
             downloadFile(e) {
                 console.log(e.currentTarget.data);

@@ -3,24 +3,20 @@
         fieldset {
             margin: 15px 5px;
         }
-        
         gl-form-input,
         gl-combo-box,
         vaadin-date-picker {
             width: 90%;
         }
-        
         vaadin-date-picker {
             margin-top: -19px;
         }
-        
         paper-item {
             width: 800px;
             ;
         }
     </style>
     <template>
-        
         <paper-material elevation="1">
             <div class="container layout vertical ">
                 <fieldset>
@@ -66,35 +62,54 @@
                                     disabled="[[disabled]]" class="required" required></gl-combo-box>
                             </div>
                         </div>
-                    </div>
-                    <div class="from layout horizontal">
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="name">ชื่อ :</label>
+                        <div class="from layout horizontal">
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="prefixname">คำนำหน้าชื่อ :</label>
+                                </div>
+                                <div class="flex-2">
+                                    <gl-combo-box id="prefixname" no-label-float items="{{prefixname}}" value="{{data.prefix_id}}" item-label-path="prefix_name"
+                                        item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                </div>
                             </div>
-                            <div class="flex-2">
-                                <gl-form-input id="name" no-label-float value="{{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
-                            </div>
-                        </div>
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="name">นามสกุล :</label>
-                            </div>
-                            <div class="flex-2">
-                                <gl-form-input id="name" no-label-float value="{{data.lastname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="from layout horizontal">
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="birthdate">วันเกิด :</label>
-                            </div>
-                            <div class="flex-5">
-                                <vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]"
-                                    class="required" required></vaadin-date-picker>
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="gender">เพศ :</label>
+                                </div>
+                                <div class="flex-2">
+                                    <gl-combo-box no-label-float items="{{gender}}" value="{{data.gender_id}}" item-label-path="gender_name" item-value-path="id"
+                                        disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                </div>
                             </div>
                         </div>
+                        <div class="from layout horizontal">
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="name">ชื่อ :</label>
+                                </div>
+                                <div class="flex-2">
+                                    <gl-form-input id="name" no-label-float value="{{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                                </div>
+                            </div>
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="name">นามสกุล :</label>
+                                </div>
+                                <div class="flex-2">
+                                    <gl-form-input id="name" no-label-float value="{{data.lastname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="from layout horizontal">
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="birthdate">วันเกิด :</label>
+                                </div>
+                                <div class="flex-5">
+                                    <vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]"
+                                        class="required" required></vaadin-date-picker>
+                                </div>
+                            </div>
                 </fieldset>
                 <fieldset>
                     <legend>ข้อมูลพนักงาน :</legend>
@@ -106,113 +121,161 @@
                             <div class="flex-2">
                                 <gl-form-input id="emp_no" no-label-float value="{{data.emp_no}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                             </div>
-                        </div>
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="start_work_date">วันที่เริ่มทำงาน :</label>
-                            </div>
-                            <div class="flex-2">
-                                <vaadin-date-picker always-float-label value="{{data.start_work_date}}" disabled="[[disabled]]" class="required" required></vaadin-date-picker>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="from layout horizontal">
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="active_id">สถานณะการทำงานปัจจุบัน :</label>
-                            </div>
-                            <div class="flex-2">
-                                <gl-combo-box id="active_id" no-label-float items="{{active}}" value="{{data.active_id}}" item-label-path="active_name" item-value-path="id"
-                                    disabled="[[disabled]]" class="required" required></gl-combo-box>
-                            </div>
-                        </div>
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="type_employee_name">ประเภทลูกจ้าง :</label>
-                            </div>
-                            <div class="flex-2">
-                                <gl-combo-box id="type_employee_name" no-label-float items="{{type_employee}}" value="{{data.type_employee_id}}" item-label-path="type_employee_name"
-                                    item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="from layout horizontal">
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="position">ตำแหน่ง :</label>
-                            </div>
-                            <div class="flex-2">
-                                <gl-combo-box id="position" no-label-float items="{{position}}" value="{{data.position_id}}" item-label-path="position_name"
-                                    item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
-                            </div>
-                        </div>
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="matier_name">ระดับทางวิชาการ :</label>
-                            </div>
-                            <div class="flex-2">
-                                <gl-combo-box id="matier_name" no-label-float items="{{matier}}" value="{{data.matier_id}}" item-label-path="matier_name"
-                                    item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="from layout horizontal">
-                        <div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="academic">ตำแหน่งทางวิชาการ :</label>
-                            </div>
                             <div class="flex-5">
-                                <gl-combo-box id="academic" no-label-float items="{{academic}}" value="{{data.academic_id}}" item-label-path="academic_name"
-                                    item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                <vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]"
+                                    class="required" required></vaadin-date-picker>
                             </div>
-                        </div>
-                    </div>
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="start_work_date">วันที่เริ่มทำงาน :</label>
+                                </div>
+                                <div class="flex-2">
+                                    <vaadin-date-picker always-float-label value="{{data.start_work_date}}" disabled="[[disabled]]" class="required" required></vaadin-date-picker>
+                                </div>
+                            </div>
 
-                    <div class="from layout horizontal">
-                        <div class="flex label">
-                            <label for="faculty"><div style="margin-top:15px;">คณะ :</div></label>
                         </div>
-                        <div class="flex-5">
-                            <div id="faculty">
-                                <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{faculty.length}}" no-label-float>
-                                    <paper-listbox class="dropdown-content required" no-label-float attr-for-selected="value" selected="{{data.faculty_id}}">
-                                        <template is="dom-repeat" items="{{faculty}}">
-                                            <paper-item value="{{item.id}}">{{item.faculty_name}}</paper-item>
-                                        </template>
-                                    </paper-listbox>
-                                </gl-form-dropdown-menu>
+                        <div class="from layout horizontal">
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="active_id">สถานณะการทำงานปัจจุบัน :</label>
+                                </div>
+                                <div class="flex-2">
+                                    <gl-combo-box id="active_id" no-label-float items="{{active}}" value="{{data.active_id}}" item-label-path="active_name" item-value-path="id"
+                                        disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                </div>
                             </div>
-                            <!--<gl-combo-box id="faculty" no-label-float items="{{faculty}}" value="{{data.faculty_id}}" item-label-path="faculty_name"
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="type_employee_name">ประเภทลูกจ้าง :</label>
+                                </div>
+                                <div class="flex-2">
+                                    <gl-combo-box id="type_employee_name" no-label-float items="{{type_employee}}" value="{{data.type_employee_id}}" item-label-path="type_employee_name"
+                                        item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="from layout horizontal">
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="position">ตำแหน่ง :</label>
+                                </div>
+                                <div class="flex-2">
+                                    <gl-combo-box id="position" no-label-float items="{{position}}" value="{{data.position_id}}" item-label-path="position_name"
+                                        item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                </div>
+                            </div>
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="matier_name">ระดับทางวิชาการ :</label>
+                                </div>
+                                <div class="flex-2">
+                                    <gl-combo-box id="matier_name" no-label-float items="{{matier}}" value="{{data.matier_id}}" item-label-path="matier_name"
+                                        item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="from layout horizontal">
+                            <div class="flex layout horizontal">
+                                <div class="flex label">
+                                    <label for="academic">ตำแหน่งทางวิชาการ :</label>
+                                </div>
+                                <div class="flex-5">
+                                    <gl-combo-box id="academic" no-label-float items="{{academic}}" value="{{data.academic_id}}" item-label-path="academic_name"
+                                        item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                </div>
+                                <div class="flex layout horizontal">
+                                    <div class="flex label">
+                                        <label for="matier_name">ระดับทางวิชาการ :</label>
+                                    </div>
+                                    <div class="flex-2">
+                                        <gl-combo-box id="matier_name" no-label-float items="{{matier}}" value="{{data.matier_id}}" item-label-path="matier_name"
+                                            item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                    </div>
+                                </div>
+
+                                <div class="from layout horizontal">
+                                    <div class="flex label">
+                                        <label for="faculty"><div style="margin-top:15px;">คณะ :</div></label>
+                                    </div>
+                                    <div class="flex-5">
+                                        <div id="faculty">
+                                            <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{faculty.length}}" no-label-float>
+                                                <paper-listbox class="dropdown-content required" no-label-float attr-for-selected="value" selected="{{data.faculty_id}}">
+                                                    <template is="dom-repeat" items="{{faculty}}">
+                                                        <paper-item value="{{item.id}}">{{item.faculty_name}}</paper-item>
+                                                    </template>
+                                                </paper-listbox>
+                                            </gl-form-dropdown-menu>
+                                        </div>
+                                        <!--<gl-combo-box id="faculty" no-label-float items="{{faculty}}" value="{{data.faculty_id}}" item-label-path="faculty_name"
+                                        item-value-path="id" class="required" required></gl-combo-box>-->
+                                    </div>
+                                </div>
+                                <div class="from layout horizontal">
+                                    <div class="flex label">
+                                        <label for="department"><div style="margin-top:15px;">แผนก :</div></label>
+                                    </div>
+                                    <div class="flex-5">
+                                        <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{department.length}}" no-label-float>
+                                            <paper-listbox class="dropdown-content required" attr-for-selected="value" selected="{{data.department_id}}">
+                                                <template is="dom-repeat" items="{{department}}">
+                                                    <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
+                                                </template>
+                                            </paper-listbox>
+                                        </gl-form-dropdown-menu>
+                                        <!--<gl-combo-box id="department" no-label-float items="{{department}}" value="{{data.department_id}}" item-label-path="department_name"
+                                        item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>-->
+                                    </div>
+                                </div>
+
+                                <div class="from layout horizontal">
+                                    <div class="flex label">
+                                        <label for="faculty"><div style="margin-top:15px;">คณะ :</div></label>
+                                    </div>
+                                    <div class="flex-5">
+                                        <div id="faculty">
+                                            <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{faculty.length}}" no-label-float>
+                                                <paper-listbox class="dropdown-content required" no-label-float attr-for-selected="value" selected="{{data.faculty_id}}">
+                                                    <template is="dom-repeat" items="{{faculty}}">
+                                                        <paper-item value="{{item.id}}">{{item.faculty_name}}</paper-item>
+                                                    </template>
+                                                </paper-listbox>
+                                            </gl-form-dropdown-menu>
+                                        </div>
+                                        <!--<gl-combo-box id="faculty" no-label-float items="{{faculty}}" value="{{data.faculty_id}}" item-label-path="faculty_name"
                                 item-value-path="id" class="required" required></gl-combo-box>-->
-                        </div>
-                    </div>
-                    <div class="from layout horizontal">
-                        <div class="flex label">
-                            <label for="department"><div style="margin-top:15px;">แผนก :</div></label>
-                        </div>
-                        <div class="flex-5">
-                            <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{department.length}}" no-label-float>
-                                <paper-listbox class="dropdown-content required" attr-for-selected="value" selected="{{data.department_id}}">
-                                    <template is="dom-repeat" items="{{department}}">
-                                        <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
-                                    </template>
-                                </paper-listbox>
-                            </gl-form-dropdown-menu>
-                            <!--<gl-combo-box id="department" no-label-float items="{{department}}" value="{{data.department_id}}" item-label-path="department_name"
+                                    </div>
+                                </div>
+                                <div class="from layout horizontal">
+                                    <div class="flex label">
+                                        <label for="department"><div style="margin-top:15px;">แผนก :</div></label>
+                                    </div>
+                                    <div class="flex-5">
+                                        <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{department.length}}" no-label-float>
+                                            <paper-listbox class="dropdown-content required" attr-for-selected="value" selected="{{data.department_id}}">
+                                                <template is="dom-repeat" items="{{department}}">
+                                                    <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
+                                                </template>
+                                            </paper-listbox>
+                                        </gl-form-dropdown-menu>
+                                        <!--<gl-combo-box id="department" no-label-float items="{{department}}" value="{{data.department_id}}" item-label-path="department_name"
                                 item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>-->
-                        </div>
-                    </div>
+                                    </div>
                 </fieldset>
                 </div>
+                </gl-form-panel-body>
 
-                <div class="horizontal end-justified layout">
+                <gl-form-panel-footer label="" set-padding="0px 10px 20px 0px">
+
+                    <!--<div class="horizontal end-justified layout">-->
                     <paper-button class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
                     <paper-button class="gl-btn-success" on-tap="save">บันทึก</paper-button>
-                </div>
-
+                    <!--</div>-->
+                </gl-form-panel-footer>
+                </gl-form-panel>
 
         </paper-material>
 
@@ -275,7 +338,7 @@
             },
             cancle: function () {
                 if (typeof this.data.id === 'undefined' && this.data.id == undefined) {
-                    this.fire('select-page', 0);
+                    this.fire('back-page');
                 }
                 else {
                     this.dispatchAction('LIST_EMPLOYEE_WELFARE', this.data.id);

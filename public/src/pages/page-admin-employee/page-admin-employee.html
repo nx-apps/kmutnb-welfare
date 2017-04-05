@@ -6,11 +6,7 @@
 <link rel="import" href="./../components/page-style.html">
 
 <dom-module id="page-admin-employee">
-    <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment gl-styles">
-        /*paper-material {
-            background-color: var(--gl-white-color);
-        }*/
-        
+    <style is="custom-style" include="gl-style gl-color gl-size gl-table flex-style">
         * {
             font-family: 'CSChatThaiUI', sans-serif;
             -webkit-font-smoothing: antialiased;
@@ -19,20 +15,18 @@
         .container {
             padding: 20px;
         }
-        
-        
         /*.table-detail {
             margin: auto;
             width: 70%;
         }
-        .serachBox{
+        .serachBox {
             margin: auto;
             width: 70%;
         }
         table.gl-table-default {
             border: 1px solid #ddd;
         }
-        .btn-insert{
+        .btn-insert {
             margin-right: 10px;
             background-color: deepskyblue;
             color: white;
@@ -234,6 +228,11 @@
             },
             select_department: function (id) {
                 console.log('*', id);
+                this.$$('list-user').searchTableByFilterDepartment(id);
+            },
+            back_page: function () {
+                // this.pages = 0;
+                this.$$('panel-right').close();
                 this.$$('admin-list-user').searchTableByFilterDepartment(id);
             },
             back_page: function () {
@@ -248,6 +247,7 @@
             },
             sendUser: function (check) {
                 if (check == true)
+                    this.$$('list-user').insertData();
                     this.$$('admin-list-user').insertData();
             },
             changePage: function (page) {
