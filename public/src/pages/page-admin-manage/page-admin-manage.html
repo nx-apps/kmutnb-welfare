@@ -244,7 +244,8 @@
                 commonLogic, userWelfareAction, uploadAction, commonDataAction,
                 MonthBehavior],
             listeners: {
-                'back-page': 'changePage'
+                'back-page': 'changePage',
+                'close-panel-right':'closePanelRight'
             },
             observers: ['checkData(seleterYear,id)'],
             properties: {
@@ -383,6 +384,9 @@
                 this.dispatchAction('COMMONDATA_DATA_POSITION');
                 this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
+            },
+            closePanelRight(){
+                this.$$('panel-right').close();
             }
         });
     </script>
