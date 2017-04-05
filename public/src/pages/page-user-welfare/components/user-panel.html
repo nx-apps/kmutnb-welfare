@@ -43,10 +43,10 @@
             </div>-->
              <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
         <gl-form-panel-head label="" set-padding="10px" set-border="1px">
-            <!--<template is="dom-if" if={{!insertView}}>
+            <template is="dom-if" if={{!insertView}}>
                     <paper-button class="gl-btn-info" on-tap="editData" raised hidden="[[!disabled]]">แก้ไข</paper-button>
-                    <paper-button class="gl-btn-danger" on-tap="deleteData" raised hidden="[[!disabled]]">ลบ</paper-button>
-                </template>-->
+                    <!--<paper-button class="gl-btn-danger" on-tap="deleteData" raised hidden="[[!disabled]]">ลบ</paper-button>-->
+                </template>
         </gl-form-panel-head>
         <gl-form-panel-body label="" set-padding="10px" set-border="1px">
             <user-manage id="user-manage" data="{{data}}" disabled="[[disabled]]"></user-manage>
