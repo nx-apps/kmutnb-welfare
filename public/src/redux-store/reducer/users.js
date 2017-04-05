@@ -28,8 +28,8 @@ const clearData = (data, callback) => {
 }
 const clearDatawelfare = (data, callback) => {
 
-    let { emp_id, welfare_id, use_budget, status, year, group_id } = data;
-    let newData = { emp_id, welfare_id, use_budget, status, year, group_id };
+    let { emp_id, welfare_id, use_budget, status, year, group_id,history_detail } = data;
+    let newData = { emp_id, welfare_id, use_budget, status, year, group_id,history_detail };
     // console.log(data.date/use_welfare/update_use == '');
 
     newData.document_ids = new Array()
@@ -254,7 +254,6 @@ export function usersAction(store) {
                         });
                     })
                     .catch(err => {
-                        console.log(2222);
                         console.log(err);
                     })
             // })
@@ -276,6 +275,25 @@ export function usersAction(store) {
             //         }
             //     }
             // })
+        },
+        USER_CANCEL_USE_WELFARE(data,url=()=>{}) {
+            // clearDatawelfare(data, (newData) => {
+            //     newData.id = data.id;
+                this.fire('toast', { status: 'load' });
+             return   axios.put(`./history/update/cancel`, data)
+                    .then(res => {
+                        // this.dispatchAction('USERS_FALSE_LIST');
+                        // console.log(11111);
+                        this.fire('toast', {
+                            status: 'success', text: 'บันทึกสำเร็จ',
+                            callback: () => {
+                                url()
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
         },
         USER_USE_SELETE_WELFARE(data) {
             store.dispatch({ type: 'USER_USE_SELETE_WELFARE', payload: data })

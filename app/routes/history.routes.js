@@ -5,6 +5,7 @@ module.exports = function (app) {
     app.post('/request', controller.requestWelfare); ///request/welfare/
     app.put('/update/approve', controller.updateApproveWelfare); ///update/welfare/
     app.put('/update/reject', controller.updateRejectWelfare); ///update/welfare/
+    app.put('/update/cancel', controller.updateCancelWelfare);
     app.get('/file/:id', controller.listUploadHistory); ///list/upload/history/:id
     app.post('/approve', controller.adminApprove);
 }

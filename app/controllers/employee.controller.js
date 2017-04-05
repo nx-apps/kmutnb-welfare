@@ -105,6 +105,7 @@ exports.welfaresYear = function (req, res) {
                 birthdate: f('birthdate').split('T')(0),
                 academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
                 active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
+                active_code: r.db('welfare_common').table('active').get(f('active_id')).getField('active_code'),
                 department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
                 faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
                 gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
@@ -268,6 +269,7 @@ exports.welfaresYear = function (req, res) {
             return {
                 welfare: checkTrue('welfare').merge((e) => {
                     return {
+                        emp_work:checkTrue('active_code').eq('WORK'),//"active_code": "WORK",,
                         status_approve: checkTrue('history_welfare').filter({ status: 'request', welfare_id: e('welfare_id') }).count().gt(0),//e('welfare_id'),
                         welfare_old: e('start_date').ge(e('now_date')).branch(true,
                             e('end_date').ge(e('now_date')).branch(false, true))

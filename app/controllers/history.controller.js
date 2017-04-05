@@ -114,6 +114,28 @@ exports.updateRejectWelfare = function (req, res) {
             res.status(500).json(err);
         })
 }
+exports.updateCancelWelfare = function (req, res) {
+    var r = req.r;
+    req.body.map((upStatus) => {
+        upStatus.date_approve = new Date().toISOString()
+        upStatus.status = "cancel"
+    })
+    // console.log('>>>>>>',req.body);
+    r.expr(req.body).forEach(function (fe) {
+        return r.db('welfare').table('history_welfare').get(fe('id'))
+            .update({
+                date_approve: fe('date_approve'),
+                status: fe('status')
+            }, { nonAtomic: true })
+    })
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
 exports.listUploadHistory = function (req, res) {
     var r = req.r;
     var params = req.params;

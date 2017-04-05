@@ -28,7 +28,10 @@
                  <gl-form-input id="use_budget" no-label-float allowed-pattern="[0-9||,||.]" format-number="on" value="{{data.use_budget}}"  disabled="[[disabled]]" class="required" required><div suffix>บาท</div></gl-form-input>
             </div> 
         </div>
-        
+        <div>
+            <gl-form-textarea rows="2" label="รายละเอียดเพิ่มเติม"
+              placeholder="รายละเอียดเพิ่มเติม" value="{{data.history_detail}}" name="history_detail"></gl-form-textarea>
+        </div>
         <!--<div class="flex horizontal start-justified layout">
             <div class="flex-2 label">
                 <label for="total_budget">วันที่ใช้งาน :</label>

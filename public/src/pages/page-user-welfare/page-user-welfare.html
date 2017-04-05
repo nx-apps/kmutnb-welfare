@@ -3,8 +3,11 @@
 
 <link rel="import" href="./components/user-detail.html">
 <link rel="import" href="./components/user-fund.html">
+
+<link rel="import" href="./../components/page-style.html">
+
 <dom-module id="page-user-welfare">
-    <style>
+    <style include="page-style">
          :host {
             display: block;
         }
@@ -13,10 +16,23 @@
             font-family: 'CSChatThaiUI', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
+        .header {
+            padding: 10px;
+            font-size: 35px;
+        }
+        
+        .container {
+            padding: 20px;
+        }
     </style>
     <template>
         <!--<user-welfare></user-welfare>-->
-        <user-detail></user-detail>
+        <div class="xcontainer">
+            <div class="header container">จัดการข้อมูลส่วนตัว
+            </div>
+            <user-detail></user-detail>
+        </div>
+
         <panel-right id="test" title="{{title}}">
             <user-panel class="sub-component" data="[[dataSelete]]"></user-panel>
         </panel-right>
