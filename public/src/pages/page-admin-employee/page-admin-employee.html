@@ -228,12 +228,12 @@
             },
             select_department: function (id) {
                 console.log('*', id);
-                this.$$('list-user').searchTableByFilterDepartment(id);
+                this.$$('admin-list-user').searchTableByFilterDepartment(id);
             },
-            back_page: function () {
+            back_page: function (e) {
                 // this.pages = 0;
                 this.$$('panel-right').close();
-                this.$$('admin-list-user').searchTableByFilterDepartment(id);
+                this.$$('admin-list-user').searchTableByFilterDepartment(e.detail);
             },
             confirmSend: function () {
                 this.fire('toast', {
