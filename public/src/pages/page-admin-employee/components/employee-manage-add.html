@@ -1,18 +1,22 @@
-<dom-module id="employee-manage">
+<dom-module id="employee-manage-add">
     <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
         fieldset {
             margin: 15px 5px;
         }
+        
         gl-form-input,
         gl-combo-box,
         vaadin-date-picker {
             width: 90%;
         }
+        
         vaadin-date-picker {
             margin-top: -19px;
         }
+        
         paper-item {
             width: 800px;
+            ;
         }
         paper-material {
             margin: 15px;
@@ -210,7 +214,7 @@
     </template>
     <script>
         Polymer({
-            is: 'employee-manage',
+            is: 'employee-manage-add',
             behaviors: [ReduxBehavior, ValidateFormBehavior],
             observers: ['getDepartment(data.faculty_id,faculty)'],
             properties: {
@@ -266,11 +270,12 @@
             },
             cancle: function () {
                 if (typeof this.data.id === 'undefined' && this.data.id == undefined) {
-                    this.fire('back-page',this.data.id);
+                    // this.fire('select-page', 0);
+                    this.fire('back_page',this.data.id);
                 }
                 else {
                     this.dispatchAction('LIST_EMPLOYEE_WELFARE', this.data.id);
-                    this.fire('close-panel-right');
+                    this.fire('back_page',this.data.id);
                 }
             },
             getDepartment: function (id, item) {
