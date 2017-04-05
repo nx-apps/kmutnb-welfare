@@ -1,8 +1,8 @@
 <link rel="import" href="../components/format-number-behavior.html">
 <link rel="import" href="../components/common-logic.html">
 <link rel="import" href="../components/month-behavior.html">
-<link rel="import" href="components/dialog-use-welfare.html">
-<link rel="import" href="components/employee-manage.html">
+<link rel="import" href="./components/admin-dialog-use-welfare.html">
+<link rel="import" href="./components/employee-manage.html">
 
 <link rel="import" href="./../components/page-style.html">
 
@@ -122,7 +122,7 @@
                                 <template is="dom-repeat" items={{data.welfare}}>
                                     <tr>
                                         <td>[[_Obindex(index)]]</td>
-                                        <td>[[item.group_welfare_name]]</td>
+                                        <td style="text-align: left;">[[item.group_welfare_name]] ([[item.check_onetime_thai]])</td>
                                         <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
                                         <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                         <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
@@ -166,7 +166,7 @@
                                 <template is="dom-repeat" items={{data.history_welfare}}>
                                     <tr>
                                         <td>[[_Obindex(index)]]</td>
-                                        <td>[[item.name]]</td>
+                                        <td style="text-align: left;">[[item.name]] </td>
                                         <td style="text-align: right;">[[formatNumber(item.use_budget)]]</td>
                                         <td>
                                             [[toThaiDate(item.date_use)]]
@@ -221,7 +221,7 @@
                 </gl-form-panel-footer>-->
             </gl-form-panel>
             <paper-dialog id="welfare_budget">
-                <dialog-use-welfare id="dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></dialog-use-welfare>
+                <admin-dialog-use-welfare id="admin-dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-welfare>
                 <div class="flex horizontal end-justified layout">
                     <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้งาน</paper-button>
                 </div>
@@ -336,8 +336,8 @@
             getwelfare() {
                 // console.log(this.usewelfareProp);
                 this.$$('#welfare_budget').close()
-                this.usewelfareProp.document_ids = this.$$('dialog-use-welfare').keepFile()
-                if (this.$$('#dialog-use-welfare').validateForm('.required')) {
+                this.usewelfareProp.document_ids = this.$$('admin-dialog-use-welfare').keepFile()
+                if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
                     this.dispatchAction('EMPLOYEE_USE_WELFARE', this.usewelfareProp);
                 }
             },
