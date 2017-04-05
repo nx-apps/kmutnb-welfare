@@ -11,6 +11,11 @@
                 padding: 0px;
             }
             
+            * {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+            
             .table-detail {
                 margin: auto;
                 /*width: 80%;*/
@@ -32,22 +37,25 @@
         </style>
         <div class="xcontainer">
             <div class="header-page">จัดการสวัสดิการ</div>
-            <div class="horizontal end-justified layout">
+            <div class="horizontal layout">
                 <!--<paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_print">
                 <iron-icon icon="print"></iron-icon>ออกรายงาน</paper-button>-->
+                <div class="flex horizontal start-justified layout">
+                    <gl-form-dropdown-menu label="ปี" placeholder="เลือกปี">
+                        <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
+                            <template is="dom-repeat" items={{list_year}}>
+                                <paper-item value="[[item.year]]">[[item.year]]</paper-item>
+                            </template>
+                        </paper-menu>
+                    </gl-form-dropdown-menu>
+                </div>
+                <div class="flex horizontal end-justified layout">
+                    <div class="">
+                        <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
+                            <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการ</paper-button>
+                    </div>
+                </div>
 
-                <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
-                    <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการ</paper-button>
-            </div>
-            <div style="">
-                <!--<gl-combo-box item-label-path="year" item-value-path="year" items="{{list_year}}" value="{{selectYear}}"></gl-combo-box>-->
-                <gl-form-dropdown-menu label="ปี" placeholder="เลือกปี">
-                    <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
-                        <template is="dom-repeat" items={{list_year}}>
-                            <paper-item value="[[item.year]]">[[item.year]]</paper-item>
-                        </template>
-                    </paper-menu>
-                </gl-form-dropdown-menu>
             </div>
             <div class="container">
                 <div class="table-detail">
