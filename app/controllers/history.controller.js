@@ -227,7 +227,7 @@ exports.listHistory = function (req, res) {
         );
     }
     // let chengeyear
-    // console.log(req.query);
+    console.log(req.query);
     r.db('welfare').table('history_welfare')
         .filter({ year: req.query.year , group_id:req.query.group_id, status:req.query.status})
         .merge((user) => {
@@ -258,12 +258,12 @@ exports.listHistory = function (req, res) {
             }
         })
         .filter((status) => {
-            return status('status').eq('approve').or(status('status').eq('reject'))
+            return status('status').eq('approve').or(status('status').eq('reject')).or(status('status').eq('cancel'))
         })
         .merge((money) => {
             return {
                 budget_cover: money('budget').sub(money('history_welfare_budget')),
-                status_thai: money('status').eq('approve').branch('อนุมัติ', 'ไม่อนุมัติ')
+                status_thai: money('status').eq('approve').branch('อนุมัติ',money('status').eq('cancel').branch('พนักงานยกเลิก','ไม่อนุมัติ') )
             }
         })
         .orderBy(r.desc('date_use'),r.desc(req.query.sortBy))
