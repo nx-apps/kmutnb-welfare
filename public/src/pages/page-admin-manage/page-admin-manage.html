@@ -49,6 +49,7 @@
         fieldset {
             margin: 15px;
         }
+        
         .header {
             padding: 10px;
             font-size: 35px;
@@ -58,9 +59,9 @@
         <div class="xcontainer">
             <!--<iron-pages selected="{{pages}}">-->
             <!--<section>-->
-                 <div class="header container">
-                        จัดการข้อมูลส่วนตัว
-                    </div>
+            <div class="header container">
+                จัดการข้อมูลส่วนตัว
+            </div>
             <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <div class="horizontal end-justified layout">
@@ -100,12 +101,20 @@
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <th style="width: 5%">ลำดับ</th>
-                                    <th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>
-                                    <th style="width: 15%">จำนวนเงินที่ได้ (บาท)</th>
-                                    <th style="width: 15%">จำนวนเงินที่ใช้ไปแล้ว (บาท)</th>
-                                    <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>
-                                    <th style="width: 15%">ขอใช้ (บาท)</th>
+                                    <th style="width: 5%" rowspan="2">ลำดับ</th>
+                                    <th style="width: 40%" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
+                                    <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
+                                    <!--<th style="width: 15%">จำนวนเงินที่ใช้ไปแล้ว (บาท)</th>
+                                <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>-->
+                                    <th style="width: 15%" rowspan="2">ดำเนินการ</th>
+                                </tr>
+                                <tr>
+                                    <!--<th style="width: 5%">ลำดับ</th>-->
+                                    <!--<th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>-->
+                                    <th style="width: 15%">วงเงิน </th>
+                                    <th style="width: 15%">ใช้ไปแล้ว </th>
+                                    <th style="width: 15%">คงเหลือ </th>
+                                    <!--<th style="width: 15%">ขอใช้ (บาท)</th>-->
                                 </tr>
                             </thead>
                             <tbody class="table-body">
@@ -142,12 +151,15 @@
                             <thead class="table-head">
                                 <tr>
                                     <th style="width: 10%">ลำดับ</th>
-                                    <th style="width: 40%">สวัสดิการที่ใช้</th>
+                                    <th style="width: 25%">สวัสดิการที่ใช้</th>
+
                                     <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
-                                    <th style="width: 10%">วันที่ขอใช้งาน</th>
-                                    <th style="width: 10%">วันที่ตรวจ</th>
-                                    <th style="width: 15%">สถานะการขอ</th>
-                                    <th style="width: 15%">ไฟล์</th>
+                                    <th style="width: 10%">วันขออนุมัติ</th>
+                                    <th style="width: 10%">วันอนุมัติ</th>
+                                    <th style="width: 10%">สถานะ</th>
+                                    <th style="width: 25%">ไฟล์</th>
+                                    <th style="width: 15%">ดำเนินการ</th>
+
                                 </tr>
                             </thead>
                             <tbody class="table-body">
@@ -180,6 +192,17 @@
                                             <template is="dom-if" if={{_ObIsHave(item.file)}}>
                                                 <div style="text-align: center;">ไม่ได้อัพโหลดไฟล์</div>
                                             </template>
+                                        </td>
+                                        <td>
+
+                                            <template is="dom-if" if={{_btnReject(item.status)}}>
+                                                <paper-button raised data="[[item]]" class="gl-bg-danger gl-small" on-tap="btnCancel"> ยกเลิก</paper-button>
+                                            </template>
+
+                                            <template is="dom-if" if={{!_btnReject(item.status)}}>
+                                                -
+                                            </template>
+
                                         </td>
                                     </tr>
                                 </template>
@@ -265,6 +288,23 @@
                 } catch (error) {
 
                 }
+            },
+            _btnReject(status){
+                return status == 'request'
+            },
+            btnCancel(e){
+                // console.log(e.currentTarget.data);
+                let newData = [{id:e.currentTarget.data.history_welfare_id}]
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการยกเลิกการขอใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            this.dispatchAction('USER_CANCEL_USE_WELFARE', newData);
+                            this.fire('_getReloadData','')
+                        }
+                    }
+                })
             },
             gerYearWelfare(e) {
                 if (typeof this.data != 'undefined') {
