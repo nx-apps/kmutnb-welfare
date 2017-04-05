@@ -140,11 +140,14 @@
                     type: Number,
                 },
             },
+            listeners: {
+                  '_getReloadData':'gerYearWelfare'
+            },
             setYear(years) {
                 try {
                     let year = years[years.length - 1].year
                     this.set('seleterYear', year)
-                    console.log(11111);
+                    // console.log(11111);
                     let e = {detail:{value:year}}
                     this.gerYearWelfare(e)
                     // console.log(year[year.length-1].year);
@@ -159,9 +162,9 @@
                 this.dispatchAction('FUND_RVD_GET_LIST',true)
             },
             gerYearWelfare(e) {
-                if (e.detail.value) {
-                    console.log(e);
-                    this.dispatchAction('USER_GET_WELFARES', window.location.pathname.split('/')[2], true, e.detail.value - 543);
+                if (this.seleterYear) {
+                    // console.log(e);
+                    this.dispatchAction('USER_GET_WELFARES', window.location.pathname.split('/')[2], true, this.seleterYear - 543);
                     // this.dispatchAction('USER_RVP_FUND',
                 }
 

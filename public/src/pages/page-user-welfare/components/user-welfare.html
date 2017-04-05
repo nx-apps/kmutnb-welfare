@@ -266,6 +266,7 @@
                     confirmed: (result) => {
                         if (result == true) {
                             this.dispatchAction('USER_CANCEL_USE_WELFARE', newData);
+                            this.fire('_getReloadData','')
                         }
                     }
                 })

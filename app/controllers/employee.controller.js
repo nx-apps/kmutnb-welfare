@@ -236,8 +236,11 @@ exports.welfaresYear = function (req, res) {
 
                 history_welfare: r.db('welfare').table('history_welfare')
                     // .filter({ emp_id: use_his('id'), year: year })
+                    
                     .getAll(use_his('id'), { index: 'emp_id' })
+                    
                     .filter({ year: year })
+                    .orderBy(r.desc('date_use'))
                     .merge((name_welfare) => {
                         return {
                             date_use: name_welfare('date_use').split('T')(0),
