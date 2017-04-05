@@ -5,6 +5,12 @@ exports.list = function (req, res) {
         employees: r.db('welfare').table('employee').coerceTo('array'),
         group: []
     })
+        .merge(function (employees_merge) {
+            return {
+                employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
+                    .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
+            }
+        })
         .merge(function (group_merge) {
             return {
                 group: r.db('welfare').table('group_welfare')
