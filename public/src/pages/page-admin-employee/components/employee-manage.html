@@ -36,7 +36,9 @@
                             <div class="flex-2">
                                 <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]" class="required" required allowed-pattern="[0-9]" maxlength="13"></gl-form-input>
                             </div>
-
+                            
+                        </div>
+                        <div class="flex">
                         </div>
                     </div>
                     <div class="from layout horizontal">
@@ -201,9 +203,10 @@
                 </div>
 
                 <div class="horizontal end-justified layout">
-                    <paper-button class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
-                    <paper-button class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                    <paper-button raised class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
+                    <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
                 </div>
+
 
 
             </paper-material>
