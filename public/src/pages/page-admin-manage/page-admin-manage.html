@@ -1,17 +1,16 @@
 <link rel="import" href="../components/format-number-behavior.html">
 <link rel="import" href="../components/common-logic.html">
 <link rel="import" href="../components/month-behavior.html">
-<link rel="import" href="components/dialog-use-welfare.html">
-<link rel="import" href="components/employee-manage.html">
+<link rel="import" href="./components/admin-dialog-use-welfare.html">
+<link rel="import" href="./components/employee-manage.html">
+
+<link rel="import" href="./../components/page-style.html">
 
 <dom-module id="page-admin-manage">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
         * {
             font-family: 'CSChatThaiUI', sans-serif;
             -webkit-font-smoothing: antialiased;
-        }
-         :host {
-            display: block;
         }
         .head-text {
             font-size: var(--font-size-h4);
@@ -39,159 +38,188 @@
         fieldset {
             margin: 15px;
         }
+        .header {
+            padding: 10px;
+            font-size: 35px;
+        }
     </style>
     <template>
+        <div class="xcontainer">
+            <!--<iron-pages selected="{{pages}}">-->
+            <!--<section>-->
+            <div class="header-page container">
+                จัดการข้อมูลส่วนตัว
+            </div>
+            <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
+                <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+                    <div class="horizontal end-justified layout">
+                        <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลส่วนตัว</paper-button>
+                    </div>
 
-        <iron-pages selected="{{pages}}">
-            <section>
-                <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
-                    <gl-form-panel-body label="" set-padding="10px" set-border="1px">
-                        <div class="horizontal end-justified layout">
-                            <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลส่วนตัว</paper-button>
+                </gl-form-panel-body>
+                <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+                    <fieldset>
+                        <legend>ข้อมูลพนักงาน :</legend>
+                        <div class="flex content horizontal start-justified layout">
+                            <div class="flex">ชื่อ : [[data.prefix_name]] [[data.firstname]] [[data.lastname]]</div>
+                            <div class="flex">รหัสพนักงาน : [[data.emp_no]]</div>
                         </div>
-
-                    </gl-form-panel-body>
-                    <gl-form-panel-body label="" set-padding="10px" set-border="1px">
-                        <fieldset>
-                            <legend>ข้อมูลพนักงาน :</legend>
-                            <div class="flex content horizontal start-justified layout">
-                                <div class="flex">ชื่อ : [[data.prefix_name]] [[data.firstname]] [[data.lastname]]</div>
-                                <div class="flex">รหัสพนักงาน : [[data.emp_no]]</div>
-                            </div>
-                            <div class="flex content horizontal start-justified layout">
-                                <div class="flex">สถานภาพการทำงาน : [[data.active_name]]</div>
-                                <div class="flex">ตำแหน่ง : [[data.position_name]]</div>
-                            </div>
-                            <div class="flex content horizontal start-justified layout">
-                                <div class="flex">ภาควิชา : [[data.department_name]]</div>
-                                <div class="flex">คณะ : [[data.faculty_name]]</div>
-                            </div>
-                        </fieldset>
-                        <div class="content horizontal start-justified layout">
-                            [[setYear(year)]]
-                            <gl-combo-box label="ปีงบประมาณ" items="{{year}}" value="{{seleterYear}}" item-label-path="year" item-value-path="year" on-value-changed="gerYearWelfare"></gl-combo-box>
-
-
+                        <div class="flex content horizontal start-justified layout">
+                            <div class="flex">สถานภาพการทำงาน : [[data.active_name]]</div>
+                            <div class="flex">ตำแหน่ง : [[data.position_name]]</div>
                         </div>
-                    </gl-form-panel-body>
-
-                    <gl-form-panel-body label="" set-padding="10px" set-border="1px">
-                        <div class="head-text">
-                            สวัสดิการที่ได้รับสิทธิ์
+                        <div class="flex content horizontal start-justified layout">
+                            <div class="flex">ภาควิชา : [[data.department_name]]</div>
+                            <div class="flex">คณะ : [[data.faculty_name]]</div>
                         </div>
-                        <div class="content horizontal center-justified layout">
-                            <table class="gl-table-default">
-                                <thead class="table-head">
+                    </fieldset>
+                    <div class="content horizontal start-justified layout">
+                        [[setYear(year)]]
+                        <gl-combo-box label="ปีงบประมาณ" items="{{year}}" value="{{seleterYear}}" item-label-path="year" item-value-path="year" on-value-changed="gerYearWelfare"></gl-combo-box>
+
+
+                    </div>
+                </gl-form-panel-body>
+
+                <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+                    <div class="head-text">
+                        สวัสดิการที่ได้รับสิทธิ์
+                    </div>
+                    <div class="content horizontal center-justified layout">
+                        <table class="gl-table-default">
+                            <thead class="table-head">
+                                <tr>
+                                    <th style="width: 5%" rowspan="2">ลำดับ</th>
+                                    <th style="width: 40%" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
+                                    <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
+                                    <!--<th style="width: 15%">จำนวนเงินที่ใช้ไปแล้ว (บาท)</th>
+                                <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>-->
+                                    <th style="width: 15%" rowspan="2">ดำเนินการ</th>
+                                </tr>
+                                <tr>
+                                    <!--<th style="width: 5%">ลำดับ</th>-->
+                                    <!--<th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>-->
+                                    <th style="width: 15%">วงเงิน </th>
+                                    <th style="width: 15%">ใช้ไปแล้ว </th>
+                                    <th style="width: 15%">คงเหลือ </th>
+                                    <!--<th style="width: 15%">ขอใช้ (บาท)</th>-->
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+
+                                <template is="dom-repeat" items={{data.welfare}}>
                                     <tr>
-                                        <th style="width: 5%">ลำดับ</th>
-                                        <th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>
-                                        <th style="width: 15%">จำนวนเงินที่ได้ (บาท)</th>
-                                        <th style="width: 15%">จำนวนเงินที่ใช้ไปแล้ว (บาท)</th>
-                                        <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>
-                                        <th style="width: 15%">ขอใช้ (บาท)</th>
+                                        <td>[[_Obindex(index)]]</td>
+                                        <td style="text-align: left;">[[item.group_welfare_name]] ([[item.check_onetime_thai]])</td>
+                                        <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
+                                        <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
+                                        <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
+                                        <td>
+                                            <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]">ขอใช้</paper-button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody class="table-body">
-
-                                    <template is="dom-repeat" items={{data.welfare}}>
-                                        <tr>
-                                            <td>[[_Obindex(index)]]</td>
-                                            <td>[[item.group_welfare_name]]</td>
-                                            <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
-                                            <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
-                                            <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
-                                            <td>
-                                                <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]">ขอใช้</paper-button>
-                                            </td>
-                                        </tr>
-                                    </template>
-                                    <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
-                                        <tr>
-                                            <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
-                                        </tr>
-                                    </template>
-
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </gl-form-panel-body>
-                    <gl-form-panel-body label="" set-padding="10px" set-border="1px">
-                        <div class="head-text">
-                            สวัสดิการที่ได้ใช้สิทธิ์ไปแล้ว
-                        </div>
-                        <div class="content horizontal center-justified layout">
-                            <table class="gl-table-default">
-                                <thead class="table-head">
+                                </template>
+                                <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
                                     <tr>
-                                        <th style="width: 10%">ลำดับ</th>
-                                        <th style="width: 40%">สวัสดิการที่ใช้</th>
-                                        <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
-                                        <th style="width: 10%">วันที่ขอใช้งาน</th>
-                                        <th style="width: 10%">วันที่ตรวจ</th>
-                                        <th style="width: 15%">สถานะการขอ</th>
-                                        <th style="width: 15%">ไฟล์</th>
+                                        <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
                                     </tr>
-                                </thead>
-                                <tbody class="table-body">
-                                    <template is="dom-repeat" items={{data.history_welfare}}>
-                                        <tr>
-                                            <td>[[_Obindex(index)]]</td>
-                                            <td>[[item.name]]</td>
-                                            <td style="text-align: right;">[[formatNumber(item.use_budget)]]</td>
-                                            <td>
-                                                [[toThaiDate(item.date_use)]]
-                                            </td>
-                                            <td>
-                                                <div style="text-align: center">
-                                                    <template is="dom-if" if={{!item.date_approve}}>
-                                                        รอการอนุมัติ
-                                                    </template>
-                                                    <template is="dom-if" if={{item.date_approve}}>
-                                                        <!--<vaadin-date-picker always-float-label  disabled value="{{item.date_approve}}"></vaadin-date-picker>-->
-                                                        [[toThaiDate(item.date_approve)]]
-                                                    </template>
-                                                </div>
-                                            </td>
-                                            <td>[[_checkApprove(item.status)]]</td>
-                                            <td style="text-align: left;">
-                                                <template is="dom-if" if={{item.file}}>
-                                                    <template is="dom-repeat" items={{item.file}}>
-                                                        <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
-                                                    </template>
-                                                </template>
-                                                <template is="dom-if" if={{_ObIsHave(item.file)}}>
-                                                    <div style="text-align: center;">ไม่ได้อัพโหลดไฟล์</div>
-                                                </template>
-                                            </td>
-                                        </tr>
-                                    </template>
-                                    <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
-                                        <tr>
-                                            <td colspan="7" style="text-align: center">ไม่มีข้อมูล</td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
+                                </template>
 
-                    </gl-form-panel-body>
-                    <!--<gl-form-panel-footer label="Footer" set-padding="10px">
+                            </tbody>
+                        </table>
+                    </div>
+                </gl-form-panel-body>
+                <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+                    <div class="head-text">
+                        สวัสดิการที่ได้ใช้สิทธิ์ไปแล้ว
+                    </div>
+                    <div class="content horizontal center-justified layout">
+                        <table class="gl-table-default">
+                            <thead class="table-head">
+                                <tr>
+                                    <th style="width: 10%">ลำดับ</th>
+                                    <th style="width: 25%">สวัสดิการที่ใช้</th>
+                                    <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
+                                    <th style="width: 10%">วันขออนุมัติ</th>
+                                    <th style="width: 10%">วันอนุมัติ</th>
+                                    <th style="width: 10%">สถานะ</th>
+                                    <th style="width: 25%">ไฟล์</th>
+                                    <th style="width: 15%">ดำเนินการ</th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+                                <template is="dom-repeat" items={{data.history_welfare}}>
+                                    <tr>
+                                        <td>[[_Obindex(index)]]</td>
+                                        <td style="text-align: left;">[[item.name]] </td>
+                                        <td style="text-align: right;">[[formatNumber(item.use_budget)]]</td>
+                                        <td>
+                                            [[toThaiDate(item.date_use)]]
+                                        </td>
+                                        <td>
+                                            <div style="text-align: center">
+                                                <template is="dom-if" if={{!item.date_approve}}>
+                                                    รอการอนุมัติ
+                                                </template>
+                                                <template is="dom-if" if={{item.date_approve}}>
+                                                    <!--<vaadin-date-picker always-float-label  disabled value="{{item.date_approve}}"></vaadin-date-picker>-->
+                                                    [[toThaiDate(item.date_approve)]]
+                                                </template>
+                                            </div>
+                                        </td>
+                                        <td>[[_checkApprove(item.status)]]</td>
+                                        <td style="text-align: left;">
+                                            <template is="dom-if" if={{item.file}}>
+                                                <template is="dom-repeat" items={{item.file}}>
+                                                    <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                                                </template>
+                                            </template>
+                                            <template is="dom-if" if={{_ObIsHave(item.file)}}>
+                                                <div style="text-align: center;">ไม่ได้อัพโหลดไฟล์</div>
+                                            </template>
+                                        </td>
+                                        <td>
+
+                                            <template is="dom-if" if={{_btnReject(item.status)}}>
+                                                <paper-button raised data="[[item]]" class="gl-bg-danger gl-small" on-tap="btnCancel"> ยกเลิก</paper-button>
+                                            </template>
+
+                                            <template is="dom-if" if={{!_btnReject(item.status)}}>
+                                                -
+                                            </template>
+
+                                        </td>
+                                    </tr>
+                                </template>
+                                <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
+                                    <tr>
+                                        <td colspan="7" style="text-align: center">ไม่มีข้อมูล</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </gl-form-panel-body>
+                <!--<gl-form-panel-footer label="Footer" set-padding="10px">
                 
                 </gl-form-panel-footer>-->
-                </gl-form-panel>
-                <paper-dialog id="welfare_budget">
-                    <dialog-use-welfare id="dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></dialog-use-welfare>
-                    <div class="flex horizontal end-justified layout">
-                        <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้งาน</paper-button>
-                    </div>
-                </paper-dialog>
-            </section>
+            </gl-form-panel>
+            <paper-dialog id="welfare_budget">
+                <admin-dialog-use-welfare id="admin-dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-welfare>
+                <div class="flex horizontal end-justified layout">
+                    <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้งาน</paper-button>
+                </div>
+            </paper-dialog>
+            <!--</section>-->
             <!--<section>
-                <employee-manage data="{{data}}"></employee-manage>
-            </section>-->
-        </iron-pages>
-        <panel-right title="{{title}}">
+                    <employee-manage data="{{data}}"></employee-manage>
+                </section>-->
+            <!--</iron-pages>-->
+        </div>
+
+        <panel-right id="test" title="{{title}}">
             <employee-manage data="{{data}}"></employee-manage>
         </panel-right>
     </template>
@@ -199,10 +227,11 @@
         Polymer({
             is: 'page-admin-manage',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
-             commonLogic, userWelfareAction, uploadAction, commonDataAction,
-             MonthBehavior],
+                commonLogic, userWelfareAction, uploadAction, commonDataAction,
+                MonthBehavior],
             listeners: {
-                'back-page': 'changePage'
+                'back-page': 'changePage',
+                'close-panel-right':'closePanelRight'
             },
             observers: ['checkData(seleterYear,id)'],
             properties: {
@@ -222,18 +251,18 @@
                     value: 0
                 }
             },
-            ready:function(){
+            ready: function () {
                 this._getcommon();
             },
-            nylonPageActive:function(){
+            nylonPageActive: function () {
                 this.id = window.location.pathname.split('/')[2];
                 this.WELFARE_LIST_YEAR();
             },
-            checkData(year,id){
-                if(year != ''){
+            checkData(year, id) {
+                if (year != '') {
                     var datas = {
-                        id : id,
-                        year : year-543
+                        id: id,
+                        year: year - 543
                     }
                     this.dispatchAction('LIST_EMPLOYEES_WELFARE', datas);
                 }
@@ -246,6 +275,23 @@
                 } catch (error) {
 
                 }
+            },
+            _btnReject(status){
+                return status == 'request'
+            },
+            btnCancel(e){
+                // console.log(e.currentTarget.data);
+                let newData = [{id:e.currentTarget.data.history_welfare_id}]
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการยกเลิกการขอใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            this.dispatchAction('USER_CANCEL_USE_WELFARE', newData);
+                            this.fire('_getReloadData','')
+                        }
+                    }
+                })
             },
             gerYearWelfare(e) {
                 if (typeof this.data != 'undefined') {
@@ -277,8 +323,8 @@
             getwelfare() {
                 // console.log(this.usewelfareProp);
                 this.$$('#welfare_budget').close()
-                this.usewelfareProp.document_ids = this.$$('dialog-use-welfare').keepFile()
-                if (this.$$('#dialog-use-welfare').validateForm('.required')) {
+                this.usewelfareProp.document_ids = this.$$('admin-dialog-use-welfare').keepFile()
+                if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
                     this.dispatchAction('EMPLOYEE_USE_WELFARE', this.usewelfareProp);
                 }
             },
@@ -298,9 +344,8 @@
                 }
             },
             editData() {
-                // this.pages = 1;
+                this.set('title', 'แก้ไขข้อมูลส่วนตัว')
                 this.$$('panel-right').open();
-                this.title = 'แก้ไขข้อมูลส่วนตัว';
             },
             changePage: function (page) {
                 this.$$('panel-right').close();
@@ -316,7 +361,7 @@
                 window.open('/api/file/download/' + e.currentTarget.data.id);
                 // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
             },
-            _getcommon:function(){
+            _getcommon: function () {
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
                 this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
                 this.dispatchAction('COMMONDATA_DATA_ACTIVE');
@@ -326,6 +371,9 @@
                 this.dispatchAction('COMMONDATA_DATA_POSITION');
                 this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
+            },
+            closePanelRight(){
+                this.$$('panel-right').close();
             }
         });
     </script>

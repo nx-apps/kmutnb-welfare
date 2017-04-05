@@ -211,6 +211,21 @@ exports.welfaresYear = function (req, res) {
                                     }
                                     )
                                     .sum('use_budget'),
+                                budget_per_use: r.db('welfare').table('history_welfare')
+                                    .getAll(welfare('id'), { index: 'emp_id' })
+                                    .filter((status) => {
+                                        return status('status').eq('approve').or(status('status').eq('request'))
+                                    })
+                                    .filter(
+                                    {
+                                        welfare_id: use_his('welfare_id')
+                                    }
+                                    )
+                                    .sum('use_budget')
+
+
+
+
                             }
                         })
                         .merge((balance) => {
@@ -221,7 +236,7 @@ exports.welfaresYear = function (req, res) {
                         })
                         .merge((check_onetime) => {
                             return {
-                                check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว','ใช้ได้หลายครั้ง')
+                                check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว', 'ใช้ได้หลายครั้ง')
                             }
                         })
                         // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
@@ -236,9 +251,9 @@ exports.welfaresYear = function (req, res) {
 
                 history_welfare: r.db('welfare').table('history_welfare')
                     // .filter({ emp_id: use_his('id'), year: year })
-                    
+
                     .getAll(use_his('id'), { index: 'emp_id' })
-                    
+
                     .filter({ year: year })
                     .orderBy(r.desc('date_use'))
                     .merge((name_welfare) => {
@@ -250,19 +265,19 @@ exports.welfaresYear = function (req, res) {
                             onetime: r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('onetime'),
                         }
                     })
-                    .merge((files)=>{
+                    .merge((files) => {
                         return {
-                            file:files('document_ids').map((doc_id)=>{
+                            file: files('document_ids').map((doc_id) => {
                                 return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
-                                .without('contents')
+                                    .without('contents')
                             })
                         }
                     })
                     .merge((check_onetime) => {
-                            return {
-                                check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว','ใช้ได้หลายครั้ง')
-                            }
-                        })
+                        return {
+                            check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว', 'ใช้ได้หลายครั้ง')
+                        }
+                    })
                     .without('id')
                     .orderBy(r.desc('date_use'))
                     .coerceTo('array')
@@ -272,7 +287,7 @@ exports.welfaresYear = function (req, res) {
             return {
                 welfare: checkTrue('welfare').merge((e) => {
                     return {
-                        emp_work:checkTrue('active_code').eq('WORK'),//"active_code": "WORK",,
+                        emp_work: checkTrue('active_code').eq('WORK'),//"active_code": "WORK",,
                         status_approve: checkTrue('history_welfare').filter({ status: 'request', welfare_id: e('welfare_id') }).count().gt(0),//e('welfare_id'),
                         welfare_old: e('start_date').ge(e('now_date')).branch(true,
                             e('end_date').ge(e('now_date')).branch(false, true))

@@ -1,7 +1,9 @@
 <link rel="import" href="components/list-welfare.html">
 <link rel="import" href="components/welfare-employee.html">
 <link rel="import" href="components/employee-manage.html">
-<link rel="import" href="./components/list-user.html">
+<link rel="import" href="./components/admin-list-user.html">
+
+<link rel="import" href="./../components/page-style.html">
 
 <dom-module id="page-admin-employee">
     <style is="custom-style" include="gl-style gl-color gl-size gl-table flex-style">
@@ -9,13 +11,11 @@
             font-family: 'CSChatThaiUI', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        paper-material {
-            background-color: var(--gl-white-color);
-        }
+        
         .container {
             padding: 20px;
         }
-        .table-detail {
+        /*.table-detail {
             margin: auto;
             width: 70%;
         }
@@ -30,85 +30,94 @@
             margin-right: 10px;
             background-color: deepskyblue;
             color: white;
-        }
+        }*/
     </style>
     <template>
+        <div class="xcontainer">
+            <iron-pages selected="{{selected}}">
+                <section>
+                    <div class="header-page container">
+                        จัดการข้อมูลพนักงาน
+                    </div>
+                    <div class="container">
+                        <paper-material elevation="1">
+                            <div>
+                                <div class="layout horizontal">
+                                    <div class="flex"></div>
+                                    <div class="flex-3">
+                                        <gl-combo-box label="ปี" placeholder="มีทั้งหมด {{year.length}} ปี" items="{{year}}" item-label-path="year" item-value-path="year"
+                                            value="{{selectYear}}">
+                                        </gl-combo-box>
+                                    </div>
+                                    <div class="flex"></div>
+                                    <div class="flex-3">
+                                        <gl-form-dropdown-menu style="width: 100%" label="สวัสดิการ" placeholder="มีสวัสดิการ {{listWelfare.length}} รายการ">
+                                            <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectWelfare}}">
+                                                <template is="dom-repeat" items="{{listWelfare}}">
+                                                    <paper-item value="{{item.id}}">{{item.group_welfare_name}}</paper-item>
+                                                </template>
+                                            </paper-listbox>
+                                        </gl-form-dropdown-menu>
+                                    </div>
+                                    <div class="flex"></div>
+                                </div>
 
-        <iron-pages selected="{{selected}}">
-            <section>
-                <div class="container serachBox">
-                    <paper-material elevation="1">
-                        <div>
-                            <div class="container flex-horizontal-with-ratios">
-                                <div class="flexchild"></div>
-                                <div class="flex3child">
-                                    <gl-combo-box label="ปี" placeholder="มีทั้งหมด {{year.length}} ปี" items="{{year}}" item-label-path="year" item-value-path="year"
-                                        value="{{selectYear}}">
-                                    </gl-combo-box>
+                                <div class="layout horizontal">
+                                    <div class="flex"></div>
+                                    <div class="flex-3">
+                                        <gl-combo-box label="เลือกคณะ" placeholder="มีทั้งหมด {{listFaculty.length}} คณะ" items="{{listFaculty}}" item-label-path="faculty_name"
+                                            item-value-path="id" value="{{selectType}}">
+                                        </gl-combo-box>
+                                    </div>
+                                    <div class="flex"></div>
+                                    <div class="flex-3">
+                                        <gl-form-dropdown-menu style="width: 100%" label="ภาควิชา" placeholder="มีภาควิชา {{departmentList.length}} ภาควิชา">
+                                            <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectDepartment}}">
+                                                <template is="dom-repeat" items="{{departmentList}}">
+                                                    <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
+                                                </template>
+                                            </paper-listbox>
+                                        </gl-form-dropdown-menu>
+                                    </div>
+                                    <div class="flex"></div>
                                 </div>
-                                <div class="flexchild"></div>
-                                <div class="flex3child">
-                                    <gl-form-dropdown-menu style="width: 100%" label="สวัสดิการ" placeholder="มีสวัสดิการ {{listWelfare.length}} รายการ">
-                                        <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectWelfare}}">
-                                            <template is="dom-repeat" items="{{listWelfare}}">
-                                                <paper-item value="{{item.id}}">{{item.group_welfare_name}}</paper-item>
-                                            </template>
-                                        </paper-listbox>
-                                    </gl-form-dropdown-menu>
-                                </div>
-                                <div class="flexchild"></div>
                             </div>
 
-                            <div class="container flex-horizontal-with-ratios">
-                                <div class="flexchild"></div>
-                                <div class="flex3child">
-                                    <gl-combo-box label="เลือกคณะ" placeholder="มีทั้งหมด {{listFaculty.length}} คณะ" items="{{listFaculty}}" item-label-path="faculty_name"
-                                        item-value-path="id" value="{{selectType}}">
-                                    </gl-combo-box>
-                                </div>
-                                <div class="flexchild"></div>
-                                <div class="flex3child">
-                                    <gl-form-dropdown-menu style="width: 100%" label="ภาควิชา" placeholder="มีภาควิชา {{departmentList.length}} ภาควิชา">
-                                        <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectDepartment}}">
-                                            <template is="dom-repeat" items="{{departmentList}}">
-                                                <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
-                                            </template>
-                                        </paper-listbox>
-                                    </gl-form-dropdown-menu>
-                                </div>
-                                <div class="flexchild"></div>
-                            </div>
-                        </div>
+                        </paper-material>
 
-                    </paper-material>
+                    </div>
 
-                </div>
-
-                <div class="horizontal end-justified layout">
-                    <paper-button class="btn-insert" on-tap="_insert">
-                        <iron-icon icon="add"></iron-icon>เพิ่มพนักงาน
-                    </paper-button>
-                </div>
+                    <div class="horizontal end-justified layout">
+                        <paper-button raised class="gl-bg-primary" on-tap="_insert">
+                            <iron-icon icon="add"></iron-icon>เพิ่มพนักงาน
+                        </paper-button>
+                    </div>
 
 
-                <div>
-                    <list-user></list-user>
-                </div>
-            </section>
-            <section>
-                <!--pages-->
-                <welfare-employee></welfare-employee>
-            </section>
-            <!--<section>-->
-            <!--pages-->
-            <!--<employee-manage></employee-manage>-->
-            <!--</section>-->
+                    <div>
+                        <admin-list-user></admin-list-user>
+                    </div>
+                </section>
+                <section>
+                    <!--pages-->
+                    <welfare-employee></welfare-employee>
+                </section>
+                <section>
+                    <!--pages-->
+                    <!--1212121-->
+                    <div>
+                        111111
+                    </div>
+                    <employee-manage></employee-manage>
+                </section>
 
-        </iron-pages>
-        <panel-right title="{{title}}">
-            <employee-manage></employee-manage>
-        </panel-right>
+            </iron-pages>
+            <panel-right id="test" title="{{title}}">
+                <employee-manage></employee-manage>
+                <!--<user-panel class="sub-component" data="[[dataSelete]]"></user-panel>-->
+            </panel-right>
 
+        </div>
     </template>
     <script>
         Polymer({
@@ -165,7 +174,7 @@
                 this.selectWelfare = "";
                 this.selectType = "";
                 this.selectDepartment = "";
-                this.$$('list-user').selectTable(true);
+                this.$$('admin-list-user').selectTable(true);
                 this.FACULTY_LIST();
                 this.LIST_USER("");
             },
@@ -173,7 +182,7 @@
                 this.selected = 0;
                 this.WELFARE_LIST_YEAR();
                 this.LIST_USER("");
-                this.$$('list-user').selectTable(true)
+                this.$$('admin-list-user').selectTable(true)
                 this.FACULTY_LIST();
             },
             select_year: function (year) {
@@ -196,9 +205,9 @@
                         getStatus = item.admin_use;
                     })
                     console.log(getStatus);
-                    this.$$('list-user').checkBox = getStatus;
+                    this.$$('admin-list-user').checkBox = getStatus;
                     // if(id != ""){
-                    this.$$('list-user').selectTable(false)
+                    this.$$('admin-list-user').selectTable(false)
                     this.LIST_USER_SERARCH(id);
                 }
             },
@@ -213,7 +222,7 @@
                     newItem.map((item) => {
                         this.departmentList = item.department;
                     })
-                    this.$$('list-user').searchTableByFilterFaculty(id);
+                    this.$$('admin-list-user').searchTableByFilterFaculty(id);
                     // console.log(this.departmentList);
                 }
             },
@@ -224,6 +233,10 @@
             back_page: function () {
                 // this.pages = 0;
                 this.$$('panel-right').close();
+                this.$$('admin-list-user').searchTableByFilterDepartment(id);
+            },
+            back_page: function () {
+                this.pages = 0;
             },
             confirmSend: function () {
                 this.fire('toast', {
@@ -235,6 +248,7 @@
             sendUser: function (check) {
                 if (check == true)
                     this.$$('list-user').insertData();
+                    this.$$('admin-list-user').insertData();
             },
             changePage: function (page) {
                 // console.log(page.detail.data);
@@ -248,8 +262,8 @@
             },
             _insert: function () {
                 // this.selected = 2;
+                this.set('title', 'เพิ่มสมาชิก')
                 this.$$('panel-right').open();
-                this.title = 'เพิ่มข้อมูลพนักงาน';
             },
             _getcommon: function () {
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');

@@ -1,6 +1,6 @@
 <!--<link rel="import" href="welfare-insert.html">
 <link rel="import" href="welfare-edit.html">-->
-<link rel="import" href="../../components/common-logic.html">
+<link rel="import" href="./../../components/common-logic.html">
 <link rel="import" href="./welfare-form.html">
 
 <dom-module id="welfare-detail">
@@ -69,9 +69,15 @@
                                         </td>
                                     </tr>
                                 </template>
+                                
                                 <template is="dom-if" if={{_ObIsHave(list.welfare)}}>
                                     <tr>
                                         <td colspan="10" style="text-align: center">ไม่มีข้อมูลเงื่อนไขสวัสดิการ</td>
+                                        
+                                </template>
+                                <template is="dom-if" if={{_ObIsHave(list.welfare)}}>
+                                    <tr>
+                                        <td colspan="6"> ไม่มีข้อมูล</td>
                                     </tr>
                                 </template>
                             </tbody>
@@ -102,7 +108,7 @@
     <script>
         Polymer({
             is: 'welfare-detail',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic],
+            behaviors: [ReduxBehavior, FormatNumberBehavior,commonLogic],
             listeners: {
                 'back': 'back_page'
             },

@@ -4,6 +4,9 @@
 <link rel="import" href="./../components/page-style.html">
 <link rel="import" href="../components/common-logic.html">
 
+<link rel="import" href="./../components/common-logic.html">
+
+
 <dom-module id="page-admin-welfare">
     <template>
         <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -11,16 +14,24 @@
                 /*background-color: var(--gl-white-color);*/
                 padding: 0px;
             }
+            
+            * {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+            
             .table-detail {
                 margin: auto;
-                width: 80%;
-                padding: 20px;
+                /*width: 80%;*/
+                /*padding: 20px;*/
             }
+            
             table.gl-table-default {
                 width: 100%;
                 border: 1px solid #ddd;
             }
-            .title-text{
+            
+            .title-text {
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
                 font-weight: bold;
@@ -28,54 +39,18 @@
                 font-size: 20px;
             }
         </style>
-        <div class="horizontal justified layout">
-            <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_print">
-                <iron-icon icon="print"></iron-icon>ออกรายงาน</paper-button>
-            <div class="title-text">จัดการสวัสดิการ</div>
-            <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
-                <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการ</paper-button>
-        </div>
-        <div style="margin-left:140px;">
-            <!--<gl-combo-box item-label-path="year" item-value-path="year" items="{{list_year}}" value="{{selectYear}}"></gl-combo-box>-->
-            <gl-form-dropdown-menu label="ปี" placeholder="เลือกปี">
-                <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
-                    <template is="dom-repeat" items={{list_year}}>
-                        <paper-item value="[[item.year]]">[[item.year]]</paper-item>
-                    </template>
-                </paper-menu>
-            </gl-form-dropdown-menu>
-        </div>
-        <div class="container">
-            <div class="table-detail">
-                <paper-material elevation="1">
-                    <table class="gl-table-default">
-                        <thead class="table-head">
-                            <tr>
-                                <th style="text-align:center; width:15%;">ปี</th>
-                                <th>ชื่อสวัสดิการ</th>
-                                <th style="text-align:center">จำนวนผู้มีสิทธิ</th>
-                                <th style="text-align:center">จำนวนผู้ใช้สิทธิ</th>
-                                <th style="text-align:center;width:15%;">ยอดเต็ม (บาท)</th>
-                                <th style="text-align:center;width:15%;">ยอดที่ใช้ (บาท)</th>
-                                <th style="width:15%;text-align:center;">เครื่องมือ</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-body">
-                            <template is="dom-repeat" items="{{list}}">
-                                <tr style="cursor:pointer;">
-                                    <td style="text-align:center">[[item.year]]</td>
-                                    <td>[[item.group_welfare_name]]</td>
-                                    <td style="text-align:center">[[item.emp_budget]]</td>
-                                    <td style="text-align:center">[[item.emp_use]]</td>
-                                    <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
-                                    <td style="text-align:right">[[formatNumber(item.value_use)]]</td>
-                                    <td style="text-align:center">
-                                        <paper-icon-button data="[[item]]" icon="icons:list" on-tap="select_welfare" title="เงื่อนไข"></paper-icon-button>
-                                        <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="แก้ไขสวัสดิการ"></paper-icon-button>
-                                        <!--<paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info">แก้ไข</paper-button>-->
-                                    </td>
-                                </tr>
+        <div class="xcontainer">
+            <div class="header-page">จัดการสวัสดิการ</div>
+            <div class="horizontal layout">
+                <!--<paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_print">
+                <iron-icon icon="print"></iron-icon>ออกรายงาน</paper-button>-->
+                <div class="flex horizontal start-justified layout">
+                    <gl-form-dropdown-menu label="ปี" placeholder="เลือกปี">
+                        <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
+                            <template is="dom-repeat" items={{list_year}}>
+                                <paper-item value="[[item.year]]">[[item.year]]</paper-item>
                             </template>
+<<<<<<< HEAD
                             <template is="dom-if" if={{_ObIsHave(list)}}>
                                 <tr>
                                     <td colspan="10" style="text-align: center">ไม่มีข้อมูลสวัสดิการ</td>
@@ -91,16 +66,77 @@
             <iron-pages selected="{{pages}}">
                 <div>
                     <welfare-panel data="{{data}}"></welfare-panel>
+=======
+                        </paper-menu>
+                    </gl-form-dropdown-menu>
+>>>>>>> 34143bfd28211c84d1c65cf42f1a2f1f2fff9009
                 </div>
-                <div>
-                    <welfare-detail data="{{dataSelect}}"></welfare-detail>
+                <div class="flex horizontal end-justified layout">
+                    <div class="">
+                        <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
+                            <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการ</paper-button>
+                    </div>
                 </div>
-                <div>
-                    <welfare-manage></welfare-manage>
-                </div>
-            </iron-pages>
-        </panel-right>
 
+            </div>
+            <div class="container">
+                <div class="table-detail">
+                    <paper-material elevation="1">
+                        <table class="gl-table-default">
+                            <thead class="table-head">
+                                <tr>
+                                    <th style="text-align:center; width:15%;">ปี</th>
+                                    <th>ชื่อสวัสดิการ</th>
+                                    <th style="text-align:center">จำนวนผู้มีสิทธิ</th>
+                                    <th style="text-align:center">จำนวนผู้ใช้สิทธิ</th>
+                                    <th style="text-align:center;width:15%;">ยอดเต็ม (บาท)</th>
+                                    <th style="text-align:center;width:15%;">ยอดที่ใช้ (บาท)</th>
+                                    <th style="width:15%;text-align:center;">เครื่องมือ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+                                <template is="dom-repeat" items="{{list}}">
+                                    <tr style="cursor:pointer;">
+                                        <td style="text-align:center">[[item.year]]</td>
+                                        <td>[[item.group_welfare_name]]</td>
+                                        <td style="text-align:center">[[item.emp_budget]]</td>
+                                        <td style="text-align:center">[[item.emp_use]]</td>
+                                        <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
+                                        <td style="text-align:right">[[formatNumber(item.value_use)]]</td>
+                                        <td style="text-align:center">
+                                            <paper-icon-button data="[[item]]" icon="icons:list" on-tap="select_welfare" title="เงื่อนไข"></paper-icon-button>
+                                            <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="แก้ไขสวัสดิการ"></paper-icon-button>
+                                            <!--<paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info">แก้ไข</paper-button>-->
+                                        </td>
+                                    </tr>
+                                </template>
+                                
+                                <template is="dom-if" if={{_ObIsHave(list)}}>
+                                    <tr>
+                                        <td colspan="7"> ไม่มีข้อมูล</td>
+                                    </tr>
+                                </template>
+                                
+                            </tbody>
+                        </table>
+                    </paper-material>
+                </div>
+            </div>
+
+            <panel-right title="{{title}}">
+                <iron-pages selected="{{pages}}">
+                    <div>
+                        <welfare-panel data="{{data}}"></welfare-panel>
+                    </div>
+                    <div>
+                        <welfare-detail data="{{dataSelect}}"></welfare-detail>
+                    </div>
+                    <div>
+                        <welfare-manage></welfare-manage>
+                    </div>
+                </iron-pages>
+            </panel-right>
+        </div>
 
     </template>
     <script>
@@ -159,8 +195,8 @@
                 this.data = {
                     year: '',
                     name: '',
-                    start_date : new Date().toISOString().split('-')[0]+'-01-01',
-                    end_date : new Date().toISOString().split('-')[0]+'-12-31'
+                    start_date: new Date().toISOString().split('-')[0] + '-01-01',
+                    end_date: new Date().toISOString().split('-')[0] + '-12-31'
                 };
             },
             _edit: function (e) {
@@ -175,8 +211,8 @@
                 var year = e - 543;
                 this.LIST_WELFARE(year);
             },
-            _print:function(){
-                this.fire('nylon-change-page',{path:'/report'})
+            _print: function () {
+                this.fire('nylon-change-page', { path: '/report' })
             }
         });
     </script>

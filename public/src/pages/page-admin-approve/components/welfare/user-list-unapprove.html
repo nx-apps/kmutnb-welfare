@@ -79,14 +79,16 @@
                 <table class="gl-table-default" style="margin:auto">
                     <thead class="table-head">
                         <tr>
-                            <th>เลือก</th>
+                            <th>
+                                <paper-checkbox id="masterCheck" on-tap="checkBoxAll"></paper-checkbox>
+                            </th>
                             <th>ลำดับ</th>
                             <th>วันที่ขอ</th>
                             <th>รหัสประชาชน</th>
                             <th>ชื่อ - นามสกุล</th>
                             <th>คณะ</th>
                             <th>สวัสดิการที่ขอใช้</th>
-                            <th >รายละเอียดเพิ่มเติม</th>
+                            <th>รายละเอียดเพิ่มเติม</th>
                             <th>จำนวนเงินที่เหลือ</th>
                             <th>จำนวนเงินที่ใช้งาน</th>
                             <th>เอกสาร</th>
@@ -98,7 +100,7 @@
                         <template is="dom-repeat" items={{listUserFalse}}>
                             <tr>
                                 <td>
-                                    <paper-checkbox checked="{{item.statusCheckBox}}"></paper-checkbox>
+                                    <paper-checkbox id="checkBox-[[index]]" checked="{{item.statusCheckBox}}"></paper-checkbox>
                                 </td>
                                 <td>[[_Obindex(index)]]</td>
                                 <td>[[toThaiDate(item.date_use)]]</td>
@@ -155,7 +157,8 @@
             ],
             properties: {
                 listUserFalse: {
-                    statePath: 'users.lisyUserFalse'
+                    statePath: 'users.lisyUserFalse',
+                    observer: '_setCheckBox'
                 },
                 usewelfareProp: {
                     type: Object
@@ -206,6 +209,18 @@
 
                 }
             },
+            _setCheckBox(setData) {
+                // console.log(setData);
+                return setData.map((CheckBox) => CheckBox.statusCheckBox = false)
+            },
+            checkBoxAll(e) {
+                // console.log(e.currentTarget.checked);
+                this.listUserFalse.map((m, index) => {
+                    // this.set('listUserFalse'+index+'statusCheckBox',true)
+                    m.statusCheckBox = e.currentTarget.checked
+                    this.$$('#checkBox-' + index).checked = e.currentTarget.checked
+                })
+            },
             userwelfare(e) {
                 // console.log(e.currentTarget.data);
                 this.set('usewelfareProp', e.currentTarget.data)
@@ -241,7 +256,9 @@
                             let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
                             let newData = []
                             sd.map((newDa) => newData.push({ id: newDa.id }))
-                            this.dispatchAction('USER_DELETE_USE_WELFARE', newData);
+
+                            // console.log(sd)
+                            this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
                             this.dispatchAction('USERS_FALSE_LIST', '');
                             this.dispatchAction('USERS_LIST_HISTORY_WELFARE', '');
                         }

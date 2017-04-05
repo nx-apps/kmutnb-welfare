@@ -203,7 +203,8 @@
                     type: Array,
                     value: [
                         { id: 'approve', label: 'อนุมัติ' },
-                        { id: 'reject', label: 'ไม่อนุมัติ' }
+                        { id: 'reject', label: 'ไม่อนุมัติ' },
+                        { id: 'cancel', label: 'ยกเลิก' }
                     ]
                 }
             },
@@ -253,7 +254,7 @@
                 });
             },
             searchBtn() {
-                console.log(this.dataSearch.status == 'undefined' || this.dataSearch.status == '');
+                // console.log(this.dataSearch.status == 'undefined' || this.dataSearch.status == '');
                 if (this.dataSearch.status == 'undefined' || this.dataSearch.status == '') {
                     this.set('dataSearch.status', 'approve')
                 }
@@ -305,7 +306,7 @@
                 })
             },
             downloadFile(e) {
-                console.log(e.currentTarget.data);
+                // console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id)
             },
             _setBtn(e) {
