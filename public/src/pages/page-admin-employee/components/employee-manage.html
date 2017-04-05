@@ -268,7 +268,7 @@
             cancle: function () {
                 if (typeof this.data.id === 'undefined' && this.data.id == undefined) {
                     // this.fire('select-page', 0);
-                    this.fire('back_page',this.data.id);
+                    this.fire('back_page',);
                 }
                 else {
                     this.dispatchAction('LIST_EMPLOYEE_WELFARE', this.data.id);
