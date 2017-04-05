@@ -1,4 +1,4 @@
-<dom-module id="employee-manage">
+<dom-module id="employee-add">
     <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
         fieldset {
             margin: 15px 5px;
@@ -176,8 +176,6 @@
                                     </paper-listbox>
                                 </gl-form-dropdown-menu>
                             </div>
-                            <!--<gl-combo-box id="faculty" no-label-float items="{{faculty}}" value="{{data.faculty_id}}" item-label-path="faculty_name"
-                                        item-value-path="id" class="required" required></gl-combo-box>-->
                         </div>
                     </div>
                     <div class="from layout horizontal">
@@ -192,8 +190,6 @@
                                     </template>
                                 </paper-listbox>
                             </gl-form-dropdown-menu>
-                            <!--<gl-combo-box id="department" no-label-float items="{{department}}" value="{{data.department_id}}" item-label-path="department_name"
-                                        item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>-->
                         </div>
                     </div>
                 </fieldset>
@@ -207,11 +203,10 @@
                     </div>
 
         </paper-material>
-
     </template>
     <script>
         Polymer({
-            is: 'employee-manage',
+            is: 'employee-add',
             behaviors: [ReduxBehavior, ValidateFormBehavior],
             observers: ['getDepartment(data.faculty_id,faculty)'],
             properties: {
@@ -268,7 +263,7 @@
             cancle: function () {
                 if (typeof this.data.id === 'undefined' && this.data.id == undefined) {
                     // this.fire('select-page', 0);
-                    this.fire('back_page',);
+                    this.fire('back_page',this.data.id);
                 }
                 else {
                     this.dispatchAction('LIST_EMPLOYEE_WELFARE', this.data.id);
