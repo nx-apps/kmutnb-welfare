@@ -11,5 +11,6 @@ module.exports = function (app) {
     app.get('/report5',controller.report5);
     app.get('/report5_1',controller.report5_1);
     app.get('/test', controller.test);
+    app.get('/report14/:year', controller.report14);
 }
 
