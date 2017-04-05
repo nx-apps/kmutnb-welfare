@@ -6,6 +6,10 @@
 
 <dom-module id="page-admin-manage">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
+        * {
+            font-family: 'CSChatThaiUI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
          :host {
             display: block;
         }
@@ -103,7 +107,7 @@
                                     </template>
                                     <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
                                         <tr>
-                                            <td colspan="4" style="text-align: center">ไม่มีข้อมูล</td>
+                                            <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
                                         </tr>
                                     </template>
 
@@ -183,10 +187,13 @@
                     </div>
                 </paper-dialog>
             </section>
-            <section>
+            <!--<section>
                 <employee-manage data="{{data}}"></employee-manage>
-            </section>
+            </section>-->
         </iron-pages>
+        <panel-right title="{{title}}">
+            <employee-manage data="{{data}}"></employee-manage>
+        </panel-right>
     </template>
     <script>
         Polymer({
@@ -291,15 +298,18 @@
                 }
             },
             editData() {
-                this.pages = 1;
+                // this.pages = 1;
+                this.$$('panel-right').open();
+                this.title = 'แก้ไขข้อมูลส่วนตัว';
             },
             changePage: function (page) {
-                if (page.detail != 0) {
-                    this.pages = page.detail;
-                }
-                else {
-                    this.pages = page.detail;
-                }
+                this.$$('panel-right').close();
+                // if (page.detail != 0) {
+                //     this.pages = page.detail;
+                // }
+                // else {
+                //     this.pages = page.detail;
+                // }
             },
             downloadFile(e) {
                 console.log(e.currentTarget.data);

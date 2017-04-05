@@ -5,40 +5,45 @@
 
 <dom-module id="page-admin-employee">
     <style is="custom-style" include="gl-style gl-color gl-size gl-table flex-style">
+        * {
+            font-family: 'CSChatThaiUI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
         paper-material {
             background-color: var(--gl-white-color);
         }
-        .container{
+        .container {
             padding: 20px;
         }
         .table-detail {
             margin: auto;
             width: 70%;
         }
-        .serachBox{
+        .serachBox {
             margin: auto;
             width: 70%;
         }
         table.gl-table-default {
             border: 1px solid #ddd;
         }
-        .btn-insert{
+        .btn-insert {
             margin-right: 10px;
             background-color: deepskyblue;
             color: white;
         }
     </style>
     <template>
-        
+
         <iron-pages selected="{{selected}}">
-            <section>   
+            <section>
                 <div class="container serachBox">
                     <paper-material elevation="1">
                         <div>
                             <div class="container flex-horizontal-with-ratios">
                                 <div class="flexchild"></div>
                                 <div class="flex3child">
-                                    <gl-combo-box label="ปี" placeholder="มีทั้งหมด {{year.length}} ปี" items="{{year}}" item-label-path="year" item-value-path="year" value="{{selectYear}}">
+                                    <gl-combo-box label="ปี" placeholder="มีทั้งหมด {{year.length}} ปี" items="{{year}}" item-label-path="year" item-value-path="year"
+                                        value="{{selectYear}}">
                                     </gl-combo-box>
                                 </div>
                                 <div class="flexchild"></div>
@@ -53,16 +58,17 @@
                                 </div>
                                 <div class="flexchild"></div>
                             </div>
-                            
+
                             <div class="container flex-horizontal-with-ratios">
                                 <div class="flexchild"></div>
                                 <div class="flex3child">
-                                    <gl-combo-box label="เลือกคณะ" placeholder="มีทั้งหมด {{listFaculty.length}} คณะ" items="{{listFaculty}}" item-label-path="faculty_name" item-value-path="id" value="{{selectType}}">
+                                    <gl-combo-box label="เลือกคณะ" placeholder="มีทั้งหมด {{listFaculty.length}} คณะ" items="{{listFaculty}}" item-label-path="faculty_name"
+                                        item-value-path="id" value="{{selectType}}">
                                     </gl-combo-box>
                                 </div>
                                 <div class="flexchild"></div>
                                 <div class="flex3child">
-                                     <gl-form-dropdown-menu style="width: 100%" label="ภาควิชา" placeholder="มีภาควิชา {{departmentList.length}} ภาควิชา">
+                                    <gl-form-dropdown-menu style="width: 100%" label="ภาควิชา" placeholder="มีภาควิชา {{departmentList.length}} ภาควิชา">
                                         <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectDepartment}}">
                                             <template is="dom-repeat" items="{{departmentList}}">
                                                 <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
@@ -73,18 +79,18 @@
                                 <div class="flexchild"></div>
                             </div>
                         </div>
-                         
+
                     </paper-material>
-                    
+
                 </div>
-                
+
                 <div class="horizontal end-justified layout">
                     <paper-button class="btn-insert" on-tap="_insert">
                         <iron-icon icon="add"></iron-icon>เพิ่มพนักงาน
                     </paper-button>
                 </div>
-                
-                
+
+
                 <div>
                     <list-user></list-user>
                 </div>
@@ -92,66 +98,69 @@
             <section>
                 <!--pages-->
                 <welfare-employee></welfare-employee>
-            </section>  
-            <section>
-                <!--pages-->
-                <employee-manage></employee-manage>
             </section>
-       
+            <!--<section>-->
+            <!--pages-->
+            <!--<employee-manage></employee-manage>-->
+            <!--</section>-->
+
         </iron-pages>
-        
+        <panel-right title="{{title}}">
+            <employee-manage></employee-manage>
+        </panel-right>
+
     </template>
     <script>
         Polymer({
             is: 'page-admin-employee',
             behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction, uploadAction, commonDataAction],
-            observers:[
-            'select_year(selectYear)',
-            'select_welfare(selectWelfare)',
-            'select_faculty(selectType)',
-            'select_department(selectDepartment)'
+            observers: [
+                'select_year(selectYear)',
+                'select_welfare(selectWelfare)',
+                'select_faculty(selectType)',
+                'select_department(selectDepartment)'
             ],
             properties: {
                 year: {
                     statePath: 'userWelfare.list'
                 },
-                listWelfare:{
+                listWelfare: {
                     statePath: 'userWelfare.list_id'
                 },
-                listFaculty:{
+                listFaculty: {
                     statePath: 'userWelfare.faculty_list'
                 },
-                typeSerach:{
+                typeSerach: {
                     type: Array,
                     value: [
                         {
-                            label:'ชื่อ',
-                            value:'name'
+                            label: 'ชื่อ',
+                            value: 'name'
                         },
                         {
-                            label:'รหัสพนักงาน',
-                            value:'no'
+                            label: 'รหัสพนักงาน',
+                            value: 'no'
                         },
                         {
-                            label:'ตำแหน่ง',
-                            value:'position'
+                            label: 'ตำแหน่ง',
+                            value: 'position'
                         },
                         {
-                            label:'ตำแหน่งวิชาการ',
-                            value:'SubPosition'
+                            label: 'ตำแหน่งวิชาการ',
+                            value: 'SubPosition'
                         },
                     ]
                 }
             },
-            listeners:{
-                'back_page' : 'back_page',
-                'select-page' : 'changePage',
-                'reset-search' : 'resetSearch'
+            listeners: {
+                'back_page': 'back_page',
+                'select-page': 'changePage',
+                'reset-search': 'resetSearch'
             },
-            ready:function(){
+            ready: function () {
                 this._getcommon();
             },
-            resetSearch:function(){
+            resetSearch: function () {
                 this.selectYear = "";
                 this.selectWelfare = "";
                 this.selectType = "";
@@ -167,79 +176,82 @@
                 this.$$('list-user').selectTable(true)
                 this.FACULTY_LIST();
             },
-            select_year:function(year) {
-               if(year != ""){
-                   this.selectWelfare = "";
-                   var newYear = parseInt(year)-543;
-                   this.WELFARE_LIST(newYear);
-               }
+            select_year: function (year) {
+                if (year != "") {
+                    this.selectWelfare = "";
+                    var newYear = parseInt(year) - 543;
+                    this.WELFARE_LIST(newYear);
+                }
             },
-            select_welfare:function(id){
-                 if(id != ""){
+            select_welfare: function (id) {
+                if (id != "") {
                     this.selectType = "";
                     this.selectDepartment = "";
                     var getid = id;
-                    var dataFilter = this.listWelfare.filter((item)=>{
+                    var dataFilter = this.listWelfare.filter((item) => {
                         return item.id == id;
                     })
                     var getStatus;
-                    dataFilter.map((item)=>{
+                    dataFilter.map((item) => {
                         getStatus = item.admin_use;
                     })
                     console.log(getStatus);
                     this.$$('list-user').checkBox = getStatus;
-                // if(id != ""){
+                    // if(id != ""){
                     this.$$('list-user').selectTable(false)
                     this.LIST_USER_SERARCH(id);
                 }
             },
-            select_faculty:function(id){
-                  if(id != ''|| typeof id == 'undefined'){
+            select_faculty: function (id) {
+                if (id != '' || typeof id == 'undefined') {
                     // console.log('id',id);
                     this.selectDepartment = "";
-                    var newItem = this.listFaculty.filter((item)=>{
+                    var newItem = this.listFaculty.filter((item) => {
                         return id == item.id
                     })
                     this.departmentList = []
-                    newItem.map((item)=>{
+                    newItem.map((item) => {
                         this.departmentList = item.department;
                     })
                     this.$$('list-user').searchTableByFilterFaculty(id);
                     // console.log(this.departmentList);
                 }
             },
-            select_department:function(id){
-                console.log('*',id);
+            select_department: function (id) {
+                console.log('*', id);
                 this.$$('list-user').searchTableByFilterDepartment(id);
             },
-            back_page:function(){
-                this.pages = 0;
+            back_page: function () {
+                // this.pages = 0;
+                this.$$('panel-right').close();
             },
-            confirmSend:function(){
-                this.fire('toast',{ 
-                 status:'openDialog',
-                 text:'ต้องการอนุมัติข้อมูลใช่หรือไม่ ?',
-                 confirmed:this.sendUser.bind(this), 
-                 })
+            confirmSend: function () {
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการอนุมัติข้อมูลใช่หรือไม่ ?',
+                    confirmed: this.sendUser.bind(this),
+                })
             },
-            sendUser:function(check){
-                if(check == true)
+            sendUser: function (check) {
+                if (check == true)
                     this.$$('list-user').insertData();
             },
-            changePage:function(page){
+            changePage: function (page) {
                 // console.log(page.detail.data);
-                if(page.detail != 0){
+                if (page.detail != 0) {
                     this.selected = page.detail;
                     this.$$('welfare-employee').pages = 0;
                 }
-                else{
+                else {
                     this.selected = page.detail;
                 }
             },
-            _insert:function(){
-                this.selected = 2;
+            _insert: function () {
+                // this.selected = 2;
+                this.$$('panel-right').open();
+                this.title = 'เพิ่มข้อมูลพนักงาน';
             },
-            _getcommon:function(){
+            _getcommon: function () {
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
                 this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
                 this.dispatchAction('COMMONDATA_DATA_ACTIVE');

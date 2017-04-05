@@ -2,6 +2,7 @@
 <link rel="import" href="components/welfare-manage.html">
 <link rel="import" href="components/welfare-detail.html">
 <link rel="import" href="./../components/page-style.html">
+<link rel="import" href="../components/common-logic.html">
 
 <dom-module id="page-admin-welfare">
     <template>
@@ -75,6 +76,11 @@
                                     </td>
                                 </tr>
                             </template>
+                            <template is="dom-if" if={{_ObIsHave(list)}}>
+                                <tr>
+                                    <td colspan="10" style="text-align: center">ไม่มีข้อมูลสวัสดิการ</td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </paper-material>
@@ -100,7 +106,7 @@
     <script>
         Polymer({
             is: 'page-admin-welfare',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction, nylonLocalizeBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction, nylonLocalizeBehavior,commonLogic],
             observers: ['changeYear(selectYear)'],
             properties: {
                 list: {
@@ -120,8 +126,7 @@
             listeners:
             {
                 'closePanel': 'close_panel'
-            }
-            ,
+            },
             nylonPageActive: function () {
                 let year = new Date().getFullYear();
                 // console.log(year);

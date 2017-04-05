@@ -146,7 +146,7 @@ export function groupWelfareAction(store) {
                 .then((result) => {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-                            this.SELECT_DATA(data.id);
+                            this.LIST_WELFARE_ID(data.id);
                             console.log('success');
                         }
                     });
