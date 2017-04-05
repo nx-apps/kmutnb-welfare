@@ -2,6 +2,7 @@ exports.unapprove = function (req, res) {
     r.db('welfare').table('history_welfare')
         // .filter({status: false})
         .getAll('request', { index: 'status' })
+        .orderBy('date_use')
         .merge((user) => {
             return {
                 date_use: user('date_use').split('T')(0),
@@ -265,7 +266,7 @@ exports.listHistory = function (req, res) {
                 status_thai: money('status').eq('approve').branch('อนุมัติ', 'ไม่อนุมัติ')
             }
         })
-        .orderBy(r.desc(req.query.sortBy))
+        .orderBy(r.desc('date_use'),r.desc(req.query.sortBy))
         .without('data')
         .run()
         .then(function (result) {
