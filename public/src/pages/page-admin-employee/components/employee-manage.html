@@ -3,14 +3,17 @@
         fieldset {
             margin: 15px 5px;
         }
+        
         gl-form-input,
         gl-combo-box,
         vaadin-date-picker {
             width: 90%;
         }
+        
         vaadin-date-picker {
             margin-top: -19px;
         }
+        
         paper-item {
             width: 800px;
             ;
@@ -59,6 +62,11 @@
                         <div class="flex layout horizontal">
                             <div class="flex label">
                                 <label for="name">ชื่อ :</label>
+                            </div>
+                            <div class="flex-2">
+                                <gl-form-input id="emp_id" no-label-float value=" {{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                            </div>
+                        </div>
                         <div class="flex layout horizontal">
                             <div class="flex label">
                                 <label for="name">นามสกุล :</label>
