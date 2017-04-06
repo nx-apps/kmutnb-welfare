@@ -1,0 +1,127 @@
+<dom-module id="chart-search">
+    <template>
+        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+             :host {
+                display: block;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .combo-box {
+                margin-top: -31px;
+            }
+            
+            .date-picker {
+                margin-top: -35px !important;
+            }
+        </style>
+        <paper-material elevation="1">
+            <div class="container">
+                <div class="horizontal layout wrap">
+                    <div class="flex-2 layout horizontal">
+                        <div class="flex end-justified horizontal layout self-center">
+                            ปีสวัสดิการ :
+                        </div>
+                        <div class="flex-3 center-justified horizontal layout self-center">
+                            <!--[[setYear(years)]]-->
+                            <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.year}}" item-label-path="year" item-value-path="year"
+                                items="{{years}}"></gl-combo-box>
+                        </div>
+                    </div>
+                    <div class="flex-2 layout horizontal">
+                        <div class="flex end-justified horizontal layout self-center">
+                            สวัสดิการ :
+                        </div>
+                        <div class="flex-3 center-justified horizontal layout self-center">
+                            <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.group_id}}" item-label-path="group_welfare_name" item-value-path="id"
+                                items="{{welfares}}"></gl-combo-box>
+                        </div>
+                    </div>
+                    <div class="flex"></div>
+                </div>
+                <div class="horizontal layout wrap">
+                    <div class="flex-2 layout horizontal">
+                        <div class="flex end-justified horizontal layout self-center">
+                            รูปแบบแสดง :
+                        </div>
+                        <div class="flex-3 center-justified horizontal layout self-center">
+                            <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.showBy}}" item-label-path="label" item-value-path="id"
+                                items="{{showBy}}"></gl-combo-box>
+                        </div>
+                    </div>
+                    <div class="flex-3 layout horizontal">
+                        <div class="flex end-justified horizontal layout self-center">
+                            จาก :
+                        </div>
+                        <div class="flex-3 center-justified horizontal layout self-center">
+                            <vaadin-date-picker class="date-picker" always-float-label label="" value="{{select.date_start}}"></vaadin-date-picker>
+                        </div>
+                        <div class="flex end-justified horizontal layout self-center">
+                            ถึง :
+                        </div>
+                        <div class="flex-3 center-justified horizontal layout self-center">
+                            <vaadin-date-picker class="date-picker" always-float-label label="" min="{{select.date_start}}" value="{{select.date_end}}"></vaadin-date-picker>
+                        </div>
+                    </div>
+                    <!--<div class="flex"></div>-->
+                </div>
+                <div class="horizontal end-justified layout wrap">
+
+                    <paper-button raised class="gl-bg-info">ค้นหา</paper-button>
+
+                </div>
+            </div>
+        </paper-material>
+    </template>
+    <script>
+        Polymer({
+            is: 'chart-search',
+            behaviors: [
+                ReduxBehavior
+            ],
+            properties: {
+                dataSearch:{
+                    type: Object,
+                    value:{}
+                },
+                years: {
+                    statePath: 'userWelfare.list',
+                    type: Array,
+                    observer: 'setYear'
+                },
+                welfares: {
+                    statePath: 'userWelfare.list_id',
+                    type: Array,
+                },
+                showBy: {
+                    type: Array,
+                    value: [
+                        { id: 'day', label: 'วัน' },
+                        { id: 'week', label: 'สัปดาห์' },
+                        { id: 'month', label: 'เดือน' },
+                        { id: 'year', label: 'ปี' },
+                    ]
+                },
+            },
+            setYear(year) {
+
+                try {
+                    if (year.length != 0) {
+
+                        this.set('dataSearch.year', year[year.length - 1].year)
+                        this.set('dataSearch.showBy','week')
+                        // this.set('dataSearch.sortBy', 'firstname')
+                        // this.set('dataSearch.status', 'approve')
+                        // this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
+                        // this.searchBtn()
+                    }
+
+                } catch (error) {
+
+                }
+            },
+        });
+    </script>
+</dom-module>

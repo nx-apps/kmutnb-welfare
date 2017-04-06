@@ -140,6 +140,8 @@ exports.report2 = function (req, res) {
 
     var date_start = req.query.date_start;
     var date_end = req.query.date_end;
+    var res_type = req.query.res_type;
+    console.log(req.query.res_type);
 
     r.db('welfare').table('history_welfare').filter(function (row) {
         return row('date_use').split('T')(0).eq(req.query.date_start)
@@ -169,7 +171,10 @@ exports.report2 = function (req, res) {
         })
         .run()
         .then(function (result) {
-            //   res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
+              
             //   if (result.length > 0 ) 
             res.ireport("report2.jasper", req.query.export || "pdf", result, parameters);
         });

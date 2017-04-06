@@ -8,6 +8,8 @@
 
 <link rel="import" href="./components/list-of-rvd.html">
 
+<link rel="import" href="./components/dashboard/chart-search.html">
+
 
 <!--<link rel="import" href="./../components/common-logic.html">-->
 <dom-module id="page-admin-approve">
@@ -77,7 +79,14 @@
     </style>
     <template>
         <div class="xcontainer">
+            <div>
+                <div>
+                    <div class="header-page container">สถิติ</div>
+                </div>
+                <chart-search></chart-search>
+            </div>
             <div class="flex-equal-justified">
+
                 <div>
                     <div class="header-page container">รายการคำขอใช้</div>
                 </div>
