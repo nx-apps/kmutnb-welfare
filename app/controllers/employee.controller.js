@@ -311,7 +311,6 @@ exports.welfaresYear = function (req, res) {
             res.status(500).json(err);
         })
 }
-
 exports.welfaresEmployee = function (req, res) {
     var r = req.r;
     //แก้ด้วย
@@ -479,6 +478,34 @@ exports.welfaresEmployee = function (req, res) {
             }
         })
         .without('group_welfare')
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.welfaresEmployeeWork = function (req, res) {
+    var r = req.r;
+    r.db('welfare').table('employee')
+        .merge(function (f) {
+            return {
+                start_work_date: f('start_work_date').split('T')(0),
+                birthdate: f('birthdate').split('T')(0),
+                academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
+                active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
+                active_code: r.db('welfare_common').table('active').get(f('active_id')).getField('active_code'),
+                department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
+                faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
+                gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
+                matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
+                position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
+                prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
+                type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
+            }
+        })
+        .filter({ active_code: 'WORK' })
         .run()
         .then(function (result) {
             res.json(result);

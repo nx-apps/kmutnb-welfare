@@ -338,6 +338,12 @@ exports.adminEmployee = function (req, res) {
                 employees: r.db('welfare').table('employee').coerceTo('array')
             }
         })
+        .merge(function (employees_merge) {
+            return {
+                employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
+                    .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
+            }
+        })
         .merge(function (group_merge) {
             return {
                 welfare: r.db('welfare').table('welfare').getAll(group_merge('id'), { index: 'group_id' }).coerceTo('array')

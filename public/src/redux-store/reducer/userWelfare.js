@@ -100,7 +100,7 @@ export function userWelfareAction(store) {
         },
         LIST_USER: function (id) {
             // console.log(id);
-            axios.get('./employee/list')
+            axios.get('./employee/list/work')
                 .then(function (result) {
                     // console.log(result.data);
                     var newData = result.data.map((item) => {
@@ -118,6 +118,7 @@ export function userWelfareAction(store) {
                 })
         },
         LIST_USER_SERARCH: function (id) {
+            console.log(id);
             this.userSearch = id;
             axios.get('./group/welfare/adminEmployee/' + id)
                 .then((response) => {
@@ -239,14 +240,14 @@ export function userWelfareAction(store) {
                             newData.id = data.id
                             axios.put(`/employee/update`, newData)
                                 .then(res => {
-                                    this.EMPLOYEE_USE_SELETE_WELFARE();
-                                    this.LIST_USER();
                                     this.fire('toast', {
                                         status: 'success', text: 'บันทึกสำเร็จ',
                                         callback: () => {
-                                            this.fire('select-page', 1);
+                                            this.fire('back-page');
                                             this.EMPLOYEE_GET_WELFARES(newData.id);
                                             this.LIST_EMPLOYEE_WELFARE(newData.id);
+                                            this.EMPLOYEE_USE_SELETE_WELFARE();
+                                            this.LIST_USER();
                                         }
                                     });
                                 })
