@@ -6,7 +6,7 @@ const initialState = {
     select: {},
     list_id: [],
     dataSelect: {
-        condition:[]
+        condition: []
     },
     condition: [],
     employees: []
@@ -48,7 +48,7 @@ export function welfareAction(store) {
         WELFARE_LIST_ID: function (data) {
             axios.get('/welfare/' + data)
                 .then(function (result) {
-                    console.log('*',result.data);
+                    console.log('*', result.data);
                     store.dispatch({ type: 'WELFARE_LIST_ID', payload: result.data })
                 })
                 .catch(err => {
@@ -56,16 +56,15 @@ export function welfareAction(store) {
                 })
         },
         WELFARE_INSERT: function (data) {
-            console.log(data);
+            // console.log(data);
             this.fire('toast', { status: 'load' });
             axios.post(`./welfare/insert`, data)
                 .then((result) => {
-                    console.log(result);
-                    this.LIST_WELFARE_ID(data.group_id);
+                    // console.log(result);
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             console.log('success');
-                            this.clearData();
+                            this.LIST_WELFARE_ID(data.group_id);
                         }
                     });
                 })
@@ -78,10 +77,10 @@ export function welfareAction(store) {
             axios.delete(`./welfare/delete/id/` + data.id)
                 .then((result) => {
                     // console.log(result);
-                    this.LIST_WELFARE_ID(data.group_id);
                     this.fire('toast', {
                         status: 'success', text: 'ลบสำเร็จ', callback: () => {
                             console.log('success');
+                            this.LIST_WELFARE_ID(data.group_id);
                         }
                     });
                 })
@@ -124,7 +123,7 @@ export function welfareAction(store) {
                     var data = result.data.condition;
                     var condition = store.getState().welfare.condition;
 
-                    var use = data.map((item)=>{
+                    var use = data.map((item) => {
                         return item.field
                     })
                     // console.log(use);
@@ -150,15 +149,15 @@ export function welfareAction(store) {
                         // this.set('data.condition.' + i + '.itemField', a);
                     }
                     // console.log(result.data);
-                    
+
                     store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: result.data })
                 })
                 .catch(err => {
 
                 })
         },
-        WELFARE_DATA_SELECT_CLEAR:function() {
-               store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: {condition:[]}})
+        WELFARE_DATA_SELECT_CLEAR: function () {
+            store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: { condition: [] } })
         },
         CONDITION_LIST: function () {
             axios.get('/conditions/list')

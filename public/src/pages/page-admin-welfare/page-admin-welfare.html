@@ -140,7 +140,8 @@
             },
             listeners:
             {
-                'closePanel': 'close_panel'
+                'closePanel': 'close_panel',
+                'refresh_group' : 'changeYear'
             },
             nylonPageActive: function () {
                 let year = new Date().getFullYear();
@@ -206,8 +207,14 @@
                 // this.$$('welfare-panel').checked_tab();
             },
             changeYear: function (e) {
-                var year = e - 543;
-                this.LIST_WELFARE(year);
+                if(typeof e.detail == 'undefined'){
+                    var year = e - 543;
+                    this.LIST_WELFARE(year);
+                }
+                else{
+                    var year = e.detail;
+                    this.LIST_WELFARE(year);
+                }
             },
             _print: function () {
                 this.fire('nylon-change-page', { path: '/report' })

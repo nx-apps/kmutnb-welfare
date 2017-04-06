@@ -129,7 +129,8 @@ exports.listId = function (req, res) {
         .get(req.params.id)
         .merge(function (m) {
             return {
-                employees: r.db('welfare').table('employee').coerceTo('array')
+                employees: r.db('welfare').table('employee').coerceTo('array').eqJoin('active_id', r.db('welfare_common').table('active'))
+                    .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
             }
         })
         .merge(function (m) {
@@ -333,14 +334,9 @@ exports.groupByYear = function (req, res) {
 exports.adminEmployee = function (req, res) {
     var r = req.r;
     r.db('welfare').table('group_welfare').get(req.params.welId)
-        .merge(function (group_merge) {
+        .merge(function (m) {
             return {
-                employees: r.db('welfare').table('employee').coerceTo('array')
-            }
-        })
-        .merge(function (employees_merge) {
-            return {
-                employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
+                employees: r.db('welfare').table('employee').coerceTo('array').eqJoin('active_id', r.db('welfare_common').table('active'))
                     .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
             }
         })

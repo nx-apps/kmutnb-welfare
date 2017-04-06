@@ -9,19 +9,23 @@
             font-family: 'CSChatThaiUI', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
+        
         paper-material {
             padding: 0px;
         }
+        
         .table-detail {
             margin: auto;
             width: 80%;
             padding: 20px;
         }
+        
         table.gl-table-default {
             width: 100%;
             border: 1px solid #ddd;
         }
-        .text-header{
+        
+        .text-header {
             font-size: 20px;
         }
     </style>
@@ -69,11 +73,11 @@
                                         </td>
                                     </tr>
                                 </template>
-                                
+
                                 <template is="dom-if" if={{_ObIsHave(list.welfare)}}>
                                     <tr>
                                         <td colspan="10" style="text-align: center">ไม่มีข้อมูลเงื่อนไขสวัสดิการ</td>
-                                        
+
                                 </template>
                             </tbody>
                         </table>
@@ -103,7 +107,7 @@
     <script>
         Polymer({
             is: 'welfare-manage',
-            behaviors: [ReduxBehavior, FormatNumberBehavior,commonLogic],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic],
             listeners: {
                 'back': 'back_page'
             },
@@ -155,7 +159,11 @@
             },
             _confirmToast: function (result, detail) {
                 if (result == true) {
-                    this.dispatchAction('WELFARE_DELETE', detail.datas)
+                    var year = new Date().getFullYear();
+                    this.dispatchAction('WELFARE_DELETE', detail.datas).then((val) => {
+                        this.fire('refresh_group', year);
+                        this.fire('back');
+                    })
                 }
             },
             welfare_approve: function () {
@@ -164,8 +172,8 @@
                     text: 'คุณต้องการที่อนุมัติใช่หรือไม่ ?',
                     confirmed: this._toastApprove.bind(this),
                     datas: {
-                        id : this.data.id,
-                        status_approve : true
+                        id: this.data.id,
+                        status_approve: true
                     }
                 });
             },
@@ -180,8 +188,8 @@
                     text: 'คุณต้องการที่ยกเลิกใช้ใช่หรือไม่ ?',
                     confirmed: this._toastUnapprove.bind(this),
                     datas: {
-                        id : this.data.id,
-                        status_approve : false
+                        id: this.data.id,
+                        status_approve: false
                     }
                 });
             },
