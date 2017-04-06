@@ -1,3 +1,7 @@
+<link rel="import" href="./type-search/search-day.html">
+<link rel="import" href="./type-search/search-week.html">
+<link rel="import" href="./type-search/search-month.html">
+<link rel="import" href="./type-search/search-year.html">
 <dom-module id="chart-search">
     <template>
         <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -15,6 +19,10 @@
             
             .date-picker {
                 margin-top: -35px !important;
+            }
+            
+            .auto-flex {
+                width: 100%;
             }
         </style>
         <paper-material elevation="1">
@@ -48,28 +56,24 @@
                         </div>
                         <div class="flex-3 center-justified horizontal layout self-center">
                             <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.showBy}}" item-label-path="label" item-value-path="id"
-                                items="{{showBy}}"></gl-combo-box>
+                                items="{{showBy}}" on-value-changed="setSearch"></gl-combo-box>
                         </div>
                     </div>
-                    <div class="flex-3 layout horizontal">
-                        <div class="flex end-justified horizontal layout self-center">
-                            จาก :
-                        </div>
-                        <div class="flex-3 center-justified horizontal layout self-center">
-                            <vaadin-date-picker class="date-picker" always-float-label label="" value="{{select.date_start}}"></vaadin-date-picker>
-                        </div>
-                        <div class="flex end-justified horizontal layout self-center">
-                            ถึง :
-                        </div>
-                        <div class="flex-3 center-justified horizontal layout self-center">
-                            <vaadin-date-picker class="date-picker" always-float-label label="" min="{{select.date_start}}" value="{{select.date_end}}"></vaadin-date-picker>
-                        </div>
+                    <div class="flex-2 layout horizontal">
+
+                        <iron-pages selected="{{componentsSearch}}">
+                            <search-day class="auto-flex " data-search="{{dataSearch}}"></search-day>
+                            <search-week class="auto-flex " data-search="{{dataSearch}}"></search-week>
+                            <search-month class="auto-flex " data-search="{{dataSearch}}"></search-month>
+                            <div></div>
+                            <!--<search-year style="width: 100%;"></search-year>-->
+                        </iron-pages>
                     </div>
-                    <!--<div class="flex"></div>-->
+                    <div class="flex"></div>
                 </div>
                 <div class="horizontal end-justified layout wrap">
 
-                    <paper-button raised class="gl-bg-info">ค้นหา</paper-button>
+                    <paper-button raised class="gl-bg-info" on-tap="serchWelfare">ค้นหา</paper-button>
 
                 </div>
             </div>
@@ -82,9 +86,9 @@
                 ReduxBehavior
             ],
             properties: {
-                dataSearch:{
+                dataSearch: {
                     type: Object,
-                    value:{}
+                    value: {}
                 },
                 years: {
                     statePath: 'userWelfare.list',
@@ -104,24 +108,136 @@
                         { id: 'year', label: 'ปี' },
                     ]
                 },
+                date: {
+                    statePath: 'dateDb.date',
+                    type: Object,
+                    observer: 'setDay'
+                },
+                componentsSearch: {
+                    type: String,
+                    value: 'week'
+                }
             },
             setYear(year) {
-
                 try {
                     if (year.length != 0) {
 
                         this.set('dataSearch.year', year[year.length - 1].year)
-                        this.set('dataSearch.showBy','week')
-                        // this.set('dataSearch.sortBy', 'firstname')
-                        // this.set('dataSearch.status', 'approve')
-                        // this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
-                        // this.searchBtn()
+
+                        // console.log(this.dataSearch);
                     }
 
                 } catch (error) {
-
+                    console.log(error);
                 }
             },
+            setDay(day) {
+                try {
+
+                    if (typeof day.date !== 'undefined' && day.date !== 'undefined' && day.date !== '') {
+                        this.set('dataSearch.showBy', 'week')
+                        if (this.dataSearch.showBy == 'week') {
+                            // date_start
+                            // date_end
+                            let oldDay = new Date(new Date().setDate(new Date(day.result).getDay() - 7));
+                            this.set('componentsSearch', 1)
+                            let days = day.date.split('T')[0]
+                            this.set('dataSearch.date_end', days)
+                            this.set('dataSearch.date_start', oldDay.toISOString().split('T')[0])
+                        }
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            },
+            setSearch(e) {
+                // console.log(e.detail.value);
+                switch (e.detail.value) {
+                    case 'day':
+                        this.set('componentsSearch', 0)
+                        break;
+                    case 'week':
+                        this.set('componentsSearch', 1)
+                        break;
+                    case 'month':
+                        this.set('componentsSearch', 2)
+                        break;
+                    case 'year':
+                        this.set('componentsSearch', 3)
+                        break;
+                    default:
+                    // this.set('componentsSearch', 0)
+                }
+            },
+            serchWelfare() {
+                console.log(this.dataSearch);
+                let newData = {}
+                switch (this.dataSearch.showBy) {
+                    case 'day':
+                        if (this.checkUndefined(this.dataSearch.group_id)) {
+                            newData = {
+                                year: this.dataSearch.year,
+                                date_start: this.dataSearch.date_end,
+                                group_id: this.dataSearch.group_id
+                            }
+                        } else {
+                            newData = {
+                                year: this.dataSearch.year,
+                                date_start: this.dataSearch.date_end,
+                            }
+                        }
+
+
+                        break;
+                    case 'week':
+                        if (this.checkUndefined(this.dataSearch.group_id)) {
+                            newData = {
+                                year: this.dataSearch.year,
+                                date_start: this.dataSearch.date_start,
+                                date_end: this.dataSearch.date_end,
+                                group_id: this.dataSearch.group_id
+                            }
+                        } else {
+                            newData = {
+                                year: this.dataSearch.year,
+                                date_start: this.dataSearch.date_start,
+                                date_end: this.dataSearch.date_end
+                            }
+                        }
+
+
+                        break;
+                    case 'month':
+                        if (this.checkUndefined(this.dataSearch.group_id)) {
+                            newData = {
+                                year: this.dataSearch.year,
+                                month: this.dataSearch.month+1,
+                                group_id: this.dataSearch.group_id
+                            }
+                        } else {
+                            newData = {
+                                year: this.dataSearch.year,
+                                month: this.dataSearch.month+1
+                            }
+                        }
+
+                        break;
+                    case 'year':
+                        if (this.checkUndefined(this.dataSearch.group_id)) {
+
+                        } else {
+
+                        }
+                        this.set('componentsSearch', 3)
+                        break;
+                    default:
+
+                }
+                console.log(newData);
+            },
+            checkUndefined(data) {
+                return (typeof data !== 'undefined' && data !== 'undefined' && data !== '')
+            }
         });
     </script>
 </dom-module>

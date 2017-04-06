@@ -116,6 +116,7 @@
             is: 'page-admin-approve',
             behaviors: [
                 ReduxBehavior, nylonBehavior, usersAction, fundRvdAction, userWelfareAction
+                ,dateDbAction
             ],
             properties: {
                 pageComponents: {
@@ -126,6 +127,7 @@
 
             nylonPageActive() {
                 this.dispatchAction('WELFARE_LIST_YEAR');
+                this.dispatchAction('GET_DATE')
                 // console.log(111);
                 // this.dispatchAction('USERS_FALSE_LIST','');
                 //  this.dispatchAction('USERS_LIST_HISTORY_WELFARE','');
