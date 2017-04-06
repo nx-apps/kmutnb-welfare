@@ -100,7 +100,7 @@ export function userWelfareAction(store) {
         },
         LIST_USER: function (id) {
             // console.log(id);
-            axios.get('./employee/list')
+            axios.get('./employee/list/work')
                 .then(function (result) {
                     // console.log(result.data);
                     var newData = result.data.map((item) => {
@@ -118,6 +118,7 @@ export function userWelfareAction(store) {
                 })
         },
         LIST_USER_SERARCH: function (id) {
+            console.log(id);
             this.userSearch = id;
             axios.get('./group/welfare/adminEmployee/' + id)
                 .then((response) => {
