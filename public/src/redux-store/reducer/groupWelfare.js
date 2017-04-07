@@ -71,7 +71,9 @@ export function groupWelfareAction(store) {
                             console.log('success');
                             this.clearData();
                             this.GET_YEAR();
-                            this.fire('closePanel');
+                            // this.fire('closePanel');
+                            this.$$('welfare-panel').checked_tab('#tab2');
+                            this.$$('welfare-panel').getGroupWelfareId(result.data.id[0]);
                         }
                     });
                 })

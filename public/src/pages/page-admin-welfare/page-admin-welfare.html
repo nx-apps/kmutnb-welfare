@@ -108,7 +108,7 @@
                 <iron-pages selected="{{pages}}">
                     <div>
                         <!--<welfare-panel data="{{data}}"></welfare-panel>-->
-                        <welfare-panel is-enable="[[active]]" data-select="{{dataSelect}}"></welfare-panel>
+                        <welfare-panel is-enable="[[active]]"></welfare-panel>
                     </div>
                     <!--<div>
                         <welfare-detail data="{{dataSelect}}"></welfare-detail>
@@ -145,10 +145,8 @@
             },
             nylonPageActive: function () {
                 let year = new Date().getFullYear();
-                // console.log(year);
                 var newYear = year + 543;
                 this.selectYear = newYear;
-                // this.LIST_WELFARE(year);
                 this.WELFARE_LIST();
                 this.GET_YEAR();
             },
@@ -183,28 +181,19 @@
                 this.CLEAR_WELFARE_ID();
                 this.pages = 0;
                 this.active = false;
-                this.$$('welfare-panel').checked_tab();
-                this.dataSelect = [];
+                this.$$('welfare-panel').checked_tab('#tab1');
+                this.set('title', this.title = "เพิ่มสวัสดิการ");
             },
-            // _edit: function (e) {
-            //     // console.log(e.currentTarget.data);
-            //     var id = e.currentTarget.data.id;
-            //     this.SELECT_DATA(id);
-            //     this.$$('panel-right').open();
-            //     this.pages = 2;
-            //     this.set('title', this.title = "แก้ไข");
-            // },
             _edit: function (e) {
                 // console.log(e.currentTarget.data);
-                this.dataSelect = e.currentTarget.data;
                 var id = e.currentTarget.data.id;
                 this.SELECT_DATA(id);
                 this.LIST_WELFARE_ID(id);
                 this.$$('panel-right').open();
                 this.pages = 0;
                 this.active = true;
-                this.$$('welfare-panel').checked_tab();
-                // this.$$('welfare-panel').checked_tab();
+                this.$$('welfare-panel').checked_tab('#tab1');
+                this.set('title', this.title = "แก้ไขสวัสดิการ");
             },
             changeYear: function (e) {
                 if(typeof e.detail == 'undefined'){

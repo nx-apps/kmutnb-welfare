@@ -74,7 +74,7 @@
 
             <section id="content2">
                 <paper-material elevation="1">
-                    <welfare-manage data="{{dataSelect}}"></welfare-manage>
+                    <welfare-manage></welfare-manage>
                 </paper-material>
             </section>
         </main>
@@ -83,8 +83,11 @@
         Polymer({
             is: 'welfare-panel',
             behaviors: [ReduxBehavior, FormatNumberBehavior],
-            checked_tab:function(){
-                this.$$('#tab1').checked = true;
+            checked_tab:function(val){
+                this.$$(val).checked = true;
+            },
+            getGroupWelfareId:function(val){
+                this.dispatchAction('LIST_WELFARE_ID', val);
             }
         });
     </script>
