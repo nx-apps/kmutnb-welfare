@@ -714,14 +714,11 @@ exports.report4_1 = function (req, res, next) {
 
         .run()
         .then(function (result) {
-<<<<<<< HEAD
-            res.json(result);
-=======
+            // res.json(result);
             // parameters.group_welfare_name = result.group_welfare_name;
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
->>>>>>> 97e98ceccd1b291a8c27344eb9320e1bb1b13913
             res.ireport("report4_1.jasper", req.query.export || "pdf", result, parameters);
         });
 }
