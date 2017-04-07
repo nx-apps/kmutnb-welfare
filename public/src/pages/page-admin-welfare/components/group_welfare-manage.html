@@ -167,11 +167,11 @@
                         this.isEnable_onetime = true;
                     }
                     else {
-                        if (this.data.onetime == false) {
+                        if (this.data.onetime == true && this.data.admin_use == true) {
+                            this.set('data.onetime', true);
                             this.isEnable_onetime = true;
                         }
-                        else if (this.data.onetime == true && this.data.admin_use == true) {
-                            this.set('data.onetime', true);
+                        else if (this.data.onetime == false) {
                             this.isEnable_onetime = true;
                         }
                         else {
