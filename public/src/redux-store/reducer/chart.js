@@ -88,7 +88,7 @@ export function chartAction(store) {
             // 
             GET_CHART_WEEK_WITHOUT_GROUP(data) {
                 console.log(data);
-                axios.get(`/report/report5?${data}&res_type=json`)
+                axios.get(`/chart/week?${data}`)
                     .then(res => {
                         
                         store.dispatch({ type: 'GET_CHART_WEEK_WITHOUT_GROUP', payload: res.data})
