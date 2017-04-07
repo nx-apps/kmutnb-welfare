@@ -29,6 +29,11 @@
             .combo-box {
                 margin-top: -31px;
             }
+            
+            th,
+            td {
+                white-space: nowrap;
+            }
         </style>
         <div class="container">
             <div class="contentHeader" style="margin-bottom: 20px;">รายชื่อผู้ขอใช้สวัสดิการที่อนุมัติไปแล้ว</div>
@@ -146,17 +151,17 @@
                 </table>
             </div>
             <div class="flex horizontal end-justified layout">
-                
+
                 <template is="dom-if" if={{isNotApprove(dataSearch.status)}}>
                     <paper-button raised class="gl-btn-primary" on-tap="getwelfare" disabled="{{btnStatus}}">อนุมัติ</paper-button>
                 </template>
-                
-                
+
+
                 <template is="dom-if" if={{isNotReject(dataSearch.status)}}>
                     <paper-button raised class="gl-btn-danger" on-tap="delwelfare" disabled="{{btnStatus}}">ไม่อนุมัติ</paper-button>
                 </template>
-                
-                
+
+
             </div>
         </div>
     </template>
@@ -234,10 +239,10 @@
 
                 }
             },
-            isNotApprove(approve){
-                return approve  != 'approve'
+            isNotApprove(approve) {
+                return approve != 'approve'
             },
-            isNotReject(reject){
+            isNotReject(reject) {
                 return reject != 'reject'
             },
             _setCheckBox(setData) {

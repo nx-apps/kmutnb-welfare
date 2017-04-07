@@ -85,7 +85,13 @@ exports.week = (req, res) => {
                     .coerceTo('array')
                     .filter({ status: 'approve', group_id: group_id })
                     .orderBy(r.asc('date_use'))
-                    .sum('use_budget')
+                    .sum('use_budget'),
+                emp_use: r.db('welfare').table('history_welfare').between(getDate('date_start'), getDate('date_end'), { index: 'date_approve' })
+                    .coerceTo('array')
+                    .filter({ status: 'approve', group_id: group_id })
+                    .count(),
+                emp_pass: 10,
+
             }
         })
         .without('date_start', 'date_end')
@@ -155,7 +161,7 @@ exports.year = (req, res) => {
                     .between(getData('date_start'), getData('date_end'), { index: 'date_approve' })
                     .coerceTo('array')
                     .filter({
-                        status: 'approve', 
+                        status: 'approve',
                         group_id: group_id
                     })
                     .orderBy(r.asc('date_use'))

@@ -91,7 +91,7 @@ export function chartAction(store) {
             },
             // 
             GET_CHART_WEEK_WITHOUT_GROUP(data) {
-                console.log(data);
+                // console.log(data);
                 axios.get(`/chart/week?${data}`)
                     .then(res => {
                         
