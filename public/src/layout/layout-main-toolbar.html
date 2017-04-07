@@ -106,17 +106,17 @@
 			},
 			logout: function () {
 
-				if (this.user.none=="none") {
+				//if (this.user.none=="none") {
 					oauth.Logout();
-				} else {
-					oauth.Login(function (user) {
+			//	} else {
+				//	oauth.Login(function (user) {
 						//console.log(window.location.search);
-						if (window.location.search != "") {
-							window.location = "/"
-						}
-						ReduxBehavior[0].dispatch({ type: 'AUTH_INFO', payload: user })
-					});
-				}
+				//		if (window.location.search != "") {
+					//		window.location = "/"
+					//	}
+					//	ReduxBehavior[0].dispatch({ type: 'AUTH_INFO', payload: user })
+					//});
+				//}
 
 				//	this.hidden = true;
 				//	localStorage.removeItem('token');
