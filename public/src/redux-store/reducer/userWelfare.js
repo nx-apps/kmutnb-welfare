@@ -118,7 +118,7 @@ export function userWelfareAction(store) {
                 })
         },
         LIST_USER_SERARCH: function (id) {
-            console.log(id);
+            // console.log(id);
             this.userSearch = id;
             axios.get('./group/welfare/adminEmployee/' + id)
                 .then((response) => {
