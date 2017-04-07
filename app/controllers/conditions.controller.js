@@ -110,6 +110,7 @@ exports.conditions = function (req, res) {
                 )
             }
         })
+        .orderBy('label')
         .run()
         .then(function (result) {
             res.json(result);

@@ -65,7 +65,7 @@
                                         <td style="text-align:center;">[[welfare.emp_budget]]</td>
                                         <td style="text-align:center;">[[welfare.emp_use]]</td>
                                         <td style="text-align:center;">
-                                            <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:list" title="รายละเอียด"></paper-icon-button>
+                                            <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:create" title="รายละเอียด"></paper-icon-button>
                                             <paper-icon-button data="[[welfare]]" on-tap="_print" icon="icons:print" title="ออกรายงาน"></paper-icon-button>
                                             <template is="dom-if" if={{!list.status_approve}}>
                                                 <paper-icon-button data="[[welfare]]" on-tap="_delete" icon="delete" title="ลบ"></paper-icon-button>
@@ -131,7 +131,7 @@
                 this.active = false;
             },
             _edit: function (e) {
-                this.approve = this.data.status_approve;
+                this.approve = this.list.status_approve;
                 // console.log(e.currentTarget.data);
                 this.fire('toast', { status: 'load', text: 'กำลังค้นหาข้อมูล...' })
                 var id = e.currentTarget.data.id;

@@ -32,7 +32,7 @@
         <div style="padding:20px;">
 
             <template is="dom-if" if="{{checkMenu(data)}}">
-                <div hidden$="{{date.status_approve}}">
+                <div hidden$="{{data.status_approve}}">
                     <div hidden$="{{!isEnable}}">
                         <div class="horizontal end-justified layout">
                             <div style="margin:20px 20px 0px 0px;">
@@ -72,20 +72,18 @@
                     <gl-form-textarea disabled="{{isEnable}}" style="margin-top:15px;" label="รายละเอียด" value="{{data.description}}" placeholder="เพิ่มรายละเอียด"></gl-form-textarea>
                 </gl-grid-col>
             </gl-grid-row>
+            [[checkDisabled(isEnable)]]
             <gl-grid-row style="margin-top: 10px">
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <template is="dom-if" if={{isEnabled}}>
-                        test
-                    </template>
-                    <paper-checkbox disabled="{{isEnable}}" disabled="{{checkAdmin}}" checked="{{data.onetime}}">ใช้ครั้งเดียว (เต็มจำนวน)</paper-checkbox>
+                    <paper-checkbox disabled="{{isEnable_onetime}}" checked="{{data.onetime}}">ใช้ครั้งเดียว (เต็มจำนวน)</paper-checkbox>
                 </gl-grid-col>
             </gl-grid-row>
             <gl-grid-row style="margin-top: 10px">
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 [[checkSelect(data.admin_use)]]
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <paper-checkbox disabled="{{isEnable}}" checked="{{data.admin_use}}">เจ้าหน้าที่เป็นผู้อนุมัติ</paper-checkbox>
+                    <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.admin_use}}">เจ้าหน้าที่เป็นผู้อนุมัติ</paper-checkbox>
                 </gl-grid-col>
             </gl-grid-row>
 
@@ -106,18 +104,7 @@
                 data: {
                     statePath: 'groupWelfare.select'
                 },
-                // data: {
-                //     type: Object,
-                //     value: function () {
-                //         return {
-                //             year: parseInt(new Date().toISOString().split('-')[0]) + 543,
-                //             start_date: new Date().toISOString().split('-')[0] + '-01-01',
-                //             end_date: new Date().toISOString().split('-')[0] + '-12-31'
-                //         }
-                //     },
-                //     notify: true
-                // },
-                checkAdmin:{
+                checkAdmin: {
                     type: Boolean,
                     value: false
                 }
@@ -146,26 +133,51 @@
                 this.splice('data.condition', e.target.index, 1);
             },
             cancle: function () {
-                if(typeof this.data.id == 'undefined'){
+                if (typeof this.data.id == 'undefined') {
                     this.dispatchAction('CLEAR_WELFARE', this.data);
                     this.fire('closePanel');
                 }
-                else{
+                else {
                     this.dispatchAction('SELECT_DATA', this.data.id);
                     this.isEnable = true;
                 }
             },
+            checkDisabled: function (val) {
+                if (val == false) {
+                    this.isEnable_onetime = false;
+                    this.isEnable_admin = false;
+                }
+                else {
+                    this.isEnable_onetime = true;
+                    this.isEnable_admin = true;
+                }
+            },
             checkSelect: function (e) {
                 if (typeof e != 'undefined' && e != undefined) {
-                    if (e == true) {
-                        // if (typeof this.data.onetime == 'undefined') {
-                            this.set('data.onetime', true);
-                            this.set('checkAdmin', true);
-                        // }
+                    if (e == true && typeof this.data.id === 'undefined') {
+                        this.set('data.onetime', true);
+                        this.isEnable_onetime = true;
+                    }
+                    else if (e == false && typeof this.data.id === 'undefined') {
+                        this.set('data.onetime', false);
+                        this.isEnable_onetime = false;
+                    }
+                    else if (e == true && typeof this.data.id !== 'undefined') {
+                        this.set('data.onetime', true);
+                        this.isEnable_onetime = true;
                     }
                     else {
-                        this.set('checkAdmin', false);
-                        this.set('data.onetime', false);
+                        if (this.data.onetime == false) {
+                            this.isEnable_onetime = true;
+                        }
+                        else if (this.data.onetime == true && this.data.admin_use == true) {
+                            this.set('data.onetime', true);
+                            this.isEnable_onetime = true;
+                        }
+                        else {
+                            this.set('data.onetime', false);
+                            this.isEnable_onetime = false;
+                        }
                     }
                 }
 
@@ -180,6 +192,9 @@
             },
             _edit: function () {
                 this.isEnable = false;
+                if (this.data.onetime == true && this.data.admin_use == true) {
+                    this.isEnable_onetime = true;
+                }
             },
             _delete: function () {
                 this.fire('toast', {
