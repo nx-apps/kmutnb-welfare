@@ -106,7 +106,7 @@
 			},
 			logout: function () {
 
-				if (this.user) {
+				if (this.user.none=="none") {
 					oauth.Logout();
 				} else {
 					oauth.Login(function (user) {
