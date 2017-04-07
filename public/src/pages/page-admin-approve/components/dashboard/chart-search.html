@@ -3,6 +3,8 @@
 <link rel="import" href="./type-search/search-month.html">
 <link rel="import" href="./type-search/search-year.html">
 
+<link rel="import" href="./../../../components/month-behavior.html">
+
 <link rel="import" href="./../../../../../bower_components/chart-elements/chart-bar.html">
 
 <dom-module id="chart-search">
@@ -81,7 +83,7 @@
                 </div>
             </div>
             <div>
-                <chart-bar data="[[data]]"></chart-bar>
+                <chart-bar data="[[charttt]]"></chart-bar>
             </div>
         </paper-material>
         [[chart]]//
@@ -97,7 +99,7 @@
         Polymer({
             is: 'chart-search',
             behaviors: [
-                ReduxBehavior
+                ReduxBehavior, MonthBehavior
             ],
             properties: {
                 dataSearch: {
@@ -131,9 +133,10 @@
                     type: String,
                     value: 'week'
                 },
-                chart:{
+                chart: {
                     type: String,
-                    statePath: 'chart.chart'
+                    statePath: 'chart.chart',
+                    observer: 'setChart'
                 }
             },
             setYear(year) {
@@ -164,7 +167,12 @@
                             this.set('dataSearch.date_start', oldDay.toISOString().split('T')[0])
 
                             // this.dispatchAction('GET_CHART_DAY_WITHOUT_GROUP')
-                            this.dispatchAction('GET_CHART_WEEK_WITHOUT_GROUP')
+                            newData = {
+                                date_start: this.dataSearch.date_start,
+                                date_end: this.dataSearch.date_end
+                            }
+                            this.dispatchAction('GET_CHART_WEEK_WITHOUT_GROUP', this.genUrl(newData))
+
                         }
                     }
                 } catch (error) {
@@ -190,6 +198,20 @@
                     // this.set('componentsSearch', 0)
                 }
             },
+            setChart(chart) {
+                this.charttt = {
+                    labels: chart.map((ed) => ed.id),
+                    datasets: [
+                        {
+                            label: "จำนวนเงิน",
+                            backgroundColor: "rgba(220,220,220,0.2)",
+                            borderColor: "rgba(220,220,220,1)",
+                            borderWidth: 1,
+                            data: chart.map((ed) => ed.bath)
+                        },
+                    ]
+                };
+            },
             serchWelfare() {
                 console.log(this.dataSearch);
                 let newData = {}
@@ -197,13 +219,13 @@
                     case 'day':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
                             newData = {
-                                year: this.dataSearch.year,
+                                // year: this.dataSearch.year,
                                 date_start: this.dataSearch.date_end,
                                 group_id: this.dataSearch.group_id
                             }
                         } else {
                             newData = {
-                                year: this.dataSearch.year,
+                                // year: this.dataSearch.year,
                                 date_start: this.dataSearch.date_end,
                             }
                         }
@@ -213,17 +235,19 @@
                     case 'week':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
                             newData = {
-                                year: this.dataSearch.year,
+                                // year: this.dataSearch.year,
                                 date_start: this.dataSearch.date_start,
                                 date_end: this.dataSearch.date_end,
                                 group_id: this.dataSearch.group_id
                             }
                         } else {
                             newData = {
-                                year: this.dataSearch.year,
+                                // year: this.dataSearch.year,
+
                                 date_start: this.dataSearch.date_start,
                                 date_end: this.dataSearch.date_end
                             }
+                            this.dispatchAction('GET_CHART_WEEK_WITHOUT_GROUP', this.genUrl(newData))
                         }
 
 
@@ -231,14 +255,14 @@
                     case 'month':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
                             newData = {
-                                year: this.dataSearch.year,
-                                month: this.dataSearch.month+1,
+                                // year: this.dataSearch.year,
+                                month: this.dataSearch.month + 1,
                                 group_id: this.dataSearch.group_id
                             }
                         } else {
                             newData = {
-                                year: this.dataSearch.year,
-                                month: this.dataSearch.month+1
+                                // year: this.dataSearch.year,
+                                month: this.dataSearch.month + 1
                             }
                         }
 

@@ -88,7 +88,8 @@ export function chartAction(store) {
             },
             // 
             GET_CHART_WEEK_WITHOUT_GROUP(data) {
-                axios.get('/report/report5?date_start=2017-04-01&date_end=2017-04-30&res_type=json')
+                console.log(data);
+                axios.get(`/report/report5?${data}&res_type=json`)
                     .then(res => {
                         
                         store.dispatch({ type: 'GET_CHART_WEEK_WITHOUT_GROUP', payload: sumBath(splitDate(res.data))})
