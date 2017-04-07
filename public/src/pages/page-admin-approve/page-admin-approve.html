@@ -8,6 +8,8 @@
 
 <link rel="import" href="./components/list-of-rvd.html">
 
+<link rel="import" href="./components/dashboard/chart-search.html">
+
 
 <!--<link rel="import" href="./../components/common-logic.html">-->
 <dom-module id="page-admin-approve">
@@ -77,7 +79,14 @@
     </style>
     <template>
         <div class="xcontainer">
+            <div>
+                <div>
+                    <div class="header-page container">สถิติ</div>
+                </div>
+                <chart-search></chart-search>
+            </div>
             <div class="flex-equal-justified">
+
                 <div>
                     <div class="header-page container">รายการคำขอใช้</div>
                 </div>
@@ -107,6 +116,7 @@
             is: 'page-admin-approve',
             behaviors: [
                 ReduxBehavior, nylonBehavior, usersAction, fundRvdAction, userWelfareAction
+                ,dateDbAction,chartAction
             ],
             properties: {
                 pageComponents: {
@@ -117,6 +127,8 @@
 
             nylonPageActive() {
                 this.dispatchAction('WELFARE_LIST_YEAR');
+                this.dispatchAction('GET_DATE')
+                // this.dispatchAction('TEST')
                 // console.log(111);
                 // this.dispatchAction('USERS_FALSE_LIST','');
                 //  this.dispatchAction('USERS_LIST_HISTORY_WELFARE','');

@@ -1,6 +1,6 @@
 <link rel="import" href="components/welfare-panel.html">
-<link rel="import" href="components/welfare-manage.html">
-<link rel="import" href="components/welfare-detail.html">
+<!--<link rel="import" href="components/welfare-manage.html">
+<link rel="import" href="components/welfare-detail.html">-->
 <link rel="import" href="./../components/page-style.html">
 
 <link rel="import" href="./../components/common-logic.html">
@@ -85,9 +85,9 @@
                                         <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
                                         <td style="text-align:right">[[formatNumber(item.value_use)]]</td>
                                         <td style="text-align:center">
-                                            <paper-icon-button data="[[item]]" icon="icons:list" on-tap="select_welfare" title="เงื่อนไข"></paper-icon-button>
+                                            <!--<paper-icon-button data="[[item]]" icon="icons:list" on-tap="select_welfare" title="เงื่อนไข"></paper-icon-button>
+                                            <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="แก้ไขสวัสดิการ"></paper-icon-button>-->
                                             <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="แก้ไขสวัสดิการ"></paper-icon-button>
-                                            <!--<paper-button data="[[item]]" style="height:30px; width:25px;" raised class="gl-btn-info">แก้ไข</paper-button>-->
                                         </td>
                                     </tr>
                                 </template>
@@ -107,14 +107,15 @@
             <panel-right title="{{title}}">
                 <iron-pages selected="{{pages}}">
                     <div>
-                        <welfare-panel data="{{data}}"></welfare-panel>
+                        <!--<welfare-panel data="{{data}}"></welfare-panel>-->
+                        <welfare-panel is-enable="[[active]]"></welfare-panel>
                     </div>
-                    <div>
+                    <!--<div>
                         <welfare-detail data="{{dataSelect}}"></welfare-detail>
                     </div>
                     <div>
                         <welfare-manage></welfare-manage>
-                    </div>
+                    </div>-->
                 </iron-pages>
             </panel-right>
         </div>
@@ -132,9 +133,6 @@
                 list_year: {
                     statePath: 'groupWelfare.list_year'
                 },
-                year: {
-                    statePath: 'groupWelfare.year'
-                },
                 pages: {
                     type: Number,
                     value: 0
@@ -142,21 +140,15 @@
             },
             listeners:
             {
-                'closePanel': 'close_panel'
+                'closePanel': 'close_panel',
+                'refresh_group' : 'changeYear'
             },
             nylonPageActive: function () {
                 let year = new Date().getFullYear();
-                // console.log(year);
                 var newYear = year + 543;
                 this.selectYear = newYear;
-                // this.LIST_WELFARE(year);
                 this.WELFARE_LIST();
                 this.GET_YEAR();
-            },
-            _insert: function () {
-                this.$$('panel-right').open();
-                this.pages = 0;
-                this.set('title', this.title = "เพิ่มสวัสดิการ");
             },
             select_welfare: function (e) {
                 // console.log(e.currentTarget.data);
@@ -174,23 +166,44 @@
             },
             clearData: function () {
                 this.data = {
-                    year: '',
+                    year: parseInt(new Date().toISOString().split('-')[0]) + 543,
                     name: '',
                     start_date: new Date().toISOString().split('-')[0] + '-01-01',
-                    end_date: new Date().toISOString().split('-')[0] + '-12-31'
+                    end_date: new Date().toISOString().split('-')[0] + '-12-31',
+                    admin_use: false,
+                    onetime: false
                 };
+            },
+            _insert: function () {
+                this.$$('panel-right').open();
+                this.clearData();
+                this.CLEAR_WELFARE(this.data);
+                this.CLEAR_WELFARE_ID();
+                this.pages = 0;
+                this.active = false;
+                this.$$('welfare-panel').checked_tab('#tab1');
+                this.set('title', this.title = "เพิ่มสวัสดิการ");
             },
             _edit: function (e) {
                 // console.log(e.currentTarget.data);
                 var id = e.currentTarget.data.id;
                 this.SELECT_DATA(id);
+                this.LIST_WELFARE_ID(id);
                 this.$$('panel-right').open();
-                this.pages = 2;
-                this.set('title', this.title = "แก้ไข");
+                this.pages = 0;
+                this.active = true;
+                this.$$('welfare-panel').checked_tab('#tab1');
+                this.set('title', this.title = "แก้ไขสวัสดิการ");
             },
             changeYear: function (e) {
-                var year = e - 543;
-                this.LIST_WELFARE(year);
+                if(typeof e.detail == 'undefined'){
+                    var year = e - 543;
+                    this.LIST_WELFARE(year);
+                }
+                else{
+                    var year = e.detail;
+                    this.LIST_WELFARE(year);
+                }
             },
             _print: function () {
                 this.fire('nylon-change-page', { path: '/report' })

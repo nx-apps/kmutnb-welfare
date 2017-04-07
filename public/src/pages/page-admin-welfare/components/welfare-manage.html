@@ -1,134 +1,212 @@
-<link rel="import" href="../../components/format-number-behavior.html">
+<!--<link rel="import" href="welfare-insert.html">
+<link rel="import" href="welfare-edit.html">-->
+<link rel="import" href="./../../components/common-logic.html">
+<link rel="import" href="./welfare-form.html">
+
 <dom-module id="welfare-manage">
+    <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+        * {
+            font-family: 'CSChatThaiUI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        paper-material {
+            padding: 0px;
+        }
+        
+        .table-detail {
+            margin: auto;
+            width: 80%;
+            padding: 20px;
+        }
+        
+        table.gl-table-default {
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+        
+        .text-header {
+            font-size: 20px;
+        }
+    </style>
     <template>
-        <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
-            gl-form-input,
-            vaadin-date-picker,
-            gl-combo-box {
-                margin-top: 15px;
-            }
-            .label_condition {
-                font-weight: bold;
-                text-align: right;
-                margin-top: 35px;
-                font-size: 20px;
-            }
-            .btn-bottom {
-                margin: 30px;
-            }
-            paper-material {
-                background-color: var(--gl-white-color);
-            }
-        </style>
+        <iron-pages selected="{{pages}}">
+            <div>
+                <div class="horizontal justified layout">
+                    <div class="vertical layout">
+                        <div class="text-header" style="margin: 20px;">ชื่อสวัสดิการ : [[list.group_welfare_name]]</div>
+                        <div class="text-header" style="margin-left:20px;">รายละเอียด : [[list.description]]</div>
+                    </div>
+                    <template is="dom-if" if={{!list.status_approve}}>
+                        <paper-button raised style="margin:20px" class="gl-btn-primary" on-tap="_insert">
+                            <iron-icon icon="add"></iron-icon>เพิ่มเงื่อนไข</paper-button>
+                    </template>
+                </div>
 
-        <div style="padding:20px 20px 50px 20px;">
+                <div class="table-detail">
+                    <paper-material elevation="1">
+                        <table class="gl-table-default">
+                            <thead class="table-head">
+                                <tr>
+                                    <th style="width:15%;text-align: center">ปี</th>
+                                    <th>ชื่อเงื่อนไข</th>
+                                    <th style="width:15%;">จำนวนเงิน (บาท)</th>
+                                    <th style="text-align:center;">จำนวนผู้มีสิทธิ</th>
+                                    <th style="text-align:center;">จำนวนผู้ใช้สิทธิ</th>
+                                    <th style="width:20%;text-align:center;">เครื่องมือ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+                                <template is="dom-repeat" items="{{list.welfare}}" as="welfare">
+                                    <tr data="[[item]]">
+                                        <td style="text-align:center;">[[list.year]]</td>
+                                        <td style="text-align:left;">[[welfare.welfare_name]]</td>
+                                        <td style="text-align:right;">[[formatNumber(welfare.budget)]]</td>
+                                        <td style="text-align:center;">[[welfare.emp_budget]]</td>
+                                        <td style="text-align:center;">[[welfare.emp_use]]</td>
+                                        <td style="text-align:center;">
+                                            <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:list" title="รายละเอียด"></paper-icon-button>
+                                            <paper-icon-button data="[[welfare]]" on-tap="_print" icon="icons:print" title="ออกรายงาน"></paper-icon-button>
+                                            <template is="dom-if" if={{!list.status_approve}}>
+                                                <paper-icon-button data="[[welfare]]" on-tap="_delete" icon="delete" title="ลบ"></paper-icon-button>
+                                            </template>
+                                        </td>
+                                    </tr>
+                                </template>
 
-            <paper-material elevation="1">
+                                <template is="dom-if" if={{_ObIsHave(list.welfare)}}>
+                                    <tr>
+                                        <td colspan="10" style="text-align: center">ไม่มีข้อมูลเงื่อนไขสวัสดิการ</td>
+
+                                </template>
+                            </tbody>
+                        </table>
+                    </paper-material>
+                </div>
                 <div class="horizontal end-justified layout">
-                    <div style="margin:20px 20px 0px 0px;" hidden="{{!active}}">
-                        <template is="dom-if" if={{!data.status_approve}}>
-                            <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
-                            <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
+                    <template is="dom-if" if={{!_ObIsHave(list.welfare)}}>
+                        <template is="dom-if" if={{!list.status_approve}}>
+                            <paper-button raised style="margin:20px;" class="gl-btn-success" on-tap="welfare_approve">อนุมัติใช้งาน</paper-button>
                         </template>
-                    </div>
+                        <template is="dom-if" if={{list.status_approve}}>
+                            <paper-button raised style="margin:20px;" class="gl-btn-danger" on-tap="welfare_unapprove">ยกเลิกการใช้งาน</paper-button>
+                        </template>
+                    </template>
                 </div>
-                <gl-grid-row width="{{getWidth}}">
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input label="ปี" allowed-pattern="[0-9]" value="{{data.year}}" disabled="{{active}}" maxlength="4"></gl-form-input>
-                    </gl-grid-col>
-                </gl-grid-row>
-                <gl-grid-row>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input label="ชื่อสวัสดิการ" value="{{data.group_welfare_name}}" disabled="{{active}}"></gl-form-input>
-                    </gl-grid-col>
-                </gl-grid-row>
-                <gl-grid-row>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker label="วันที่เริ่มใช้งาน :" value="{{data.start_date}}" disabled="{{active}}"></vaadin-date-picker>
-                    </gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker label="วันที่สิ้นสุดใช้งาน :" value="{{data.end_date}}" disabled="{{active}}"></vaadin-date-picker>
-                    </gl-grid-col>
-                </gl-grid-row>
-                <gl-grid-row>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-textarea style="margin-top:15px;" label="รายละเอียด" value="{{data.description}}" always-float-label disabled="{{active}}"></gl-form-textarea>
-                    </gl-grid-col>
-                </gl-grid-row>
-                <gl-grid-row style="margin-top: 10px">
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-checkbox checked="{{data.onetime}}" disabled="{{active}}">ใช้ครั้งเดียว (เต็มจำนวน)</paper-checkbox>
-                    </gl-grid-col>
-                </gl-grid-row>
-                <gl-grid-row style="margin-top: 10px">
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <paper-checkbox checked="{{data.admin_use}}" disabled="{{active}}">admin เป็นผู้อนุมัติ</paper-checkbox>
-                    </gl-grid-col>
-                </gl-grid-row>
-
-                <div class="horizontal end-justified layout btn-bottom">
-                    <div hidden="{{active}}">
-                        <paper-button raised style="margin-bottom:15px;" class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
-                        <paper-button raised style="margin-bottom:15px;" class="gl-btn-success" on-tap="save">บันทึก</paper-button>
-                    </div>
-
-                </div>
-            </paper-material>
-
-        </div>
+            </div>
+            <div>
+                <welfare-form date="{{list}}" is-enable="{{active}}"></welfare-form>
+                <!--<welfare-insert datas="{{data}}"></welfare-insert>-->
+            </div>
+            <div>
+                <welfare-form date="{{list}}" is-enable="{{active}}"></welfare-form>
+                <!--<welfare-edit datas="{{data}}" status="[[list.status_approve]]"></welfare-edit>-->
+            </div>
+        </iron-pages>
     </template>
     <script>
         Polymer({
             is: 'welfare-manage',
-            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic],
+            listeners: {
+                'back': 'back_page'
+            },
             properties: {
-                data: {
-                    statePath: 'groupWelfare.select'
+                pages: {
+                    type: String,
+                    value: '0'
                 },
-                active: {
-                    type: Boolean,
-                    value: true
+                list: {
+                    statePath: 'groupWelfare.list_id',
+                    observer: 'getData'
                 }
             },
-            _delete: function () {
+            getData: function (data) {
+                // console.log(data);
+                this.dispatchAction('CONDITION_LIST')
+            },
+            _insert: function () {
+                this.pages = '1';
+                this.dispatchAction('WELFARE_DATA_SELECT_CLEAR');
+                this.active = false;
+            },
+            _edit: function (e) {
+                this.approve = this.data.status_approve;
+                // console.log(e.currentTarget.data);
+                this.fire('toast', { status: 'load', text: 'กำลังค้นหาข้อมูล...' })
+                var id = e.currentTarget.data.id;
+                this.dispatchAction('WELFARE_DATA_SELECT', id)
+                this.active = true;
+                this.fire('toast', {
+                    status: 'success', text: 'ค้นหาสำเร็จ', callback() {
+                        this.dataSelectId = id;
+                    }
+                });
+
+                // console.log(this.$$('welfare-edit').changeisEnabled())
+                this.pages = '2';
+            },
+            _delete: function (e) {
                 this.fire('toast', {
                     status: 'openDialog',
-                    text: 'คุณต้องการที่จะลบใช่หรือไม่ ?',
-                    confirmed: this._confirm.bind(this),
+                    text: 'คุณต้องการลบเงื่อนไขนี้ใช่หรือไม่ ?',
+                    confirmed: this._confirmToast.bind(this),
                     datas: {
-                        id: this.data.id,
-                        year : this.data.year
+                        id: e.currentTarget.data.id,
+                        group_id: e.currentTarget.data.group_id
                     }
                 });
             },
-            _confirm: function (result, detail) {
+            _confirmToast: function (result, detail) {
                 if (result == true) {
-                    this.dispatchAction('DELETE_WELFARE', detail.datas);
+                    var year = new Date().getFullYear();
+                    this.dispatchAction('WELFARE_DELETE', detail.datas).then((val) => {
+                        this.fire('refresh_group', year);
+                        this.fire('back');
+                    })
                 }
             },
-            _edit: function () {
-                this.set('disabled', this.active = false);
+            welfare_approve: function () {
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'คุณต้องการที่อนุมัติใช่หรือไม่ ?',
+                    confirmed: this._toastApprove.bind(this),
+                    datas: {
+                        id: this.data.id,
+                        status_approve: true
+                    }
+                });
             },
-            save: function () {
-                // delete this.data.welfare;
-                this.data.year = this.unFormat(this.data.year);
-                this.dispatchAction('EDIT_WELFARE', this.data);
-                this.active = true;
+            _toastApprove: function (result, detail) {
+                if (result == true) {
+                    this.dispatchAction('APPROVE_WELFARE', detail.datas);
+                }
             },
-            delete_condition: function (e) {
-                // console.log(e.target.index);
-                this.splice('data.condition', e.target.index, 1);
+            welfare_unapprove: function () {
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'คุณต้องการที่ยกเลิกใช้ใช่หรือไม่ ?',
+                    confirmed: this._toastUnapprove.bind(this),
+                    datas: {
+                        id: this.data.id,
+                        status_approve: false
+                    }
+                });
             },
-            cancle: function () {
-                var id = this.data.id;
-                this.dispatchAction('SELECT_DATA', id);
-                this.active = true;
+            _toastUnapprove: function (result, detail) {
+                if (result == true) {
+                    this.dispatchAction('APPROVE_WELFARE', detail.datas);
+                }
+            },
+            setPage: function (pages) {
+                this.pages = pages
+            },
+            back_page: function () {
+                this.pages = '0';
+            },
+            _print: function (e) {
+                var id = e.currentTarget.data.id;
+                window.open('./api/report/report1/' + id);
             }
         });
     </script>

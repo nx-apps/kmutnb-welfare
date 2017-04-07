@@ -19,6 +19,10 @@ export function groupWelfareReducer(state = initialState, action) {
             return Object.assign({}, state, { select: action.payload });
         case 'GET_YEAR':
             return Object.assign({}, state, { list_year: action.payload });
+        case 'CLEAR_WELFARE':
+            return Object.assign({}, state, { select: action.payload });
+        case 'CLEAR_WELFARE_ID':
+            return Object.assign({}, state, { list_id: action.payload });
         default:
             return state
     }
@@ -52,19 +56,13 @@ export function groupWelfareAction(store) {
         },
         INSERT_WELFARE: function (data) {
             // console.log(data);
-            var datas = {
-                year: data.year,
-                start_date: new Date(data.start_date).toISOString(),
-                end_date: new Date(data.end_date).toISOString(),
-                group_welfare_name: data.group_welfare_name,
-                admin_use: data.admin_use,
-                onetime: data.onetime,
-                status_approve: data.status_approve,
-                description: data.description
-            }
-            // console.log(datas);
+            let {year, start_date, end_date, group_welfare_name, admin_use, description, onetime, status_approve} = data;
+            let newData = {year, start_date, end_date, group_welfare_name, admin_use, description, onetime, status_approve};
+            newData.start_date = new Date(newData.start_date).toISOString();
+            newData.end_date = new Date(newData.end_date).toISOString();
+            // console.log(newData);
             this.fire('toast', { status: 'load' });
-            axios.post(`./group/welfare/insert`, datas)
+            axios.post(`./group/welfare/insert`, newData)
                 .then((result) => {
                     console.log(result);
                     this.LIST_WELFARE(data.year-543);
@@ -73,7 +71,9 @@ export function groupWelfareAction(store) {
                             console.log('success');
                             this.clearData();
                             this.GET_YEAR();
-                            this.fire('closePanel');
+                            // this.fire('closePanel');
+                            this.$$('welfare-panel').checked_tab('#tab2');
+                            this.$$('welfare-panel').getGroupWelfareId(result.data.id[0]);
                         }
                     });
                 })
@@ -83,14 +83,15 @@ export function groupWelfareAction(store) {
         },
         DELETE_WELFARE: function (data) {
             // console.log(data);
+            var year = new Date().getFullYear();
             axios.delete(`./group/welfare/delete/id/` + data.id)
                 .then((result) => {
                     console.log(result);
-                    this.LIST_WELFARE(data.year-543);
                     this.fire('toast', {
                         status: 'success', text: 'ลบสำเร็จ', callback: () => {
                             console.log('success');
                             this.$$('panel-right').close();
+                            this.LIST_WELFARE(year);
                         }
                     });
                 })
@@ -104,13 +105,13 @@ export function groupWelfareAction(store) {
             let newData = {id, year, start_date, end_date, group_welfare_name, admin_use, description, onetime};
             newData.start_date = new Date(newData.start_date).toISOString();
             newData.end_date = new Date(newData.end_date).toISOString();
-            console.log(newData);
+            // console.log(newData);
             this.fire('toast', { status: 'load' });
             axios.put(`./group/welfare/update`, newData)
                 .then((result) => {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-                            this.LIST_WELFARE();
+                            this.LIST_WELFARE(newData.year-543);
                             console.log('success');
                         }
                     });
@@ -154,6 +155,14 @@ export function groupWelfareAction(store) {
                 .catch((err) => {
                     console.log(err);
                 })
+        },
+        CLEAR_WELFARE:function(data){
+            // console.log(data);
+            store.dispatch({ type: 'CLEAR_WELFARE', payload: data })
+        },
+        CLEAR_WELFARE_ID:function(data){
+            // console.log(data);
+            store.dispatch({ type: 'CLEAR_WELFARE_ID', payload: [] })
         }
     }
     ]

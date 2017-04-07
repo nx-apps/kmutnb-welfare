@@ -291,8 +291,11 @@
                 // console.log(JSON.stringify(this.data));
 
                 if (typeof this.data.id == 'undefined') {
-                    this.dispatchAction('WELFARE_INSERT', this.data);
-                    this.fire('back');
+                    var year = new Date().getFullYear();
+                    this.dispatchAction('WELFARE_INSERT', this.data).then((val)=>{
+                        this.fire('refresh_group',year);
+                        this.fire('back');
+                    })
                 }
                 else {
                     this.dispatchAction('WELFARE_EDIT', this.data);

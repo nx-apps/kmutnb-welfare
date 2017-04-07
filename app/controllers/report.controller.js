@@ -140,6 +140,8 @@ exports.report2 = function (req, res) {
 
     var date_start = req.query.date_start;
     var date_end = req.query.date_end;
+    var res_type = req.query.res_type;
+    console.log(req.query.res_type);
 
     r.db('welfare').table('history_welfare').filter(function (row) {
         return row('date_use').split('T')(0).eq(req.query.date_start)
@@ -169,7 +171,10 @@ exports.report2 = function (req, res) {
         })
         .run()
         .then(function (result) {
-            //   res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
+              
             //   if (result.length > 0 ) 
             res.ireport("report2.jasper", req.query.export || "pdf", result, parameters);
         });
@@ -217,7 +222,9 @@ exports.report2_1 = function (req, res) {
         .run()
         .then(function (result) {
             parameters.group_welfare_name = result.group_welfare_name;
-            // res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
             res.ireport("report2_1.jasper", req.query.export || "pdf", result.history_welfare, parameters);
         });
 }
@@ -366,7 +373,9 @@ exports.report3 = function (req, res, next) {
         .orderBy('group_welfare_name')
         .run()
         .then(function (result) {
-            // res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
             res.ireport("report3.jasper", req.query.export || "pdf", result, parameters);
         });
 }
@@ -518,7 +527,9 @@ exports.report3_1 = function (req, res) {
         })
         .run()
         .then(function (result) {
-            // res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
             res.ireport("report3_1.jasper", req.query.export || "pdf", result, parameters);
         })
 }
@@ -629,7 +640,9 @@ exports.report4 = function (req, res, next) {
         .without('date_start', 'date_end')
         .run()
         .then(function (result) {
-            // res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
             res.ireport("report4.jasper", req.query.export || "pdf", result, parameters);
         });
 }
@@ -701,7 +714,14 @@ exports.report4_1 = function (req, res, next) {
 
         .run()
         .then(function (result) {
+<<<<<<< HEAD
             res.json(result);
+=======
+            // parameters.group_welfare_name = result.group_welfare_name;
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
+>>>>>>> 97e98ceccd1b291a8c27344eb9320e1bb1b13913
             res.ireport("report4_1.jasper", req.query.export || "pdf", result, parameters);
         });
 }
@@ -806,7 +826,9 @@ exports.report4_2 = function (req, res, next) {
         .run()
         .then(function (result) {
 
-            // res.json(result);
+           if (req.query.res_type == 'json') {
+                res.json(result);
+            }
             res.ireport("report4_2.jasper", req.query.export || "pdf", result, parameters);
         });
 }
@@ -852,7 +874,9 @@ exports.report5 = function (req, res) {
         })
         .run()
         .then(function (result) {
-            // res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
             //   if (result.length > 0 ) 
             res.ireport("report5.jasper", req.query.export || "pdf", result, parameters);
         });
@@ -903,7 +927,9 @@ exports.report5_1 = function (req, res) {
         .run()
         .then(function (result) {
             // parameters.group_welfare_name = result.group_welfare_name;
-            //   res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
             //   if (result.length > 0 ) 
             res.ireport("report5_1.jasper", req.query.export || "pdf", result.history_welfare, parameters);
         });
