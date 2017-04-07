@@ -75,7 +75,7 @@ export function commonDataAction(store){
                         item.status = false;
                         return item;
                     })
-                    console.log(12222222);
+                    // console.log(12222222);
                     store.dispatch({type:'COMMONDATA_DATA_ACADEMIC',payload:newData})
                 })
                 .catch(err=>{
