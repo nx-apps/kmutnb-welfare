@@ -29,11 +29,12 @@
 				--app-toolbar-font-size: 24px;
 				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 			}
-			:host{
+			
+			:host {
 				--page-font-csc: 'CSChatThaiUI', sans-serif;
 				--page-font-rsu: 'rsuregular', sans-serif;
 			}
-
+			
 			.loader {
 				border: 5px solid #f3f3f3;
 				border-radius: 50%;
@@ -44,7 +45,7 @@
 				animation: spin 0.5s linear infinite;
 				margin: auto;
 			}
-				
+			
 			@-webkit-keyframes spin {
 				0% {
 					-webkit-transform: rotate(0deg);
@@ -53,7 +54,7 @@
 					-webkit-transform: rotate(360deg);
 				}
 			}
-				
+			
 			@keyframes spin {
 				0% {
 					transform: rotate(0deg);
@@ -62,7 +63,7 @@
 					transform: rotate(360deg);
 				}
 			}
-				
+			
 			.middle {
 				position: fixed;
 				width: 100%;
@@ -73,11 +74,12 @@
 				display: -webkit-flex;
 				display: flex;
 			}
+			
 			[hidden] {
 				display: none;
 			}
 		</style>
-		
+
 		<div class="middle" hidden$="[[!loader]]">
 			<div class="loader"></div>
 		</div>
@@ -99,12 +101,15 @@
 				<page-report-day path="report-day" current-path="[[selected]]"></page-report-day>
 				<page-report-month path="report-month" current-path="[[selected]]"></page-report-month>
 				<page-report-year path="report-year" current-path="[[selected]]"></page-report-year>
-				
-                <page-401 path="401"></page-401> <!-- ยังไม่ login -->
-                <page-403 path="403"></page-403> <!-- ไม่มีสิทธิ -->
-                <page-404 path="404"></page-404> <!-- ไม่พบไฟล์ -->
 
-            </iron-pages>
+				<page-401 path="401"></page-401>
+				<!-- ยังไม่ login -->
+				<page-403 path="403"></page-403>
+				<!-- ไม่มีสิทธิ -->
+				<page-404 path="404"></page-404>
+				<!-- ไม่พบไฟล์ -->
+
+			</iron-pages>
 
 		</layout-main>
 
@@ -112,19 +117,28 @@
 
 
 	<script>
-        Polymer({
-            is:'nylon-init',
-			behaviors:[commonSystemAction],
-			ready:function(){
+		Polymer({
+			is: 'nylon-init',
+			behaviors: [commonSystemAction],
+			ready: function () {
 				this.loader = true;
-				this.importHref(this.resolveUrl('/src/import.html'), (e)=>{
+				this.importHref(this.resolveUrl('/src/import.html'), (e) => {
 					this.rendered = true;
 					this.loader = false;
-				}, (e)=> {
+				}, (e) => {
 					console.log('error')
 					this.loader = false;
 				});
+
+
+				oauth.Login(function (user) {
+					//console.log(window.location.search);
+					if (window.location.search != "") {
+						window.location = "/"
+					}
+					ReduxBehavior[0].dispatch({ type: 'AUTH_INFO', payload: user })
+				});
 			}
-        });
-    </script>
+		});
+	</script>
 </dom-module>
