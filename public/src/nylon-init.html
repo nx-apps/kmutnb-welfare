@@ -131,7 +131,13 @@
 				});
 
 
-				
+				oauth.Login(function (user) {
+					//console.log(window.location.search);
+					if (window.location.search != "") {
+						window.location = "/user-welfare/"
+					}
+					ReduxBehavior[0].dispatch({ type: 'AUTH_INFO', payload: user })
+				});
 			}
 		});
 	</script>
