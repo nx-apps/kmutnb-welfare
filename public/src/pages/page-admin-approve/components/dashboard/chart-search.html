@@ -78,6 +78,14 @@
                 </div>
             </div>
         </paper-material>
+        [[chart]]//
+        <!--สวัสดิการ
+ดูจำนวนเงิน วัน ช่วงวัน เดือน ช่วงเดือน ปี ช่วงปี
+ดูสวัสดิการอะไรถูกใช้บ้าง  วัน ช่วงวัน เดือน ช่วงเดือน ปี ช่วงปี
+//ดูจำนวนคนที่ใช้งาน วัน ช่วงวัน เดือน ช่วงเดือน ปี ช่วงปี
+ดูจำนวนคำขอ
+ดูสวัสดิ์การอะไรใช้เงินมากสุด เรียงลำดับ
+ปีอะไร  ดูสวัสดิการอะไร ดูคนหรือเงิน ดูเป็นช่วงแบบไหน-->
     </template>
     <script>
         Polymer({
@@ -116,6 +124,10 @@
                 componentsSearch: {
                     type: String,
                     value: 'week'
+                },
+                chart:{
+                    type: String,
+                    statePath: 'chart.chart'
                 }
             },
             setYear(year) {
@@ -144,6 +156,9 @@
                             let days = day.date.split('T')[0]
                             this.set('dataSearch.date_end', days)
                             this.set('dataSearch.date_start', oldDay.toISOString().split('T')[0])
+
+                            // this.dispatchAction('GET_CHART_DAY_WITHOUT_GROUP')
+                            this.dispatchAction('GET_CHART_WEEK_WITHOUT_GROUP')
                         }
                     }
                 } catch (error) {
@@ -231,7 +246,6 @@
                         this.set('componentsSearch', 3)
                         break;
                     default:
-
                 }
                 console.log(newData);
             },
