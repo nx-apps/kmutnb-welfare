@@ -20,6 +20,11 @@
     </style>
     <template>
         <paper-material elevation="1">
+            <div class="horizontal end-justified layout">
+                <div hidden="[[!disabled]]">
+                    <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
+                </div>
+            </div>
             <div class="container layout vertical ">
                 <fieldset>
                     <legend>ข้อมูลส่วนตัว :</legend>
@@ -167,7 +172,7 @@
                         </div>
                         <div class="flex-5">
                             <div id="faculty">
-                                <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{faculty.length}}" no-label-float>
+                                <gl-form-dropdown-menu disabled="[[disabled]]" style="margin-top:15px; width: 90%;" placeholder="{{faculty.length}}" no-label-float>
                                     <paper-listbox class="dropdown-content required" no-label-float attr-for-selected="value" selected="{{data.faculty_id}}">
                                         <template is="dom-repeat" items="{{faculty}}">
                                             <paper-item value="{{item.id}}">{{item.faculty_name}}</paper-item>
@@ -184,7 +189,7 @@
                             <label for="department"><div style="margin-top:15px;">แผนก :</div></label>
                         </div>
                         <div class="flex-5">
-                            <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{department.length}}" no-label-float>
+                            <gl-form-dropdown-menu disabled="[[disabled]]" style="margin-top:15px; width: 90%;" placeholder="{{department.length}}" no-label-float>
                                 <paper-listbox class="dropdown-content required" attr-for-selected="value" selected="{{data.department_id}}">
                                     <template is="dom-repeat" items="{{department}}">
                                         <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
@@ -201,8 +206,10 @@
 
                 <gl-form-panel-footer label="" set-padding="0px 10px 20px 0px">
                     <div class="horizontal end-justified layout">
-                        <paper-button raised class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
-                        <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                        <div hidden="[[disabled]]">
+                            <paper-button raised class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
+                            <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                        </div>
                     </div>
 
         </paper-material>
@@ -269,9 +276,14 @@
                     this.fire('back-page',this.data.id);
                 }
                 else {
+                    this.dispatchAction('EMPLOYEE_GET_WELFARES', this.data.id);
                     this.dispatchAction('LIST_EMPLOYEE_WELFARE', this.data.id);
                     this.fire('close-panel-right');
+                    this.disabled = true;
                 }
+            },
+            _edit:function(){
+                this.disabled = false;
             },
             getDepartment: function (id, item) {
                 if (typeof id != 'undefined' && item[0].faculty != "") {
