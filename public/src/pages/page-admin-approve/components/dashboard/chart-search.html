@@ -229,8 +229,6 @@
                                 // year: this.dataSearch.year,
                                 date_start: this.dataSearch.date_end,
                             }
-
-                            // console.log(1111);
                         }
                         console.log();
                         this.dispatchAction('GET_CHART_DAY_WITHOUT_GROUP', this.genUrl(newData))
@@ -292,7 +290,7 @@
                         break;
                     default:
                 }
-                console.log(newData);
+                // console.log(newData);
             },
             checkUndefined(data) {
                 return (typeof data !== 'undefined' && data !== 'undefined' && data !== '')
