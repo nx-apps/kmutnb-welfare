@@ -42,11 +42,11 @@ export function authAction(store){
                         userInfo = response.data;
                     }
 
-                    if(userInfo.role=="teacher"){
-                        this.fire('nylon-change-page',{path:'/examRoom'})
-                    }else{
-                        this.fire('nylon-change-page',{path:'/examHistory'})
-                    }
+                  //  if(userInfo.role=="teacher"){
+                   //     this.fire('nylon-change-page',{path:'/examRoom'})
+                   // }else{
+                   //     this.fire('nylon-change-page',{path:'/examHistory'})
+                   // }
 
                 })
                 .catch((error)=>{

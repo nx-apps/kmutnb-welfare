@@ -101,13 +101,14 @@
               } 
             },
 			logout:function(){
-				this.hidden = true;
-				localStorage.removeItem('token');
-				if(this.user.role=="none"){
-					this.fire('nylon-change-page',{path:'/login'})
-				}else{
-					window.location = "/login"
-				}
+					oauth.Logout();
+			//	this.hidden = true;
+			//	localStorage.removeItem('token');
+			//	if(this.user.role=="none"){
+			//		this.fire('nylon-change-page',{path:'/login'})
+			//	}else{
+			//		window.location = "/login"
+			//	}
 				//this.fire('nylon-change-page',{path:'/login'})
 				//  this.AUTH_LOGOUT();
 			}

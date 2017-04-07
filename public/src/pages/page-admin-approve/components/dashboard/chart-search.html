@@ -82,8 +82,8 @@
 
                 </div>
             </div>
-            <div>
-                <chart-bar data="[[charttt]]"></chart-bar>
+            <div class="horizontal center-justified layout">
+                <chart-bar data="[[charttt]]" style="width: 450px; height: 250px;"></chart-bar>
             </div>
         </paper-material>
         <!--[[chart]]//-->
@@ -200,6 +200,7 @@
             },
             setChart(chart) {
                 console.log(chart);
+                // this.
                 this.charttt = {
                     labels: chart.map((ed) => ed.id),
                     datasets: [
