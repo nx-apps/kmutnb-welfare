@@ -62,6 +62,10 @@ export function chartReducer(state = initialState, action) {
             return Object.assign({}, state, { chart: action.payload });
         case 'GET_CHART_WEEK_WITHOUT_GROUP':
             return Object.assign({}, state, { chart: action.payload });
+        case 'GET_CHART_MONTH_WITHOUT_GROUP':
+            return Object.assign({}, state, { chart: action.payload });
+        case 'GET_CHART_YEAR_WITHOUT_GROUP' :
+            return Object.assign({}, state, { chart: action.payload });
         default:
             return state;
     }
@@ -92,6 +96,28 @@ export function chartAction(store) {
                     .then(res => {
                         
                         store.dispatch({ type: 'GET_CHART_WEEK_WITHOUT_GROUP', payload: res.data})
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            GET_CHART_MONTH_WITHOUT_GROUP(data) {
+                console.log(data);
+                axios.get(`/chart/month?${data}`)
+                    .then(res => {
+                        
+                        store.dispatch({ type: 'GET_CHART_MONTH_WITHOUT_GROUP', payload: res.data})
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
+            GET_CHART_YEAR_WITHOUT_GROUP(data) {
+                console.log(data);
+                axios.get(`/chart/year?${data}`)
+                    .then(res => {
+                        
+                        store.dispatch({ type: 'GET_CHART_YEAR_WITHOUT_GROUP', payload: res.data})
                     })
                     .catch(err => {
                         console.log(err);
