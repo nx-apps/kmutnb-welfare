@@ -2,6 +2,9 @@
 <link rel="import" href="./type-search/search-week.html">
 <link rel="import" href="./type-search/search-month.html">
 <link rel="import" href="./type-search/search-year.html">
+
+<link rel="import" href="./../../../../../bower_components/chart-elements/chart-bar.html">
+
 <dom-module id="chart-search">
     <template>
         <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -76,6 +79,9 @@
                     <paper-button raised class="gl-bg-info" on-tap="serchWelfare">ค้นหา</paper-button>
 
                 </div>
+            </div>
+            <div>
+                <chart-bar data="[[data]]"></chart-bar>
             </div>
         </paper-material>
         [[chart]]//
