@@ -405,12 +405,12 @@ exports.report3_1 = function (req, res) {
         employees: r.db('welfare').table('employee').coerceTo('array'),
         group: []
     })
-        .merge(function (employees_merge) {
-            return {
-                employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
-                    .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
-            }
-        })
+        // .merge(function (employees_merge) {
+        //     return {
+        //         employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
+        //             .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
+        //     }
+        // })
         .merge(function (group_merge) {
             return {
                 group: r.db('welfare').table('group_welfare').get(req.params.id)
@@ -527,9 +527,9 @@ exports.report3_1 = function (req, res) {
         })
         .run()
         .then(function (result) {
-            if (req.query.res_type == 'json') {
+            // if (req.query.res_type == 'json') {
                 res.json(result);
-            }
+            // }
             res.ireport("report3_1.jasper", req.query.export || "pdf", result, parameters);
         })
 }
@@ -981,127 +981,98 @@ exports.test = function (req, res) {
         });
 }
 exports.report14 = function (req, res, next) {
-    var params = req.query;
     var r = req.r
     req.params.year = parseInt(req.params.year);
     var parameters = {
-        CURRENT_DATE: new Date().toISOString().slice(0, 10),
-        // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
-        // YEAR: req.params.year + "-01-01"
+        CURRENT_DATE: new Date().toISOString().slice(0, 10)
     };
-    // var date_start = "2017-01-01";
-    // var date_end = "2017-12-31";
-
-    // var year = req.params.year;
-    // var arr_month = ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
-    // var data = [];
-    // for (var i = 1; i <= 12; i++) {
-    //     var month = 0;
-    //     var nextMonth = 0;
-    //     if (i < 10) {
-    //         month = "0" + i;
-    //         nextMonth = i + 1;
-    //     } else {
-    //         month = i;
-    //         if (i == 12) {
-    //             nextMonth = 1;
-    //         } else {
-    //             nextMonth = i;
-    //         }
-    //     }
-    //     if (nextMonth < 10) {
-    //         nextMonth = "0" + nextMonth;
-    //     }
-    //     data.push({
-    //         date_start: year + "-" + month + "-01",
-    //         date_end: year + "-" + nextMonth + "-01",
-    //         month_name: arr_month[i]
-    //     });
-    // }
     
-    
-    
-    
-    
-      r.db('welfare').table('group_welfare').filter({year:params.year})
-        .merge(function (m){
+      r.db('welfare').table('group_welfare').filter({year:req.params.year})
+        .merge(function (wel_merge){
           return {
-            welfare:r.db('welfare').table('welfare').filter({group_id:m('id')}).coerceTo('array')
-            .merge(function(mm){
+            welfare:r.db('welfare').table('welfare').filter({group_id:wel_merge('id')}).coerceTo('array')
+            .merge(function(his_merge){
               return {
-                history_welfare:r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
-              }
+                history_welfare:r.db('welfare').table('history_welfare').getAll(his_merge('id'), { index: 'group_id' }).filter({status:'approve'})
+                //   .merge(function (emp_merge){
+                //       return r.db('welfare').table('employee').get(emp_merge('emp_id'))
+                //     })
+                    .coerceTo('array')
+                }
             })
-                  .do(function(result){
-              return r.branch(result.count().eq(0),[],
-                result.reduce(function(left,right){
-                  return {
-                    budget:left('budget').add(right('budget')),
-                    history_welfare:left('history_welfare').union(right('history_welfare'))
+            //       .do(function(result){
+            //   return r.branch(result.count().eq(0),[],
+            //     result.reduce(function(left,right){
+            //       return {
+            //         budget:left('budget').add(right('budget')),
+            //         history_welfare:left('history_welfare').union(right('history_welfare'))
                    
-                  }
-                }).merge(function(row){
+            //       }
+            //     }).merge(function(row){
                   
-                  return row('history_welfare')
-                     .merge(function(m){
-                return {
-                month:r.ISO8601(m('date_use')).month()
-              }
-            }).group('month').sum('use_budget').ungroup()
-                    .do(function(result){
-                      return	{
-                    history_welfare:result,
-                        result:r.expr([
-                          {month:"January",number:1},
-                          {month:"February",number:2},
-                          {month:"March",number:3},
-                          {month:"April",number:4},
-                          {month:"May",number:5},
-                          {month:"June",number:6},
-                          {month:"July",number:7},
-                          {month:"August",number:8},
-                          {month:"September",number:9},
-                          {month:"October",number:10},
-                          {month:"November",number:11},
-                          {month:"December",number:12}
-                        ]).merge(function(row){
-                          return result.filter({group:row('number')}).do(
-                            function(result){
-                              	 return {
-                            use_budget:r.branch(result.count().eq(0),0,result(0)('reduction'))
-                          }
-                            }
-                          )
-                        })
-                  }
-                    })
-                    .merge(function(row){
-                      return {
-                        result:r.object(r.args(row('result').concatMap(function(row){
-                        return [row('month'),row('use_budget')]
-                      })))
-                        ,
-                        use_budget:row('result').sum('use_budget')
-                      }
-                    })
-                })
-                )
+            //       return row('history_welfare')
+            //          .merge(function(m){
+            //     return {
+            //     month:r.ISO8601(m('date_use')).month()
+            //   }
+            // })
+            // .group('month').sum('use_budget').ungroup()
+            // .do(function(result){
+            //     return	{
+            //         history_welfare:result,
+            //         result:r.expr([
+            //             {month:"January",number:1},
+            //             {month:"February",number:2},
+            //             {month:"March",number:3},
+            //             {month:"April",number:4},
+            //             {month:"May",number:5},
+            //             {month:"June",number:6},
+            //             {month:"July",number:7},
+            //             {month:"August",number:8},
+            //             {month:"September",number:9},
+            //             {month:"October",number:10},
+            //             {month:"November",number:11},
+            //             {month:"December",number:12}
+            //             ])
+            //             .merge(function(row){
+            //                 return result.filter({group:row('number')})
+            //                 .do(
+            //                     function(result){
+            //                          return {
+            //                              use_budget:r.branch(result.count().eq(0),0,result(0)('reduction'))
+            //                             }
+            //                         }
+            //                         )
+            //                     })
+            //                 }
+            //             })
+            //             .merge(function(row){
+            //                 return {
+            //                      result:r.object(r.args(row('result').concatMap(function(row){
+            //                          return [row('month'),row('use_budget')]
+            //                         })))
+            //                         ,
+            //                         use_budget:row('result').sum('use_budget')
+            //                     }
+            //                 })
+            //             })
+            //             )
+            //         })
+                }
             })
-          }
-        }) 
-        .merge(function(row){
-          return r.branch(row('welfare').typeOf().eq('OBJECT'),
-            row('welfare').merge(function(row){
-              return row('result')
-            })
-            ,{welfare:[]})
-        })
-        .without('onetime','result','history_welfare','welfare','status','status_approve','admin_use','condition','description','end_date')
-        .run()
-        .then(function (result) {
-            // res.json(result);
-            res.ireport("report6.jasper", req.query.export || "pdf", result, parameters);
-        });
+            // .merge(function(row){
+            //     return r.branch(row('welfare').typeOf().eq('OBJECT'),
+            //      row('welfare').merge(function(row){
+            //          return row('result')
+            //         })
+            //         ,{welfare:[]})
+            //     })
+            //     .without('onetime','result','history_welfare','welfare','status','status_approve','admin_use','condition','description','end_date')
+                .run()
+                .then(function (result) {
+                    res.json(result);
+                    res.ireport("report6.jasper", req.query.export || "pdf", result, parameters);
+                });
 }
 exports.test2 = function (req, res) {
     var r = req.r
