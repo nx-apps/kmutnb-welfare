@@ -33,9 +33,15 @@
             properties: {
                    dataSearch:{
                        type:Object,
-                       notify:true
+                       notify:true,
+                       observer:'_setMonth'
                    }
             },
+            _setMonth(month){
+                console.log(month);
+                // console.log();
+                this.set('dataSearch.month',new Date().getMonth())
+            }
         });
     </script>
 </dom-module>

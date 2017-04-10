@@ -208,8 +208,8 @@
 
                     } else {
                         label = chart.map((ed) => this.toThaiDate(ed.id))
-                        console.log(label[0].search('undefined'));
-                        if (label[0].search('undefined')>= 0)  {
+                        // console.log(label[0].search('undefined'));
+                        if (label[0].search('undefined') >= 0) {
                             label = chart.map((ed) => ed.id)
                         }
                     }
@@ -256,45 +256,44 @@
                     case 'day':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
                             newData = {
-                                // year: this.dataSearch.year,
+                                year: this.dataSearch.year,
                                 date_start: this.dataSearch.date_end,
                                 group_id: this.dataSearch.group_id
                             }
                         } else {
                             newData = {
-                                // year: this.dataSearch.year,
+                                year: this.dataSearch.year,
                                 date_start: this.dataSearch.date_end,
                             }
                         }
-                        console.log();
-                        this.dispatchAction('GET_CHART_DAY_WITHOUT_GROUP', this.genUrl(newData))
+                        this.dispatchAction('GET_CHART_DAY_WITHOUT_GROUP', this.genUrlYearToThai(newData))
 
 
                         break;
                     case 'week':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
                             newData = {
-                                // year: this.dataSearch.year,
+                                year: this.dataSearch.year,
                                 date_start: this.dataSearch.date_start,
                                 date_end: this.dataSearch.date_end,
                                 group_id: this.dataSearch.group_id
                             }
                         } else {
                             newData = {
-                                // year: this.dataSearch.year,
+                                year: this.dataSearch.year,
 
                                 date_start: this.dataSearch.date_start,
                                 date_end: this.dataSearch.date_end
                             }
 
                         }
-                        this.dispatchAction('GET_CHART_WEEK_WITHOUT_GROUP', this.genUrl(newData))
+                        this.dispatchAction('GET_CHART_WEEK_WITHOUT_GROUP', this.genUrlYearToThai(newData))
 
                         break;
                     case 'month':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
                             newData = {
-                                // year: this.dataSearch.year,
+                                year: this.dataSearch.year,
                                 month: this.dataSearch.month + 1,
                                 group_id: this.dataSearch.group_id
                             }
