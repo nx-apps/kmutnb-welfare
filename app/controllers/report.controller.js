@@ -413,7 +413,7 @@ exports.report3_1 = function (req, res) {
         // })
         .merge(function (group_merge) {
             return {
-                group: r.db('welfare').table('group_welfare').get(req.params.id)
+                group: r.db('welfare').table('group_welfare').get(req.query.group_id)
                     .pluck('id', 'group_welfare_name', 'year')
                     .merge(function (m) {
                         return {
@@ -1185,7 +1185,8 @@ exports.list_group = function (req, res) {
         // .orderBy('group_welfare_name')
         .run()
         .then(function (result) {
-            res.json(result);
+            // res.json(result);
+            res.ireport("list_group.jasper", req.query.export || "pdf", result);
         })
 }
 exports.list_year = function (req, res) {
