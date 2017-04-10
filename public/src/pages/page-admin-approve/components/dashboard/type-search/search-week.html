@@ -7,10 +7,14 @@
         .date-picker {
             margin-top: -35px !important;
         }
+        
+        .auto-flex {
+            width: 100%;
+        }
     </style>
     <template>
 
-        <div class="layout horizontal">
+        <div class="layout horizontal auto-flex">
             <div class="flex end-justified horizontal layout self-center">
                 จาก :
             </div>
@@ -29,10 +33,10 @@
         Polymer({
             is: 'search-week',
             properties: {
-                   dataSearch:{
-                       type:Object,
-                       notify:true
-                   }
+                dataSearch: {
+                    type: Object,
+                    notify: true
+                }
             },
         });
     </script>

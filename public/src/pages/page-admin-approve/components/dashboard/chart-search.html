@@ -26,9 +26,9 @@
                 margin-top: -35px !important;
             }
             
-            .auto-flex {
+            /*.auto-flex {
                 width: 100%;
-            }
+            }*/
         </style>
         <paper-material elevation="1">
             <div class="container">
@@ -64,7 +64,7 @@
                                 items="{{showBy}}" on-value-changed="setSearch"></gl-combo-box>
                         </div>
                     </div>
-                    <div class="flex-2 layout horizontal">
+                    <div class="flex-2">
 
                         <iron-pages selected="{{componentsSearch}}">
                             <search-day class="auto-flex " data-search="{{dataSearch}}"></search-day>
@@ -90,14 +90,6 @@
                 <paper-button raised on-tap="printReport" class="gl-bg-primary">ออกรายงาน</paper-button>
             </div>
         </paper-material>
-        <!--[[chart]]//-->
-        <!--สวัสดิการ
-ดูจำนวนเงิน วัน ช่วงวัน เดือน ช่วงเดือน ปี ช่วงปี
-ดูสวัสดิการอะไรถูกใช้บ้าง  วัน ช่วงวัน เดือน ช่วงเดือน ปี ช่วงปี
-//ดูจำนวนคนที่ใช้งาน วัน ช่วงวัน เดือน ช่วงเดือน ปี ช่วงปี
-ดูจำนวนคำขอ
-ดูสวัสดิ์การอะไรใช้เงินมากสุด เรียงลำดับ
-ปีอะไร  ดูสวัสดิการอะไร ดูคนหรือเงิน ดูเป็นช่วงแบบไหน-->
     </template>
     <script>
         Polymer({
