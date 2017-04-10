@@ -87,7 +87,7 @@
                 <chart-bar data="[[people]]" style="width: 450px; height: 250px;"></chart-bar>
             </div>
             <div class="horizontal end-justified layout">
-                <paper-button raised on-tap="printReport">ออกรายงาน</paper-button>
+                <paper-button raised on-tap="printReport" class="gl-bg-primary">ออกรายงาน</paper-button>
             </div>
         </paper-material>
         <!--[[chart]]//-->
@@ -162,13 +162,14 @@
                     if (typeof day.date !== 'undefined' && day.date !== 'undefined' && day.date !== '') {
                         this.set('dataSearch.showBy', 'week')
                         if (this.dataSearch.showBy == 'week') {
-                            // date_start
-                            // date_end
-                            let oldDay = new Date(new Date().setDate(new Date(day.result).getDay() - 7));
+                            // let oldDay = new Date(new Date().setDate(new Date(day.result).getDay() - 7));
+                            // console.log(oldDay);
+                            // console.log(day.result);
                             this.set('componentsSearch', 1)
                             let days = day.date.split('T')[0]
+                            let oldDay = day.dateOld_7.split('T')[0]
                             this.set('dataSearch.date_end', days)
-                            this.set('dataSearch.date_start', oldDay.toISOString().split('T')[0])
+                            this.set('dataSearch.date_start', oldDay)
 
                             // this.dispatchAction('GET_CHART_DAY_WITHOUT_GROUP')
                             newData = {
