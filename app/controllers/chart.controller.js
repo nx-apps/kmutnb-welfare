@@ -355,14 +355,114 @@ exports.month = (req, res) => {
     // console.log(date_start, date_end);
     r.db('welfare').table('group_welfare').getAll(req.query.year, { index: 'year' })
         .filter({ status_approve: true })
-        .merge((getHis) => {
+        .merge((get_con) => {
+            return {
+                conditions: r.db('welfare').table('welfare').getAll(get_con('id'), { index: 'group_id' })
+                    .merge(function (wel_merge) {
+                        return {
+                            condition: wel_merge('condition')
+                                .merge(function (con_merge) {
+                                    return {
+                                        field: r.db('welfare').table('condition').get(con_merge('field')).getField('field')
+                                    }
+                                }),
+                            employees: r.db('welfare').table('employee')
+                                .eqJoin('active_id', r.db('welfare_common').table('active'))
+                                .pluck('left', { right: ['active_code'] })
+                                .zip()
+                                .filter({ active_code: 'WORK' })
+                                .coerceTo('array')
+                        }
+                    })
+                    .coerceTo('array'),
+            }
+        })
+        .merge((getDate) => {
             return {
                 bath: r.db('welfare').table('history_welfare')
                     .between(date_start, date_end, { index: 'date_approve' })
                     .coerceTo('array')
-                    .filter({ status: 'approve', group_id: getHis('id') })
+                    .filter({ status: 'approve', group_id: getDate('id') })
                     .orderBy(r.asc('date_use'))
-                    .sum('use_budget')
+                    .sum('use_budget'),
+                emp_use: r.db('welfare').table('history_welfare').between(date_start, date_end, { index: 'date_approve' })
+                    .coerceTo('array')
+                    .filter({ status: 'approve', group_id: getDate('id') })
+                    .count(),
+                employees: getDate('conditions').merge((el) => {
+                    return {
+                        countCon: el('condition').count(),
+                        employee: r.branch(el('condition').count().eq(0),
+                            [el('employees')],
+                            el('condition').map(function (con_map) {
+                                return el('employees').filter(function (f) {
+                                    return f(con_map('field')).do(function (d) {
+                                        return r.branch(con_map('logic').eq(">="),
+                                            d.ge(con_map('value')),
+                                            r.branch(con_map('logic').eq(">"),
+                                                d.gt(con_map('value')),
+                                                r.branch(con_map('logic').eq("<="),
+                                                    d.le(con_map('value')),
+                                                    r.branch(con_map('logic').eq("<"),
+                                                        d.lt(con_map('value')),
+                                                        r.branch(con_map('logic').eq("=").or(con_map('logic').eq("==")),
+                                                            d.eq(con_map('value')),
+                                                            d.ne(con_map('value'))
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    })
+                                })
+                                    .coerceTo('array')
+                            })
+                        )
+
+                    }
+                })
+                    .merge(function (wel_merge) {
+                        return {
+                            employee: wel_merge('employee').reduce(function (l, r) {
+                                return l.add(r)
+                            })
+                        }
+                    })
+                    .merge(function (wel_merge) {
+                        return {
+                            employee: wel_merge('employee').merge(function (emp2_merge) {
+                                return {
+                                    count: wel_merge('employee').filter(function (f) {
+                                        return f('id').eq(emp2_merge('id'))
+                                    }).count()
+                                }
+                            })
+                        }
+                    })
+                    .merge(function (wel_merge) {
+                        return {
+                            employee: wel_merge('employee')
+                                .filter(function (emp_filter) {
+                                    return r.branch(wel_merge('countCon').eq(0),
+                                        emp_filter('count').eq(wel_merge('countCon').add(1)),
+                                        emp_filter('count').eq(wel_merge('countCon'))
+                                    )
+                                }).coerceTo('array')
+                                .distinct()
+                        }
+                    })
+                    //นับคนที่ผ่าน
+                    .merge((count) => {
+                        return {
+                            emp_count: count('employee').count()
+                        }
+                    })
+
+            }
+        })
+        .merge((count_2) => {
+            return {
+                emp_pass: count_2('employees').sum('emp_count')
             }
         })
         .merge((name) => {
@@ -370,7 +470,7 @@ exports.month = (req, res) => {
                 id: name('group_welfare_name')
             }
         })
-        .without('group_welfare_name', 'year', 'description', 'admin_use', 'end_date', 'onetime', 'start_date', 'status_approve')
+        .without('group_welfare_name', 'year', 'description', 'admin_use', 'end_date', 'onetime', 'start_date', 'status_approve','employees','conditions')
         .run()
         .then(function (result) {
             res.json(result);
