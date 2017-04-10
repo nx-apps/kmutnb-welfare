@@ -86,6 +86,9 @@
                 <chart-bar data="[[charttt]]" style="width: 450px; height: 250px;"></chart-bar>
                 <chart-bar data="[[people]]" style="width: 450px; height: 250px;"></chart-bar>
             </div>
+            <div class="horizontal end-justified layout">
+                <paper-button raised on-tap="printReport" class="gl-bg-primary">ออกรายงาน</paper-button>
+            </div>
         </paper-material>
         <!--[[chart]]//-->
         <!--สวัสดิการ
@@ -159,15 +162,12 @@
                     if (typeof day.date !== 'undefined' && day.date !== 'undefined' && day.date !== '') {
                         this.set('dataSearch.showBy', 'week')
                         if (this.dataSearch.showBy == 'week') {
-                            // date_start
-                            // date_end
-                            let oldDay = new Date(new Date().setDate(new Date(day.result).getDay() - 7));
                             this.set('componentsSearch', 1)
                             let days = day.date.split('T')[0]
+                            let oldDay = day.dateOld_7.split('T')[0]
                             this.set('dataSearch.date_end', days)
-                            this.set('dataSearch.date_start', oldDay.toISOString().split('T')[0])
+                            this.set('dataSearch.date_start', oldDay)
 
-                            // this.dispatchAction('GET_CHART_DAY_WITHOUT_GROUP')
                             newData = {
                                 date_start: this.dataSearch.date_start,
                                 date_end: this.dataSearch.date_end
@@ -329,6 +329,85 @@
             },
             checkUndefined(data) {
                 return (typeof data !== 'undefined' && data !== 'undefined' && data !== '')
+            },
+            printReport() {
+                console.log(1111);
+                switch (this.dataSearch.showBy) {
+                    case 'day':
+                        if (this.checkUndefined(this.dataSearch.group_id)) {
+                            newData = {
+                                year: this.dataSearch.year,
+                                date_start: this.dataSearch.date_end,
+                                group_id: this.dataSearch.group_id
+                            }
+                            window.open('./api/report/report2_1?' + this.genUrlYearToThai(newData));
+                        } else {
+                            newData = {
+                                year: this.dataSearch.year,
+                                date_start: this.dataSearch.date_end,
+                            }
+                            window.open('./api/report/report2?' + this.genUrlYearToThai(newData));
+                        }
+                        break;
+                    case 'week':
+                        if (this.checkUndefined(this.dataSearch.group_id)) {
+                            newData = {
+                                year: this.dataSearch.year,
+                                date_start: this.dataSearch.date_start,
+                                date_end: this.dataSearch.date_end,
+                                group_id: this.dataSearch.group_id
+                            }
+                            window.open('./api/report/report5_1?' + this.genUrlYearToThai(newData));
+                        } else {
+                            newData = {
+                                year: this.dataSearch.year,
+
+                                date_start: this.dataSearch.date_start,
+                                date_end: this.dataSearch.date_end
+                            }
+                            window.open('./api/report/report5?' + this.genUrlYearToThai(newData));
+
+                        }
+                        break;
+                    case 'month':
+                        if (this.checkUndefined(this.dataSearch.group_id)) {
+                            newData = {
+                                year: this.dataSearch.year,
+                                month: this.dataSearch.month + 1,
+                                group_id: this.dataSearch.group_id
+                            }
+                            if (newData.month < 10)
+                                newData.month = '0' + newData.month
+                            window.open('./api/report/report3_1?' + this.genUrlYearToThai(newData));
+                        } else {
+                            newData = {
+                                year: this.dataSearch.year,
+                                month: this.dataSearch.month + 1
+                            }
+                            if (newData.month < 10)
+                                newData.month = '0' + newData.month
+
+                            // console.log(newData);
+                            window.open('./api/report/report3?' + this.genUrlYearToThai(newData));
+                        }
+                        break;
+                    case 'year':
+                        // if (this.checkUndefined(this.dataSearch.group_id)) {
+                        //     newData = {
+                        //         year: this.dataSearch.year,
+                        //         group_id: this.dataSearch.group_id
+                        //     }
+                        //      window.open('./api/report/report3?' + this.genUrlYearToThai(newData));
+                        // } else {
+                            newData = {
+                                year: this.dataSearch.year,
+                            }
+                             window.open('./api/report/report6?' + this.genUrlYearToThai(newData));
+                        // }
+                        break;
+                    default:
+
+                }
             }
         });
     </script>
