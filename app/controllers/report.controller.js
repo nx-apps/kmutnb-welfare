@@ -994,9 +994,14 @@ exports.report14 = function (req, res, next) {
         .merge(function (wel_merge) {
             return {
                 welfare: r.db('welfare').table('welfare').filter({ group_id: wel_merge('id') }).coerceTo('array')
+                 .merge(function (m){
+                return {
+                  welfare_id:m('id')
+                }
+              })
                     .merge(function (his_merge) {
                         return {
-                            history_welfare: r.db('welfare').table('history_welfare').getAll(his_merge('group_id'), { index: 'group_id' }).filter({ status: 'approve' })
+                            history_welfare: r.db('welfare').table('history_welfare').getAll(his_merge('welfare_id'), { index: 'welfare_id' }).filter({ status: 'approve' })
                                 .merge(function (emp_merge) {
                                     return r.db('welfare').table('employee').get(emp_merge('emp_id')).without('id')
                                 })
