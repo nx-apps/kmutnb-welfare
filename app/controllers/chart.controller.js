@@ -383,12 +383,12 @@ exports.year = (req, res) => {
     //  ดูเงินที่ใช้รายเดือน อย่างเดียว
     req.query.year = Number(req.query.year)
     let year = req.query.year;//2017
-    let data = []
+    let date = []
     for (var i = 1; i <= 12; i++) {
         if (i < 10)
             i = '0' + i
 
-        data.push({
+        date.push({
             id: String(i),
             date_start: year + "-" + i + "-" + '01' + 'T00:00:0:000Z',
             date_end: year + "-" + i + "-" + new Date(2017, i, 0).getDate() + 'T23:59:59:999Z',
@@ -396,20 +396,145 @@ exports.year = (req, res) => {
     }
     let result = 1
     let group_id = req.query.group_id
-    r.expr(data)
-        .merge((getData) => {
+    r.expr({
+        date: date,
+        emp: r.db('welfare').table('group_welfare').getAll(year, { index: 'year' })
+            .filter({ status_approve: true, id: group_id })
+            .merge((get_con) => {
+                return {
+                    conditions: r.db('welfare').table('welfare').getAll(get_con('id'), { index: 'group_id' })
+                        .merge(function (wel_merge) {
+                            return {
+                                condition: wel_merge('condition')
+                                    .merge(function (con_merge) {
+                                        return {
+                                            field: r.db('welfare').table('condition').get(con_merge('field')).getField('field')
+                                        }
+                                    }),
+                                employees: r.db('welfare').table('employee')
+                                    .eqJoin('active_id', r.db('welfare_common').table('active'))
+                                    .pluck('left', { right: ['active_code'] })
+                                    .zip()
+                                    .filter({ active_code: 'WORK' })
+                                    .coerceTo('array')
+                            }
+                        })
+                        .coerceTo('array'),
+                }
+            })
+            .coerceTo('array')
+    })
+        //ย้ายพนักงงานและพนักงานใส่วัน
+        .merge((move_emp) => {
+            return {
+                date: move_emp('date').merge((emp) => {
+                    return {
+                        welfare: move_emp('emp')
+                    }
+                })
+            }
+        })
+        .getField('date')
+        .merge((getDate) => {
             return {
                 bath: r.db('welfare').table('history_welfare')
-                    .between(getData('date_start'), getData('date_end'), { index: 'date_approve' })
+                    .between(getDate('date_start'), getDate('date_end'), { index: 'date_approve' })
                     .coerceTo('array')
                     .filter({
                         status: 'approve',
                         group_id: group_id
                     })
                     .orderBy(r.asc('date_use'))
-                    .sum('use_budget')
+                    .sum('use_budget'),
+                emp_use: r.db('welfare').table('history_welfare').between(getDate('date_start'), getDate('date_end'), { index: 'date_approve' })
+                    .coerceTo('array')
+                    .filter({ status: 'approve', group_id: group_id })
+                    .count(),
+                employees: getDate('welfare').merge((el) => {
+                    return {
+                        conditions: el('conditions').merge(function (wel_merge) {
+                            return {
+                                countCon: wel_merge('condition').count(),
+                                employee: r.branch(wel_merge('condition').count().eq(0),
+                                    [wel_merge('employees')],
+                                    wel_merge('condition').map(function (con_map) {
+                                        return wel_merge('employees').filter(function (f) {
+                                            return f(con_map('field')).do(function (d) {
+                                                return r.branch(con_map('logic').eq(">="),
+                                                    d.ge(con_map('value')),
+                                                    r.branch(con_map('logic').eq(">"),
+                                                        d.gt(con_map('value')),
+                                                        r.branch(con_map('logic').eq("<="),
+                                                            d.le(con_map('value')),
+                                                            r.branch(con_map('logic').eq("<"),
+                                                                d.lt(con_map('value')),
+                                                                r.branch(con_map('logic').eq("=").or(con_map('logic').eq("==")),
+                                                                    d.eq(con_map('value')),
+                                                                    d.ne(con_map('value'))
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            })
+                                        })
+                                            .coerceTo('array')
+                                    })
+                                )
+                            }
+                        })
+                            .merge(function (wel_merge) {
+                                return {
+                                    employee: wel_merge('employee').reduce(function (l, r) {
+                                        return l.add(r)
+                                    })
+                                }
+                            })
+                            .merge(function (wel_merge) {
+                                return {
+                                    employee: wel_merge('employee').merge(function (emp2_merge) {
+                                        return {
+                                            count: wel_merge('employee').filter(function (f) {
+                                                return f('id').eq(emp2_merge('id'))
+                                            }).count()
+                                        }
+                                    })
+                                }
+                            })
+                            .merge(function (wel_merge) {
+                                return {
+                                    employee: wel_merge('employee')
+                                        .filter(function (emp_filter) {
+                                            return r.branch(wel_merge('countCon').eq(0),
+                                                emp_filter('count').eq(wel_merge('countCon').add(1)),
+                                                emp_filter('count').eq(wel_merge('countCon'))
+                                            )
+                                        }).coerceTo('array')
+                                        .distinct()
+                                }
+                            })
+                            //นับคนที่ผ่าน
+                            .merge((count) => {
+                                return {
+                                    emp_count: count('employee').count()
+                                }
+                            })
+                        // ss: el('conditions').
+                    }
+                })
+                    .merge((count_2) => {
+                        return {
+                            count_emp: count_2('conditions').sum('emp_count')
+                        }
+                    })
             }
         })
+        .merge((count_3) => {
+            return {
+                emp_pass: count_3('employees').sum('count_emp')
+            }
+        })
+        .without('date_start', 'date_end', 'employees', 'welfare')
         .run()
         .then(function (result) {
             res.json(result);
