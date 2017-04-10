@@ -14,5 +14,7 @@ module.exports = function (app) {
     app.get('/report14/:year', controller.report14);
     app.get('/test2/:year/:month', controller.test2);
     app.get('/test3/:id', controller.test3);
+    app.get('/list_group/:id', controller.list_group);
+    app.get('/list_year/:year', controller.list_year);
 }
 
