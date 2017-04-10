@@ -45,6 +45,7 @@ exports.week = (req, res) => {
     let date = [];
     let tomorrow = new Date(date_start)
     // console.log(typeof xxxx);
+    let year = 2017
     console.log(tomorrow.toISOString().split('T')[0]);
     for (var i = 0; i < conuntDay; i++) {
         if (i == 0) {
@@ -71,7 +72,45 @@ exports.week = (req, res) => {
     //     })
     //     .getField('day')
     let group_id = req.query.group_id
-    r.expr(date)
+    r.expr({
+        date: date,
+        emp: r.db('welfare').table('group_welfare').getAll(year, { index: 'year' })
+            .filter({ status_approve: true, group_id: group_id })
+            .merge((get_con) => {
+                return {
+                    conditions: r.db('welfare').table('welfare').getAll(get_con('id'), { index: 'group_id' })
+                        .merge(function (wel_merge) {
+                            return {
+                                condition: wel_merge('condition')
+                                    .merge(function (con_merge) {
+                                        return {
+                                            field: r.db('welfare').table('condition').get(con_merge('field')).getField('field')
+                                        }
+                                    }),
+                                employees: r.db('welfare').table('employee')
+                                    .eqJoin('active_id', r.db('welfare_common').table('active'))
+                                    .pluck('left', { right: ['active_code'] })
+                                    .zip()
+                                    .filter({ active_code: 'WORK' })
+                                    .coerceTo('array')
+                            }
+                        })
+                        .coerceTo('array'),
+                }
+            })
+            .coerceTo('array')
+    })
+        //ย้ายพนักงงานและพนักงานใส่วัน
+        .merge((move_emp) => {
+            return {
+                date: move_emp('date').merge((emp) => {
+                    return {
+                        welfare: move_emp('emp')
+                    }
+                })
+            }
+        })
+        .getField('date')
         .merge((setDate) => {
             return {
                 id: setDate('id'),
@@ -90,7 +129,44 @@ exports.week = (req, res) => {
                     .coerceTo('array')
                     .filter({ status: 'approve', group_id: group_id })
                     .count(),
-                emp_pass: 10,
+                employees: getDate('welfare').merge((el) => {
+                    return {
+                        conditions: el('conditions').merge((merge2) => {
+                            return {
+                                countCon: merge2('condition').count(),
+                                //1 เช็คว่า เงือนไขมีไหมมีก็ไปต่อ ไม่มีก็ส่งสมาชิกกลับไปทุกคน
+                                employee_new: merge2('condition').count().eq(0).branch(
+                                    merge2('employees'),
+                                    merge2('condition').map((con_map) => {
+                                        return merge2('employees').filter((f) => {
+                                            return f(con_map('field')).do((d) => {
+                                                return r.branch(con_map('logic').eq(">="),
+                                                    d.ge(con_map('value')),
+                                                    r.branch(con_map('logic').eq(">"),
+                                                        d.gt(con_map('value')),
+                                                        r.branch(con_map('logic').eq("<="),
+                                                            d.le(con_map('value')),
+                                                            r.branch(con_map('logic').eq("<"),
+                                                                d.lt(con_map('value')),
+                                                                r.branch(con_map('logic').eq("=").or(con_map('logic').eq("==")),
+                                                                    d.eq(con_map('value')),
+                                                                    d.ne(con_map('value'))
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            })
+                                        })
+                                            .coerceTo('array')
+                                    })
+                                )
+                            }
+                        })//
+                           
+                        // ss: el('conditions').
+                    }
+                })//r.branch(getDate('condition').count().eq(0)
 
             }
         })
