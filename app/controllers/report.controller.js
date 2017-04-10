@@ -230,9 +230,9 @@ exports.report2_1 = function (req, res) {
 }
 exports.report3 = function (req, res, next) {
     var r = req.r
-    req.params.year = parseInt(req.params.year);
-    var year = req.params.year;//2017
-    var month = req.params.month;//03
+    req.query.year = parseInt(req.query.year);
+    var year = req.query.year;//2017
+    var month = req.query.month;//03
     var date_start = year + "-" + month + "-01";
     // var date_end_arr = req.query.date_end.split('-');
     var nextMonth = (parseInt(month) + 1);
@@ -263,7 +263,7 @@ exports.report3 = function (req, res, next) {
         .merge(function (group_merge) {
             return {
                 group: r.db('welfare').table('group_welfare')
-                    .getAll(req.params.year, { index: 'year' })
+                    .getAll(req.query.year, { index: 'year' })
                     .merge(function (m) {
                         return {
                             year: m('year').add(543),
@@ -354,14 +354,14 @@ exports.report3 = function (req, res, next) {
                         return {
                             value_budget: m('welfare').sum('value_budget'),
                             value_use: m('history_welfare').filter(function (f) {
-                                return f('year').eq(req.params.year).and(f('group_id').eq(m('id')))
+                                return f('year').eq(req.query.year).and(f('group_id').eq(m('id')))
                             }).sum('use_budget'),
                             emp_budget: m('welfare').sum('emp_budget'),
                             emp_use: m('history_welfare').filter(function (f) {
-                                return f('year').eq(req.params.year).and(f('group_id').eq(m('id')))
+                                return f('year').eq(req.query.year).and(f('group_id').eq(m('id')))
                             }).pluck('emp_id').distinct().count(),
                             time_use: m('history_welfare').filter(function (f) {
-                                return f('year').eq(req.params.year).and(f('group_id').eq(m('id')))
+                                return f('year').eq(req.query.year).and(f('group_id').eq(m('id')))
                             }).count()
                         }
                     })
@@ -931,13 +931,13 @@ exports.report5_1 = function (req, res) {
 }
 exports.report6 = function (req, res, next) {
     var r = req.r
-    req.params.year = parseInt(req.params.year);
+    req.query.year = parseInt(req.query.year);
     var parameters = {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
-        YEAR: req.params.year + '-01' + '-01'
+        YEAR: req.query.year + '-01' + '-01'
     };
 
-    r.db('welfare').table('group_welfare').filter({ year: req.params.year })
+    r.db('welfare').table('group_welfare').filter({ year: req.query.year })
         .merge(function (wel_merge) {
             return {
                 welfare: r.db('welfare').table('welfare').filter({ group_id: wel_merge('id') }).coerceTo('array')
