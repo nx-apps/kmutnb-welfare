@@ -200,39 +200,54 @@
                 }
             },
             setChart(chart) {
-                // console.log(chart);
-                // this.
-                this.charttt = {
-                    labels: chart.map((ed) => ed.id),
-                    datasets: [
-                        {
-                            label: "จำนวนเงิน",
-                            backgroundColor: "rgba(220,220,220,0.2)",
-                            borderColor: "rgba(220,220,220,1)",
-                            borderWidth: 1,
-                            data: chart.map((ed) => ed.bath)
-                        },
-                    ]
-                };
-                this.people = {
-                    labels: chart.map((ed) => ed.id),
-                    datasets: [
-                        {
-                            label: "จำนวนคนใช้งาน",
-                            backgroundColor: "rgba(220,220,220,0.2)",
-                            borderColor: "rgba(220,220,220,1)",
-                            borderWidth: 1,
-                            data: chart.map((ed) => ed.emp_use)
-                        },
-                        {
-                            label: "จำนวนคนมีสิทธิ์",
-                            backgroundColor: "rgba(220,220,220,0.2)",
-                            borderColor: "rgba(220,220,220,1)",
-                            borderWidth: 1,
-                            data: chart.map((ed) => ed.emp_pass)
-                        },
-                    ]
-                };
+
+                try {
+                    let label = []
+                    if (chart[0].id.length < 3) {
+                        label = chart.map((ed) => ed.id)
+
+                    } else {
+                        label = chart.map((ed) => this.toThaiDate(ed.id))
+                        console.log(label[0].search('undefined'));
+                        if (label[0].search('undefined')>= 0)  {
+                            label = chart.map((ed) => ed.id)
+                        }
+                    }
+                    this.charttt = {
+                        labels: label,
+                        datasets: [
+                            {
+                                label: "จำนวนเงิน",
+                                backgroundColor: "rgba(220,220,220,0.2)",
+                                borderColor: "rgba(220,220,220,1)",
+                                borderWidth: 1,
+                                data: chart.map((ed) => ed.bath)
+                            },
+                        ]
+                    };
+                    this.people = {
+                        labels: label,
+                        datasets: [
+                            {
+                                label: "จำนวนคนใช้งาน",
+                                backgroundColor: "rgba(220,220,220,0.2)",
+                                borderColor: "rgba(220,220,220,1)",
+                                borderWidth: 1,
+                                data: chart.map((ed) => ed.emp_use)
+                            },
+                            {
+                                label: "จำนวนคนมีสิทธิ์",
+                                backgroundColor: "rgba(220,220,220,0.2)",
+                                borderColor: "rgba(220,220,220,1)",
+                                borderWidth: 1,
+                                data: chart.map((ed) => ed.emp_pass)
+                            },
+                        ]
+                    };
+                } catch (e) {
+
+                }
+
             },
             serchWelfare() {
                 console.log(this.dataSearch);
