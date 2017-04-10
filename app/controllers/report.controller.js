@@ -222,8 +222,7 @@ exports.report2_1 = function (req, res) {
         .run()
         .then(function (result) {
             parameters.group_welfare_name = result.group_welfare_name;
-            if (req.query.res_type == 'json') 
-            {
+            if (req.query.res_type == 'json') {
                 res.json(result);
             }
             res.ireport("report2_1.jasper", req.query.export || "pdf", result.history_welfare, parameters);
@@ -504,22 +503,22 @@ exports.report3_1 = function (req, res) {
                         return {
                             welfare_name: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
                                 .pluck('welfare_name', 'id')
-                                .merge(function (change_name){
+                                .merge(function (change_name) {
                                     return {
-                                        welfare_id : change_name('id')
+                                        welfare_id: change_name('id')
                                     }
                                 }).without('id')
                                 .merge(function (mm) {
                                     return {
-                                        value_use : m('history_welfare').filter({welfare_id : mm('welfare_id')}).sum('use_budget'),
-                                        emp_budget: m('welfare').filter({id: mm('welfare_id')}).sum('emp_budget'),
-                                        emp_use: m('history_welfare').filter({welfare_id:mm('welfare_id')}).pluck('emp_id').distinct().count(),
-                                        time_use: m('history_welfare').filter({welfare_id:mm('welfare_id')}).count()
+                                        value_use: m('history_welfare').filter({ welfare_id: mm('welfare_id') }).sum('use_budget'),
+                                        emp_budget: m('welfare').filter({ id: mm('welfare_id') }).sum('emp_budget'),
+                                        emp_use: m('history_welfare').filter({ welfare_id: mm('welfare_id') }).pluck('emp_id').distinct().count(),
+                                        time_use: m('history_welfare').filter({ welfare_id: mm('welfare_id') }).count()
                                     }
                                 })
                         }
                     })
-                    .without('welfare','history_welfare')
+                    .without('welfare', 'history_welfare')
             }
         })
         .getField('group')
@@ -942,11 +941,11 @@ exports.report6 = function (req, res, next) {
         .merge(function (wel_merge) {
             return {
                 welfare: r.db('welfare').table('welfare').filter({ group_id: wel_merge('id') }).coerceTo('array')
-                 .merge(function (m){
-                return {
-                  welfare_id:m('id')
-                }
-              })
+                    .merge(function (m) {
+                        return {
+                            welfare_id: m('id')
+                        }
+                    })
                     .merge(function (his_merge) {
                         return {
                             history_welfare: r.db('welfare').table('history_welfare').getAll(his_merge('welfare_id'), { index: 'welfare_id' }).filter({ status: 'approve' })
@@ -1068,13 +1067,11 @@ exports.list_group = function (req, res) {
         .merge(function (group_merge) {
             return {
                 group: r.db('welfare').table('group_welfare')
-                    .get(req.params.id)
+                    .get(req.params.id).pluck('id', 'group_welfare_name', 'year')
                     // .getAll(req.params.year, { index: 'year' })
                     .merge(function (m) {
                         return {
                             year: m('year').add(543),
-                            start_date: m('start_date').split('T')(0),
-                            end_date: m('end_date').split('T')(0),
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
                                 .merge(function (wel_merge) {
                                     return {
@@ -1088,6 +1085,7 @@ exports.list_group = function (req, res) {
                                 })
                                 .merge(function (wel_merge) {
                                     return {
+                                        welfare_id: wel_merge('id'),
                                         countCon: wel_merge('condition').count(),
                                         employee: r.branch(wel_merge('condition').count().eq(0),
                                             [group_merge('employees')],
@@ -1117,6 +1115,7 @@ exports.list_group = function (req, res) {
                                         )
                                     }
                                 })
+                                .without('condition', 'group_id', 'status', 'id')
                                 .merge(function (wel_merge) {
                                     return {
                                         employee: wel_merge('employee').reduce(function (l, r) {
@@ -1130,7 +1129,18 @@ exports.list_group = function (req, res) {
                                             return {
                                                 count: wel_merge('employee').filter(function (f) {
                                                     return f('id').eq(emp2_merge('id'))
-                                                }).count()
+                                                }).count(),
+                                                start_work_date: emp2_merge('start_work_date').split('T')(0),
+                                                birthdate: emp2_merge('birthdate').split('T')(0),
+                                                academic_name: r.db('welfare_common').table('academic').get(emp2_merge('academic_id')).getField('academic_name'),
+                                                active_name: r.db('welfare_common').table('active').get(emp2_merge('active_id')).getField('active_name'),
+                                                department_name: r.db('welfare_common').table('department').get(emp2_merge('department_id')).getField('department_name'),
+                                                faculty_name: r.db('welfare_common').table('faculty').get(emp2_merge('faculty_id')).getField('faculty_name'),
+                                                gender_name: r.db('welfare_common').table('gender').get(emp2_merge('gender_id')).getField('gender_name'),
+                                                matier_name: r.db('welfare_common').table('matier').get(emp2_merge('matier_id')).getField('matier_name'),
+                                                position_name: r.db('welfare_common').table('position').get(emp2_merge('position_id')).getField('position_name'),
+                                                prefix_name: r.db('welfare_common').table('prefix').get(emp2_merge('prefix_id')).getField('prefix_name'),
+                                                type_employee_name: r.db('welfare_common').table('type_employee').get(emp2_merge('type_employee_id')).getField('type_employee_name')
                                             }
                                         })
                                     }
@@ -1152,7 +1162,7 @@ exports.list_group = function (req, res) {
                                         value_budget: wel_merge('employee').count().mul(wel_merge('budget')),
                                         emp_budget: wel_merge('employee').count()
                                     }
-                                }),
+                                })
                         }
                     })
                 // .merge(function (m) {
