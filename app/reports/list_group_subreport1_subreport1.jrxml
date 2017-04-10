@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="list_group_subreport1_subreport1" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f0e04663-a982-460a-8b26-eeb64102cec1">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="22"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<field name="emp_no" class="java.lang.String"/>
 	<field name="firstname" class="java.lang.String"/>
@@ -10,13 +10,14 @@
 	<field name="faculty_name" class="java.lang.String"/>
 	<field name="department_name" class="java.lang.String"/>
 	<field name="type_employee_name" class="java.lang.String"/>
+	<field name="prefix_name" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<detail>
-		<band height="20" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="472" y="0" width="126" height="20" uuid="2554a19d-26bd-410b-87c1-262b61661c69"/>
+	<pageHeader>
+		<band height="25">
+			<staticText>
+				<reportElement x="0" y="5" width="90" height="20" uuid="0583d278-eead-4a44-a89f-73cdd99ee671"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -24,13 +25,73 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="14" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{department_name}]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[รหัสพนักงาน]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="5" width="170" height="20" uuid="88447a7a-ce88-471d-abde-861ddd8e5481"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ตำแหน่ง]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="5" width="287" height="20" uuid="f2d6b310-2e6c-4961-aed1-131be9f1d34d"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[คณะ / ภาควิชา]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="5" width="150" height="20" uuid="df9406a9-70a0-4581-ba56-9226a82887e1"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ชื่อ - นามสกุล]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="697" y="5" width="105" height="20" uuid="be65a1d5-0955-4624-9117-082c1101efb6"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ประเภท]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="220" y="0" width="126" height="20" uuid="2d47c27d-7980-4a20-8908-809ce1e941bb"/>
+				<reportElement stretchType="RelativeToBandHeight" x="240" y="0" width="170" height="20" uuid="2d47c27d-7980-4a20-8908-809ce1e941bb"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -44,7 +105,7 @@
 				<textFieldExpression><![CDATA[$F{position_name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="100" height="20" uuid="caf85dd0-5e52-4016-a80c-644c9da75965"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20" uuid="caf85dd0-5e52-4016-a80c-644c9da75965"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -58,7 +119,7 @@
 				<textFieldExpression><![CDATA[$F{emp_no}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="598" y="0" width="100" height="20" uuid="33462ec9-81e0-441e-b7c1-0c36be69f6d3"/>
+				<reportElement stretchType="RelativeToBandHeight" x="697" y="0" width="105" height="20" uuid="33462ec9-81e0-441e-b7c1-0c36be69f6d3"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -72,7 +133,7 @@
 				<textFieldExpression><![CDATA[$F{type_employee_name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="346" y="0" width="126" height="20" uuid="8437f647-57f5-4ef8-ad79-ff16b446634e"/>
+				<reportElement stretchType="RelativeToBandHeight" x="410" y="0" width="287" height="20" uuid="8437f647-57f5-4ef8-ad79-ff16b446634e"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -83,10 +144,10 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{faculty_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{faculty_name}+" / "+$F{department_name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="100" y="0" width="120" height="20" uuid="7c79b5c5-9b41-4e0f-94c0-40d014dcfa1a"/>
+				<reportElement stretchType="RelativeToBandHeight" x="90" y="0" width="150" height="20" uuid="7c79b5c5-9b41-4e0f-94c0-40d014dcfa1a"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -97,7 +158,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{firstname}+$F{lastname}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{prefix_name}+$F{firstname}+" "+$F{lastname}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
