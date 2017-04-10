@@ -203,7 +203,7 @@
                 // console.log(chart);
                 // this.
                 this.charttt = {
-                    labels: chart.map((ed) => ed.id),
+                    labels: chart.map((ed) => this.toThaiDate(ed.id)),
                     datasets: [
                         {
                             label: "จำนวนเงิน",
@@ -215,7 +215,7 @@
                     ]
                 };
                 this.people = {
-                    labels: chart.map((ed) => ed.id),
+                    labels: chart.map((ed) => this.toThaiDate(ed.id)),
                     datasets: [
                         {
                             label: "จำนวนคนใช้งาน",
