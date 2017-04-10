@@ -162,16 +162,12 @@
                     if (typeof day.date !== 'undefined' && day.date !== 'undefined' && day.date !== '') {
                         this.set('dataSearch.showBy', 'week')
                         if (this.dataSearch.showBy == 'week') {
-                            // let oldDay = new Date(new Date().setDate(new Date(day.result).getDay() - 7));
-                            // console.log(oldDay);
-                            // console.log(day.result);
                             this.set('componentsSearch', 1)
                             let days = day.date.split('T')[0]
                             let oldDay = day.dateOld_7.split('T')[0]
                             this.set('dataSearch.date_end', days)
                             this.set('dataSearch.date_start', oldDay)
 
-                            // this.dispatchAction('GET_CHART_DAY_WITHOUT_GROUP')
                             newData = {
                                 date_start: this.dataSearch.date_start,
                                 date_end: this.dataSearch.date_end
@@ -380,6 +376,8 @@
                                 month: this.dataSearch.month + 1,
                                 group_id: this.dataSearch.group_id
                             }
+                            if (newData.month < 10)
+                                newData.month = '0' + newData.month
                             window.open('./api/report/report3_1?' + this.genUrlYearToThai(newData));
                         } else {
                             newData = {
