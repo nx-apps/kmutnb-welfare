@@ -255,12 +255,12 @@ exports.report3 = function (req, res, next) {
         employees: r.db('welfare').table('employee').coerceTo('array'),
         group: []
     })
-        .merge(function (employees_merge) {
-            return {
-                employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
-                    .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
-            }
-        })
+        // .merge(function (employees_merge) {
+        //     return {
+        //         employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
+        //             .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
+        //     }
+        // })
         .merge(function (group_merge) {
             return {
                 group: r.db('welfare').table('group_welfare')
@@ -375,7 +375,7 @@ exports.report3 = function (req, res, next) {
         .run()
         .then(function (result) {
             if (req.query.res_type == 'json') {
-                // res.json(result);
+                res.json(result);
             }
             res.ireport("report3.jasper", req.query.export || "pdf", result, parameters);
         });
@@ -511,18 +511,15 @@ exports.report3_1 = function (req, res) {
                                 }).without('id')
                                 .merge(function (mm) {
                                     return {
-                                        value_budget: m('welfare').filter({id: mm('welfare_id')}).sum('budget'),
                                         value_use : m('history_welfare').filter({welfare_id : mm('welfare_id')}).sum('use_budget'),
                                         emp_budget: m('welfare').filter({id: mm('welfare_id')}).sum('emp_budget'),
-                                        emp_use: m('history_welfare').filter({welfare_id : mm('welfare_id')}).distinct().count(),
-                                        time_use: m('history_welfare').filter(function (f) {
-                                            return f('year').eq(year).and(f('group_id').eq(req.params.id))
-                                        }).count()
+                                        emp_use: m('history_welfare').filter({welfare_id:mm('welfare_id')}).pluck('emp_id').distinct().count(),
+                                        time_use: m('history_welfare').filter({welfare_id:mm('welfare_id')}).count()
                                     }
                                 })
                         }
                     })
-                    .without('welfare', 'history_welfare')
+                    .without('welfare')
             }
         })
         .getField('group')
