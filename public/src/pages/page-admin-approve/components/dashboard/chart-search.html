@@ -9,7 +9,7 @@
 
 <dom-module id="chart-search">
     <template>
-        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment gl-styles">
              :host {
                 display: block;
             }
@@ -78,16 +78,14 @@
                 </div>
                 <div class="horizontal end-justified layout wrap">
 
-                    <paper-button raised class="gl-bg-info" on-tap="serchWelfare">ค้นหา</paper-button>
+                    <paper-button raised class="gl-bg-info" on-tap="serchWelfare gl-small">ค้นหา</paper-button>
+                    <paper-button raised on-tap="printReport" class="gl-bg-primary">ออกรายงาน</paper-button>
 
                 </div>
             </div>
             <div class="horizontal center-justified layout">
                 <chart-bar data="[[charttt]]" style="width: 450px; height: 250px;"></chart-bar>
                 <chart-bar data="[[people]]" style="width: 450px; height: 250px;"></chart-bar>
-            </div>
-            <div class="horizontal end-justified layout">
-                <paper-button raised on-tap="printReport" class="gl-bg-primary">ออกรายงาน</paper-button>
             </div>
         </paper-material>
     </template>
