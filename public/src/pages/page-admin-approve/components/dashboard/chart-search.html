@@ -2,6 +2,11 @@
 <link rel="import" href="./type-search/search-week.html">
 <link rel="import" href="./type-search/search-month.html">
 <link rel="import" href="./type-search/search-year.html">
+
+<link rel="import" href="./../../../components/month-behavior.html">
+
+<link rel="import" href="./../../../../../bower_components/chart-elements/chart-bar.html">
+
 <dom-module id="chart-search">
     <template>
         <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -77,8 +82,12 @@
 
                 </div>
             </div>
+            <div class="horizontal center-justified layout">
+                <chart-bar data="[[charttt]]" style="width: 450px; height: 250px;"></chart-bar>
+                <!--<chart-bar data="[[people]]" style="width: 450px; height: 250px;"></chart-bar>-->
+            </div>
         </paper-material>
-        [[chart]]//
+        <!--[[chart]]//-->
         <!--สวัสดิการ
 ดูจำนวนเงิน วัน ช่วงวัน เดือน ช่วงเดือน ปี ช่วงปี
 ดูสวัสดิการอะไรถูกใช้บ้าง  วัน ช่วงวัน เดือน ช่วงเดือน ปี ช่วงปี
@@ -91,7 +100,7 @@
         Polymer({
             is: 'chart-search',
             behaviors: [
-                ReduxBehavior
+                ReduxBehavior, MonthBehavior
             ],
             properties: {
                 dataSearch: {
@@ -125,9 +134,10 @@
                     type: String,
                     value: 'week'
                 },
-                chart:{
+                chart: {
                     type: String,
-                    statePath: 'chart.chart'
+                    statePath: 'chart.chart',
+                    observer: 'setChart'
                 }
             },
             setYear(year) {
@@ -158,7 +168,12 @@
                             this.set('dataSearch.date_start', oldDay.toISOString().split('T')[0])
 
                             // this.dispatchAction('GET_CHART_DAY_WITHOUT_GROUP')
-                            this.dispatchAction('GET_CHART_WEEK_WITHOUT_GROUP')
+                            newData = {
+                                date_start: this.dataSearch.date_start,
+                                date_end: this.dataSearch.date_end
+                            }
+                            this.dispatchAction('GET_CHART_WEEK_WITHOUT_GROUP', this.genUrl(newData))
+
                         }
                     }
                 } catch (error) {
@@ -184,6 +199,41 @@
                     // this.set('componentsSearch', 0)
                 }
             },
+            setChart(chart) {
+                // console.log(chart);
+                // this.
+                this.charttt = {
+                    labels: chart.map((ed) => ed.id),
+                    datasets: [
+                        {
+                            label: "จำนวนเงิน",
+                            backgroundColor: "rgba(220,220,220,0.2)",
+                            borderColor: "rgba(220,220,220,1)",
+                            borderWidth: 1,
+                            data: chart.map((ed) => ed.bath)
+                        },
+                    ]
+                };
+                this.people = {
+                    labels: chart.map((ed) => ed.id),
+                    datasets: [
+                        {
+                            label: "จำนวนคนใช้งาน",
+                            backgroundColor: "rgba(220,220,220,0.2)",
+                            borderColor: "rgba(220,220,220,1)",
+                            borderWidth: 1,
+                            data: chart.map((ed) => ed.emp_use)
+                        },
+                        {
+                            label: "จำนวนคนมีสิทธิ์",
+                            backgroundColor: "rgba(220,220,220,0.2)",
+                            borderColor: "rgba(220,220,220,1)",
+                            borderWidth: 1,
+                            data: chart.map((ed) => ed.emp_pass)
+                        },
+                    ]
+                };
+            },
             serchWelfare() {
                 console.log(this.dataSearch);
                 let newData = {}
@@ -191,63 +241,77 @@
                     case 'day':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
                             newData = {
-                                year: this.dataSearch.year,
+                                // year: this.dataSearch.year,
                                 date_start: this.dataSearch.date_end,
                                 group_id: this.dataSearch.group_id
                             }
                         } else {
                             newData = {
-                                year: this.dataSearch.year,
+                                // year: this.dataSearch.year,
                                 date_start: this.dataSearch.date_end,
                             }
                         }
+                        console.log();
+                        this.dispatchAction('GET_CHART_DAY_WITHOUT_GROUP', this.genUrl(newData))
 
 
                         break;
                     case 'week':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
                             newData = {
-                                year: this.dataSearch.year,
+                                // year: this.dataSearch.year,
                                 date_start: this.dataSearch.date_start,
                                 date_end: this.dataSearch.date_end,
                                 group_id: this.dataSearch.group_id
                             }
                         } else {
                             newData = {
-                                year: this.dataSearch.year,
+                                // year: this.dataSearch.year,
+
                                 date_start: this.dataSearch.date_start,
                                 date_end: this.dataSearch.date_end
                             }
-                        }
 
+                        }
+                        this.dispatchAction('GET_CHART_WEEK_WITHOUT_GROUP', this.genUrl(newData))
 
                         break;
                     case 'month':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
                             newData = {
-                                year: this.dataSearch.year,
-                                month: this.dataSearch.month+1,
+                                // year: this.dataSearch.year,
+                                month: this.dataSearch.month + 1,
                                 group_id: this.dataSearch.group_id
                             }
                         } else {
                             newData = {
                                 year: this.dataSearch.year,
-                                month: this.dataSearch.month+1
+                                month: this.dataSearch.month + 1
                             }
+                            if (newData.month < 10)
+                                newData.month = '0' + newData.month
+
                         }
+                        this.dispatchAction('GET_CHART_MONTH_WITHOUT_GROUP', this.genUrlYearToThai(newData))
 
                         break;
                     case 'year':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
-
+                            newData = {
+                                year: this.dataSearch.year,
+                                group_id: this.dataSearch.group_id
+                            }
                         } else {
-
+                            newData = {
+                                year: this.dataSearch.year,
+                            }
                         }
-                        this.set('componentsSearch', 3)
+                        this.dispatchAction('GET_CHART_YEAR_WITHOUT_GROUP', this.genUrlYearToThai(newData))
+                        // this.set('componentsSearch', 3)
                         break;
                     default:
                 }
-                console.log(newData);
+                // console.log(newData);
             },
             checkUndefined(data) {
                 return (typeof data !== 'undefined' && data !== 'undefined' && data !== '')

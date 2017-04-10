@@ -220,7 +220,7 @@
         </div>
 
         <panel-right id="test" title="{{title}}">
-            <employee-manage data="{{data}}"></employee-manage>
+            <employee-manage disabled="[[isEnable]]"></employee-manage>
         </panel-right>
     </template>
     <script>
@@ -345,6 +345,7 @@
             },
             editData() {
                 this.set('title', 'แก้ไขข้อมูลส่วนตัว')
+                this.isEnable = true;
                 this.$$('panel-right').open();
             },
             changePage: function (page) {

@@ -405,12 +405,12 @@ exports.report3_1 = function (req, res) {
         employees: r.db('welfare').table('employee').coerceTo('array'),
         group: []
     })
-        // .merge(function (employees_merge) {
-        //     return {
-        //         employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
-        //             .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
-        //     }
-        // })
+        .merge(function (employees_merge) {
+            return {
+                employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
+                    .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
+            }
+        })
         .merge(function (group_merge) {
             return {
                 group: r.db('welfare').table('group_welfare').get(req.params.id)
@@ -527,9 +527,9 @@ exports.report3_1 = function (req, res) {
         })
         .run()
         .then(function (result) {
-            // if (req.query.res_type == 'json') {
+            if (req.query.res_type == 'json') {
                 res.json(result);
-            // }
+            }
             res.ireport("report3_1.jasper", req.query.export || "pdf", result, parameters);
         })
 }
@@ -981,98 +981,127 @@ exports.test = function (req, res) {
         });
 }
 exports.report14 = function (req, res, next) {
+    var params = req.query;
     var r = req.r
     req.params.year = parseInt(req.params.year);
     var parameters = {
-        CURRENT_DATE: new Date().toISOString().slice(0, 10)
+        CURRENT_DATE: new Date().toISOString().slice(0, 10),
+        // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
+        // YEAR: req.params.year + "-01-01"
     };
+    // var date_start = "2017-01-01";
+    // var date_end = "2017-12-31";
+
+    // var year = req.params.year;
+    // var arr_month = ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
+    // var data = [];
+    // for (var i = 1; i <= 12; i++) {
+    //     var month = 0;
+    //     var nextMonth = 0;
+    //     if (i < 10) {
+    //         month = "0" + i;
+    //         nextMonth = i + 1;
+    //     } else {
+    //         month = i;
+    //         if (i == 12) {
+    //             nextMonth = 1;
+    //         } else {
+    //             nextMonth = i;
+    //         }
+    //     }
+    //     if (nextMonth < 10) {
+    //         nextMonth = "0" + nextMonth;
+    //     }
+    //     data.push({
+    //         date_start: year + "-" + month + "-01",
+    //         date_end: year + "-" + nextMonth + "-01",
+    //         month_name: arr_month[i]
+    //     });
+    // }
     
-      r.db('welfare').table('group_welfare').filter({year:req.params.year})
-        .merge(function (wel_merge){
+    
+    
+    
+    
+      r.db('welfare').table('group_welfare').filter({year:params.year})
+        .merge(function (m){
           return {
-            welfare:r.db('welfare').table('welfare').filter({group_id:wel_merge('id')}).coerceTo('array')
-            .merge(function(his_merge){
+            welfare:r.db('welfare').table('welfare').filter({group_id:m('id')}).coerceTo('array')
+            .merge(function(mm){
               return {
-                history_welfare:r.db('welfare').table('history_welfare').getAll(his_merge('id'), { index: 'group_id' }).filter({status:'approve'})
-                //   .merge(function (emp_merge){
-                //       return r.db('welfare').table('employee').get(emp_merge('emp_id'))
-                //     })
-                    .coerceTo('array')
-                }
+                history_welfare:r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
+              }
             })
-            //       .do(function(result){
-            //   return r.branch(result.count().eq(0),[],
-            //     result.reduce(function(left,right){
-            //       return {
-            //         budget:left('budget').add(right('budget')),
-            //         history_welfare:left('history_welfare').union(right('history_welfare'))
+                  .do(function(result){
+              return r.branch(result.count().eq(0),[],
+                result.reduce(function(left,right){
+                  return {
+                    budget:left('budget').add(right('budget')),
+                    history_welfare:left('history_welfare').union(right('history_welfare'))
                    
-            //       }
-            //     }).merge(function(row){
+                  }
+                }).merge(function(row){
                   
-            //       return row('history_welfare')
-            //          .merge(function(m){
-            //     return {
-            //     month:r.ISO8601(m('date_use')).month()
-            //   }
-            // })
-            // .group('month').sum('use_budget').ungroup()
-            // .do(function(result){
-            //     return	{
-            //         history_welfare:result,
-            //         result:r.expr([
-            //             {month:"January",number:1},
-            //             {month:"February",number:2},
-            //             {month:"March",number:3},
-            //             {month:"April",number:4},
-            //             {month:"May",number:5},
-            //             {month:"June",number:6},
-            //             {month:"July",number:7},
-            //             {month:"August",number:8},
-            //             {month:"September",number:9},
-            //             {month:"October",number:10},
-            //             {month:"November",number:11},
-            //             {month:"December",number:12}
-            //             ])
-            //             .merge(function(row){
-            //                 return result.filter({group:row('number')})
-            //                 .do(
-            //                     function(result){
-            //                          return {
-            //                              use_budget:r.branch(result.count().eq(0),0,result(0)('reduction'))
-            //                             }
-            //                         }
-            //                         )
-            //                     })
-            //                 }
-            //             })
-            //             .merge(function(row){
-            //                 return {
-            //                      result:r.object(r.args(row('result').concatMap(function(row){
-            //                          return [row('month'),row('use_budget')]
-            //                         })))
-            //                         ,
-            //                         use_budget:row('result').sum('use_budget')
-            //                     }
-            //                 })
-            //             })
-            //             )
-            //         })
-                }
+                  return row('history_welfare')
+                     .merge(function(m){
+                return {
+                month:r.ISO8601(m('date_use')).month()
+              }
+            }).group('month').sum('use_budget').ungroup()
+                    .do(function(result){
+                      return	{
+                    history_welfare:result,
+                        result:r.expr([
+                          {month:"January",number:1},
+                          {month:"February",number:2},
+                          {month:"March",number:3},
+                          {month:"April",number:4},
+                          {month:"May",number:5},
+                          {month:"June",number:6},
+                          {month:"July",number:7},
+                          {month:"August",number:8},
+                          {month:"September",number:9},
+                          {month:"October",number:10},
+                          {month:"November",number:11},
+                          {month:"December",number:12}
+                        ]).merge(function(row){
+                          return result.filter({group:row('number')}).do(
+                            function(result){
+                              	 return {
+                            use_budget:r.branch(result.count().eq(0),0,result(0)('reduction'))
+                          }
+                            }
+                          )
+                        })
+                  }
+                    })
+                    .merge(function(row){
+                      return {
+                        result:r.object(r.args(row('result').concatMap(function(row){
+                        return [row('month'),row('use_budget')]
+                      })))
+                        ,
+                        use_budget:row('result').sum('use_budget')
+                      }
+                    })
+                })
+                )
             })
-            // .merge(function(row){
-            //     return r.branch(row('welfare').typeOf().eq('OBJECT'),
-            //      row('welfare').merge(function(row){
-            //          return row('result')
-            //         })
-            //         ,{welfare:[]})
-            //     })
-            //     .without('onetime','result','history_welfare','welfare','status','status_approve','admin_use','condition','description','end_date')
-                .run()
-                .then(function (result) {
-                    res.json(result);
-                    res.ireport("report6.jasper", req.query.export || "pdf", result, parameters);
-                });
+          }
+        }) 
+        .merge(function(row){
+          return r.branch(row('welfare').typeOf().eq('OBJECT'),
+            row('welfare').merge(function(row){
+              return row('result')
+            })
+            ,{welfare:[]})
+        })
+        .without('onetime','result','history_welfare','welfare','status','status_approve','admin_use','condition','description','end_date')
+        .run()
+        .then(function (result) {
+            // res.json(result);
+            res.ireport("report6.jasper", req.query.export || "pdf", result, parameters);
+        });
 }
 exports.test2 = function (req, res) {
     var r = req.r
@@ -1361,257 +1390,5 @@ exports.test3 = function (req, res) {
         .then(function (result) {
             // res.json(result);
             res.ireport("report3_1.jasper", req.query.export || "pdf", result, parameters);
-        })
-}
-exports.list_group = function(req, res){
-    var r = req.r
-    req.params.year = parseInt(req.params.year);
-    r.expr({
-        employees: r.db('welfare').table('employee').coerceTo('array'),
-        group: []
-    })
-        .merge(function (employees_merge) {
-            return {
-                employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
-                    .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
-            }
-        })
-        .merge(function (group_merge) {
-            return {
-                group: r.db('welfare').table('group_welfare')
-                    .get(req.params.id)
-                    // .getAll(req.params.year, { index: 'year' })
-                    .merge(function (m) {
-                        return {
-                            year: m('year').add(543),
-                            start_date: m('start_date').split('T')(0),
-                            end_date: m('end_date').split('T')(0),
-                            welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
-                                .merge(function (wel_merge) {
-                                    return {
-                                        condition: wel_merge('condition')
-                                            .merge(function (con_merge) {
-                                                return {
-                                                    field: r.db('welfare').table('condition').get(con_merge('field')).getField('field')
-                                                }
-                                            })
-                                    }
-                                })
-                                .merge(function (wel_merge) {
-                                    return {
-                                        countCon: wel_merge('condition').count(),
-                                        employee: r.branch(wel_merge('condition').count().eq(0),
-                                            [group_merge('employees')],
-                                            wel_merge('condition').map(function (con_map) {
-                                                return group_merge('employees').filter(function (f) {
-                                                    return f(con_map('field')).do(function (d) {
-                                                        return r.branch(con_map('logic').eq(">="),
-                                                            d.ge(con_map('value')),
-                                                            r.branch(con_map('logic').eq(">"),
-                                                                d.gt(con_map('value')),
-                                                                r.branch(con_map('logic').eq("<="),
-                                                                    d.le(con_map('value')),
-                                                                    r.branch(con_map('logic').eq("<"),
-                                                                        d.lt(con_map('value')),
-                                                                        r.branch(con_map('logic').eq("=").or(con_map('logic').eq("==")),
-                                                                            d.eq(con_map('value')),
-                                                                            d.ne(con_map('value'))
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    })
-                                                })
-                                                    .coerceTo('array')
-                                            })
-                                        )
-                                    }
-                                })
-                                .merge(function (wel_merge) {
-                                    return {
-                                        employee: wel_merge('employee').reduce(function (l, r) {
-                                            return l.add(r)
-                                        })
-                                    }
-                                })
-                                .merge(function (wel_merge) {
-                                    return {
-                                        employee: wel_merge('employee').merge(function (emp2_merge) {
-                                            return {
-                                                count: wel_merge('employee').filter(function (f) {
-                                                    return f('id').eq(emp2_merge('id'))
-                                                }).count()
-                                            }
-                                        })
-                                    }
-                                })
-                                .merge(function (wel_merge) {
-                                    return {
-                                        employee: wel_merge('employee')
-                                            .filter(function (emp_filter) {
-                                                return r.branch(wel_merge('countCon').eq(0),
-                                                    emp_filter('count').eq(wel_merge('countCon').add(1)),
-                                                    emp_filter('count').eq(wel_merge('countCon'))
-                                                )
-                                            }).coerceTo('array')
-                                            .distinct()
-                                    }
-                                })
-                                .merge(function (wel_merge) {
-                                    return {
-                                        value_budget: wel_merge('employee').count().mul(wel_merge('budget')),
-                                        emp_budget: wel_merge('employee').count()
-                                    }
-                                }),
-                        }
-                    })
-                    // .merge(function (m) {
-                    //     return {
-                    //         value_budget: m('welfare').sum('value_budget'),
-                    //         value_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                    //             .filter({ year: req.params.year }).sum('use_budget'),
-                    //         emp_budget: m('welfare').sum('emp_budget'),
-                    //         emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                    //             .filter({ year: req.params.year }).pluck('emp_id').distinct().count(),
-                    //         time_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                    //             .filter({ year: req.params.year }).count()
-                    //     }
-                    // })
-                    // // .without('welfare')
-                    // .coerceTo('array')
-            }
-        })
-        .getField('group')
-        // .orderBy('group_welfare_name')
-        .run()
-        .then(function (result) {
-            res.json(result);
-        })
-}
-exports.list_year = function(req, res){
-    var r = req.r
-    req.params.year = parseInt(req.params.year);
-    r.expr({
-        employees: r.db('welfare').table('employee').coerceTo('array'),
-        group: []
-    })
-        .merge(function (employees_merge) {
-            return {
-                employees: employees_merge('employees').eqJoin('active_id', r.db('welfare_common').table('active'))
-                    .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
-            }
-        })
-        .merge(function (group_merge) {
-            return {
-                group: r.db('welfare').table('group_welfare')
-                    // .get(req.params.id)
-                    .getAll(req.params.year, { index: 'year' })
-                    .merge(function (m) {
-                        return {
-                            year: m('year').add(543),
-                            start_date: m('start_date').split('T')(0),
-                            end_date: m('end_date').split('T')(0),
-                            welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
-                                .merge(function (wel_merge) {
-                                    return {
-                                        condition: wel_merge('condition')
-                                            .merge(function (con_merge) {
-                                                return {
-                                                    field: r.db('welfare').table('condition').get(con_merge('field')).getField('field')
-                                                }
-                                            })
-                                    }
-                                })
-                                .merge(function (wel_merge) {
-                                    return {
-                                        countCon: wel_merge('condition').count(),
-                                        employee: r.branch(wel_merge('condition').count().eq(0),
-                                            [group_merge('employees')],
-                                            wel_merge('condition').map(function (con_map) {
-                                                return group_merge('employees').filter(function (f) {
-                                                    return f(con_map('field')).do(function (d) {
-                                                        return r.branch(con_map('logic').eq(">="),
-                                                            d.ge(con_map('value')),
-                                                            r.branch(con_map('logic').eq(">"),
-                                                                d.gt(con_map('value')),
-                                                                r.branch(con_map('logic').eq("<="),
-                                                                    d.le(con_map('value')),
-                                                                    r.branch(con_map('logic').eq("<"),
-                                                                        d.lt(con_map('value')),
-                                                                        r.branch(con_map('logic').eq("=").or(con_map('logic').eq("==")),
-                                                                            d.eq(con_map('value')),
-                                                                            d.ne(con_map('value'))
-                                                                        )
-                                                                    )
-                                                                )
-                                                            )
-                                                        )
-                                                    })
-                                                })
-                                                    .coerceTo('array')
-                                            })
-                                        )
-                                    }
-                                })
-                                .merge(function (wel_merge) {
-                                    return {
-                                        employee: wel_merge('employee').reduce(function (l, r) {
-                                            return l.add(r)
-                                        })
-                                    }
-                                })
-                                .merge(function (wel_merge) {
-                                    return {
-                                        employee: wel_merge('employee').merge(function (emp2_merge) {
-                                            return {
-                                                count: wel_merge('employee').filter(function (f) {
-                                                    return f('id').eq(emp2_merge('id'))
-                                                }).count()
-                                            }
-                                        })
-                                    }
-                                })
-                                .merge(function (wel_merge) {
-                                    return {
-                                        employee: wel_merge('employee')
-                                            .filter(function (emp_filter) {
-                                                return r.branch(wel_merge('countCon').eq(0),
-                                                    emp_filter('count').eq(wel_merge('countCon').add(1)),
-                                                    emp_filter('count').eq(wel_merge('countCon'))
-                                                )
-                                            }).coerceTo('array')
-                                            .distinct()
-                                    }
-                                })
-                                .merge(function (wel_merge) {
-                                    return {
-                                        value_budget: wel_merge('employee').count().mul(wel_merge('budget')),
-                                        emp_budget: wel_merge('employee').count()
-                                    }
-                                }),
-                        }
-                    })
-                    // .merge(function (m) {
-                    //     return {
-                    //         value_budget: m('welfare').sum('value_budget'),
-                    //         value_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                    //             .filter({ year: req.params.year }).sum('use_budget'),
-                    //         emp_budget: m('welfare').sum('emp_budget'),
-                    //         emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                    //             .filter({ year: req.params.year }).pluck('emp_id').distinct().count(),
-                    //         time_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                    //             .filter({ year: req.params.year }).count()
-                    //     }
-                    // })
-                    // // .without('welfare')
-                    .coerceTo('array')
-            }
-        })
-        .getField('group')
-        // .orderBy('group_welfare_name')
-        .run()
-        .then(function (result) {
-            res.json(result);
         })
 }

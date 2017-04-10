@@ -57,6 +57,7 @@ export function welfareAction(store) {
         },
         WELFARE_INSERT: function (data) {
             // console.log(data);
+            var year = new Date().getFullYear();
             this.fire('toast', { status: 'load' });
             axios.post(`./welfare/insert`, data)
                 .then((result) => {
@@ -65,6 +66,7 @@ export function welfareAction(store) {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             console.log('success');
                             this.LIST_WELFARE_ID(data.group_id);
+                            this.fire('refresh_group', year);
                         }
                     });
                 })
@@ -90,6 +92,7 @@ export function welfareAction(store) {
         },
         WELFARE_EDIT: function (data) {
             // console.log(data);
+            var year = new Date().getFullYear();
             var datas = {
                 budget: data.budget,
                 group_id: data.group_id,
@@ -102,10 +105,12 @@ export function welfareAction(store) {
             axios.put(`./welfare/update`, datas)
                 .then((result) => {
                     // console.log(result);
-                    this.LIST_WELFARE_ID(data.group_id);
                     this.fire('toast', {
-                        status: 'success', text: 'บันทึกสำเร็จ', callback: function () {
+                        status: 'success', text: 'บันทึกสำเร็จ', callback: () =>  {
                             console.log('success');
+                            this.WELFARE_DATA_SELECT(data.id);
+                            this.LIST_WELFARE_ID(data.group_id);
+                            this.fire('refresh_group', year);
                         }
                     });
                 })

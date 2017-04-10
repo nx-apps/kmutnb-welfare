@@ -172,7 +172,7 @@
                     text: 'คุณต้องการที่อนุมัติใช่หรือไม่ ?',
                     confirmed: this._toastApprove.bind(this),
                     datas: {
-                        id: this.data.id,
+                        id: this.list.id,
                         status_approve: true
                     }
                 });
@@ -188,7 +188,7 @@
                     text: 'คุณต้องการที่ยกเลิกใช้ใช่หรือไม่ ?',
                     confirmed: this._toastUnapprove.bind(this),
                     datas: {
-                        id: this.data.id,
+                        id: this.list.id,
                         status_approve: false
                     }
                 });

@@ -87,9 +87,12 @@
                         </paper-material>
 
                     </div>
-
+                    [[checkWelfare(selectWelfare)]]
                     <div class="horizontal end-justified layout">
-                        <paper-button raised class="gl-bg-primary" on-tap="_insert">
+                        <!--<paper-button raised class="gl-btn-info" on-tap="_print">
+                            <iron-icon icon="print"></iron-icon> ออกรายงาน
+                        </paper-button>-->
+                        <paper-button raised class="gl-btn-primary" on-tap="_insert">
                             <iron-icon icon="add"></iron-icon>เพิ่มพนักงาน
                         </paper-button>
                     </div>
@@ -204,7 +207,7 @@
                     dataFilter.map((item) => {
                         getStatus = item.admin_use;
                     })
-                    console.log(getStatus);
+                    // console.log(getStatus);
                     this.$$('admin-list-user').checkBox = getStatus;
                     // if(id != ""){
                     this.$$('admin-list-user').selectTable(false)
@@ -227,13 +230,13 @@
                 }
             },
             select_department: function (id) {
-                console.log('*', id);
+                // console.log('*', id);
                 this.$$('admin-list-user').searchTableByFilterDepartment(id);
             },
             back_page: function (e) {
                 // this.pages = 0;
                 this.$$('panel-right').close();
-                this.$$('admin-list-user').searchTableByFilterDepartment(e.detail);
+                // this.$$('admin-list-user').searchTableByFilterDepartment(e.detail);
             },
             confirmSend: function () {
                 this.fire('toast', {
@@ -261,6 +264,12 @@
                 // this.selected = 2;
                 this.set('title', 'เพิ่มสมาชิก')
                 this.$$('panel-right').open();
+                this.CLEAR_INSERT();
+            },
+            checkWelfare:function(val){
+                if(val != '' && typeof val != 'undefined'){
+                    console.log(val);
+                }
             },
             _getcommon: function () {
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');

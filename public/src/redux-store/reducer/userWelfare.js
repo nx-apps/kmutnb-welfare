@@ -66,6 +66,8 @@ export function userWelfareReducer(state = initialState, action) {
             return Object.assign({}, state, { select_use_welefares: action.payload });
         case 'FACULTY_LIST':
             return Object.assign({}, state, { faculty_list: action.payload });
+        case 'CLEAR_INSERT':
+            return Object.assign({}, state, { welfare_employee: action.payload });
         default:
             return state
     }
@@ -118,7 +120,7 @@ export function userWelfareAction(store) {
                 })
         },
         LIST_USER_SERARCH: function (id) {
-            console.log(id);
+            // console.log(id);
             this.userSearch = id;
             axios.get('./group/welfare/adminEmployee/' + id)
                 .then((response) => {
@@ -281,8 +283,14 @@ export function userWelfareAction(store) {
                                 })
                         })
                     }
+                    else{
+                        this.fire('back_page');
+                    }
                 }
             })
+        },
+        CLEAR_INSERT() {
+            store.dispatch({ type: 'CLEAR_INSERT', payload: {} })
         }
     }
     ]
