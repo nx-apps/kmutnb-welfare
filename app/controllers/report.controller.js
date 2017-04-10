@@ -374,7 +374,7 @@ exports.report3 = function (req, res, next) {
         .run()
         .then(function (result) {
             if (req.query.res_type == 'json') {
-                res.json(result);
+                // res.json(result);
             }
             res.ireport("report3.jasper", req.query.export || "pdf", result, parameters);
         });
@@ -498,15 +498,22 @@ exports.report3_1 = function (req, res) {
                             history_welfare: r.db('welfare').table('history_welfare').between(date_start, date_end, { index: 'date_use' }).filter({status:'approve'}).coerceTo('array')
                         }
                     })
-                    .merge(function (m) {
+                    
+        .merge(function (m){
+            return {
+                welfare_name:r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
+                .pluck('welfare_name','id')
+            }
+        })
+        .merge(function (m) {
                         return {
                             value_budget: m('welfare').sum('value_budget'),
                             value_use : m('history_welfare').filter(function (f) {
-                                return f('year').eq(year).and(f('group_id').eq(req.params.id))
+                                return f('year').eq(year).and(f('group_id').eq(req.params.id)).and(f('welfare_id').eq(m('welfare_name')('id')))
                             }).sum('use_budget'),
                             emp_budget: m('welfare').sum('emp_budget'),
                             emp_use: m('history_welfare').filter(function (f) {
-                                return f('year').eq(year).and(f('group_id').eq(req.params.id))
+                                return f('year').eq(year).and(f('group_id').eq(req.params.id)).and(f('welfare_id').eq(m('welfare_name')('id')))
                             }).pluck('emp_id').distinct().count(),
                             time_use: m('history_welfare').filter(function (f) {
                                 return f('year').eq(year).and(f('group_id').eq(req.params.id))
@@ -517,14 +524,6 @@ exports.report3_1 = function (req, res) {
             }
         })
         .getField('group')
-        .merge(function (m){
-            return {
-                welfare_name:r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
-                  .merge(function(mm){
-                      return mm('welfare_name')
-                             })(0)
-            }
-        })
         .run()
         .then(function (result) {
             // if (req.query.res_type == 'json') {
@@ -984,7 +983,8 @@ exports.report14 = function (req, res, next) {
     var r = req.r
     req.params.year = parseInt(req.params.year);
     var parameters = {
-        CURRENT_DATE: new Date().toISOString().slice(0, 10)
+        CURRENT_DATE: new Date().toISOString().slice(0, 10),
+        YEAR:req.params.year+'-01'+'-01'
     };
     
       r.db('welfare').table('group_welfare').filter({year:req.params.year})
@@ -993,84 +993,106 @@ exports.report14 = function (req, res, next) {
             welfare:r.db('welfare').table('welfare').filter({group_id:wel_merge('id')}).coerceTo('array')
             .merge(function(his_merge){
               return {
-                history_welfare:r.db('welfare').table('history_welfare').getAll(his_merge('id'), { index: 'group_id' }).filter({status:'approve'})
-                //   .merge(function (emp_merge){
-                //       return r.db('welfare').table('employee').get(emp_merge('emp_id'))
-                //     })
+                history_welfare:r.db('welfare').table('history_welfare').getAll(his_merge('group_id'), { index: 'group_id' }).filter({status:'approve'})
+                  .merge(function (emp_merge){
+                      return r.db('welfare').table('employee').get(emp_merge('emp_id')).without('id')
+                    })
                     .coerceTo('array')
                 }
             })
-            //       .do(function(result){
-            //   return r.branch(result.count().eq(0),[],
-            //     result.reduce(function(left,right){
-            //       return {
-            //         budget:left('budget').add(right('budget')),
-            //         history_welfare:left('history_welfare').union(right('history_welfare'))
+             .merge(function(m){
+              return{
+                count_use:m('history_welfare')('emp_id').distinct().count()
+              }
+            })
+             .merge(function (mul_use_merge){
+     return{
+       count_budget:mul_use_merge('budget').mul(mul_use_merge('count_use'))
+     }
+   })
+                  .do(function(result){
+              return r.branch(result.count().eq(0),[],
+                result.reduce(function(left,right){
+                  return {
+                    budget:left('budget').add(right('budget')),
+                    count_budget:left('count_budget').add(right('count_budget')),
+                    history_welfare:left('history_welfare').union(right('history_welfare'))
                    
-            //       }
-            //     }).merge(function(row){
+                  }
+                }).merge(function(row){
                   
-            //       return row('history_welfare')
-            //          .merge(function(m){
-            //     return {
-            //     month:r.ISO8601(m('date_use')).month()
-            //   }
-            // })
-            // .group('month').sum('use_budget').ungroup()
-            // .do(function(result){
-            //     return	{
-            //         history_welfare:result,
-            //         result:r.expr([
-            //             {month:"January",number:1},
-            //             {month:"February",number:2},
-            //             {month:"March",number:3},
-            //             {month:"April",number:4},
-            //             {month:"May",number:5},
-            //             {month:"June",number:6},
-            //             {month:"July",number:7},
-            //             {month:"August",number:8},
-            //             {month:"September",number:9},
-            //             {month:"October",number:10},
-            //             {month:"November",number:11},
-            //             {month:"December",number:12}
-            //             ])
-            //             .merge(function(row){
-            //                 return result.filter({group:row('number')})
-            //                 .do(
-            //                     function(result){
-            //                          return {
-            //                              use_budget:r.branch(result.count().eq(0),0,result(0)('reduction'))
-            //                             }
-            //                         }
-            //                         )
-            //                     })
-            //                 }
-            //             })
-            //             .merge(function(row){
-            //                 return {
-            //                      result:r.object(r.args(row('result').concatMap(function(row){
-            //                          return [row('month'),row('use_budget')]
-            //                         })))
-            //                         ,
-            //                         use_budget:row('result').sum('use_budget')
-            //                     }
-            //                 })
-            //             })
-            //             )
-            //         })
+                  return row('history_welfare')
+                     .merge(function(m){
+                return {
+                month:r.ISO8601(m('date_use')).month()
+              }
+            })
+            .group('month').sum('use_budget').ungroup()
+            .do(function(result){
+                return	{
+                    history_welfare:result,
+                    result:r.expr([
+                        {month:"January",number:1},
+                        {month:"February",number:2},
+                        {month:"March",number:3},
+                        {month:"April",number:4},
+                        {month:"May",number:5},
+                        {month:"June",number:6},
+                        {month:"July",number:7},
+                        {month:"August",number:8},
+                        {month:"September",number:9},
+                        {month:"October",number:10},
+                        {month:"November",number:11},
+                        {month:"December",number:12}
+                        ])
+                        .merge(function(row){
+                            return result.filter({group:row('number')})
+                            .do(
+                                function(result){
+                                     return {
+                                         use_budget:r.branch(result.count().eq(0),0,result(0)('reduction'))
+                                        }
+                                    }
+                                    )
+                                })
+                            }
+                        })
+                        .merge(function(row){
+                            return {
+                                 result:r.object(r.args(row('result').concatMap(function(row){
+                                     return [row('month'),row('use_budget')]
+                                    })))
+                                    ,
+                                    use_budget:row('result').sum('use_budget')
+                                }
+                            })
+                        })
+                        )
+                    })
                 }
             })
-            // .merge(function(row){
-            //     return r.branch(row('welfare').typeOf().eq('OBJECT'),
-            //      row('welfare').merge(function(row){
-            //          return row('result')
-            //         })
-            //         ,{welfare:[]})
-            //     })
-            //     .without('onetime','result','history_welfare','welfare','status','status_approve','admin_use','condition','description','end_date')
+            .merge(function(row){
+                return r.branch(row('welfare').typeOf().eq('OBJECT'),
+                 row('welfare').merge(function(row){
+                     return row('result')
+                    })
+                    ,{welfare:[]})
+                })
+                .without('onetime','result','history_welfare','welfare','status','status_approve','admin_use','condition','description','end_date')
+                 .merge(function(m){
+                      return {
+                          sum_month:m('January').add(m('February')).add(m('March')).add(m('April')).add(m('May')).add(m('June')).add(m('July'))
+                          .add(m('August')).add(m('September')).add(m('October')).add(m('November')).add(m('December'))
+                        }
+                    })
+                    .merge(function(sub_merge){
+                        return{
+                            balance:sub_merge('count_budget').sub(sub_merge('sum_month'))
+                        }
+                    })
                 .run()
                 .then(function (result) {
-                    res.json(result);
+                    // res.json(result);
                     res.ireport("report6.jasper", req.query.export || "pdf", result, parameters);
                 });
 }
@@ -1213,7 +1235,7 @@ exports.test2 = function (req, res) {
         .orderBy('group_welfare_name')
         .run()
         .then(function (result) {
-            // res.json(result);
+            res.json(result);
             res.ireport("report3.jasper", req.query.export || "pdf", result, parameters);
         })
 }
