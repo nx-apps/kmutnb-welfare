@@ -11,6 +11,7 @@
 		<defaultValueExpression><![CDATA["C:\\Users\\Accounting\\Documents\\Project\\kmutnb-welfare\\app\\reports\\"]]></defaultValueExpression>
 	</parameter>
 	<field name="welfare" class="java.lang.Object"/>
+	<field name="group_welfare_name" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -39,103 +40,15 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["รายชื่อพนักงานสวัสดิการ "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["รายชื่อพนักงานสวัสดิการ "+$F{group_welfare_name}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="20" splitType="Stretch">
-			<staticText>
-				<reportElement x="1" y="0" width="100" height="20" uuid="0583d278-eead-4a44-a89f-73cdd99ee671"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[รหัสพนักงาน]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="101" y="0" width="120" height="20" uuid="df9406a9-70a0-4581-ba56-9226a82887e1"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[ชื่อ - นามสกุล]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="221" y="0" width="126" height="20" uuid="88447a7a-ce88-471d-abde-861ddd8e5481"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[ตำแหน่ง]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="347" y="0" width="126" height="20" uuid="f2d6b310-2e6c-4961-aed1-131be9f1d34d"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[คณะ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="473" y="0" width="126" height="20" uuid="176badf4-27a7-4c60-9b31-45897489a4eb"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[ภาควิชา]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="599" y="0" width="100" height="20" uuid="be65a1d5-0955-4624-9117-082c1101efb6"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[ประเภท]]></text>
-			</staticText>
-		</band>
-	</pageHeader>
 	<detail>
 		<band height="20" splitType="Stretch"/>
 		<band height="20">
 			<subreport>
-				<reportElement x="1" y="-20" width="698" height="40" uuid="1354c3a1-1017-4f74-92f1-36c2a80cc799"/>
+				<reportElement x="1" y="-20" width="801" height="40" uuid="1354c3a1-1017-4f74-92f1-36c2a80cc799"/>
 				<dataSourceExpression><![CDATA[new iJsonDS($F{welfare})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "list_group_subreport1.jasper"]]></subreportExpression>
 			</subreport>

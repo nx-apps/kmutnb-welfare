@@ -13,25 +13,25 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="30" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="102" height="20" uuid="d6b657a9-7a60-40b9-a82c-4b80aaeebef5"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="10" width="802" height="20" uuid="d6b657a9-7a60-40b9-a82c-4b80aaeebef5"/>
 				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{welfare_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["เงื่อนไขสวัสดิการ : "+$F{welfare_name}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="20">
 			<subreport>
-				<reportElement x="0" y="0" width="699" height="20" uuid="f9521b49-1b3b-4697-9ef5-daf404ad652b"/>
+				<reportElement x="0" y="0" width="802" height="20" uuid="f9521b49-1b3b-4697-9ef5-daf404ad652b"/>
 				<dataSourceExpression><![CDATA[new iJsonDS($F{employee})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "list_group_subreport1_subreport1.jasper"]]></subreportExpression>
 			</subreport>
