@@ -16,7 +16,7 @@
 		<band height="30" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="10" width="802" height="20" uuid="d6b657a9-7a60-40b9-a82c-4b80aaeebef5"/>
-				<box leftPadding="5" rightPadding="5">
+				<box leftPadding="0" rightPadding="0">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
