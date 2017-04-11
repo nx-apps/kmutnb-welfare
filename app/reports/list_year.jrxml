@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="list_group" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55fde102-0645-4a27-beec-6eaa952dd419">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="list_year" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2f7a6a71-2732-43e3-b95e-4ad156498c68">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -12,24 +12,14 @@
 	</parameter>
 	<field name="welfare" class="java.lang.Object"/>
 	<field name="group_welfare_name" class="java.lang.String"/>
+	<field name="welfare_name" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="152" splitType="Stretch">
-			<staticText>
-				<reportElement x="1" y="96" width="801" height="25" uuid="152f08c3-b542-406d-8f3f-7c8c4fc18139"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ]]></text>
-			</staticText>
-			<image>
-				<reportElement x="356" y="10" width="80" height="80" uuid="e38952ba-6458-4df5-b3b4-78423f0636d5"/>
-				<imageExpression><![CDATA[new java.io.ByteArrayInputStream(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.decode($P{KMUTNB_BASE64}))]]></imageExpression>
-			</image>
+		<band height="153" splitType="Stretch">
 			<textField>
-				<reportElement mode="Transparent" x="0" y="121" width="802" height="24" uuid="fe6b7e3c-919d-4f89-884b-c5fd5656220e"/>
+				<reportElement mode="Transparent" x="0" y="121" width="802" height="24" uuid="f3955952-c696-494c-a633-5f1e63983903"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -40,17 +30,43 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["รายชื่อพนักงานสวัสดิการ "+$F{group_welfare_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["สวัสดิการประจำปี "]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="1" y="96" width="801" height="25" uuid="b05ad50e-bd12-4d8f-b38e-9f14f6818f8b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="356" y="10" width="80" height="80" uuid="38484fed-6ea2-41bd-8fb5-13c9b47fd12a"/>
+				<imageExpression><![CDATA[new java.io.ByteArrayInputStream(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.decode($P{KMUTNB_BASE64}))]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<detail>
-		<band height="20" splitType="Stretch"/>
+		<band height="25">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="3" width="224" height="20" uuid="c1fcb00e-5eda-4c35-8d32-688e591237e1"/>
+				<box leftPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["สวัสดิการ : "+$F{group_welfare_name}]]></textFieldExpression>
+			</textField>
+		</band>
 		<band height="20">
 			<subreport>
-				<reportElement x="1" y="-20" width="801" height="40" uuid="1354c3a1-1017-4f74-92f1-36c2a80cc799"/>
+				<reportElement x="1" y="0" width="651" height="20" uuid="955bbd9f-1702-4d48-86d2-ba3b6cd10da3"/>
 				<dataSourceExpression><![CDATA[new iJsonDS($F{welfare})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "list_group_subreport1.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "list_year_subreport1.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

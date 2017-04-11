@@ -1214,6 +1214,7 @@ exports.list_year = function (req, res) {
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
                                 .merge(function (wel_merge) {
                                     return {
+                                        group_welfare_name:m('group_welfare_name'),
                                         condition: wel_merge('condition')
                                             .merge(function (con_merge) {
                                                 return {
@@ -1324,6 +1325,8 @@ exports.list_year = function (req, res) {
         .orderBy('group_welfare_name')
         .run()
         .then(function (result) {
-            res.json(result);
+            // res.json(result);
+            var parameters = {};
+            res.ireport("list_year.jasper", req.query.export || "pdf", result, parameters);
         })
 }
