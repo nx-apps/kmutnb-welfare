@@ -23,16 +23,15 @@
                 background-color: var(--gl-white-color);
             }
         </style>
+
         <div style="padding:20px;">
             <paper-material elevation="1">
                 <template is="dom-if" if="{{checkMenu(data)}}">
-                    <div hidden$="{{date.status_approve}}">       
-                        <div hidden$="{{!isEnable}}">
-                            <div class="horizontal end-justified layout">
-                                <div style="margin:20px 20px 0px 0px;">
-                                    <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
-                                    <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
-                                </div>
+                    <div hidden="{{!isEnable}}">
+                        <div class="horizontal end-justified layout">
+                            <div style="margin:20px 20px 0px 0px;">
+                                <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
+                                <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
                             </div>
                         </div>
                     </div>
@@ -40,7 +39,7 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input disabled="{{isEnable}}" label="ชื่อเงื่อนไข" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อเงื่อนไข"></gl-form-input>
+                        <gl-form-input disabled="{{isEnable}}" label="ชื่อสวัสดิการย่อย" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
@@ -120,8 +119,8 @@
                     <div class="horizontal layout">
                         <div hidden="{{!isEnable}}" class="btn-bottom">
                             <paper-button raised class="gl-btn-danger" on-tap="back">ย้อนกลับ</paper-button>
-                            <!--<paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
-                            <paper-button raised class="gl-btn-warning" on-tap="print">Print</paper-button>-->
+                            <paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
+                            <paper-button raised class="gl-btn-warning" on-tap="print">Print</paper-button>
                         </div>
                     </div>
                 </template>
@@ -146,7 +145,6 @@
                             <tbody class="table-body">
                                 <template is="dom-repeat" items="{{employees.employee}}">
                                     <tr>
-<<<<<<< HEAD
                                         <td>
                                             <iron-icon style="cursor:pointer" icon="list" on-tap="_selectUser" data="[[item]]"></iron-icon>
                                         </td>
@@ -154,13 +152,6 @@
                                         <td>[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
                                         <td>[[item.position_name]]</td>
                                         <td>[[item.department_name]]</td>
-=======
-                                        <td><iron-icon style="cursor:pointer" icon="list" on-tap="_selectUser" data="[[item]]"></iron-icon></td>
-                                        <td style="text-align:left">[[item.personal_id]]</td>
-                                        <td style="text-align:left">[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
-                                        <td style="text-align:left">[[item.position_name]]</td>
-                                        <td style="text-align:left">[[item.department_name]]</td>
->>>>>>> df7e612a746de6fdbde25f0c4e254ef505e18c17
                                     </tr>
                                 </template>
                             </tbody>
@@ -366,6 +357,16 @@
                 //     delete this.data.condition[i].itemField;
                 // }
                 // console.log(JSON.stringify(this.data));
+
+                // if (typeof this.data.id == 'undefined') {
+                //     this.dispatchAction('WELFARE_INSERT', this.data);
+                //     this.fire('back');
+                // }
+                // else {
+                //     this.dispatchAction('WELFARE_EDIT', this.data);
+                //     this.isEnable = true;
+                //     // this.fire('back');
+                // }
             },
             _edit: function () {
                 this.isEnable = false;
@@ -385,15 +386,15 @@
                 this.fire('back');
                 this.tableStatus = false;
             },
-            // list_users: function () {
-            //     var id = this.data.id;
-            //     this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
-            //     this.tableStatus = true;
-            // },
-            // print: function () {
-            //     var id = this.data.id;
-            //     window.open('api/report/report1/' + id);
-            // },
+            list_users: function () {
+                var id = this.data.id;
+                this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
+                this.tableStatus = true;
+            },
+            print: function () {
+                var id = this.data.id;
+                window.open('api/report/report1/' + id);
+            },
             _delete: function () {
                 this.fire('toast', {
                     status: 'openDialog',
