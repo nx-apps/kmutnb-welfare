@@ -96,15 +96,15 @@ exports.conditions = function (req, res) {
                             name: com_map(con_merge('data_source').add('_name'))
                         }
                     }).coerceTo('array')
-                        .merge(function (data_merge) {
-                            return {
-                                name: r.branch(
-                                    con_merge('data_source').eq("department"),
-                                    r.db('welfare_common').table('faculty').get(data_merge('faculty_id')).getField('faculty_name').add('/', data_merge('name')),
-                                    data_merge('name')
-                                )
-                            }
-                        })
+                        // .merge(function (data_merge) {
+                        //     return {
+                        //         name: r.branch(
+                        //             con_merge('data_source').eq("department"),
+                        //             r.db('welfare_common').table('faculty').get(data_merge('faculty_id')).getField('faculty_name').add('/', data_merge('name')),
+                        //             data_merge('name')
+                        //         )
+                        //     }
+                        // })
                         .pluck('id', 'name')
                         .orderBy('name')
                 )

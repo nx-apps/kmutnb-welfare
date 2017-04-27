@@ -1,8 +1,6 @@
 <link rel="import" href="components/welfare-panel.html">
-<!--<link rel="import" href="components/welfare-manage.html">
-<link rel="import" href="components/welfare-detail.html">-->
+<!--<link rel="import" href="components/group-welfare-chart.html">-->
 <link rel="import" href="./../components/page-style.html">
-
 <link rel="import" href="./../components/common-logic.html">
 
 
@@ -22,7 +20,7 @@
             .table-detail {
                 margin: auto;
                 /*width: 80%;*/
-                /*padding: 20px;*/
+                padding: 20px;
             }
             
             table.gl-table-default {
@@ -40,6 +38,7 @@
         </style>
         <div class="xcontainer">
             <div class="header-page">จัดการสวัสดิการ</div>
+            <!--<group-welfare-chart></group-welfare-chart>-->
             <div class="horizontal layout">
                 <!--<paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_print">
                 <iron-icon icon="print"></iron-icon>ออกรายงาน</paper-button>-->
@@ -85,8 +84,6 @@
                                         <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
                                         <td style="text-align:right">[[formatNumber(item.value_use)]]</td>
                                         <td style="text-align:center">
-                                            <!--<paper-icon-button data="[[item]]" icon="icons:list" on-tap="select_welfare" title="เงื่อนไข"></paper-icon-button>
-                                            <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="แก้ไขสวัสดิการ"></paper-icon-button>-->
                                             <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="แก้ไขสวัสดิการ"></paper-icon-button>
                                         </td>
                                     </tr>
@@ -107,15 +104,8 @@
             <panel-right title="{{title}}">
                 <iron-pages selected="{{pages}}">
                     <div>
-                        <!--<welfare-panel data="{{data}}"></welfare-panel>-->
                         <welfare-panel is-enable="[[active]]"></welfare-panel>
                     </div>
-                    <!--<div>
-                        <welfare-detail data="{{dataSelect}}"></welfare-detail>
-                    </div>
-                    <div>
-                        <welfare-manage></welfare-manage>
-                    </div>-->
                 </iron-pages>
             </panel-right>
         </div>

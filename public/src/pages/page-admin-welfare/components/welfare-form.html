@@ -1,4 +1,6 @@
 <link rel="import" href="../../components/format-number-behavior.html">
+<link rel="import" href="./../../components/validateFormBehaviors.html">
+
 <dom-module id="welfare-form">
     <template>
         <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -46,7 +48,7 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        <gl-form-input required disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <template is="dom-repeat" items="{{data.condition}}">
@@ -146,21 +148,11 @@
                             <tbody class="table-body">
                                 <template is="dom-repeat" items="{{employees.employee}}">
                                     <tr>
-<<<<<<< HEAD
-                                        <td>
-                                            <iron-icon style="cursor:pointer" icon="list" on-tap="_selectUser" data="[[item]]"></iron-icon>
-                                        </td>
-                                        <td>[[item.personal_id]]</td>
-                                        <td>[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
-                                        <td>[[item.position_name]]</td>
-                                        <td>[[item.department_name]]</td>
-=======
                                         <td><iron-icon style="cursor:pointer" icon="list" on-tap="_selectUser" data="[[item]]"></iron-icon></td>
                                         <td style="text-align:left">[[item.personal_id]]</td>
                                         <td style="text-align:left">[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
                                         <td style="text-align:left">[[item.position_name]]</td>
                                         <td style="text-align:left">[[item.department_name]]</td>
->>>>>>> df7e612a746de6fdbde25f0c4e254ef505e18c17
                                     </tr>
                                 </template>
                             </tbody>
@@ -173,7 +165,7 @@
     <script>
         Polymer({
             is: 'welfare-form',
-            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, ValidateFormBehavior],
             properties: {
                 condition: {
                     statePath: 'welfare.condition'
@@ -275,11 +267,12 @@
 
                 //     return newitem
                 // })
+                console.log(this.date);
                 var newData = {
-                    group_id: this.data.group_id,
-                    status: this.data.status,
+                    group_id: this.date.id,
+                    // status: this.data.status,
                     welfare_name: this.data.welfare_name,
-                    budget: this.data.budget,
+                    budget: this.unFormat(this.data.budget),
                 }
                 var conditon = this.data.condition.map((item)=>{
                     if(item.value_showDropdown == ''){
@@ -318,7 +311,24 @@
                     newitem.field = field.id;
                     return newitem
                 })
-                 console.log(setCondition);
+                newData.condition = setCondition;               
+                if (typeof this.data.id == 'undefined') {
+                    newData.status = true;
+                    //  console.log(newData);
+                    var year = new Date().getFullYear();
+                    this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
+                        this.fire('refresh_group',year);
+                        this.fire('back');
+                    })
+                }
+                else {
+                    newData.status = this.data.status
+                    newData.id=this.data.id;
+                    console.log(newData);
+                    this.dispatchAction('WELFARE_EDIT', newData);
+                    this.isEnable = true;
+                    // this.fire('back');
+                }
                 // console.log(this.data);
                 // console.log(newData);
                 // for (var i = 0; i < this.data.condition.length; i++) {
