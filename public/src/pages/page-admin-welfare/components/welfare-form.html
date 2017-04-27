@@ -146,21 +146,11 @@
                             <tbody class="table-body">
                                 <template is="dom-repeat" items="{{employees.employee}}">
                                     <tr>
-<<<<<<< HEAD
-                                        <td>
-                                            <iron-icon style="cursor:pointer" icon="list" on-tap="_selectUser" data="[[item]]"></iron-icon>
-                                        </td>
-                                        <td>[[item.personal_id]]</td>
-                                        <td>[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
-                                        <td>[[item.position_name]]</td>
-                                        <td>[[item.department_name]]</td>
-=======
                                         <td><iron-icon style="cursor:pointer" icon="list" on-tap="_selectUser" data="[[item]]"></iron-icon></td>
                                         <td style="text-align:left">[[item.personal_id]]</td>
                                         <td style="text-align:left">[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
                                         <td style="text-align:left">[[item.position_name]]</td>
                                         <td style="text-align:left">[[item.department_name]]</td>
->>>>>>> df7e612a746de6fdbde25f0c4e254ef505e18c17
                                     </tr>
                                 </template>
                             </tbody>
@@ -275,11 +265,12 @@
 
                 //     return newitem
                 // })
+                console.log(this.date);
                 var newData = {
-                    group_id: this.data.group_id,
-                    status: this.data.status,
+                    group_id: this.date.id,
+                    // status: this.data.status,
                     welfare_name: this.data.welfare_name,
-                    budget: this.data.budget,
+                    budget: this.unFormat(this.data.budget),
                 }
                 var conditon = this.data.condition.map((item)=>{
                     if(item.value_showDropdown == ''){
@@ -318,7 +309,24 @@
                     newitem.field = field.id;
                     return newitem
                 })
-                 console.log(setCondition);
+                newData.condition = setCondition;               
+                if (typeof this.data.id == 'undefined') {
+                    newData.status = true;
+                    //  console.log(newData);
+                    var year = new Date().getFullYear();
+                    this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
+                        this.fire('refresh_group',year);
+                        this.fire('back');
+                    })
+                }
+                else {
+                    newData.status = this.data.status
+                    newData.id=this.data.id;
+                    console.log(newData);
+                    this.dispatchAction('WELFARE_EDIT', newData);
+                    this.isEnable = true;
+                    // this.fire('back');
+                }
                 // console.log(this.data);
                 // console.log(newData);
                 // for (var i = 0; i < this.data.condition.length; i++) {
