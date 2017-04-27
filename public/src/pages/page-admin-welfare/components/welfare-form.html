@@ -1,4 +1,6 @@
 <link rel="import" href="../../components/format-number-behavior.html">
+<link rel="import" href="./../../components/validateFormBehaviors.html">
+
 <dom-module id="welfare-form">
     <template>
         <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -40,13 +42,13 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input disabled="{{isEnable}}" label="ชื่อเงื่อนไข" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อเงื่อนไข"></gl-form-input>
+                        <gl-form-input class="form" required disabled="{{isEnable}}" label="ชื่อเงื่อนไข" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อเงื่อนไข"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <template is="dom-repeat" items="{{data.condition}}">
@@ -163,7 +165,7 @@
     <script>
         Polymer({
             is: 'welfare-form',
-            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior,ValidateFormBehavior],
             properties: {
                 condition: {
                     statePath: 'welfare.condition'
@@ -190,7 +192,7 @@
                 }
             },
             setItemShow: function (data) {
-                console.log(data);
+                // console.log(data);
                 this.data.condition.map((item) => {
                     if (typeof item.field.data == 'string') {
                         item.value_showInput = item.value_show;
@@ -258,122 +260,72 @@
                 }
             },
             save: function () {
-                // var newCondition = this.data.condition.map((item) => {
-                //     let {field, logic, logic_show, value, value_show} = item;
-                //     let newitem = { field, logic, logic_show, value, value_show }
-                //     newitem.field = field.id;
-
-                //     return newitem
-                // })
-                console.log(this.date);
-                var newData = {
-                    group_id: this.date.id,
-                    // status: this.data.status,
-                    welfare_name: this.data.welfare_name,
-                    budget: this.unFormat(this.data.budget),
-                }
-                var conditon = this.data.condition.map((item)=>{
-                    if(item.value_showDropdown == ''){
-                        item.value_show = item.value_showInput;
+                var check = this.validateForm('.form');
+                // console.log(check);
+                if(check == false) return '';
+                if(check == true){
+                    var newData = {
+                        group_id: this.date.id,
+                        // status: this.data.status,
+                        welfare_name: this.data.welfare_name,
+                        budget: this.unFormat(this.data.budget),
                     }
-                    else if(item.value_showInput == ''){
-                        item.value_show = item.value_showDropdown;
-                    }
-                    return item
-                })
-                var arr = [];
-                    for (var i = 0; i < this.data.condition.length; i++) {
-                        var data = conditon[i];
-                        var search = data.field.field.search('date')
-                        if (search != -1) {
-                            // console.log(data.logic_show);
-                            if (data.logic_show.search(">") >= 0) {
-                                var d = this.date.start_date.split("-");
-                                data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2];
-                                data.logic = data.logic_show.replace(">", "<");
-                            } else if (data.logic_show.search("<") >= 0) {
-                                var d = this.date.end_date.split("-");
-                                data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2];
-                                data.logic = data.logic_show.replace("<", ">");
-                            }
+                    var conditon = this.data.condition.map((item)=>{
+                        if(item.value_showDropdown == ''){
+                            item.value_show = item.value_showInput;
                         }
-                        else{
-                               data.value = data.value_show;
-                               data.logic = data.logic_show;
+                        else if(item.value_showInput == ''){
+                            item.value_show = item.value_showDropdown;
                         }
-                        arr.push(data);
-                    }
-                var setCondition = arr.map((item)=>{
-                    let {field, logic, logic_show, value, value_show} = item;
-                    let newitem = { field, logic, logic_show, value, value_show }
-                    newitem.field = field.id;
-                    return newitem
-                })
-                newData.condition = setCondition;               
-                if (typeof this.data.id == 'undefined') {
-                    newData.status = true;
-                    //  console.log(newData);
-                    var year = new Date().getFullYear();
-                    this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
-                        this.fire('refresh_group',year);
-                        this.fire('back');
+                        return item
                     })
+                    var arr = [];
+                        for (var i = 0; i < this.data.condition.length; i++) {
+                            var data = conditon[i];
+                            var search = data.field.field.search('date')
+                            if (search != -1) {
+                                // console.log(data.logic_show);
+                                if (data.logic_show.search(">") >= 0) {
+                                    var d = this.date.start_date.split("-");
+                                    data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2];
+                                    data.logic = data.logic_show.replace(">", "<");
+                                } else if (data.logic_show.search("<") >= 0) {
+                                    var d = this.date.end_date.split("-");
+                                    data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2];
+                                    data.logic = data.logic_show.replace("<", ">");
+                                }
+                            }
+                            else{
+                                data.value = data.value_show;
+                                data.logic = data.logic_show;
+                            }
+                            arr.push(data);
+                        }
+                    var setCondition = arr.map((item)=>{
+                        let {field, logic, logic_show, value, value_show} = item;
+                        let newitem = { field, logic, logic_show, value, value_show }
+                        newitem.field = field.id;
+                        return newitem
+                    })
+                    newData.condition = setCondition;               
+                    if (typeof this.data.id == 'undefined') {
+                        newData.status = true;
+                        //  console.log(newData);
+                        var year = new Date().getFullYear();
+                        this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
+                            this.fire('refresh_group',year);
+                            this.fire('back');
+                        })
+                    }
+                    else {
+                        newData.status = this.data.status
+                        newData.id=this.data.id;
+                        console.log(newData);
+                        this.dispatchAction('WELFARE_EDIT', newData);
+                        this.isEnable = true;
+                        // this.fire('back');
+                    }
                 }
-                else {
-                    newData.status = this.data.status
-                    newData.id=this.data.id;
-                    console.log(newData);
-                    this.dispatchAction('WELFARE_EDIT', newData);
-                    this.isEnable = true;
-                    // this.fire('back');
-                }
-                // console.log(this.data);
-                // console.log(newData);
-                // for (var i = 0; i < this.data.condition.length; i++) {
-                //     // console.log(this.data.condition[i].field);
-                //     var id = this.data.condition[i].field.id;
-                //     var item = this.condition.filter((val) => val.id == id)[0]
-                //     var field = item.field;
-                //     // console.log(field);
-                //     // console.log(this.data.condition[i].logic.search("<"))
-                //     if (field == 'start_work_date') {
-                //         if (this.data.condition[i].logic_show.search(">") >= 0) {
-                //             var d = this.date.start_date.split("-");
-                //             this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
-                //             this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
-                //         } else if (this.data.condition[i].logic_show.search("<") >= 0) {
-                //             var d = this.date.end_date.split("-");
-                //             this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
-                //             this.data.condition[i].logic = this.data.condition[i].logic_show.replace("<", ">");
-                //         }
-                //     }
-                //     else if (field == 'birthday') {
-                //         if (this.data.condition[i].logic_show.search(">") >= 0) {
-                //             var date = new Date().toISOString().split("T")(0);
-                //             var d = date.split('-');
-                //             // console.log(d);
-                //             this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
-                //             this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
-                //         } else if (this.data.condition[i].logic_show.search("<") >= 0) {
-                //             var date = new Date().toISOString().split("T")(0);
-                //             var d = date.split('-');
-                //             this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
-                //             this.data.condition[i].logic = this.data.condition[i].logic_show.replace("<", ">");
-                //         }
-                //     } else {
-                //         this.data.condition[i].value = this.data.condition[i].value_show;
-                //         this.data.condition[i].logic = this.data.condition[i].logic_show;
-                //     }
-                // }
-                // this.data.budget = this.unFormat(this.data.budget);
-                // this.data.status = true;
-                // this.set('data.group_id', this.date.id);
-                // // console.log('before',this.data);
-                // for (var i in this.data.condition) {
-                //     this.data.condition[i].field = this.data.condition[i].field.id;
-                //     delete this.data.condition[i].itemField;
-                // }
-                // console.log(JSON.stringify(this.data));
             },
             _edit: function () {
                 this.isEnable = false;
