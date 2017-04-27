@@ -36,11 +36,11 @@
         width: 80%;
     }*/
         
-        
         .container {
             padding: 20px;
         }
-           main {
+        
+        main {
             /*min-width: 320px;*/
             /*max-width: 1000px;*/
             padding: 5px;
@@ -93,11 +93,12 @@
         #tab2:checked~#content2 {
             display: block;
         }
+        
         list-of-logic,
-           list-welfare-common {
-                margin-top: 15px;
-                width: 98%;
-            }
+        list-welfare-common {
+            margin-top: 15px;
+            width: 98%;
+        }
     </style>
     <template>
         <!--<div class="list horizontal center-justified layout">
@@ -109,7 +110,7 @@
         <div class="xcontainer">
             <div class="header-page container">จัดการข้อมูล
             </div>
-             <main>
+            <main>
                 <input id="tab1" type="radio" name="tabs" checked>
                 <label for="tab1">เงือนไข</label>
 
@@ -131,8 +132,8 @@
                     </paper-material>
                 </section>
             </main>
-            
-            
+
+
 
         </div>
 
@@ -193,7 +194,16 @@
                 this.dispatchAction('CONDITIONREADWELFARE_LIST');
                 this.dispatchAction('CONDITIONREADWELFARE_TABLE_LIST');
                 this.dispatchAction('CONDITIONREADWELFARE_FIEID_LIST');
-
+                this.COMMONDATA_DATA_ACADEMIC();
+                this.COMMONDATA_DATA_ACTIVE();
+                this.COMMONDATA_DATA_DEPARTMENT();
+                this.COMMONDATA_DATA_FACULTY();
+                this.COMMONDATA_DATA_GENDER();
+                this.COMMONDATA_DATA_MATIER();
+                this.COMMONDATA_DATA_POSITION();
+                this.COMMONDATA_DATA_PREFIXNAME();
+                this.COMMONDATA_DATA_RELATION();
+                this.COMMONDATA_DATA_TYPE_EMPLOYEE();
             },
             listeners: {
                 'open-panel': 'openPanel',
@@ -205,7 +215,7 @@
                 this.selected = 0;
                 this.$$('panel-right').open();
                 this.set('title', 'เพิ่มฟิลด์')
-                console.log(111);
+                // console.log(111);
                 this.dispatchAction('CONDITIONREADWELFARE_SET');
                 this.dispatchAction('CONDITIONREADWELFARE_BTN', false);
                 this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW', true);
@@ -213,7 +223,7 @@
             _editDataCondition(e) {
                 this.selected = 0;
                 this.set('title', 'แก้ไขฟิลด์')
-                console.log(2222);
+                // console.log(2222);
                 this.dispatchAction('CONDITIONREADWELFARE_BTN', true);
                 this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW', false);
                 this.dispatchAction('CONDITIONREADWELFARE_SELECT', e.detail);
@@ -226,52 +236,54 @@
                     case 'academic':
                         this.selected = 1;
                         console.log(this.selected);
-                        this.COMMONDATA_DATA_ACADEMIC();
+                        // this.COMMONDATA_DATA_ACADEMIC();
                         this.$$('panel-right').open();
                         break;
                     case 'active':
                         this.selected = 2;
-                        this.COMMONDATA_DATA_ACTIVE();
+                        // this.COMMONDATA_DATA_ACTIVE();
                         this.$$('panel-right').open();
                         break;
                     case 'department':
                         this.selected = 3;
-                        this.COMMONDATA_DATA_DEPARTMENT();
+                        // 
+                        // this.COMMONDATA_DATA_DEPARTMENT();
+                        // this.COMMONDATA_DATA_FACULTY();
                         this.$$('panel-right').open();
                         break;
                     case 'faculty':
                         this.selected = 4;
-                        this.COMMONDATA_DATA_FACULTY();
+                        // this.COMMONDATA_DATA_FACULTY();
                         this.$$('panel-right').open();
                         break;
                     case 'gender':
                         this.selected = 5;
-                        this.COMMONDATA_DATA_GENDER();
+                        // this.COMMONDATA_DATA_GENDER();
                         this.$$('panel-right').open();
                         break;
                     case 'matier':
                         this.selected = 6;
-                        this.COMMONDATA_DATA_MATIER();
+                        // this.COMMONDATA_DATA_MATIER();
                         this.$$('panel-right').open();
                         break;
                     case 'position':
                         this.selected = 7;
-                        this.COMMONDATA_DATA_POSITION();
+                        // this.COMMONDATA_DATA_POSITION();
                         this.$$('panel-right').open();
                         break;
                     case 'prefix':
                         this.selected = 8;
-                        this.COMMONDATA_DATA_PREFIXNAME();
+                        // this.COMMONDATA_DATA_PREFIXNAME();
                         this.$$('panel-right').open();
                         break;
                     case 'relation':
                         this.selected = 9;
-                        this.COMMONDATA_DATA_RELATION();
+                        // this.COMMONDATA_DATA_RELATION();
                         this.$$('panel-right').open();
                         break;
                     case 'type_employee':
                         this.selected = 10;
-                        this.COMMONDATA_DATA_TYPE_EMPLOYEE();
+                        // this.COMMONDATA_DATA_TYPE_EMPLOYEE();
                         this.$$('panel-right').open();
                         break;
                     default:

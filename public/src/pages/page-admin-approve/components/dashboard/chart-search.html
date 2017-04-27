@@ -24,7 +24,6 @@
             .date-picker {
                 margin-top: -35px !important;
             }
-            
             /*.auto-flex {
                 width: 100%;
             }*/
@@ -207,32 +206,52 @@
                         datasets: [
                             {
                                 label: "จำนวนเงิน",
-                                backgroundColor: "rgba(220,220,220,0.2)",
-                                borderColor: "rgba(220,220,220,1)",
+                                backgroundColor: "#96b1d2",
+                                borderColor: "#003BAE",
                                 borderWidth: 1,
                                 data: chart.map((ed) => ed.bath)
                             },
                         ]
                     };
-                    this.people = {
-                        labels: label,
-                        datasets: [
-                            {
-                                label: "จำนวนคนใช้งาน",
-                                backgroundColor: "rgba(220,220,220,0.2)",
-                                borderColor: "rgba(220,220,220,1)",
-                                borderWidth: 1,
-                                data: chart.map((ed) => ed.emp_use)
-                            },
-                            {
-                                label: "จำนวนคนมีสิทธิ์",
-                                backgroundColor: "rgba(220,220,220,0.2)",
-                                borderColor: "rgba(220,220,220,1)",
-                                borderWidth: 1,
-                                data: chart.map((ed) => ed.emp_pass)
-                            },
-                        ]
-                    };
+                    // this.people = {
+                    //     labels: label,
+                    //     datasets: [
+                    //         {
+                    //             label: "จำนวนคนใช้งาน",
+                    //             backgroundColor: "#96b1d2",
+                    //             borderColor: "#003BAE",
+                    //             borderWidth: 1,
+                    //             data: chart.map((ed) => ed.emp_use)
+                    //         },
+                    //         {
+                    //             label: "จำนวนคนมีสิทธิ์",
+                    //             backgroundColor: "#ff9973",
+                    //             borderColor: "#ff4500",
+                    //             borderWidth: 1,
+                    //             data: chart.map((ed) => ed.emp_pass)
+                    //         },
+                    //     ]
+                    // };
+                    // console.log(chart.map((ed) => ed.emp_pass))
+                    // this.people = {
+                    //     labels: label,
+                    //     datasets: [
+                    //         {
+                    //             label: "จำนวนคนใช้งาน",
+                    //             backgroundColor: "#96b1d2",
+                    //             borderColor: "#003BAE",
+                    //             borderWidth: 1,
+                    //             data: [65, 59, 80, 81, 56, 55, 40]
+                    //         },
+                    //         {
+                    //             label: "จำนวนคนมีสิทธิ์",
+                    //             backgroundColor: "#ff9973",
+                    //             borderColor: "#ff4500",
+                    //             borderWidth: 1,
+                    //             data: chart.map((ed) => ed.emp_pass)
+                    //         }
+                    //     ]
+                    // }
                 } catch (e) {
 
                 }
@@ -388,10 +407,10 @@
                         //     }
                         //      window.open('./api/report/report3?' + this.genUrlYearToThai(newData));
                         // } else {
-                            newData = {
-                                year: this.dataSearch.year,
-                            }
-                             window.open('./api/report/report6?' + this.genUrlYearToThai(newData));
+                        newData = {
+                            year: this.dataSearch.year,
+                        }
+                        window.open('./api/report/report6?' + this.genUrlYearToThai(newData));
                         // }
                         break;
                     default:

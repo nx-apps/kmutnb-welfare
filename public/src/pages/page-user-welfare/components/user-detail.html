@@ -70,9 +70,20 @@
             }
         </style>
         <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
-            <gl-form-panel-head label="" set-padding="10px" set-border="1px">
+            <div class="horizontal layout">
+                <div class="flex">
+                    <paper-button on-tap="backPage" raised>ย้อนกลับ</paper-button>
+                </div>
+                <div class="flex">
+                    <div class="horizontal end-justified layout">
+                        <paper-button class="gl-btn-info" on-tap="editData" raised>ดูข้อมูลส่วนตัว</paper-button>
+                    </div>
+
+                </div>
+            </div>
+            <!--<gl-form-panel-head label="" set-padding="10px" set-border="1px">
                 <paper-button class="gl-btn-info" on-tap="editData" raised>ดูข้อมูลส่วนตัว</paper-button>
-            </gl-form-panel-head>
+            </gl-form-panel-head>-->
             <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                 <fieldset>
                     <legend>ข้อมูลพนักงาน :</legend>
@@ -141,14 +152,14 @@
                 },
             },
             listeners: {
-                  '_getReloadData':'gerYearWelfare'
+                '_getReloadData': 'gerYearWelfare'
             },
             setYear(years) {
                 try {
                     let year = years[years.length - 1].year
                     this.set('seleterYear', year)
                     // console.log(11111);
-                    let e = {detail:{value:year}}
+                    let e = { detail: { value: year } }
                     this.gerYearWelfare(e)
                     // console.log(year[year.length-1].year);
                     // console.log(this.seleterYear);
@@ -159,7 +170,7 @@
             _obRvpFund(data) {
                 // console.log(data);
                 this.dispatchAction('USER_RVP_FUND', data.personal_id)
-                this.dispatchAction('FUND_RVD_GET_LIST',true)
+                this.dispatchAction('FUND_RVD_GET_LIST', true)
             },
             gerYearWelfare(e) {
                 if (this.seleterYear) {
@@ -173,6 +184,10 @@
                 this.fire('_get-user-edit', this.data)
                 // this.dispatchAction('USER_SELECT',e.detail);
             },
+            backPage(){
+                console.log(1111)
+                this.fire('_changePage')
+            }
         });
     </script>
 </dom-module>

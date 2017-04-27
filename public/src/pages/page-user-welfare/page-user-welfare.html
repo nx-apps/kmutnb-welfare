@@ -70,8 +70,10 @@
             },
             listeners: {
                 '_get-user-edit': '_getUserEdit',
-                '_get-user':'_getUser'
+                '_get-user': '_getUser',
+                '_changePage': '_changePage_'
                 // '_close-panel':'btn_closePanelRight'
+
             },
             nylonPageActive() {
                 this.dispatchAction('USERS_LIST');
@@ -82,15 +84,15 @@
                 // this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
                 // // this.dispatchAction('COMMONDATA_DATA_EMPLOYEE');
                 // this.dispatchAction('COMMONDATA_DATA_FACULTY');
-               
+
                 // this.dispatchAction('COMMONDATA_DATA_MATIER');
                 // this.dispatchAction('COMMONDATA_DATA_POSITION');
-                console.log(1111);
+                // console.log(1111);
                 // this.dispatchAction('COMMONDATA_DATA_RELATION');
                 // this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
                 let url = window.location.pathname.split('/')[2]
-                console.log(url);
-                console.log(url == 'undefined' || url == '');
+                // console.log(url);
+                // console.log(url == 'undefined' || url == '');
                 // this.set('page', 0)
                 if (url == 'undefined' || url == '') {
                     this.set('page', 0)
@@ -100,16 +102,19 @@
                 }
 
 
-               
+
             },
-            _getUser(){
+            _getUser() {
                 this.set('page', 1)
                 this.dispatchAction('COMMONDATA_DATA_GENDER');
                 this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
-                 this.dispatchAction('WELFARE_LIST_YEAR');
+                this.dispatchAction('WELFARE_LIST_YEAR');
+            },
+            _changePage_(e) {
+                this.set('page', 0)
             },
             // getuser(){
-                 
+
             // },
             // setYear(year){
             //     try {

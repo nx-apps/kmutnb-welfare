@@ -1,6 +1,4 @@
 <link rel="import" href="../../components/format-number-behavior.html">
-<link rel="import" href="./../../components/validateFormBehaviors.html">
-
 <dom-module id="welfare-form">
     <template>
         <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -25,16 +23,15 @@
                 background-color: var(--gl-white-color);
             }
         </style>
+
         <div style="padding:20px;">
             <paper-material elevation="1">
                 <template is="dom-if" if="{{checkMenu(data)}}">
-                    <div hidden$="{{date.status_approve}}">       
-                        <div hidden$="{{!isEnable}}">
-                            <div class="horizontal end-justified layout">
-                                <div style="margin:20px 20px 0px 0px;">
-                                    <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
-                                    <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
-                                </div>
+                    <div hidden="{{!isEnable}}">
+                        <div class="horizontal end-justified layout">
+                            <div style="margin:20px 20px 0px 0px;">
+                                <paper-icon-button icon="icons:create" on-tap="_edit"></paper-icon-button>
+                                <paper-icon-button icon="delete" on-tap="_delete"></paper-icon-button>
                             </div>
                         </div>
                     </div>
@@ -42,13 +39,13 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input disabled="{{isEnable}}" label="ชื่อเงื่อนไข" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อเงื่อนไข"></gl-form-input>
+                        <gl-form-input disabled="{{isEnable}}" label="ชื่อสวัสดิการย่อย" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input required disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        <gl-form-input disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <template is="dom-repeat" items="{{data.condition}}">
@@ -122,8 +119,8 @@
                     <div class="horizontal layout">
                         <div hidden="{{!isEnable}}" class="btn-bottom">
                             <paper-button raised class="gl-btn-danger" on-tap="back">ย้อนกลับ</paper-button>
-                            <!--<paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
-                            <paper-button raised class="gl-btn-warning" on-tap="print">Print</paper-button>-->
+                            <paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
+                            <paper-button raised class="gl-btn-warning" on-tap="print">Print</paper-button>
                         </div>
                     </div>
                 </template>
@@ -148,11 +145,13 @@
                             <tbody class="table-body">
                                 <template is="dom-repeat" items="{{employees.employee}}">
                                     <tr>
-                                        <td><iron-icon style="cursor:pointer" icon="list" on-tap="_selectUser" data="[[item]]"></iron-icon></td>
-                                        <td style="text-align:left">[[item.personal_id]]</td>
-                                        <td style="text-align:left">[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
-                                        <td style="text-align:left">[[item.position_name]]</td>
-                                        <td style="text-align:left">[[item.department_name]]</td>
+                                        <td>
+                                            <iron-icon style="cursor:pointer" icon="list" on-tap="_selectUser" data="[[item]]"></iron-icon>
+                                        </td>
+                                        <td>[[item.personal_id]]</td>
+                                        <td>[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
+                                        <td>[[item.position_name]]</td>
+                                        <td>[[item.department_name]]</td>
                                     </tr>
                                 </template>
                             </tbody>
@@ -165,7 +164,7 @@
     <script>
         Polymer({
             is: 'welfare-form',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, ValidateFormBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior],
             properties: {
                 condition: {
                     statePath: 'welfare.condition'
@@ -267,12 +266,11 @@
 
                 //     return newitem
                 // })
-                console.log(this.date);
                 var newData = {
-                    group_id: this.date.id,
-                    // status: this.data.status,
+                    group_id: this.data.group_id,
+                    status: this.data.status,
                     welfare_name: this.data.welfare_name,
-                    budget: this.unFormat(this.data.budget),
+                    budget: this.data.budget,
                 }
                 var conditon = this.data.condition.map((item)=>{
                     if(item.value_showDropdown == ''){
@@ -311,24 +309,7 @@
                     newitem.field = field.id;
                     return newitem
                 })
-                newData.condition = setCondition;               
-                if (typeof this.data.id == 'undefined') {
-                    newData.status = true;
-                    //  console.log(newData);
-                    var year = new Date().getFullYear();
-                    this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
-                        this.fire('refresh_group',year);
-                        this.fire('back');
-                    })
-                }
-                else {
-                    newData.status = this.data.status
-                    newData.id=this.data.id;
-                    console.log(newData);
-                    this.dispatchAction('WELFARE_EDIT', newData);
-                    this.isEnable = true;
-                    // this.fire('back');
-                }
+                 console.log(setCondition);
                 // console.log(this.data);
                 // console.log(newData);
                 // for (var i = 0; i < this.data.condition.length; i++) {
@@ -376,6 +357,16 @@
                 //     delete this.data.condition[i].itemField;
                 // }
                 // console.log(JSON.stringify(this.data));
+
+                // if (typeof this.data.id == 'undefined') {
+                //     this.dispatchAction('WELFARE_INSERT', this.data);
+                //     this.fire('back');
+                // }
+                // else {
+                //     this.dispatchAction('WELFARE_EDIT', this.data);
+                //     this.isEnable = true;
+                //     // this.fire('back');
+                // }
             },
             _edit: function () {
                 this.isEnable = false;
@@ -395,15 +386,15 @@
                 this.fire('back');
                 this.tableStatus = false;
             },
-            // list_users: function () {
-            //     var id = this.data.id;
-            //     this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
-            //     this.tableStatus = true;
-            // },
-            // print: function () {
-            //     var id = this.data.id;
-            //     window.open('api/report/report1/' + id);
-            // },
+            list_users: function () {
+                var id = this.data.id;
+                this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
+                this.tableStatus = true;
+            },
+            print: function () {
+                var id = this.data.id;
+                window.open('api/report/report1/' + id);
+            },
             _delete: function () {
                 this.fire('toast', {
                     status: 'openDialog',
