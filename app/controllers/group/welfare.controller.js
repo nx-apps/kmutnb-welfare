@@ -2,7 +2,7 @@ exports.list = function (req, res) {
     var r = req.r
     req.params.year = parseInt(req.params.year);
     r.expr({
-        employees: r.db('welfare').table('employee').coerceTo('array'),
+        employees: r.db('welfare').table('employee').pluck('active_id','id').coerceTo('array'),
         group: []
     })
         .merge(function (employees_merge) {
@@ -129,7 +129,7 @@ exports.listId = function (req, res) {
         .get(req.params.id)
         .merge(function (m) {
             return {
-                employees: r.db('welfare').table('employee').coerceTo('array').eqJoin('active_id', r.db('welfare_common').table('active'))
+                employees: r.db('welfare').table('employee').pluck('active_id','id').coerceTo('array').eqJoin('active_id', r.db('welfare_common').table('active'))
                     .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
             }
         })
