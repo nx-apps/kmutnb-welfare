@@ -4,12 +4,9 @@
         "department_name": {
             "type": "string"
         },
-        "faculty": {
-            "type": "string"
-        },
-        "faculty_name": {
+        "faculty_id": {
             "type": "string"
         }
     },
-    "required": ["department_name", "faculty", "faculty_name"]
+    "required": ["department_name", "faculty_id"]
 }
