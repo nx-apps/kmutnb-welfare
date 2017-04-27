@@ -207,8 +207,8 @@
                         datasets: [
                             {
                                 label: "จำนวนเงิน",
-                                backgroundColor: "rgba(220,220,220,0.2)",
-                                borderColor: "rgba(220,220,220,1)",
+                                backgroundColor: "#96b1d2",
+                                borderColor: "#003BAE",
                                 borderWidth: 1,
                                 data: chart.map((ed) => ed.bath)
                             },
@@ -219,15 +219,15 @@
                         datasets: [
                             {
                                 label: "จำนวนคนใช้งาน",
-                                backgroundColor: "rgba(220,220,220,0.2)",
-                                borderColor: "rgba(220,220,220,1)",
+                                backgroundColor: "#96b1d2",
+                                borderColor: "#003BAE",
                                 borderWidth: 1,
                                 data: chart.map((ed) => ed.emp_use)
                             },
                             {
                                 label: "จำนวนคนมีสิทธิ์",
-                                backgroundColor: "rgba(220,220,220,0.2)",
-                                borderColor: "rgba(220,220,220,1)",
+                                backgroundColor: "#ff9973",
+                                borderColor: "#ff4500",
                                 borderWidth: 1,
                                 data: chart.map((ed) => ed.emp_pass)
                             },
@@ -239,7 +239,7 @@
 
             },
             serchWelfare() {
-                console.log(this.dataSearch);
+                // console.log(this.dataSearch);
                 let newData = {}
                 switch (this.dataSearch.showBy) {
                     case 'day':
