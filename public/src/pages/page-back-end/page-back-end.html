@@ -36,10 +36,6 @@
         width: 80%;
     }*/
         
-        .header {
-            padding: 10px;
-            font-size: 35px;
-        }
         
         .container {
             padding: 20px;
@@ -111,7 +107,7 @@
 
 
         <div class="xcontainer">
-            <div class="header container">จัดการข้อมูล
+            <div class="header-page container">จัดการข้อมูล
             </div>
              <main>
                 <input id="tab1" type="radio" name="tabs" checked>
@@ -225,6 +221,7 @@
             },
             openPanel: function (e) {
                 var item = e.detail;
+                this.set('title', 'แก้ไขฟิลด์')
                 switch (item) {
                     case 'academic':
                         this.selected = 1;

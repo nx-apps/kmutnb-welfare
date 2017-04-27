@@ -75,7 +75,7 @@
 				<text><![CDATA[รหัสพนักงาน]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="187" y="0" width="120" height="20" uuid="12015143-ee71-4f50-891c-12926f90a8ec"/>
+				<reportElement x="187" y="0" width="128" height="20" uuid="12015143-ee71-4f50-891c-12926f90a8ec"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -89,7 +89,7 @@
 				<text><![CDATA[ชื่อ - นามสกุล]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="413" y="0" width="97" height="20" uuid="67402d0f-a3c6-4c98-be2a-a2587a4168af"/>
+				<reportElement x="430" y="0" width="80" height="20" uuid="67402d0f-a3c6-4c98-be2a-a2587a4168af"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -117,7 +117,7 @@
 				<text><![CDATA[ลำดับที่]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="307" y="0" width="106" height="20" uuid="dcd63ac4-f29b-4fec-8c26-385963757857"/>
+				<reportElement x="315" y="0" width="115" height="20" uuid="dcd63ac4-f29b-4fec-8c26-385963757857"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -135,7 +135,7 @@
 	<detail>
 		<band height="20">
 			<textField>
-				<reportElement x="187" y="0" width="120" height="20" uuid="ac2f049f-6645-4827-a7f1-61e80e0c73f2"/>
+				<reportElement x="187" y="0" width="128" height="20" uuid="ac2f049f-6645-4827-a7f1-61e80e0c73f2"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -149,7 +149,7 @@
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="413" y="0" width="97" height="20" uuid="4d14c95c-c0db-419c-bc64-eaa7ea1ad37d"/>
+				<reportElement x="430" y="0" width="80" height="20" uuid="4d14c95c-c0db-419c-bc64-eaa7ea1ad37d"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -171,7 +171,7 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{emp_no}]]></textFieldExpression>
@@ -191,7 +191,7 @@
 				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="307" y="0" width="106" height="20" uuid="8df135e5-23fa-4e51-a54f-28dda2a57fed"/>
+				<reportElement x="315" y="0" width="115" height="20" uuid="8df135e5-23fa-4e51-a54f-28dda2a57fed"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -209,7 +209,7 @@
 	<summary>
 		<band height="20">
 			<textField>
-				<reportElement x="413" y="0" width="97" height="20" uuid="fc48ca7a-65ad-4b68-baf7-d01572ce5b7e"/>
+				<reportElement x="430" y="0" width="80" height="20" uuid="fc48ca7a-65ad-4b68-baf7-d01572ce5b7e"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -223,7 +223,7 @@
 				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toFormat($V{SUM},"#,###.##")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="42" y="0" width="371" height="20" uuid="adc5197b-7722-40d4-8722-09bbe0b0f8ca"/>
+				<reportElement x="42" y="0" width="388" height="20" uuid="adc5197b-7722-40d4-8722-09bbe0b0f8ca"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -241,7 +241,7 @@
 	<noData>
 		<band height="211">
 			<staticText>
-				<reportElement x="413" y="149" width="97" height="20" uuid="7cf9ada2-41c3-452c-a16f-5dd9df5b32c4"/>
+				<reportElement x="430" y="149" width="80" height="20" uuid="7cf9ada2-41c3-452c-a16f-5dd9df5b32c4"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -255,7 +255,7 @@
 				<text><![CDATA[จำนวนเงิน]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="90" y="149" width="123" height="20" uuid="a52b398a-a4ba-408e-b150-0ecec90c74ca"/>
+				<reportElement x="90" y="149" width="97" height="20" uuid="a52b398a-a4ba-408e-b150-0ecec90c74ca"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -269,7 +269,7 @@
 				<text><![CDATA[รหัสพนักงาน]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="213" y="149" width="200" height="20" uuid="94200f42-66d2-4dc5-add8-030b06a10b50"/>
+				<reportElement x="187" y="149" width="128" height="20" uuid="94200f42-66d2-4dc5-add8-030b06a10b50"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -335,6 +335,20 @@
 				<reportElement x="237" y="0" width="80" height="80" uuid="7be35edf-e2d2-41b7-9324-29cb2b834114"/>
 				<imageExpression><![CDATA[new java.io.ByteArrayInputStream(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.decode($P{KMUTNB_BASE64}))]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="315" y="149" width="115" height="20" uuid="d558ac85-e6da-4139-b731-36a5b9e5e131"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[สวัสดิการ]]></text>
+			</staticText>
 		</band>
 	</noData>
 </jasperReport>

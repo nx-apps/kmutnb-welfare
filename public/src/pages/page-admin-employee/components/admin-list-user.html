@@ -2,7 +2,7 @@
 <link rel="import" href="../../components/month-behavior.html">
 <link rel="import" href="./../../components/format-number-behavior.html">
 
-<dom-module id="list-user">
+<dom-module id="admin-list-user">
     <template>
         <style is="custom-style" include="gl-color gl-table flex-style">
             paper-material {
@@ -66,7 +66,7 @@
                             <thead class="table-head">
                                 <tr>
                                     <!--<th style="width:10%;">
-                                        <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>กระทำ
+                                        <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>เครื่องมือ
                                     </th>-->
                                     <th></th>
                                     <th>รหัสพนักงาน</th>
@@ -85,7 +85,7 @@
                                             <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
                                         </td>-->
                                         <td>
-                                            <iron-icon style="cursor:pointer" icon="list"  on-tap="chagePageDetail" data="[[item]]"></iron-icon>
+                                            <iron-icon style="cursor:pointer" icon="list"  on-tap="chagePageDetail" data="[[item]]" title="รายละเอียด"></iron-icon>
                                         </td>
                                         <td>[[item.emp_no]]</td>
                                         <td>[[item.fullName]]</td>
@@ -182,7 +182,7 @@
     </template>
     <script>
         Polymer({
-            is: 'list-user',
+            is: 'admin-list-user',
             behaviors: [ReduxBehavior, MonthBehavior,FormatNumberBehavior],
             observers: ['showBtn(newListSearch.*)'],
             properties: {

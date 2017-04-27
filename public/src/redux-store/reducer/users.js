@@ -9,7 +9,7 @@ const initialState = {
     disabled: true,
     insert_view: true,
     lisyUserFalse: [],
-    lisyUserhistoryWelfare:[],
+    lisyUserhistoryWelfare: [],
     listRvpFund: [],
     rvp_fund: []
 }
@@ -28,8 +28,8 @@ const clearData = (data, callback) => {
 }
 const clearDatawelfare = (data, callback) => {
 
-    let { emp_id, welfare_id, use_budget, status, year, group_id } = data;
-    let newData = { emp_id, welfare_id, use_budget, status, year, group_id };
+    let { emp_id, welfare_id, use_budget, status, year, group_id, history_detail } = data;
+    let newData = { emp_id, welfare_id, use_budget, status, year, group_id, history_detail };
     // console.log(data.date/use_welfare/update_use == '');
 
     newData.document_ids = new Array()
@@ -174,24 +174,29 @@ export function usersAction(store) {
             store.dispatch({ type: 'USER_INSERT_VIEW', payload: data })
         },
         USER_GET_WELFARES(id, otherFunction = false, year = new Date().getFullYear()) {
-            console.log('otherFunctioncdddd', year)
-            this.fire('toast', { status: 'load' });
-            axios.get(`./employee/${id}/${year}`)
-                .then(res => {
-                    console.log(res)
-                    this.fire('toast', {
-                        status: 'success', text: 'โหลดข้อมูลสำเร็จ',
-                        callback: () => {
-                            store.dispatch({ type: 'USER_GET_WELFARES', payload: res.data })
-                            if (!otherFunction)
-                                this.$$('panel-right').open();
-                        }
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            // })
+            // console.log('otherFunctioncdddd', year)
+            // console.log(typeof id );
+            // console.log('id>',id,typeof id != undefined);
+            // console.log('id>',id,id != 'undefined');
+            if (typeof id !== 'undefined' && id !== 'undefined' && id !== '') {
+                this.fire('toast', { status: 'load' });
+                axios.get(`./employee/${id}/${year}`)
+                    .then(res => {
+                        console.log(res)
+                        this.fire('toast', {
+                            status: 'success', text: 'โหลดข้อมูลสำเร็จ',
+                            callback: () => {
+                                store.dispatch({ type: 'USER_GET_WELFARES', payload: res.data })
+                                if (!otherFunction)
+                                    this.$$('panel-right').open();
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            }
+
         },
         USER_USE_WELFARE(data) {
             // console.log(data);
@@ -215,48 +220,47 @@ export function usersAction(store) {
                     })
             })
         },
-        USER_USE_WELFARE_APPROVE(data,url=()=>{}) {
+        USER_USE_WELFARE_APPROVE(data, url = () => { }) {
             // console.log(data);
             // clearDatawelfare(data, (newData) => {
             //     newData.id = data.id;
             console.log(data);
-                this.fire('toast', { status: 'load' });
-                
-           return     axios.put(`./history/update/approve`, data)
-                    .then(res => {
-                        // this.dispatchAction('USERS_FALSE_LIST');
-                        this.fire('toast', {
-                            status: 'success', text: 'บันทึกสำเร็จ',
-                            callback: () => {
-                                // console.log(url);
-                                 url()
-                            }
-                        });
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
+            this.fire('toast', { status: 'load' });
+
+            return axios.put(`./history/update/approve`, data)
+                .then(res => {
+                    // this.dispatchAction('USERS_FALSE_LIST');
+                    this.fire('toast', {
+                        status: 'success', text: 'บันทึกสำเร็จ',
+                        callback: () => {
+                            // console.log(url);
+                            url()
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
             // })
         },
-        USER_DELETE_USE_WELFARE(data,url=()=>{}) {
+        USER_DELETE_USE_WELFARE(data, url = () => { }) {
             // clearDatawelfare(data, (newData) => {
             //     newData.id = data.id;
-                this.fire('toast', { status: 'load' });
-             return   axios.put(`./history/update/reject`, data)
-                    .then(res => {
-                        // this.dispatchAction('USERS_FALSE_LIST');
-                        // console.log(11111);
-                        this.fire('toast', {
-                            status: 'success', text: 'บันทึกสำเร็จ',
-                            callback: () => {
-                                url()
-                            }
-                        });
-                    })
-                    .catch(err => {
-                        console.log(2222);
-                        console.log(err);
-                    })
+            this.fire('toast', { status: 'load' });
+            return axios.put(`./history/update/reject`, data)
+                .then(res => {
+                    // this.dispatchAction('USERS_FALSE_LIST');
+                    // console.log(11111);
+                    this.fire('toast', {
+                        status: 'success', text: 'บันทึกสำเร็จ',
+                        callback: () => {
+                            url()
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
             // })
             // console.log(data);
             //  this.fire('toast',{
@@ -277,12 +281,31 @@ export function usersAction(store) {
             //     }
             // })
         },
+        USER_CANCEL_USE_WELFARE(data, url = () => { }) {
+            // clearDatawelfare(data, (newData) => {
+            //     newData.id = data.id;
+            this.fire('toast', { status: 'load' });
+            return axios.put(`./history/update/cancel`, data)
+                .then(res => {
+                    // this.dispatchAction('USERS_FALSE_LIST');
+                    // console.log(11111);
+                    this.fire('toast', {
+                        status: 'success', text: 'บันทึกสำเร็จ',
+                        callback: () => {
+                            url()
+                        }
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
         USER_USE_SELETE_WELFARE(data) {
             store.dispatch({ type: 'USER_USE_SELETE_WELFARE', payload: data })
         },
-        USERS_FALSE_LIST(data='') {
+        USERS_FALSE_LIST(data = '') {
             this.fire('toast', { status: 'load' });
-            axios.get(`./history/unapprove?`+data)
+            axios.get(`./history/unapprove?` + data)
                 .then(res => {
                     // console.log(res)
                     this.fire('toast', {
@@ -298,11 +321,11 @@ export function usersAction(store) {
                     console.log(err);
                 })
         },
-        USERS_LIST_HISTORY_WELFARE(data='') {
-            axios.get(`./history/search?`+data)
+        USERS_LIST_HISTORY_WELFARE(data = '') {
+            axios.get(`./history/search?` + data)
                 .then(res => {
                     // console.log(res)
-                   store.dispatch({ type: 'USERS_LIST_HISTORY_WELFARE', payload: res.data })
+                    store.dispatch({ type: 'USERS_LIST_HISTORY_WELFARE', payload: res.data })
                 })
                 .catch(err => {
                     console.log(err);

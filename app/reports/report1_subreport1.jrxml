@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1_subreport1" language="groovy" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="525c34bb-5e62-4516-8aff-d29e734e2e38">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<field name="emp_no" class="java.math.BigDecimal"/>
 	<field name="gender_name" class="java.lang.String"/>
 	<field name="position_name" class="java.lang.String"/>
 	<field name="start_work_date" class="java.lang.String"/>
-	<field name="birthdate" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
+	<field name="department_fuculty_name" class="java.lang.String"/>
+	<field name="type_employee_name" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="88" y="0" width="137" height="20" uuid="aaf134a7-4659-4e8d-b799-e5621bfcdea2"/>
+				<reportElement x="88" y="0" width="130" height="20" uuid="aaf134a7-4659-4e8d-b799-e5621bfcdea2"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -37,13 +38,13 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{emp_no}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="225" y="0" width="272" height="20" uuid="b60fb368-ddf6-4054-b15f-4d5dafe64553"/>
+				<reportElement x="218" y="0" width="317" height="20" uuid="b60fb368-ddf6-4054-b15f-4d5dafe64553"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -54,11 +55,11 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{position_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{department_fuculty_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="582" y="0" width="109" height="20" uuid="296a5ffc-a1ff-4caf-84ea-358e3fa4b5bc"/>
-				<box leftPadding="25" rightPadding="0">
+				<reportElement x="585" y="0" width="90" height="20" uuid="296a5ffc-a1ff-4caf-84ea-358e3fa4b5bc"/>
+				<box leftPadding="5" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -71,8 +72,8 @@
 				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDate ($F{start_work_date})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="691" y="0" width="111" height="20" uuid="17c7ba30-0646-4f93-82c6-ea950ef207b4"/>
-				<box leftPadding="25" rightPadding="0">
+				<reportElement x="675" y="0" width="127" height="20" uuid="17c7ba30-0646-4f93-82c6-ea950ef207b4"/>
+				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -82,10 +83,10 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDate ($F{birthdate})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{type_employee_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="497" y="0" width="85" height="20" uuid="7ffca812-b16c-4c84-8063-990fc735429e"/>
+				<reportElement x="535" y="0" width="50" height="20" uuid="7ffca812-b16c-4c84-8063-990fc735429e"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>

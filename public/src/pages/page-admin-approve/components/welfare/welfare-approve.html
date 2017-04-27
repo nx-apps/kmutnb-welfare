@@ -4,7 +4,7 @@
 <link rel="import" href="./../../../components/month-behavior.html">
 <dom-module id="welfare-approve">
     <template>
-        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment page-style">
+        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
              :host {
                 display: block;
             }
@@ -29,22 +29,27 @@
             .combo-box {
                 margin-top: -31px;
             }
+            
+            th,
+            td {
+                white-space: nowrap;
+            }
         </style>
         <div class="container">
             <div class="contentHeader" style="margin-bottom: 20px;">รายชื่อผู้ขอใช้สวัสดิการที่อนุมัติไปแล้ว</div>
             <div class="horizontal layout">
-                <div class="flex layout horizontal">
-                    <div class="flex center-justified horizontal layout self-center">
+                <div class="flex-2 layout horizontal">
+                    <div class="flex end-justified horizontal layout self-center">
                         ปีสวัสดิการ :
                     </div>
-                    <div class="flex-2 center-justified horizontal layout self-center">
+                    <div class="flex-3 center-justified horizontal layout self-center">
                         <!--[[setYear(years)]]-->
                         <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.year}}" item-label-path="year" item-value-path="year"
                             items="{{years}}"></gl-combo-box>
                     </div>
                 </div>
-                <div class="flex layout horizontal">
-                    <div class="flex center-justified horizontal layout self-center">
+                <div class="flex-2 layout horizontal">
+                    <div class="flex end-justified horizontal layout self-center">
                         สวัสดิการ :
                     </div>
                     <div class="flex-3 center-justified horizontal layout self-center">
@@ -53,17 +58,32 @@
                     </div>
                 </div>
                 <div class="flex layout horizontal">
-                    <div class="flex center-justified horizontal layout self-center">
-                        เรียงโดย
+
+                </div>
+            </div>
+            <div class="horizontal layout">
+
+                <div class="flex-2 layout horizontal">
+                    <div class="flex end-justified horizontal layout self-center">
+                        สถานะ :
                     </div>
-                    <div class="flex-2 center-justified horizontal layout self-center">
+                    <div class="flex-3 center-justified horizontal layout self-center">
+                        <gl-combo-box class="combo-box" placeholder="สถานะ" value="{{dataSearch.status}}" item-label-path="label" item-value-path="id"
+                            items="{{status}}"></gl-combo-box>
+                    </div>
+                </div>
+                <div class="flex-2 layout horizontal">
+                    <div class="flex end-justified horizontal layout self-center">
+                        เรียงโดย :
+                    </div>
+                    <div class="flex-3 center-justified horizontal layout self-center">
                         <gl-combo-box class="combo-box" placeholder="แสดง" value="{{dataSearch.sortBy}}" items="{{sortBy}}" item-label-path="label"
                             item-value-path="id"></gl-combo-box>
                     </div>
                 </div>
-                <div class="layout horizontal">
+                <div class="flex layout horizontal">
 
-                    <paper-button raised class="gl-btn-primary" style="height: 40px;" on-tap="searchBtn">ค้นหา
+                    <paper-button raised class="gl-btn-primary" style="height: 40px;" on-tap="searchWelfare">ค้นหา
                         <paper-icon-button suffix icon="search"></paper-icon-button>
                     </paper-button>
 
@@ -75,15 +95,18 @@
                 <table class="gl-table-default" style="margin:auto">
                     <thead class="table-head">
                         <tr>
-                            <th><paper-checkbox id="masterCheck" on-tap="checkBoxAll"></paper-checkbox></th>
+                            <th>
+                                <paper-checkbox id="masterCheck" on-tap="checkBoxAll"></paper-checkbox>
+                            </th>
                             <th>ลำดับ</th>
                             <th>วันที่ขอ</th>
-                            <th>สถานนะ</th>
+                            <th>สถานะ</th>
                             <th>รหัสประชาชน</th>
                             <th>ชื่อ - นามสกุล</th>
                             <th>คณะ</th>
                             <th>สวัสดิการที่ขอใช้</th>
-                            <th>จำนวนเงินที่เหลือ</th>
+                            <th>รายละเอียดเพิ่มเติม</th>
+                            <!--<th>จำนวนเงินที่เหลือ</th>-->
                             <th>จำนวนเงินที่ใช้งาน</th>
                             <th>เอกสาร</th>
 
@@ -103,7 +126,7 @@
                                 <td>[[item.prefixname_id]] [[item.firstname]] [[item.lastname]]</td>
                                 <td>[[item.faculty_name]]</td>
                                 <td>[[item.group_welfare_name]]</td>
-                                <td>[[formatNumber(item.budget_cover)]]</td>
+                                <td>[[item.history_detail]]</td>
                                 <td>[[formatNumber(item.use_budget)]]</td>
                                 <td>
                                     <template is="dom-if" if={{item.file}}>
@@ -128,8 +151,17 @@
                 </table>
             </div>
             <div class="flex horizontal end-justified layout">
-                <paper-button raised class="gl-btn-primary" on-tap="getwelfare" disabled="{{btnStatus}}">อนุมัติ</paper-button>
-                <paper-button raised class="gl-btn-danger" on-tap="delwelfare" disabled="{{btnStatus}}">ไม่อนุมัติ</paper-button>
+
+                <template is="dom-if" if={{isNotApprove(dataSearch.status)}}>
+                    <paper-button raised class="gl-btn-primary" on-tap="getwelfare" disabled="{{btnStatus}}">อนุมัติ</paper-button>
+                </template>
+
+
+                <template is="dom-if" if={{isNotReject(dataSearch.status)}}>
+                    <paper-button raised class="gl-btn-danger" on-tap="delwelfare" disabled="{{btnStatus}}">ไม่อนุมัติ</paper-button>
+                </template>
+
+
             </div>
         </div>
     </template>
@@ -169,21 +201,27 @@
                     type: Array,
                     value: [
                         { id: 'firstname', label: 'ชื่อ' },
-                        { id: 'personal_id', label: 'รหัสประชาชน' },
                         { id: 'use_budget', label: 'จำนวนเงินที่ใช้' },
-                        { id: 'date_use', label: 'วันที่ขอ' }
+                    ]
+                },
+                status: {
+                    type: Array,
+                    value: [
+                        { id: 'approve', label: 'อนุมัติ' },
+                        { id: 'reject', label: 'ไม่อนุมัติ' },
+                        { id: 'cancel', label: 'ยกเลิก' }
                     ]
                 }
             },
             observers: [
                 '_setBtn(listUserFalse.*)'
             ],
-            checkBoxAll(e){
+            checkBoxAll(e) {
                 console.log(e.currentTarget.checked);
-                this.listUserFalse.map((m,index)=>{
+                this.listUserFalse.map((m, index) => {
                     // this.set('listUserFalse'+index+'statusCheckBox',true)
                     m.statusCheckBox = e.currentTarget.checked
-                    this.$$('#checkBox-'+index).checked = e.currentTarget.checked
+                    this.$$('#checkBox-' + index).checked = e.currentTarget.checked
                 })
             },
             setYear(year) {
@@ -191,7 +229,8 @@
                 try {
                     if (year.length != 0) {
                         this.set('dataSearch.year', year[year.length - 1].year)
-                        this.set('dataSearch.sortBy','firstname')
+                        this.set('dataSearch.sortBy', 'firstname')
+                        this.set('dataSearch.status', 'approve')
                         this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
                         this.searchBtn()
                     }
@@ -200,12 +239,34 @@
 
                 }
             },
+            isNotApprove(approve) {
+                return approve != 'approve'
+            },
+            isNotReject(reject) {
+                return reject != 'reject'
+            },
             _setCheckBox(setData) {
-                console.log(setData);
+                // console.log(setData);
                 return setData.map((CheckBox) => CheckBox.statusCheckBox = false)
             },
+            searchWelfare() {
+                this.fire('toast', { status: 'load' });
+                this.searchBtn()
+                this.fire('toast', {
+                    status: 'success', text: 'โหลดข้อมูลสำเร็จ',
+                    callback: () => {
+                    }
+                });
+            },
             searchBtn() {
-                this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataSearch));
+                // console.log(this.dataSearch.status == 'undefined' || this.dataSearch.status == '');
+                if (this.dataSearch.status == 'undefined' || this.dataSearch.status == '') {
+                    this.set('dataSearch.status', 'approve')
+                }
+                if (this.dataSearch.sortBy == 'undefined' || this.dataSearch.sortBy == '') {
+                    this.set('dataSearch.sortBy', 'firstname')
+                }
+                this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrlYearToThai(this.dataSearch));
             },
             getwelfare() {
                 this.fire('toast', {
@@ -221,6 +282,7 @@
                             this.dispatchAction('USER_USE_WELFARE_APPROVE', newData, () => {
                                 this.searchBtn()
                                 this.$$('#masterCheck').checked = false
+                                this.dispatchAction('USERS_FALSE_LIST', '')
                             })
                         }
                     }
@@ -241,6 +303,7 @@
                             this.dispatchAction('USER_DELETE_USE_WELFARE', newData, () => {
                                 this.searchBtn()
                                 this.$$('#masterCheck').checked = false
+                                this.dispatchAction('USERS_FALSE_LIST', '')
                             })
 
                         }
@@ -248,7 +311,7 @@
                 })
             },
             downloadFile(e) {
-                console.log(e.currentTarget.data);
+                // console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id)
             },
             _setBtn(e) {

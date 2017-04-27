@@ -105,6 +105,7 @@ exports.welfaresYear = function (req, res) {
                 birthdate: f('birthdate').split('T')(0),
                 academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
                 active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
+                active_code: r.db('welfare_common').table('active').get(f('active_id')).getField('active_code'),
                 department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
                 faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
                 gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
@@ -210,6 +211,21 @@ exports.welfaresYear = function (req, res) {
                                     }
                                     )
                                     .sum('use_budget'),
+                                budget_per_use: r.db('welfare').table('history_welfare')
+                                    .getAll(welfare('id'), { index: 'emp_id' })
+                                    .filter((status) => {
+                                        return status('status').eq('approve').or(status('status').eq('request'))
+                                    })
+                                    .filter(
+                                    {
+                                        welfare_id: use_his('welfare_id')
+                                    }
+                                    )
+                                    .sum('use_budget')
+
+
+
+
                             }
                         })
                         .merge((balance) => {
@@ -220,7 +236,7 @@ exports.welfaresYear = function (req, res) {
                         })
                         .merge((check_onetime) => {
                             return {
-                                check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว','ใช้ได้หลายครั้ง')
+                                check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว', 'ใช้ได้หลายครั้ง')
                             }
                         })
                         // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
@@ -235,8 +251,11 @@ exports.welfaresYear = function (req, res) {
 
                 history_welfare: r.db('welfare').table('history_welfare')
                     // .filter({ emp_id: use_his('id'), year: year })
+
                     .getAll(use_his('id'), { index: 'emp_id' })
+
                     .filter({ year: year })
+                    .orderBy(r.desc('date_use'))
                     .merge((name_welfare) => {
                         return {
                             date_use: name_welfare('date_use').split('T')(0),
@@ -246,21 +265,21 @@ exports.welfaresYear = function (req, res) {
                             onetime: r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('onetime'),
                         }
                     })
-                    .merge((files)=>{
+                    .merge((files) => {
                         return {
-                            file:files('document_ids').map((doc_id)=>{
+                            file: files('document_ids').map((doc_id) => {
                                 return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
-                                .without('contents')
+                                    .without('contents')
                             })
                         }
                     })
                     .merge((check_onetime) => {
-                            return {
-                                check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว','ใช้ได้หลายครั้ง')
-                            }
-                        })
+                        return {
+                            check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว', 'ใช้ได้หลายครั้ง')
+                        }
+                    })
                     .without('id')
-                    .orderBy('date_use')
+                    .orderBy(r.desc('date_use'))
                     .coerceTo('array')
             }
         })
@@ -268,6 +287,7 @@ exports.welfaresYear = function (req, res) {
             return {
                 welfare: checkTrue('welfare').merge((e) => {
                     return {
+                        emp_work: checkTrue('active_code').eq('WORK'),//"active_code": "WORK",,
                         status_approve: checkTrue('history_welfare').filter({ status: 'request', welfare_id: e('welfare_id') }).count().gt(0),//e('welfare_id'),
                         welfare_old: e('start_date').ge(e('now_date')).branch(true,
                             e('end_date').ge(e('now_date')).branch(false, true))
@@ -291,7 +311,6 @@ exports.welfaresYear = function (req, res) {
             res.status(500).json(err);
         })
 }
-
 exports.welfaresEmployee = function (req, res) {
     var r = req.r;
     //แก้ด้วย
@@ -459,6 +478,34 @@ exports.welfaresEmployee = function (req, res) {
             }
         })
         .without('group_welfare')
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.welfaresEmployeeWork = function (req, res) {
+    var r = req.r;
+    r.db('welfare').table('employee')
+        .merge(function (f) {
+            return {
+                start_work_date: f('start_work_date').split('T')(0),
+                birthdate: f('birthdate').split('T')(0),
+                academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
+                active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
+                active_code: r.db('welfare_common').table('active').get(f('active_id')).getField('active_code'),
+                department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
+                faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
+                gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
+                matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
+                position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
+                prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
+                type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
+            }
+        })
+        .filter({ active_code: 'WORK' })
         .run()
         .then(function (result) {
             res.json(result);

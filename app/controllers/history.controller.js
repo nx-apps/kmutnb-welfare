@@ -2,6 +2,7 @@ exports.unapprove = function (req, res) {
     r.db('welfare').table('history_welfare')
         // .filter({status: false})
         .getAll('request', { index: 'status' })
+        .orderBy('date_use')
         .merge((user) => {
             return {
                 date_use: user('date_use').split('T')(0),
@@ -19,7 +20,9 @@ exports.unapprove = function (req, res) {
         .merge((userName) => {
             return {
                 budget: r.db('welfare').table('welfare').get(userName('welfare_id')).getField('budget'),
-                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('welfare_id'), { index: 'welfare_id' }).sum('use_budget'),
+                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('emp_id'),{index:'emp_id'}).filter({status: "approve",welfare_id:userName('welfare_id')}).sum('use_budget')
+                //.getAll(userName('welfare_id'), { index: 'welfare_id' }).filter({status: "approve"}).sum('use_budget')
+                ,
                 group_welfare_name: r.db('welfare').table('group_welfare').get(userName('group_id')).getField('group_welfare_name'),
                 prefix_name: r.db('welfare_common').table('prefix').get(userName('data').getField('prefix_id')).getField('prefix_name'),
                 firstname: userName('data').getField('firstname'),
@@ -31,7 +34,6 @@ exports.unapprove = function (req, res) {
         .merge((money) => {
             return {
                 budget_cover: money('budget').sub(money('history_welfare_budget')),
-
             }
         })
         .without('data')
@@ -97,6 +99,28 @@ exports.updateRejectWelfare = function (req, res) {
     req.body.map((upStatus) => {
         upStatus.date_approve = new Date().toISOString()
         upStatus.status = "reject"
+    })
+    // console.log('>>>>>>',req.body);
+    r.expr(req.body).forEach(function (fe) {
+        return r.db('welfare').table('history_welfare').get(fe('id'))
+            .update({
+                date_approve: fe('date_approve'),
+                status: fe('status')
+            }, { nonAtomic: true })
+    })
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.updateCancelWelfare = function (req, res) {
+    var r = req.r;
+    req.body.map((upStatus) => {
+        upStatus.date_approve = new Date().toISOString()
+        upStatus.status = "cancel"
     })
     // console.log('>>>>>>',req.body);
     r.expr(req.body).forEach(function (fe) {
@@ -196,10 +220,17 @@ exports.listHistory = function (req, res) {
             }
         );
     }
+    if (req.query.status == undefined) {
+        req.query = Object.assign(req.query,
+            {
+                status: 'approve'
+            }
+        );
+    }
     // let chengeyear
-    // console.log(req.query);
+    console.log(req.query);
     r.db('welfare').table('history_welfare')
-        .filter({ year: req.query.year , group_id:req.query.group_id})
+        .filter({ year: req.query.year , group_id:req.query.group_id, status:req.query.status})
         .merge((user) => {
             return {
                 date_use: user('date_use').split('T')(0),
@@ -218,7 +249,7 @@ exports.listHistory = function (req, res) {
         .merge((userName) => {
             return {
                 budget: r.db('welfare').table('welfare').get(userName('welfare_id')).getField('budget'),
-                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('welfare_id'), { index: 'welfare_id' }).sum('use_budget'),
+                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('welfare_id'), { index: 'welfare_id' }).filter({status: "approve"}).sum('use_budget'),
                 group_welfare_name: r.db('welfare').table('group_welfare').get(userName('group_id')).getField('group_welfare_name'),
                 prefix_name: r.db('welfare_common').table('prefix').get(userName('data').getField('prefix_id')).getField('prefix_name'),
                 firstname: userName('data').getField('firstname'),
@@ -228,15 +259,15 @@ exports.listHistory = function (req, res) {
             }
         })
         .filter((status) => {
-            return status('status').eq('approve').or(status('status').eq('reject'))
+            return status('status').eq('approve').or(status('status').eq('reject')).or(status('status').eq('cancel'))
         })
         .merge((money) => {
             return {
                 budget_cover: money('budget').sub(money('history_welfare_budget')),
-                status_thai: money('status').eq('approve').branch('อนุมัติ', 'ไม่อนุมัติ')
+                status_thai: money('status').eq('approve').branch('อนุมัติ',money('status').eq('cancel').branch('พนักงานยกเลิก','ไม่อนุมัติ') )
             }
         })
-        .orderBy(req.query.sortBy)
+        .orderBy(r.desc('date_use'),r.desc(req.query.sortBy))
         .without('data')
         .run()
         .then(function (result) {

@@ -8,6 +8,8 @@
 
 <link rel="import" href="./components/list-of-rvd.html">
 
+<link rel="import" href="./components/dashboard/chart-search.html">
+
 
 <!--<link rel="import" href="./../components/common-logic.html">-->
 <dom-module id="page-admin-approve">
@@ -17,15 +19,11 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        .header {
-            padding: 10px;
-            font-size: 35px;
-        }
-        
         .container {
             padding: 20px;
         }
-             main {
+        
+        main {
             /*min-width: 320px;*/
             /*max-width: 1000px;*/
             padding: 5px;
@@ -81,9 +79,16 @@
     </style>
     <template>
         <div class="xcontainer">
-            <div class="flex-equal-justified">
+            <div>
                 <div>
-                    <div class="header container">รายการคำขอใช้</div>
+                    <div class="header-page container">สถิติ</div>
+                </div>
+                <chart-search></chart-search>
+            </div>
+            <div class="flex-equal-justified">
+
+                <div>
+                    <div class="header-page container">รายการคำขอใช้</div>
                 </div>
                 <div class="container">
                     <paper-dropdown-menu no-label-float>
@@ -94,8 +99,8 @@
                     </paper-dropdown-menu>
                 </div>
             </div>
-            
-            
+
+
 
             <iron-pages selected="{{pageComponents}}">
                 <list-of-welfare></list-of-welfare>
@@ -110,7 +115,8 @@
         Polymer({
             is: 'page-admin-approve',
             behaviors: [
-                ReduxBehavior, nylonBehavior, usersAction, fundRvdAction ,userWelfareAction
+                ReduxBehavior, nylonBehavior, usersAction, fundRvdAction, userWelfareAction
+                ,dateDbAction,chartAction
             ],
             properties: {
                 pageComponents: {
@@ -121,11 +127,13 @@
 
             nylonPageActive() {
                 this.dispatchAction('WELFARE_LIST_YEAR');
+                this.dispatchAction('GET_DATE')
+                // this.dispatchAction('TEST')
                 // console.log(111);
                 // this.dispatchAction('USERS_FALSE_LIST','');
                 //  this.dispatchAction('USERS_LIST_HISTORY_WELFARE','');
                 this.FUND_RVD_GET_USER_LIST();
-                
+
             }
         });
     </script>

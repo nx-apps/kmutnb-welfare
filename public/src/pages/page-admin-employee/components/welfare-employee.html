@@ -1,8 +1,8 @@
 <link rel="import" href="../../components/format-number-behavior.html">
 <link rel="import" href="../../components/common-logic.html">
 <link rel="import" href="../../components/month-behavior.html">
-<link rel="import" href="../components/dialog-use-welfare.html">
-<link rel="import" href="employee-manage.html">
+<link rel="import" href="../components/admin-emp-dialog-use-welfare.html">
+<!--<link rel="import" href="employee-manage.html">-->
 
 <dom-module id="welfare-employee">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
@@ -183,15 +183,15 @@
                 </gl-form-panel-footer>-->
                 </gl-form-panel>
                 <paper-dialog id="welfare_budget">
-                    <dialog-use-welfare id="dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></dialog-use-welfare>
+                    <admin-emp-dialog-use-welfare id="admin-emp-dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-emp-dialog-use-welfare>
                     <div class="flex horizontal end-justified layout">
                         <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้งาน</paper-button>
                     </div>
                 </paper-dialog>
             </section>
-            <section>
+            <!--<section>
                 <employee-manage data="{{data}}"></employee-manage>
-            </section>
+            </section>-->
         </iron-pages>
 
     </template>
@@ -262,8 +262,8 @@
             getwelfare() {
                 // console.log(this.usewelfareProp);
                 this.$$('#welfare_budget').close()
-                this.usewelfareProp.document_ids = this.$$('dialog-use-welfare').keepFile()
-                if (this.$$('#dialog-use-welfare').validateForm('.required')) {
+                this.usewelfareProp.document_ids = this.$$('admin-emp-dialog-use-welfare').keepFile()
+                if (this.$$('#admin-emp-dialog-use-welfare').validateForm('.required')) {
                     this.dispatchAction('EMPLOYEE_USE_WELFARE', this.usewelfareProp);
                 }
             },

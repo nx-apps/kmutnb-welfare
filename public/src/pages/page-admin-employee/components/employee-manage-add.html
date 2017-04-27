@@ -1,18 +1,25 @@
-<dom-module id="employee-manage">
+<dom-module id="employee-manage-add">
     <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
         fieldset {
             margin: 15px 5px;
         }
+        
         gl-form-input,
         gl-combo-box,
         vaadin-date-picker {
             width: 90%;
-        }   
+        }
+        
         vaadin-date-picker {
             margin-top: -19px;
         }
-        paper-item{
-            width: 800px;;
+        
+        paper-item {
+            width: 800px;
+            ;
+        }
+        paper-material {
+            margin: 15px;
         }
     </style>
     <template>
@@ -21,22 +28,17 @@
                 <fieldset>
                     <legend>ข้อมูลส่วนตัว :</legend>
                     <div class="from layout horizontal">
-                        <!--<div class="flex layout horizontal">
-                            <div class="flex label">
-                                <label for="emp_id">รหัสพนักงาน :</label>
-                            </div>
-                            <div class="flex-2">
-                                <gl-form-input id="emp_id" no-label-float value="{{data.emp_id}}" disabled="[[disabled]]" class="required" required></gl-form-input>
-                            </div>    
-                        </div>-->
                         <div class="flex layout horizontal">
                             <div class="flex label">
                                 <label for="personal_id">รหัสบัตรประชาชน :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]" class="required" required allowed-pattern="[0-9]" maxlength="13"></gl-form-input>
+                                <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]" class="required" required
+                                    allowed-pattern="[0-9]" maxlength="13"></gl-form-input>
                             </div>
 
+                        </div>
+                        <div class="flex">
                         </div>
                     </div>
                     <div class="from layout horizontal">
@@ -65,7 +67,7 @@
                                 <label for="name">ชื่อ :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-form-input id="name" no-label-float value="{{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                                <gl-form-input id="emp_id" no-label-float value=" {{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                             </div>
                         </div>
                         <div class="flex layout horizontal">
@@ -83,8 +85,8 @@
                                 <label for="birthdate">วันเกิด :</label>
                             </div>
                             <div class="flex-5">
-                                <vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]" class="required"
-                                    required></vaadin-date-picker>
+                                <vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]"
+                                    class="required" required></vaadin-date-picker>
                             </div>
                         </div>
                 </fieldset>
@@ -145,8 +147,8 @@
                                 <label for="matier_name">ระดับทางวิชาการ :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-combo-box id="matier_name" no-label-float items="{{matier}}" value="{{data.matier_id}}" item-label-path="matier_name" item-value-path="id"
-                                    disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                <gl-combo-box id="matier_name" no-label-float items="{{matier}}" value="{{data.matier_id}}" item-label-path="matier_name"
+                                    item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
                             </div>
                         </div>
 
@@ -162,7 +164,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="from layout horizontal">
                         <div class="flex label">
                             <label for="faculty"><div style="margin-top:15px;">คณะ :</div></label>
@@ -178,7 +180,7 @@
                                 </gl-form-dropdown-menu>
                             </div>
                             <!--<gl-combo-box id="faculty" no-label-float items="{{faculty}}" value="{{data.faculty_id}}" item-label-path="faculty_name"
-                                item-value-path="id" class="required" required></gl-combo-box>-->
+                                        item-value-path="id" class="required" required></gl-combo-box>-->
                         </div>
                     </div>
                     <div class="from layout horizontal">
@@ -186,34 +188,35 @@
                             <label for="department"><div style="margin-top:15px;">แผนก :</div></label>
                         </div>
                         <div class="flex-5">
-                              <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{department.length}}" no-label-float>
-                                    <paper-listbox class="dropdown-content required" attr-for-selected="value" selected="{{data.department_id}}">
-                                        <template is="dom-repeat" items="{{department}}">
-                                            <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
-                                        </template>
-                                    </paper-listbox>
-                                </gl-form-dropdown-menu>
+                            <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{department.length}}" no-label-float>
+                                <paper-listbox class="dropdown-content required" attr-for-selected="value" selected="{{data.department_id}}">
+                                    <template is="dom-repeat" items="{{department}}">
+                                        <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                            </gl-form-dropdown-menu>
                             <!--<gl-combo-box id="department" no-label-float items="{{department}}" value="{{data.department_id}}" item-label-path="department_name"
-                                item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>-->
+                                        item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>-->
                         </div>
                     </div>
                 </fieldset>
                 </div>
+                </gl-form-panel-body>
 
-                <div class="horizontal end-justified layout">
-                    <paper-button class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
-                    <paper-button class="gl-btn-success" on-tap="save">บันทึก</paper-button>
-                </div>
+                <gl-form-panel-footer label="" set-padding="0px 10px 20px 0px">
+                    <div class="horizontal end-justified layout">
+                        <paper-button raised class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
+                        <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                    </div>
 
-
-            </paper-material>
+        </paper-material>
 
     </template>
     <script>
         Polymer({
-            is: 'employee-manage',
+            is: 'employee-manage-add',
             behaviors: [ReduxBehavior, ValidateFormBehavior],
-            observers:['getDepartment(data.faculty_id,faculty)'],
+            observers: ['getDepartment(data.faculty_id,faculty)'],
             properties: {
                 data: {
                     statePath: 'userWelfare.welfare_employee'
@@ -257,28 +260,29 @@
                     statePath: 'commonData.faculty'
                 }
             },
-            save:function(){
-                if(typeof this.data.id === 'undefined' && this.data.id == undefined){
+            save: function () {
+                if (typeof this.data.id === 'undefined' && this.data.id == undefined) {
                     this.dispatchAction('EMPLOYEE_INSERT', this.data);
                 }
-                else{
+                else {
                     this.dispatchAction('EMPLOYEE_UPDATE', this.data);
                 }
             },
-            cancle:function(){
-                if(typeof this.data.id === 'undefined' && this.data.id == undefined){
-                    this.fire('select-page',0);
+            cancle: function () {
+                if (typeof this.data.id === 'undefined' && this.data.id == undefined) {
+                    // this.fire('select-page', 0);
+                    this.fire('back_page');
                 }
-                else{
+                else {
                     this.dispatchAction('LIST_EMPLOYEE_WELFARE', this.data.id);
-                    this.fire('back-page',0);
+                    this.fire('back_page');
                 }
             },
-            getDepartment:function(id,item){
-                if(typeof id != 'undefined' && item[0].faculty != ""){
+            getDepartment: function (id, item) {
+                if (typeof id != 'undefined' && item[0].faculty != "") {
                     // console.log('*',item); 
                     // console.log('id',id);
-                    var faculty = item.filter((val)=> val.id == id)[0]
+                    var faculty = item.filter((val) => val.id == id)[0]
                     // console.log(faculty);
                     this.department = faculty.department;
                 }

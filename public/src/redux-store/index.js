@@ -13,6 +13,9 @@ import {usersReducer,usersAction} from './reducer/users'
 import {conditionReadWelfareReducer,conditionReadWelfareAction} from './reducer/conditionReadWelfare'
 import {uploadReducer,uploadAction} from './reducer/upload'
 import {fundRvdReducer,fundRvdAction} from './reducer/fundRvd'
+import {dateDbReducer,dateDbAction} from './reducer/dateDb'
+import {chartReducer,chartAction} from './reducer/chart'
+
 
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
@@ -25,7 +28,9 @@ const rootReducer = combineReducers({
     users:usersReducer,
     conditionReadWelfare:conditionReadWelfareReducer,
     upload:uploadReducer,
-    fundRvd: fundRvdReducer
+    fundRvd: fundRvdReducer,
+    dateDb: dateDbReducer,
+    chart: chartReducer
 });
 const storeApp = createStore(
     rootReducer,
@@ -46,3 +51,5 @@ window.usersAction = usersAction(storeApp);
 window.conditionReadWelfareAction = conditionReadWelfareAction(storeApp);
 window.uploadAction = uploadAction(storeApp);
 window.fundRvdAction = fundRvdAction(storeApp);
+window.dateDbAction = dateDbAction(storeApp);
+window.chartAction = chartAction(storeApp);
