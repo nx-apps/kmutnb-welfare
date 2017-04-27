@@ -1,4 +1,6 @@
 <link rel="import" href="../../components/format-number-behavior.html">
+<link rel="import" href="./../../components/validateFormBehaviors.html">
+
 <dom-module id="welfare-form">
     <template>
         <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -46,7 +48,7 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        <gl-form-input required disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <template is="dom-repeat" items="{{data.condition}}">
@@ -163,7 +165,7 @@
     <script>
         Polymer({
             is: 'welfare-form',
-            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, ValidateFormBehavior],
             properties: {
                 condition: {
                     statePath: 'welfare.condition'
