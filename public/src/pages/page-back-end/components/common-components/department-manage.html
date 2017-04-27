@@ -18,6 +18,9 @@
         th {
             text-align: center !important;
         }
+        gl-combo-box{
+            width: 100%;
+        }
     </style>
     <template>
         <div class="container">
@@ -38,8 +41,9 @@
                         <div class="flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-combo-box label="Faculty" items="[[facultys]]" item-label-path="faculty_name" item-value-path="faculty_id" value="{{data.faculty_id}}">
+                                <gl-combo-box label="Faculty" items="[[facultys]]" item-label-path="faculty_name" item-value-path="id" value="{{data.faculty_id}}">
                                 </gl-combo-box>
+                                {{data.faculty_id}}
                                 <!--<gl-form-input label="faculty" placeholder="กรอกข้อมูล" value="{{data.faculty}}"></gl-form-input>-->
                             </div>
                             <div class="flexchild" style="text-align: center"></div>
@@ -75,13 +79,13 @@
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
-                                            <gl-combo-box label="" items="[[facultys]]" item-label-path="faculty_name" item-value-path="faculty_id" value="{{data.faculty_id}}" disabled>
-                                            </gl-combo-box>
+                                            {{item.faculty_name}}
+                                            <!--</gl-combo-box>-->
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
-                                            <gl-combo-box label="Faculty" items="[[facultys]]" item-label-path="faculty_name" item-value-path="faculty_id" value="{{data.faculty_id}}">
+                                            <gl-combo-box label="Faculty" items="[[facultys]]" item-label-path="faculty_name" item-value-path="id" value="{{item.faculty_id}}">
                                             </gl-combo-box>
                                         </td>
                                     </template>

@@ -1,5 +1,7 @@
 <link rel="import" href="../../components/format-number-behavior.html">
-<dom-module id="group_welfare-manage">
+<link rel="import" href="./../../components/validateFormBehaviors.html">
+
+<dom-module id="group-welfare-manage">
     <template>
         <style is="custom-style" include="page-style iron-flex iron-flex-factors iron-flex-alignment">
             gl-form-input,
@@ -48,22 +50,22 @@
             <gl-grid-row width="{{getWidth}}">
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-input disabled="{{isEnable}}" label="ปี" allowed-pattern="[0-9]" maxlength="4" value="{{data.year}}" placeholder="กรุณากรอกปี พ.ศ."></gl-form-input>
+                    <gl-form-input class="checkValidate" required disabled="{{isEnable}}" label="ปี" allowed-pattern="[0-9]" maxlength="4" value="{{data.year}}" placeholder="กรุณากรอกปี พ.ศ."></gl-form-input>
                 </gl-grid-col>
             </gl-grid-row>
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-input disabled="{{isEnable}}" label="ชื่อสวัสดิการ" value="{{data.group_welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
+                    <gl-form-input class="checkValidate" required disabled="{{isEnable}}" label="ชื่อสวัสดิการ" value="{{data.group_welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
                 </gl-grid-col>
             </gl-grid-row>
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                    <vaadin-date-picker disabled="{{isEnable}}" label="วันที่เริ่มใช้งาน :" value="{{data.start_date}}"></vaadin-date-picker>
+                    <vaadin-date-picker class="checkValidate" required disabled="{{isEnable}}" label="วันที่เริ่มใช้งาน :" value="{{data.start_date}}"></vaadin-date-picker>
                 </gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                    <vaadin-date-picker disabled="{{isEnable}}" label="วันที่สิ้นสุดใช้งาน :" value="{{data.end_date}}"></vaadin-date-picker>
+                    <vaadin-date-picker class="checkValidate" required disabled="{{isEnable}}" label="วันที่สิ้นสุดใช้งาน :" value="{{data.end_date}}"></vaadin-date-picker>
                 </gl-grid-col>
             </gl-grid-row>
             <gl-grid-row>
@@ -98,8 +100,8 @@
     </template>
     <script>
         Polymer({
-            is: 'group_welfare-manage',
-            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            is: 'group-welfare-manage',
+            behaviors: [ReduxBehavior, FormatNumberBehavior, ValidateFormBehavior],
             properties: {
                 data: {
                     statePath: 'groupWelfare.select'
@@ -110,22 +112,31 @@
                 }
             },
             save: function () {
-                if (typeof this.data.id != 'undefined' && this.data.id != '') {
-                    this.data.year = this.unFormat(this.data.year);
-                    this.dispatchAction('EDIT_WELFARE', this.data);
-                    this.isEnable = true;
+                var check = this.validateForm('.checkValidate');
+                // console.log(check);
+                if(check == true){
+                    if (typeof this.data.id != 'undefined' && this.data.id != '') {
+                        this.data.year = this.unFormat(this.data.year);
+                        this.dispatchAction('EDIT_WELFARE', this.data);
+                        this.isEnable = true;
+                    }
+                    else {
+                        this.data.year = this.unFormat(this.data.year);
+                        this.data.status_approve = false;
+                        if (this.data.onetime != true) {
+                            this.data.onetime = false;
+                        }
+                        if (this.data.admin_use != true) {
+                            this.data.admin_use = false;
+                        }
+                        // console.log(this.data);
+                        this.dispatchAction('INSERT_WELFARE', this.data)
+                    }
                 }
-                else {
-                    this.data.year = this.unFormat(this.data.year);
-                    this.data.status_approve = false;
-                    if (this.data.onetime != true) {
-                        this.data.onetime = false;
-                    }
-                    if (this.data.admin_use != true) {
-                        this.data.admin_use = false;
-                    }
-                    // console.log(this.data);
-                    this.dispatchAction('INSERT_WELFARE', this.data)
+                else{
+                    this.fire('toast',{status:'connectError',text:'กรุณากรอกข้อมูลให้ครบ',
+                    callback:function(){
+                    }})
                 }
             },
             delete_condition: function (e) {
