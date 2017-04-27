@@ -1,3 +1,5 @@
+<link rel="import" href="./../../components/validateFormBehaviors.html">
+
 <dom-module id="employee-manage-add">
     <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
         fieldset {
@@ -33,7 +35,7 @@
                                 <label for="personal_id">รหัสบัตรประชาชน :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]" class="required" required
+                                <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]" class="checkValidate" required
                                     allowed-pattern="[0-9]" maxlength="13"></gl-form-input>
                             </div>
 
@@ -48,7 +50,7 @@
                             </div>
                             <div class="flex-2">
                                 <gl-combo-box id="prefixname" no-label-float items="{{prefixname}}" value="{{data.prefix_id}}" item-label-path="prefix_name"
-                                    item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                    item-value-path="id" disabled="[[disabled]]" class="checkValidate" required></gl-combo-box>
                             </div>
                         </div>
                         <div class="flex layout horizontal">
@@ -57,7 +59,7 @@
                             </div>
                             <div class="flex-2">
                                 <gl-combo-box no-label-float items="{{gender}}" value="{{data.gender_id}}" item-label-path="gender_name" item-value-path="id"
-                                    disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                    disabled="[[disabled]]" class="checkValidate" required></gl-combo-box>
                             </div>
                         </div>
                     </div>
@@ -67,7 +69,7 @@
                                 <label for="name">ชื่อ :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-form-input id="emp_id" no-label-float value=" {{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                                <gl-form-input id="emp_id" no-label-float value="{{data.firstname}}" disabled="[[disabled]]" class="checkValidate" required></gl-form-input>
                             </div>
                         </div>
                         <div class="flex layout horizontal">
@@ -75,7 +77,7 @@
                                 <label for="name">นามสกุล :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-form-input id="name" no-label-float value="{{data.lastname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                                <gl-form-input id="name" no-label-float value="{{data.lastname}}" disabled="[[disabled]]" class="checkValidate" required></gl-form-input>
                             </div>
                         </div>
                     </div>
@@ -86,7 +88,7 @@
                             </div>
                             <div class="flex-5">
                                 <vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]"
-                                    class="required" required></vaadin-date-picker>
+                                    class="checkValidate" required></vaadin-date-picker>
                             </div>
                         </div>
                 </fieldset>
@@ -98,7 +100,7 @@
                                 <label for="emp_no">รหัสพนักงาน :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-form-input id="emp_no" no-label-float value="{{data.emp_no}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                                <gl-form-input id="emp_no" no-label-float value="{{data.emp_no}}" disabled="[[disabled]]" class="checkValidate" required></gl-form-input>
                             </div>
                         </div>
                         <div class="flex layout horizontal">
@@ -106,7 +108,7 @@
                                 <label for="start_work_date">วันที่เริ่มทำงาน :</label>
                             </div>
                             <div class="flex-2">
-                                <vaadin-date-picker always-float-label value="{{data.start_work_date}}" disabled="[[disabled]]" class="required" required></vaadin-date-picker>
+                                <vaadin-date-picker always-float-label value="{{data.start_work_date}}" disabled="[[disabled]]" class="checkValidate" required></vaadin-date-picker>
                             </div>
                         </div>
 
@@ -118,7 +120,7 @@
                             </div>
                             <div class="flex-2">
                                 <gl-combo-box id="active_id" no-label-float items="{{active}}" value="{{data.active_id}}" item-label-path="active_name" item-value-path="id"
-                                    disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                    disabled="[[disabled]]" class="checkValidate" required></gl-combo-box>
                             </div>
                         </div>
                         <div class="flex layout horizontal">
@@ -127,7 +129,7 @@
                             </div>
                             <div class="flex-2">
                                 <gl-combo-box id="type_employee_name" no-label-float items="{{type_employee}}" value="{{data.type_employee_id}}" item-label-path="type_employee_name"
-                                    item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                    item-value-path="id" disabled="[[disabled]]" class="checkValidate" required></gl-combo-box>
                             </div>
                         </div>
 
@@ -139,7 +141,7 @@
                             </div>
                             <div class="flex-2">
                                 <gl-combo-box id="position" no-label-float items="{{position}}" value="{{data.position_id}}" item-label-path="position_name"
-                                    item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                    item-value-path="id" disabled="[[disabled]]" class="checkValidate" required></gl-combo-box>
                             </div>
                         </div>
                         <div class="flex layout horizontal">
@@ -148,7 +150,7 @@
                             </div>
                             <div class="flex-2">
                                 <gl-combo-box id="matier_name" no-label-float items="{{matier}}" value="{{data.matier_id}}" item-label-path="matier_name"
-                                    item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                    item-value-path="id" disabled="[[disabled]]" class="checkValidate" required></gl-combo-box>
                             </div>
                         </div>
 
@@ -160,7 +162,7 @@
                             </div>
                             <div class="flex-5">
                                 <gl-combo-box id="academic" no-label-float items="{{academic}}" value="{{data.academic_id}}" item-label-path="academic_name"
-                                    item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>
+                                    item-value-path="id" disabled="[[disabled]]" class="checkValidate" required></gl-combo-box>
                             </div>
                         </div>
                     </div>
@@ -171,8 +173,8 @@
                         </div>
                         <div class="flex-5">
                             <div id="faculty">
-                                <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{faculty.length}}" no-label-float>
-                                    <paper-listbox class="dropdown-content required" no-label-float attr-for-selected="value" selected="{{data.faculty_id}}">
+                                <gl-form-dropdown-menu class="checkValidate" style="margin-top:15px; width: 90%;" placeholder="{{faculty.length}}" no-label-float required>
+                                    <paper-listbox class="dropdown-content" no-label-float attr-for-selected="value" selected="{{data.faculty_id}}">
                                         <template is="dom-repeat" items="{{faculty}}">
                                             <paper-item value="{{item.id}}">{{item.faculty_name}}</paper-item>
                                         </template>
@@ -180,7 +182,7 @@
                                 </gl-form-dropdown-menu>
                             </div>
                             <!--<gl-combo-box id="faculty" no-label-float items="{{faculty}}" value="{{data.faculty_id}}" item-label-path="faculty_name"
-                                        item-value-path="id" class="required" required></gl-combo-box>-->
+                                        item-value-path="id" class="checkValidate" required></gl-combo-box>-->
                         </div>
                     </div>
                     <div class="from layout horizontal">
@@ -188,15 +190,15 @@
                             <label for="department"><div style="margin-top:15px;">แผนก :</div></label>
                         </div>
                         <div class="flex-5">
-                            <gl-form-dropdown-menu style="margin-top:15px; width: 90%;" placeholder="{{department.length}}" no-label-float>
-                                <paper-listbox class="dropdown-content required" attr-for-selected="value" selected="{{data.department_id}}">
+                            <gl-form-dropdown-menu class="checkValidate" style="margin-top:15px; width: 90%;" placeholder="{{department.length}}" no-label-float required>
+                                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{data.department_id}}">
                                     <template is="dom-repeat" items="{{department}}">
                                         <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
                                     </template>
                                 </paper-listbox>
                             </gl-form-dropdown-menu>
                             <!--<gl-combo-box id="department" no-label-float items="{{department}}" value="{{data.department_id}}" item-label-path="department_name"
-                                        item-value-path="id" disabled="[[disabled]]" class="required" required></gl-combo-box>-->
+                                        item-value-path="id" disabled="[[disabled]]" class="checkValidate" required></gl-combo-box>-->
                         </div>
                     </div>
                 </fieldset>
@@ -261,11 +263,19 @@
                 }
             },
             save: function () {
-                if (typeof this.data.id === 'undefined' && this.data.id == undefined) {
-                    this.dispatchAction('EMPLOYEE_INSERT', this.data);
+                var check = this.validateForm('.checkValidate')
+                if (check == true){
+                    if (typeof this.data.id === 'undefined' && this.data.id == undefined) {
+                        this.dispatchAction('EMPLOYEE_INSERT', this.data);
+                    }
+                    else {
+                        this.dispatchAction('EMPLOYEE_UPDATE', this.data);
+                    }
                 }
-                else {
-                    this.dispatchAction('EMPLOYEE_UPDATE', this.data);
+                else{
+                    this.fire('toast',{status:'connectError',text:'กรุณากรอกข้อมูลให้ครบ',
+                    callback:function(){
+                    }})
                 }
             },
             cancle: function () {
