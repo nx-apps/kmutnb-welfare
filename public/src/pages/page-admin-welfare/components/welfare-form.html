@@ -307,24 +307,25 @@
                         newitem.field = field.id;
                         return newitem
                     })
-                    newData.condition = setCondition;               
-                    if (typeof this.data.id == 'undefined') {
-                        newData.status = true;
-                        //  console.log(newData);
-                        var year = new Date().getFullYear();
-                        this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
-                            this.fire('refresh_group',year);
-                            this.fire('back');
-                        })
-                    }
-                    else {
-                        newData.status = this.data.status
-                        newData.id=this.data.id;
-                        console.log(newData);
-                        this.dispatchAction('WELFARE_EDIT', newData);
-                        this.isEnable = true;
-                        // this.fire('back');
-                    }
+                    newData.condition = setCondition;    
+                    console.log(newData);           
+                    // if (typeof this.data.id == 'undefined') {
+                    //     newData.status = true;
+                    //     //  console.log(newData);
+                    //     var year = new Date().getFullYear();
+                    //     this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
+                    //         this.fire('refresh_group',year);
+                    //         this.fire('back');
+                    //     })
+                    // }
+                    // else {
+                    //     newData.status = this.data.status
+                    //     newData.id=this.data.id;
+                    //     console.log(newData);
+                    //     this.dispatchAction('WELFARE_EDIT', newData);
+                    //     this.isEnable = true;
+                    //     // this.fire('back');
+                    // }
                 }
             },
             _edit: function () {

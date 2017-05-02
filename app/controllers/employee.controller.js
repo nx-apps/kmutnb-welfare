@@ -2,32 +2,72 @@ exports.list = function (req, res) {
     // https://localhost:3000/api/employee/list
     // console.log('1111111')
     //  res.json({user:'1'});
-    //   var crypto = require('crypto');
-    //   var sha1 = crypto.createHash('sha1').update('Apple').digest("hex");
-    //   console.log('>>>>>>>',sha1);
     var r = req.r;
-    r.db('welfare').table('employee')
-        // .merge(function (f) {
-        //     return {
-        //         start_work_date: f('start_work_date').split('T')(0),
-        //         birthdate: f('birthdate').split('T')(0)
-        //     }
-        // })
-        .merge(function (f) {
+    // r.db('welfare').table('employee').limit(10)
+    //     .merge(function (f) {
+    //         return {
+    //             start_work_date: f('start_work_date').split('T')(0),
+    //             birthdate: f('birthdate').split('T')(0),
+    //         }
+    //     })
+    //     .eqJoin('academic_id', r.db('welfare_common').table('academic')).pluck('left', { right: ['academic_name'] }).zip()
+    //     .eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: ['active_name'] }).zip()
+    //     .eqJoin('department_id', r.db('welfare_common').table('department')).pluck('left', { right: ['department_name'] }).zip()
+    //     .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck('left', { right: ['faculty_name'] }).zip()
+    //     .eqJoin('gender_id', r.db('welfare_common').table('gender')).pluck('left', { right: ['gender_name'] }).zip()
+    //     .eqJoin('matier_id', r.db('welfare_common').table('matier')).pluck('left', { right: ['matier_name'] }).zip()
+    //     .eqJoin('position_id', r.db('welfare_common').table('position')).pluck('left', { right: ['position_name'] }).zip()
+    //     .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck('left', { right: ['prefix_name'] }).zip()
+    //     .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck('left', { right: ['type_employee_name'] }).zip()
+    //     .without('academic_id','active_id','department_id','faculty_id','gender_id','matier_id','position_id','type_employee_id','prefix_id')
+    r.expr({
+        academic: r.db('welfare_common').table('academic').coerceTo('Array'),
+        active: r.db('welfare_common').table('active').coerceTo('Array'),
+        department: r.db('welfare_common').table('department').coerceTo('Array'),
+        faculty: r.db('welfare_common').table('faculty').coerceTo('Array'),
+        gender: r.db('welfare_common').table('gender').coerceTo('Array'),
+        matier: r.db('welfare_common').table('matier').coerceTo('Array'),
+        position: r.db('welfare_common').table('position').coerceTo('Array'),
+        prefix: r.db('welfare_common').table('prefix').coerceTo('Array'),
+        type_employee: r.db('welfare_common').table('type_employee').coerceTo('Array'),
+    })
+        .merge((emp) => {
             return {
-                start_work_date: f('start_work_date').split('T')(0),
-                birthdate: f('birthdate').split('T')(0),
-                academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
-                active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
-                department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
-                faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
-                gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
-                matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
-                position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
-                prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
-                type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
+                emp: r.db('welfare').table('employee').coerceTo('Array')//.limit(1)
+                    .merge((merName) => {
+                        return {
+                            academic_name: emp('academic').filter({ id: merName('academic_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').getField('academic_name'),
+                            active_name: emp('active').filter({ id: merName('active_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').getField('active_name'),
+                            department_name: emp('department').filter({ id: merName('department_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').getField('department_name'),
+                            faculty_name: emp('faculty').filter({ id: merName('faculty_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').getField('faculty_name'),
+                            gender_name: emp('gender').filter({ id: merName('gender_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').getField('gender_name'),
+                            matier_name: emp('matier').filter({ id: merName('matier_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').getField('matier_name'),
+                            position_name: emp('position').filter({ id: merName('position_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').getField('position_name'),
+                            prefix_name: emp('prefix').filter({ id: merName('prefix_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').getField('prefix_name'),
+                            type_employee_name: emp('type_employee').filter({ id: merName('type_employee_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').getField('type_employee_name'),
+                        }
+                    })
             }
         })
+        .getField('emp')
         .run()
         .then(function (result) {
             res.json(result);
@@ -102,19 +142,19 @@ exports.welfaresYear = function (req, res) {
         .merge(function (f) {
             return {
                 start_work_date: f('start_work_date').split('T')(0),
-                birthdate: f('birthdate').split('T')(0),
-                academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
-                active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
-                active_code: r.db('welfare_common').table('active').get(f('active_id')).getField('active_code'),
-                department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
-                faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
-                gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
-                matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
-                position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
-                prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
-                type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
+                birthdate: f('birthdate').split('T')(0)
             }
         })
+        .eqJoin('academic_id', r.db('welfare_common').table('academic')).pluck('left', { right: ['academic_name'] }).zip()
+        .eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: ['active_name'] }).zip()
+        .eqJoin('department_id', r.db('welfare_common').table('department')).pluck('left', { right: ['department_name'] }).zip()
+        .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck('left', { right: ['faculty_name'] }).zip()
+        .eqJoin('gender_id', r.db('welfare_common').table('gender')).pluck('left', { right: ['gender_name'] }).zip()
+        .eqJoin('matier_id', r.db('welfare_common').table('matier')).pluck('left', { right: ['matier_name'] }).zip()
+        .eqJoin('position_id', r.db('welfare_common').table('position')).pluck('left', { right: ['position_name'] }).zip()
+        .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck('left', { right: ['prefix_name'] }).zip()
+        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck('left', { right: ['type_employee_name'] }).zip()
+        .without('academic_id', 'active_id', 'department_id', 'faculty_id', 'gender_id', 'matier_id', 'position_id', 'type_employee_id', 'prefix_id')
         .merge((group_welfare) => {
             return {
                 rvd_status: r.branch(group_welfare('type_employee_name').eq('พนักงานมหาวิทยาลัย'), true, false),
@@ -326,18 +366,19 @@ exports.welfaresEmployee = function (req, res) {
         .merge(function (f) {
             return {
                 start_work_date: f('start_work_date').split('T')(0),
-                birthdate: f('birthdate').split('T')(0),
-                academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
-                active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
-                department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
-                faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
-                gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
-                matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
-                position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
-                prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
-                type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
+                birthdate: f('birthdate').split('T')(0)
             }
         })
+        .eqJoin('academic_id', r.db('welfare_common').table('academic')).pluck('left', { right: ['academic_name'] }).zip()
+        .eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: ['active_name'] }).zip()
+        .eqJoin('department_id', r.db('welfare_common').table('department')).pluck('left', { right: ['department_name'] }).zip()
+        .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck('left', { right: ['faculty_name'] }).zip()
+        .eqJoin('gender_id', r.db('welfare_common').table('gender')).pluck('left', { right: ['gender_name'] }).zip()
+        .eqJoin('matier_id', r.db('welfare_common').table('matier')).pluck('left', { right: ['matier_name'] }).zip()
+        .eqJoin('position_id', r.db('welfare_common').table('position')).pluck('left', { right: ['position_name'] }).zip()
+        .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck('left', { right: ['prefix_name'] }).zip()
+        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck('left', { right: ['type_employee_name'] }).zip()
+        .without('academic_id', 'active_id', 'department_id', 'faculty_id', 'gender_id', 'matier_id', 'position_id', 'type_employee_id', 'prefix_id')
         .merge((group_welfare) => {
             return {
                 group_welfare: r.db('welfare').table('group_welfare')
@@ -492,19 +533,19 @@ exports.welfaresEmployeeWork = function (req, res) {
         .merge(function (f) {
             return {
                 start_work_date: f('start_work_date').split('T')(0),
-                birthdate: f('birthdate').split('T')(0),
-                academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
-                active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
-                active_code: r.db('welfare_common').table('active').get(f('active_id')).getField('active_code'),
-                department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
-                faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
-                gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
-                matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
-                position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
-                prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
-                type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
+                birthdate: f('birthdate').split('T')(0)
             }
         })
+        .eqJoin('academic_id', r.db('welfare_common').table('academic')).pluck('left', { right: ['academic_name'] }).zip()
+        .eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: ['active_name'] }).zip()
+        .eqJoin('department_id', r.db('welfare_common').table('department')).pluck('left', { right: ['department_name'] }).zip()
+        .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck('left', { right: ['faculty_name'] }).zip()
+        .eqJoin('gender_id', r.db('welfare_common').table('gender')).pluck('left', { right: ['gender_name'] }).zip()
+        .eqJoin('matier_id', r.db('welfare_common').table('matier')).pluck('left', { right: ['matier_name'] }).zip()
+        .eqJoin('position_id', r.db('welfare_common').table('position')).pluck('left', { right: ['position_name'] }).zip()
+        .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck('left', { right: ['prefix_name'] }).zip()
+        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck('left', { right: ['type_employee_name'] }).zip()
+        .without('academic_id', 'active_id', 'department_id', 'faculty_id', 'gender_id', 'matier_id', 'position_id', 'type_employee_id', 'prefix_id')
         .filter({ active_code: 'WORK' })
         .run()
         .then(function (result) {
