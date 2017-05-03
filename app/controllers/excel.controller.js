@@ -2,7 +2,7 @@ sha1 = require('js-sha1');
 exports.read = function (req, res) {
     //Read file here.
     var XLSX = require('xlsx');
-    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/welfare.xlsx');
+    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/employee.xlsx');
 
     var file = workbook.Sheets;
     var data = {};
@@ -18,8 +18,12 @@ exports.read = function (req, res) {
                 } else {
                     if (temp.col[str2CharOnly(key)].indexOf("primary_id") > -1) {
                         row["id"] = sha1(file[sheet][key].v);
-                    }else if (temp.col[str2CharOnly(key)].indexOf("date") > -1) {
-                        row[temp.col[str2CharOnly(key)]] = new Date(file[sheet][key].w).toISOString();
+                    } else if (temp.col[str2CharOnly(key)].indexOf("date") > -1) {
+                        console.log(file[sheet][key]);
+                        // row[temp.col[str2CharOnly(key)]] = new Date(file[sheet][key].w).toISOString();
+                        row[temp.col[str2CharOnly(key)]] = req.r.ISO8601(file[sheet][key].w + "T00:00:00+07:00");
+                    } else if (temp.col[str2CharOnly(key)].indexOf("dob2") > -1) {
+                        row[temp.col[str2CharOnly(key)]] = file[sheet][key].w;
                     } else {
                         row[temp.col[str2CharOnly(key)]] = file[sheet][key].v;
                     }
@@ -85,4 +89,34 @@ function str2CharOnly(string) { //input AB123  => output AB
         }
     }
     return String.fromCharCode.apply(String, t);
+}
+exports.test = function (req, res) {
+    // var d = new Date('2017-05-02T00:00:00+07:00');
+    //  var  dm=d.getTime() / 1000;
+    //var  dd=d.getTime() % 1000;
+    // dt=dm+(dd/1000);
+
+    req.r.db('welfare_common').table('employee')
+        .merge(function (m) {
+            return r.db('welfare_common').table('department').getAll([m('faculty_name'), m('department_name')], { index: 'facDep' })
+                .map(function (mm) {
+                    return {
+                        faculty_id: mm('faculty_id'),
+                        department_id: mm('id')
+                    }
+                })(0)
+        })
+        .merge(function (m) {
+            return {
+                prefix_id: r.db('welfare_common').table('prefix').getAll(m('prefix_name'), { index: 'prefix_name' })(0).getField('id')
+            }
+        })
+        .forEach(function (fe) {
+            return r.db('welfare_common').table('employee').get(fe('id')).update(fe)
+        })
+
+        .run()
+        .then(function (data) {
+            res.json(data);
+        })
 }
