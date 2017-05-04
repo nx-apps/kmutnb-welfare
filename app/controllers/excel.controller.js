@@ -2,7 +2,7 @@ sha1 = require('js-sha1');
 exports.read = function (req, res) {
     //Read file here.
     var XLSX = require('xlsx');
-    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/employee.xlsx');
+    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/employee_update.xlsx');
 
     var file = workbook.Sheets;
     var data = {};
@@ -53,13 +53,13 @@ exports.read = function (req, res) {
     //res.json(dataSheet);
     var r = req.r;
     r.expr(dataSheet).forEach(function (row) {
-        return r.db('welfare_common').tableList().contains(row('table'))
+        return r.db('welfare_data_emp').tableList().contains(row('table'))
             .do(function (tbExists) {
                 return r.branch(tbExists,
-                    r.db('welfare_common').table(row('table')).delete(),
-                    r.db('welfare_common').tableCreate(row('table'))
+                    r.db('welfare_data_emp').table(row('table')).delete(),
+                    r.db('welfare_data_emp').tableCreate(row('table'))
                 ).do(function (tbInsert) {
-                    return r.db('welfare_common').table(row('table')).insert(row('data'))
+                    return r.db('welfare_data_emp').table(row('table')).insert(row('data'))
                 })
             })
     })
@@ -91,30 +91,29 @@ function str2CharOnly(string) { //input AB123  => output AB
     return String.fromCharCode.apply(String, t);
 }
 exports.test = function (req, res) {
-    // var d = new Date('2017-05-02T00:00:00+07:00');
-    //  var  dm=d.getTime() / 1000;
-    //var  dd=d.getTime() % 1000;
-    // dt=dm+(dd/1000);
 
-    req.r.db('welfare_common').table('employee')
-        .merge(function (m) {
-            return r.db('welfare_common').table('department').getAll([m('faculty_name'), m('department_name')], { index: 'facDep' })
-                .map(function (mm) {
-                    return {
-                        faculty_id: mm('faculty_id'),
-                        department_id: mm('id')
-                    }
-                })(0)
+    // req.r.db('welfare_common').table('employee')
+    //     .merge(function (m) {
+    //         return r.db('welfare_common').table('department').getAll([m('faculty_name'), m('department_name')], { index: 'facDep' })
+    //             .map(function (mm) {
+    //                 return {
+    //                     faculty_id: mm('faculty_id'),
+    //                     department_id: mm('id')
+    //                 }
+    //             })(0)
+    //     })
+    //     .merge(function (m) {
+    //         return {
+    //             prefix_id: r.db('welfare_common').table('prefix').getAll(m('prefix_name'), { index: 'prefix_name' })(0).getField('id')
+    //         }
+    //     })
+    //     .forEach(function (fe) {
+    //         return r.db('welfare_common').table('employee').get(fe('id')).update(fe)
+    //     })
+    req.r.db('welfare_data_emp').tableList()
+        .forEach(function(fe){
+            return 
         })
-        .merge(function (m) {
-            return {
-                prefix_id: r.db('welfare_common').table('prefix').getAll(m('prefix_name'), { index: 'prefix_name' })(0).getField('id')
-            }
-        })
-        .forEach(function (fe) {
-            return r.db('welfare_common').table('employee').get(fe('id')).update(fe)
-        })
-
         .run()
         .then(function (data) {
             res.json(data);
