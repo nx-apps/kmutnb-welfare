@@ -111,8 +111,103 @@ exports.test = function (req, res) {
     //         return r.db('welfare_common').table('employee').get(fe('id')).update(fe)
     //     })
     req.r.db('welfare_data_emp').tableList()
-        .forEach(function(fe){
-            return 
+        .forEach(function (fe) {
+            return
+        })
+        .run()
+        .then(function (data) {
+            res.json(data);
+        })
+}
+
+exports.getFieldCommonDataFromEmployee = function (req, res) {
+    var r = req.r;
+    r.db('welfare_data_emp').tableList()
+        .filter(function (f) {
+            return f.ne('employee')
+        })
+        .map(function (m) {
+            return r.db('welfare_data_emp').table(m)(0).keys()
+        })
+        .reduce(function (l, r) {
+            return l.add(r)
+        })
+        .distinct()
+        .run()
+        .then(function (data) {
+            res.json(data);
+        })
+}
+exports.insertCommonDataFromEmployee = function (req, res) {
+    var r = req.r;
+    r.db('welfare_data_emp').tableList()
+        .filter(function (f) {
+            return f.ne('employee')
+        })
+        .map(function (m) {
+            return r.db('welfare_data_emp').table(m)
+                .getField('type_employee_name') //gender_name,matier_name,position_name,type_employee_name
+                .coerceTo('array')
+        })
+        .reduce(function (l, r) {
+            return l.add(r)
+        })
+        .distinct()
+        .forEach(function (fe) {
+            return r.db('welfare_common')
+                .table('type_employee') //gender,matier,position,type_employee
+                .insert({ type_employee_name: fe }) //gender_name,matier_name,position_name,type_employee_name
+            //.insert({type_employee_name:''}) //for empty
+        })
+        .run()
+        .then(function (data) {
+            res.json(data);
+        })
+}
+exports.mergeDataToEmployee = function (req, res) {
+    var r = req.r;
+    r.db('welfare_data_emp').tableList()
+        .filter(function (f) {
+            return f.ne('employee')
+        })
+        .forEach(function (fe) {
+            return r.db('welfare_data_emp').table(fe).without('id').forEach(function (fe2) {
+                return r.db('welfare_data_emp').table('employee').getAll(fe2('personal_id'), { index: 'personal_id' }).update(fe2)
+            })
+        })
+        .run()
+        .then(function (data) {
+            res.json(data);
+        })
+}
+exports.mergeDataBlankToEmployee = function (req, res) {
+    var r = req.r;
+    r.db('welfare_data_emp').table('employee')
+        .filter(function (f) {
+            return f.hasFields('type_employee_name') //gender_name,matier_name,position_name,type_employee_name
+                .eq(false)
+        }).update({ type_employee_name: '' }) //gender_name,matier_name,position_name,type_employee_name
+        .run()
+        .then(function (data) {
+            res.json(data);
+        })
+}
+exports.mergeIdDataToEmployee = function (req, res) {
+    var r = req.r;
+
+    r.expr([
+        { tbname: 'gender', pid: 'gender_id', pname: 'gender_name' },
+        { tbname: 'matier', pid: 'matier_id', pname: 'matier_name' },
+        { tbname: 'position', pid: 'position_id', pname: 'position_name' },
+        { tbname: 'type_employee', pid: 'type_employee_id', pname: 'type_employee_name' }
+    ])
+        .forEach(function (fe) {
+            return r.db('welfare_common').table(fe('tbname')).merge(function (merge_data) {
+                return r.expr([[fe('pid'), merge_data('id')]]).coerceTo("OBJECT")
+            }).without('id')
+                .forEach(function (fe2) {
+                    return r.db('welfare_data_emp').table('employee').getAll(fe2(fe('pname')), { index: fe('pname') }).update(fe2)
+                })
         })
         .run()
         .then(function (data) {
