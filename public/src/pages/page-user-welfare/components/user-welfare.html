@@ -62,7 +62,6 @@
                             <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
                             <!--<th style="width: 15%">จำนวนเงินที่ใช้ไปแล้ว (บาท)</th>
                                 <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>-->
-                            <th style="width: 15%" rowspan="2">ดำเนินการ</th>
                         </tr>
                         <tr>
                             <!--<th style="width: 5%">ลำดับ</th>-->
@@ -82,15 +81,6 @@
                                 <td style="text-align: right;">[[formatNumber(item.budget)]] </td>
                                 <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                 <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
-                                <td>
-                                    <template is="dom-if" if=[[_checkAdmin(item.emp_work,item.admin_use,item.welfare_old,index)]]>
-                                        <!--<div class="approve-[[index]] ff">-->
-                                        [[_wordApprove(item.admin_use,item.welfare_old)]]
-                                        <!--</div>-->
-
-                                    </template>
-                                    <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" hidden="[[_checkAdmin(item.emp_work,item.admin_use,item.welfare_old)]]">ขอใช้</paper-button>
-                                </td>
                             </tr>
                         </template>
                         <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
@@ -120,7 +110,6 @@
                             <th style="width: 10%">วันอนุมัติ</th>
                             <th style="width: 10%">สถานะ</th>
                             <th style="width: 25%">ไฟล์</th>
-                            <th style="width: 15%" >ดำเนินการ</th>
 
                         </tr>
                     </thead>
@@ -159,16 +148,6 @@
                                     </template>
                                 </td>
                                 <td>
-                                   
-                                   <template is="dom-if" if={{_btnReject(item.status)}}>
-                                       <paper-button raised data="[[item]]" class="gl-bg-danger gl-small" on-tap="btnCancel">  ยกเลิก</paper-button>
-                                   </template>
-                                   
-                                   <template is="dom-if" if={{!_btnReject(item.status)}}>
-                                       -
-                                   </template>
-                                   
-                                </td>
                             </tr>
                         </template>
                         <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
