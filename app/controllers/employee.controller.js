@@ -376,8 +376,8 @@ exports.welfaresEmployee = function (req, res) {
         )
         .merge(function (f) {
             return {
-                start_work_date: f('start_work_date').split('T')(0),
-                birthdate: f('birthdate').split('T')(0)
+                start_work_date: f('start_work_date'),//.split('T')(0),
+                birthdate: f('birthdate').toISO8601()//.split('T')(0)
             }
         })
         .eqJoin('academic_id', r.db('welfare_common').table('academic')).pluck('left', { right: ['academic_name'] }).zip()
@@ -543,8 +543,8 @@ exports.welfaresEmployeeWork = function (req, res) {
     r.db('welfare').table('employee')
         .merge(function (f) {
             return {
-                start_work_date: f('start_work_date').split('T')(0),
-                birthdate: f('birthdate').split('T')(0)
+                start_work_date: f('start_work_date'),//.split('T')(0),
+                birthdate: f('birthdate').toISO8601()//.split('T')(0)
             }
         })
         .eqJoin('academic_id', r.db('welfare_common').table('academic')).pluck('left', { right: ['academic_name'] }).zip()
@@ -557,7 +557,7 @@ exports.welfaresEmployeeWork = function (req, res) {
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck('left', { right: ['prefix_name'] }).zip()
         .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck('left', { right: ['type_employee_name'] }).zip()
         .without('academic_id', 'active_id', 'department_id', 'faculty_id', 'gender_id', 'matier_id', 'position_id', 'type_employee_id', 'prefix_id')
-        .filter({ active_code: 'WORK' })
+        // .filter({ active_code: 'WORK' })
         .run()
         .then(function (result) {
             res.json(result);
