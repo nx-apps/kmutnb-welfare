@@ -1,33 +1,38 @@
 <link rel="import" href="./../../../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../components/month-behavior.html">
 <link rel="import" href="./../../components/format-number-behavior.html">
+<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
+
+<link rel="import" href="./../../components/page-style.html">
 
 <dom-module id="admin-list-user">
     <template>
-        <style is="custom-style" include="gl-color gl-table flex-style">
+        <style is="custom-style" include="page-style gl-table flex-style">
             paper-material {
                 margin: 10px;
                 background-color: var(--gl-white-color);
                 padding-top: 15px;
                 padding-bottom: 15px;
             }
-
-
+            
             .table-detail {
                 margin: 20px;
             }
-
-            td,th{
+            
+            td,
+            th {
                 white-space: nowrap;
             }
+            
             table.gl-table-default {
                 border: 1px solid #ddd;
             }
-
+            
             .text-head {
                 margin-left: 20px;
                 font-weight: bold;
             }
+            
             paper-fab {
                 position: fixed;
                 right: 25px;
@@ -36,6 +41,55 @@
                 --paper-fab-background: var(--paper-light-blue-500);
                 --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
             }
+            
+            vaadin-grid#material {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                --divider-color: rgba(0, 0, 0, var(--dark-divider-opacity));
+                --vaadin-grid-cell: {
+                    padding: 0;
+                }
+                ;
+                --vaadin-grid-header-cell: {
+                    height: 64px;
+                    color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+                    font-size: 16px;
+                }
+                ;
+                --vaadin-grid-body-cell: {
+                    height: 48px;
+                    color: rgba(0, 0, 0, var(--dark-primary-opacity));
+                    word-warp font-size: 17px;
+                }
+                ;
+                --vaadin-grid-footer-cell: {
+                    height: 64px;
+                    color: rgba(0, 0, 0, var(--dark-secondary-opacity));
+                    font-size: 16px;
+                }
+                ;
+                --vaadin-grid-body-row-hover-cell: {
+                    background-color: var(--paper-grey-200);
+                }
+                ;
+                --vaadin-grid-body-row-selected-cell: {
+                    background-color: var(--paper-grey-100);
+                }
+                ;
+                --vaadin-grid-focused-cell: {
+                    box-shadow: none;
+                    font-weight: bold;
+                }
+                ;
+            }
+            
+            vaadin-grid#material .text-center {
+                text-align: center;
+            }
+            
+            vaadin-grid#material .cursor {
+                cursor: pointer
+            }
         </style>
         <div class="container">
             <!--<div class="horizontal layout">
@@ -43,67 +97,97 @@
             </div>-->
 
             <paper-material elevation="1">
-                <div class="table-detail">  
+                <div class="table-detail">
                     <template is="dom-if" if={{isSearch}}>
                         <div class="container flex-horizontal-with-ratios">
-                            <div class="flex3child">
+                            <div class="flex-5">
                                 <paper-button class="gl-btn-primary" on-tap="resetData">
                                     <iron-icon icon="autorenew"></iron-icon>
                                     <span style="margin-left: 5px">แสดงทั้งหมด</span>
                                 </paper-button>
                                 <!--<paper-icon-button icon="autorenew"></paper-icon-button>-->
                             </div>
-                            <div class="flex2child">
+                            <div class="flex-4">
                                 <gl-form-input no-label-float placeholder="ค้นหาข้อมูล" on-input="searchTableList" value="{{searchInputList}}">
                                     <div prefix>
                                         <iron-icon icon="search"></iron-icon>&nbsp;&nbsp;
                                     </div>
                                 </gl-form-input>
                             </div>
+                            <div class="flex">
+
+                            </div>
                         </div>
-                        <div style="overflow-x: auto; border:1px solid #ddd;">
-                        <table class="gl-table-default">
-                            <thead class="table-head">
-                                <tr>
-                                    <!--<th style="width:10%;">
-                                        <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>เครื่องมือ
-                                    </th>-->
-                                    <th></th>
-                                    <th>รหัสพนักงาน</th>
-                                    <th>ชื่อ นามสกุล</th>
-                                    <th>ตำแหน่ง</th>
-                                    <th>คณะ</th>
-                                    <th>ภาควิชา</th>
-                                    <th>วันที่เริ่มงาน</th>
-                                    <th>ประเภท</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-body">
-                                <template is="dom-repeat" items={{newList}}>
-                                    <tr data="[[item]]">
-                                        <!--<td style="text-align: center">
-                                            <paper-checkbox checked="{{item.check}}" checked></paper-checkbox>
-                                        </td>-->
-                                        <td>
-                                            <iron-icon style="cursor:pointer" icon="list"  on-tap="chagePageDetail" data="[[item]]" title="รายละเอียด"></iron-icon>
-                                        </td>
-                                        <td>[[item.emp_no]]</td>
-                                        <td>[[item.fullName]]</td>
-                                        <td>[[item.position_name]]</td>
-                                        <td>[[item.faculty_name]]</td>
-                                        <td>[[item.department_name]]</td>
-                                        <td>[[toThaiDate(item.start_work_date)]]</td>
-                                        <td>[[item.type_employee_name]]</td>
-                                    </tr>
+                        <vaadin-grid id="material" items='{{newList}}'>
+                            <vaadin-grid-column width="80px" flex-grow="0">
+                                <template class="header ">
+                                    <div class="text-center">ลำดับ</div>
                                 </template>
-                                <template is="dom-if" if={{checkData(item.employee)}}>
-                                    <tr>
-                                        <td colspan="7" style="text-align: center;">ไม่มีข้อมูล</td>
-                                    </tr>
+                                <template>
+                                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[index]]</div>
                                 </template>
-                            </tbody>
-                        </table>
-                        </div>
+                                <template class="footer">
+                                    <div class="text-center">ลำดับ</div>
+                                </template>
+                            </vaadin-grid-column>
+                            <vaadin-grid-column width="150px" flex-grow="0">
+                                <template class="header">
+                                    <div class="text-center">รหัสพนักงาน</div>
+                                </template>
+                                <template>
+                                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[item.emp_no]]
+                                    </div>
+                                </template>
+                                <template class="footer">
+                                    <div class="text-center">รหัสพนักงาน
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+                            <vaadin-grid-column>
+                                <template class="header">
+                                    <div class="text-center">ชื่อ - นามสกุล
+                                    </div>
+                                </template>
+                                <template>
+                                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">[[item.fullName]]
+                                    </div>
+                                </template>
+                                <template class="footer">
+                                    <div class="text-center">ชื่อ - นามสกุล
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+
+                            <vaadin-grid-column width="250px">
+                                <template class="header">
+                                    <div class="text-center">คณะ
+                                    </div>
+                                </template>
+                                <template>
+                                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">
+                                        <p style="white-space: nowrap">[[item.department_name]]</p>
+                                    </div>
+                                </template>
+                                <template class="footer">
+                                    <div class="text-center">คณะ
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+                            <vaadin-grid-column width="250px">
+                                <template class="header">
+                                    <div class="text-center">ภาควิชา
+                                    </div>
+                                </template>
+                                <template>
+                                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">[[item.faculty_name]]
+                                    </div>
+                                </template>
+                                <template class="footer">
+                                    <div class="text-center">ภาควิชา
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+                        </vaadin-grid>
                     </template>
                     <template is="dom-if" if={{!isSearch}}>
                         <div class="container flex-horizontal-with-ratios">
@@ -122,83 +206,117 @@
                                 </gl-form-input>
                             </div>
                         </div>
-                        <div style="overflow-x: auto; border:1px solid #ddd;">
-                        <table class="gl-table-default">
-                            <thead class="table-head">
-                                <tr>
-                                    <th hidden="{{!checkBox}}">
-                                        <paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>เลือกทั้งหมด
-                                    </th>
-                                    <th></th>
-                                    <th>รหัสพนักงาน</th>
-                                    <th>ชื่อ นามสกุล</th>
-                                    <th>ยอดที่ใช้ (บาท)</th>
-                                    <th>ยอดคงเหลือ (บาท)</th>
-                                    <th>ตำแหน่ง</th>
-                                    <th>คณะ</th>
-                                    <th>ภาควิชา</th>
-                                    <th>วันที่เริ่มงาน</th>
-                                    <th>ประเภท</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-body">
-                                <template is="dom-repeat" items={{newListSearch}}>
-                                    <tr>
-                                        <td style="text-align: center" hidden="{{!checkBox}}">
-                                            <paper-checkbox checked="{{item.check}}" disabled="{{!item.admin_use}}"></paper-checkbox>  
-                                        </td>
-                                        <td>
-                                            <iron-icon style="cursor:pointer" icon="list" on-tap="chagePage" data="[[item]]"></iron-icon>
-                                        </td>
-                                        <td>[[item.emp_no]]</td>
-                                        <td>[[item.fullName]]</td>
-                                        <td style="text-align: right">[[formatNumber(item.value_use)]]</td>
-                                        <td style="text-align: right">[[formatNumber(item.value_budget)]]</td>
-                                        <td>[[item.position_name]]</td>
-                                        <td>[[item.faculty_name]]</td>
-                                        <td>[[item.department_name]]</td>
-                                        <td>[[toThaiDate(item.start_work_date)]]</td>
-                                        <td>[[item.type_employee_name]]</td>
-                                       
-                                    </tr>
+                        <vaadin-grid id="material" items='{{newListSearch}}'>
+                            <vaadin-grid-column width="100px" flex-grow="0">
+                                <template class="header ">
+                                    <div class="text-center"><paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>เลือกทั้งหมด</div>
                                 </template>
-                                <template is="dom-if" if={{checkData(item.employee)}}>
-                                    <tr>
-                                        <td colspan="7" style="text-align: center;">ไม่มีข้อมูล</td>
-                                    </tr>
+                                <template>
+                                    <div class="text-center">
+                                        <paper-checkbox checked="{{item.check}}" disabled="{{!item.admin_use}}"></paper-checkbox> 
+                                    </div>
                                 </template>
-                            </tbody>
-                        </table>
-                        </div>
+                                <template class="footer">
+                                    <div class="text-center">ลำดับ</div>
+                                </template>
+                            </vaadin-grid-column>
+                            <vaadin-grid-column width="80px" flex-grow="0">
+                                <template class="header ">
+                                    <div class="text-center">ลำดับ</div>
+                                </template>
+                                <template>
+                                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[index]]</div>
+                                </template>
+                                <template class="footer">
+                                    <div class="text-center">ลำดับ</div>
+                                </template>
+                            </vaadin-grid-column>
+                            <vaadin-grid-column width="150px" flex-grow="0">
+                                <template class="header">
+                                    <div class="text-center">รหัสพนักงาน</div>
+                                </template>
+                                <template>
+                                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[item.emp_no]]
+                                    </div>
+                                </template>
+                                <template class="footer">
+                                    <div class="text-center">รหัสพนักงาน
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+                            <vaadin-grid-column>
+                                <template class="header">
+                                    <div class="text-center">ชื่อ - นามสกุล
+                                    </div>
+                                </template>
+                                <template>
+                                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">[[item.fullName]]
+                                    </div>
+                                </template>
+                                <template class="footer">
+                                    <div class="text-center">ชื่อ - นามสกุล
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+
+                            <vaadin-grid-column width="250px">
+                                <template class="header">
+                                    <div class="text-center">คณะ
+                                    </div>
+                                </template>
+                                <template>
+                                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">
+                                        <p style="white-space: nowrap">[[item.department_name]]</p>
+                                    </div>
+                                </template>
+                                <template class="footer">
+                                    <div class="text-center">คณะ
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+                            <vaadin-grid-column width="250px">
+                                <template class="header">
+                                    <div class="text-center">ภาควิชา
+                                    </div>
+                                </template>
+                                <template>
+                                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">[[item.faculty_name]]
+                                    </div>
+                                </template>
+                                <template class="footer">
+                                    <div class="text-center">ภาควิชา
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+                        </vaadin-grid>
                     </template>
-                </div>
             </paper-material>
 
-        </div>
-        <div hidden="{{paperFab}}">
-            <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
-        </div>
+            </div>
+            <div hidden="{{paperFab}}">
+                <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
+            </div>
 
     </template>
     <script>
         Polymer({
             is: 'admin-list-user',
-            behaviors: [ReduxBehavior, MonthBehavior,FormatNumberBehavior],
+            behaviors: [ReduxBehavior, MonthBehavior, FormatNumberBehavior],
             observers: ['showBtn(newListSearch.*)'],
             properties: {
                 list: {
                     statePath: 'userWelfare.list_user',
-                    observer:'getList'
+                    observer: 'getList'
                 },
                 listSearch: {
                     statePath: 'userWelfare.listSearch',
-                    observer:'getListSearch'
+                    observer: 'getListSearch'
                 },
-                listFilter:{
+                listFilter: {
                     type: Array,
                     value: []
                 },
-                listFilterSearch:{
+                listFilterSearch: {
                     type: Array,
                     value: []
                 },
@@ -223,7 +341,7 @@
                     // console.log(data.length);
                 }
             },
-            resetData:function(){
+            resetData: function () {
                 this.searchInputList = "";
                 this.searchInputListSearch = "";
                 this.fire('reset-search')
@@ -289,18 +407,19 @@
                             use_budget: item.value_budget - item.value_use,
                             date_approve: new Date().toISOString(),
                             date_use: new Date().toISOString(),
-                            document_ids:[],
+                            document_ids: [],
                             status: true
                         };
                         return newItem;
                     })
-                        console.log(JSON.stringify(saveData));
+                    console.log(JSON.stringify(saveData));
                     //    console.log(saveData);
                     this.dispatchAction('USER_INSERT', saveData)
                 }
 
             },
             selectTable: function (id) {
+                console.log(id);
                 if (id == true) {
                     this.isSearch = true;
                 }
@@ -314,7 +433,7 @@
                     id: item.emp_id,
                     year: item.year
                 }
-                 window.open('https://localhost:3000/admin-manage/'+datas.id);
+                window.open('https://localhost:3000/admin-manage/' + datas.id);
                 // console.log(datas);
                 // this.dispatchAction('LIST_EMPLOYEES_WELFARE', datas);
                 // var check = e.target.is;
@@ -326,7 +445,7 @@
             chagePageDetail: function (e) {
                 var item = e.currentTarget.data;
                 var id = item.id;
-                window.open('https://localhost:3000/admin-manage/'+id);
+                window.open('https://localhost:3000/admin-manage/' + id);
                 // this.seleterYear = '';
                 // this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
                 // this.dispatchAction('LIST_EMPLOYEE_WELFARE', id);
@@ -335,33 +454,33 @@
                 //     this.fire('select-page', 1)
                 // }
             },
-            getList:function(list){
+            getList: function (list) {
                 this.newList = list;
             },
-            getListSearch:function(list){
+            getListSearch: function (list) {
                 this.newListSearch = list;
             },
-            searchTableList:function(e){
-                let arr=[];
+            searchTableList: function (e) {
+                let arr = [];
                 var storeData;
-                if(this.listFilter.length == 0){
-                   storeData = this.list;
+                if (this.listFilter.length == 0) {
+                    storeData = this.list;
                 }
-                else{
+                else {
                     storeData = this.listFilter;
                 }
                 this.newList = storeData;
                 var input = e.target.value;
                 var feild = Object.getOwnPropertyNames(this.newList[0]).sort();
-                if(input != ''){
-                    this.newList.map((item,index)=>{
-                        for(var i = 0; i < feild.length;i++){
+                if (input != '') {
+                    this.newList.map((item, index) => {
+                        for (var i = 0; i < feild.length; i++) {
                             var getFeild = feild[i];
-                            if(String(item[getFeild]).search(input) != -1){
+                            if (String(item[getFeild]).search(input) != -1) {
                                 arr.push(item)
-                                break;   
+                                break;
                             }
-                            else{
+                            else {
                                 // console.log('error');
                                 // arr = [];
                             }
@@ -369,33 +488,33 @@
                     })
                     this.newList = arr
                 }
-                else{
+                else {
                     console.log('error');
                     this.newList = storeData;
                 }
             },
-            searchTableListSearch:function(e){
-                let arr=[];
+            searchTableListSearch: function (e) {
+                let arr = [];
                 // console.log(this.listFilterSearch);
                 var storeData;
-                if(this.listFilterSearch.length == 0){
+                if (this.listFilterSearch.length == 0) {
                     storeData = this.listSearch
                 }
-                else{
+                else {
                     storeData = this.listFilterSearch;
                 }
                 this.newListSearch = storeData;
                 var input = e.target.value;
                 var feild = Object.getOwnPropertyNames(this.newListSearch[0]).sort();
-                if(input != ''){
-                    this.newListSearch.map((item,index)=>{
-                        for(var i = 0; i < feild.length;i++){
+                if (input != '') {
+                    this.newListSearch.map((item, index) => {
+                        for (var i = 0; i < feild.length; i++) {
                             var getFeild = feild[i];
-                            if(String(item[getFeild]).search(input) != -1){
+                            if (String(item[getFeild]).search(input) != -1) {
                                 arr.push(item)
-                                break;   
+                                break;
                             }
-                            else{
+                            else {
                                 // console.log('error');
                                 // arr = [];
                             }
@@ -403,52 +522,52 @@
                     })
                     this.newListSearch = arr
                 }
-                else{
+                else {
                     console.log('error');
                     this.newListSearch = storeData;
                 }
             },
-            searchTableByFilterDepartment:function(id){
-                if(this.isSearch == true){
+            searchTableByFilterDepartment: function (id) {
+                if (this.isSearch == true) {
                     var storeData = this.list;
                     this.newList = storeData;
                     var getList = this.newList;
-                    this.newList = getList.filter((item)=>{
+                    this.newList = getList.filter((item) => {
                         return item.department_id == id
                     })
                     this.listFilter = this.newList;
                 }
-                else{
+                else {
                     var storeData = this.listSearch;
                     this.newListSearch = storeData;
                     var getList = this.newListSearch;
-                    this.newListSearch = getList.filter((item)=>{
+                    this.newListSearch = getList.filter((item) => {
                         return item.department_id == id
                     })
                     this.listFilterSearch = this.newListSearch
                     // console.log(this.newListSearch);
                 }
             },
-            searchTableByFilterFaculty:function(id){
-                if(this.isSearch == true){
+            searchTableByFilterFaculty: function (id) {
+                if (this.isSearch == true) {
                     var storeData = this.list;
                     this.newList = storeData;
                     var getList = this.newList;
-                    this.newList = getList.filter((item)=>{
+                    this.newList = getList.filter((item) => {
                         return item.faculty_id == id
                     })
                     this.listFilter = this.newList;
                 }
-                else{
+                else {
                     var storeData = this.listSearch;
                     this.newListSearch = storeData;
                     var getList = this.newListSearch;
-                    this.newListSearch = getList.filter((item)=>{
+                    this.newListSearch = getList.filter((item) => {
                         return item.faculty_id == id
                     })
                     this.listFilterSearch = this.newListSearch
                 }
-            }      
+            }
         });
     </script>
 </dom-module>
