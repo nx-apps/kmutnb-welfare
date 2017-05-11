@@ -70,6 +70,12 @@
             </gl-grid-row>
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                    <vaadin-date-picker class="checkValidate" required disabled="{{isEnable}}" label="วันที่ใช้คำนวณ :" value="{{data.cal_date}}"></vaadin-date-picker>
+                </gl-grid-col>
+            </gl-grid-row>
+            <gl-grid-row>
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                     <gl-form-textarea disabled="{{isEnable}}" style="margin-top:15px;" label="รายละเอียด" value="{{data.description}}" placeholder="เพิ่มรายละเอียด"></gl-form-textarea>
                 </gl-grid-col>

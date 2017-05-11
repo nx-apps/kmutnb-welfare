@@ -121,7 +121,7 @@
                 <template is="dom-if" if="{{checkMenu(data)}}">
                     <div class="horizontal layout">
                         <div hidden="{{!isEnable}}" class="btn-bottom">
-                            <paper-button raised class="gl-btn-danger" on-tap="back">ย้อนกลับ</paper-button>
+                            <paper-button raised on-tap="back">ย้อนกลับ</paper-button>
                             <!--<paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
                             <paper-button raised class="gl-btn-warning" on-tap="print">Print</paper-button>-->
                         </div>
@@ -286,11 +286,11 @@
                             if (search != -1) {
                                 // console.log(data.logic_show);
                                 if (data.logic_show.search(">") >= 0) {
-                                    var d = this.date.start_date.split("-");
+                                    var d = this.date.cal_date.split("-");
                                     data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2];
                                     data.logic = data.logic_show.replace(">", "<");
                                 } else if (data.logic_show.search("<") >= 0) {
-                                    var d = this.date.end_date.split("-");
+                                    var d = this.date.cal_date.split("-");
                                     data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2];
                                     data.logic = data.logic_show.replace("<", ">");
                                 }
@@ -308,24 +308,24 @@
                         return newitem
                     })
                     newData.condition = setCondition;    
-                    console.log(newData);           
-                    // if (typeof this.data.id == 'undefined') {
-                    //     newData.status = true;
-                    //     //  console.log(newData);
-                    //     var year = new Date().getFullYear();
-                    //     this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
-                    //         this.fire('refresh_group',year);
-                    //         this.fire('back');
-                    //     })
-                    // }
-                    // else {
-                    //     newData.status = this.data.status
-                    //     newData.id=this.data.id;
-                    //     console.log(newData);
-                    //     this.dispatchAction('WELFARE_EDIT', newData);
-                    //     this.isEnable = true;
-                    //     // this.fire('back');
-                    // }
+                    // console.log(newData);           
+                    if (typeof this.data.id == 'undefined') {
+                        newData.status = true;
+                        //  console.log(newData);
+                        var year = new Date().getFullYear();
+                        this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
+                            this.fire('refresh_group',year);
+                            this.fire('back');
+                        })
+                    }
+                    else {
+                        newData.status = this.data.status
+                        newData.id=this.data.id;
+                        console.log(newData);
+                        this.dispatchAction('WELFARE_EDIT', newData);
+                        this.isEnable = true;
+                        // this.fire('back');
+                    }
                 }
             },
             _edit: function () {

@@ -56,16 +56,17 @@ export function groupWelfareAction(store) {
         },
         INSERT_WELFARE: function (data) {
             // console.log(data);
-            let {year, start_date, end_date, group_welfare_name, admin_use, description, onetime, status_approve} = data;
-            let newData = {year, start_date, end_date, group_welfare_name, admin_use, description, onetime, status_approve};
-            newData.start_date = new Date(newData.start_date).toISOString();
-            newData.end_date = new Date(newData.end_date).toISOString();
+            let { year, start_date, end_date, cal_date, group_welfare_name, admin_use, description, onetime, status_approve } = data;
+            let newData = { year, group_welfare_name, admin_use, description, onetime, status_approve };
+            newData.start_date = new Date(data.start_date).toISOString();
+            newData.end_date = new Date(data.end_date).toISOString();
+            newData.cal_date = new Date(data.cal_date).toISOString();
             // console.log(newData);
             this.fire('toast', { status: 'load' });
             axios.post(`./group/welfare/insert`, newData)
                 .then((result) => {
                     console.log(result);
-                    this.LIST_WELFARE(data.year-543);
+                    this.LIST_WELFARE(data.year - 543);
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             console.log('success');
@@ -101,17 +102,19 @@ export function groupWelfareAction(store) {
         },
         EDIT_WELFARE: function (data) {
             // console.log(data);
-            let {id, year, start_date, end_date, group_welfare_name, admin_use, description, onetime} = data;
-            let newData = {id, year, start_date, end_date, group_welfare_name, admin_use, description, onetime};
-            newData.start_date = new Date(newData.start_date).toISOString();
-            newData.end_date = new Date(newData.end_date).toISOString();
+            let { id, year, start_date, end_date, cal_date, group_welfare_name, admin_use, description, onetime } = data;
+            let newData = { id, year, group_welfare_name, admin_use, description, onetime };
+            var tz = "T00:00:00+07:00";
+            newData.start_date = new Date(data.start_date + tz).toISOString();
+            newData.end_date = new Date(data.end_date + tz).toISOString();
+            newData.cal_date = new Date(data.cal_date + tz).toISOString();
             // console.log(newData);
             this.fire('toast', { status: 'load' });
             axios.put(`./group/welfare/update`, newData)
                 .then((result) => {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-                            this.LIST_WELFARE(newData.year-543);
+                            this.LIST_WELFARE(newData.year - 543);
                             console.log('success');
                         }
                     });
@@ -157,11 +160,11 @@ export function groupWelfareAction(store) {
                     console.log(err);
                 })
         },
-        CLEAR_WELFARE:function(data){
+        CLEAR_WELFARE: function (data) {
             // console.log(data);
             store.dispatch({ type: 'CLEAR_WELFARE', payload: data })
         },
-        CLEAR_WELFARE_ID:function(data){
+        CLEAR_WELFARE_ID: function (data) {
             // console.log(data);
             store.dispatch({ type: 'CLEAR_WELFARE_ID', payload: [] })
         }

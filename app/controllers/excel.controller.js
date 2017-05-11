@@ -110,9 +110,23 @@ exports.test = function (req, res) {
     //     .forEach(function (fe) {
     //         return r.db('welfare_common').table('employee').get(fe('id')).update(fe)
     //     })
-    req.r.db('welfare_data_emp').tableList()
-        .forEach(function (fe) {
-            return
+    var d = new Date("2017-05-01T00:00:00+07:00").toISOString();
+    req.r.expr([
+        { name: 'a', d1: r.ISO8601(d) },
+        { name: 'b', d1: r.ISO8601("2017-05-01T01:00:00.000Z").inTimezone("+07") },
+        { name: 'c', d1: r.ISO8601("2017-05-01T17:00:00.000Z").inTimezone("+07") }
+    ])
+        /*.filter(function (f) {
+            return f('d1').date().during(
+                r.ISO8601("2017-05-01T00:00:00.000Z").inTimezone("+07").date(),
+                r.ISO8601("2017-05-02T00:00:00.000Z").inTimezone("+07").date(),
+                { rightBound: "closed" }
+            )
+        })*/
+        .merge(function (m) {
+            return {
+                d2: m('d1').inTimezone("+07").toISO8601()
+            }
         })
         .run()
         .then(function (data) {
