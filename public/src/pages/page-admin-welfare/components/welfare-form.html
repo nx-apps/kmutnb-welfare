@@ -306,7 +306,7 @@
                         let newitem = { field, logic, logic_show, value, value_show }
                         var tz = "T00:00:00+07:00";
                         newitem.field = field.id;
-                        newitem.value = new Date(item.value + tz).toISOString();
+                        // newitem.value = new Date(item.value + tz).toISOString();
                         return newitem
                     })
                     newData.condition = setCondition;    

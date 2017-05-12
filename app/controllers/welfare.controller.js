@@ -179,8 +179,7 @@ exports.update = function (req, res) {
 }
 exports.delete = function (req, res) {
     var r = req.r;
-    r.db('welfare').table('welfare')
-        .get(req.params.id)
+    r.db('welfare').table('welfare').get(req.params.id)
         .delete()
         .run()
         .then(function (result) {
