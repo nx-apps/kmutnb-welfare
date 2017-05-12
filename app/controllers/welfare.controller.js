@@ -46,7 +46,6 @@ exports.welfare = function (req, res) {
                             )
                         }
                     })
-                    .without('employees')
                     .merge(function (wel_merge) {
                         return {
                             employee: wel_merge('employee').reduce(function (l, r) {
@@ -81,6 +80,7 @@ exports.welfare = function (req, res) {
                     })
             }
         })
+        .without('employees')
         .run()
         .then(function (result) {
             res.json(result);
@@ -120,7 +120,23 @@ exports.insert = function (req, res) {
     var valid = req.ajv.validate('list_welfare', req.body);
     var result = { result: false, message: null, id: null };
     if (valid) {
-        console.log(req.body);
+        // console.log(req.body);
+        // var change_value = req.body.condition.map(function (f) {
+        //     return r.ISO8601(f.value).inTimezone('+07')
+        // })
+        req.body = Object.assign(req.body,
+            {
+                condition: req.body.condition.map(function(m){
+                    return {
+                        field: m.field,
+                        logic: m.logic,
+                        logic_show: m.logic_show,
+                        value: r.ISO8601(m.value).inTimezone('+07'),
+                        value_show: m.value_show
+                    }
+                })
+            }
+        );
         r.db('welfare').table('welfare').insert(req.body)
             .run()
             .then((response) => {
@@ -143,8 +159,11 @@ exports.insert = function (req, res) {
 exports.update = function (req, res) {
     var r = req.r;
     // console.log(req.body)
-    r.db('welfare').table('welfare')
-        .get(req.body.id)
+    r.db('welfare').table('welfare').get(req.body.id)
+        // req.body = Object.assign(req.body,
+        //     {
+        //         value: r.ISO8601(req.body.value).inTimezone('+07')
+        //     })
         .update(req.body)
         .run()
         .then(function (result) {

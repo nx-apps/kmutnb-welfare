@@ -304,7 +304,9 @@
                     var setCondition = arr.map((item)=>{
                         let {field, logic, logic_show, value, value_show} = item;
                         let newitem = { field, logic, logic_show, value, value_show }
+                        var tz = "T00:00:00+07:00";
                         newitem.field = field.id;
+                        newitem.value = new Date(item.value + tz).toISOString();
                         return newitem
                     })
                     newData.condition = setCondition;    
@@ -321,7 +323,7 @@
                     else {
                         newData.status = this.data.status
                         newData.id=this.data.id;
-                        console.log(newData);
+                        // console.log(newData);
                         this.dispatchAction('WELFARE_EDIT', newData);
                         this.isEnable = true;
                         // this.fire('back');

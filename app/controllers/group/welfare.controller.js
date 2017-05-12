@@ -228,7 +228,10 @@ exports.update = function (req, res) {
     // console.log(req.body)
     req.body = Object.assign(req.body,
         {
-            year: req.body.year - 543
+            year: req.body.year - 543,
+            start_date: r.ISO8601(req.body.start_date).inTimezone('+07'),
+            end_date: r.ISO8601(req.body.end_date).inTimezone('+07'),
+            cal_date: r.ISO8601(req.body.cal_date).inTimezone('+07')
         }
     );
     r.db('welfare').table('group_welfare')

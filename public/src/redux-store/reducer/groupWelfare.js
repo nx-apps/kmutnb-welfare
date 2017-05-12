@@ -58,14 +58,15 @@ export function groupWelfareAction(store) {
             // console.log(data);
             let { year, start_date, end_date, cal_date, group_welfare_name, admin_use, description, onetime, status_approve } = data;
             let newData = { year, group_welfare_name, admin_use, description, onetime, status_approve };
-            newData.start_date = new Date(data.start_date).toISOString();
-            newData.end_date = new Date(data.end_date).toISOString();
-            newData.cal_date = new Date(data.cal_date).toISOString();
+            var tz = "T00:00:00+07:00";
+            newData.start_date = new Date(data.start_date + tz).toISOString();
+            newData.end_date = new Date(data.end_date + tz).toISOString();
+            newData.cal_date = new Date(data.cal_date + tz).toISOString();
             // console.log(newData);
             this.fire('toast', { status: 'load' });
             axios.post(`./group/welfare/insert`, newData)
                 .then((result) => {
-                    console.log(result);
+                    // console.log(result);
                     this.LIST_WELFARE(data.year - 543);
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
