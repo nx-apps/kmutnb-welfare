@@ -59,7 +59,7 @@
                             <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-form-dropdown-menu disabled="{{isEnable}}" style="margin-top: 15px">
+                            <gl-form-dropdown-menu disabled="{{isEnable}}" on-value-changed="clearSelect" index="{{index}}" style="margin-top: 15px">
                                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
                                     <template is="dom-repeat" items="{{item.itemField}}">
                                         <paper-item value="{{item}}">{{item.label}}</paper-item>
@@ -189,6 +189,12 @@
                 }
                 else {
                     return true;
+                }
+            },
+            clearSelect:function(e){
+                if(this.isEnable == false){
+                    var index = e.target.index;
+                    this.set('data.condition.'+index+'.logic_show','');
                 }
             },
             setItemShow: function (data) {
