@@ -180,6 +180,10 @@
                 isEnable: {
                     type: Boolean,
                     value: false
+                },
+                checkSplice:{
+                    type: Boolean,
+                    value: false
                 }
             },
             checkMenu: function (data) {
@@ -192,9 +196,14 @@
                 }
             },
             clearSelect:function(e){
-                if(this.isEnable == false){
+                if(this.isEnable == false && this.checkSplice !== true){
                     var index = e.target.index;
-                    this.set('data.condition.'+index+'.logic_show','');
+                    // this.checkSplice = false;
+                    if(this.data.condition[index].logic_show !== ''){
+                        this.set('data.condition.'+index+'.logic_show','');
+                    }
+                    this.set('data.condition.'+index+'.value_showDropdown','');
+                    this.set('data.condition.'+index+'.value_showInput','');
                 }
             },
             setItemShow: function (data) {
@@ -215,11 +224,6 @@
                 if (typeof data != 'undefined') {
                     // if(this.resetData == false){
                     // this.set('data.condition.'+index+'.value_show','')
-                    // }
-                    // var a = this.data.condition[index].value_showDropdown;
-                    // var b = this.data.condition[index].value_showInput;
-                    // if(a === '' || b ===''){
-                    //     this.set('data.condition.'+index+'.logic_show','');
                     // }
                     if (typeof data.data == 'string') {
                         this.set('data.condition.' + index + '.value_showDropdown', '')
@@ -245,6 +249,7 @@
                 })
             },
             delete_condition: function (e) {
+                this.checkSplice = true;
                 var index = e.target.index;
                 this.splice('data.condition', index, 1);
             },
