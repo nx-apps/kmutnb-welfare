@@ -11,7 +11,6 @@ exports.report1 = function (req, res, next) {
         .merge(function (root_merge) {
             return {
                 welfare: r.db('welfare').table('welfare').getAll(req.params.id, { index: 'id' }).coerceTo('array')
-                    // .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: 'group_welfare_name' }).zip()
                     .merge(function (wel_merge) {
                         return {
                             condition: wel_merge('condition').without('logic_show', 'value_show')
@@ -85,13 +84,15 @@ exports.report1 = function (req, res, next) {
                                 .without('prefix_name', 'firstname', 'lastname'),
                         }
                     })
+                    .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: 'group_welfare_name' }).zip()
             }
         })
-        .without('employees')
+        // .without('employees')
+        .getField('welfare')
         .run()
         .then(function (result) {
-            res.json(result);
-            // res.ireport("report1.jasper", req.query.export || "pdf", result);
+            // res.json(result);
+            res.ireport("report1.jasper", req.query.export || "pdf", result);
         });
 }
 exports.report2 = function (req, res) {
