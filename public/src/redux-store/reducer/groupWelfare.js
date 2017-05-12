@@ -35,20 +35,30 @@ export function groupWelfareAction(store) {
     {
         LIST_WELFARE: function (year) {
             // console.log(year);
+            this.fire('toast', { status: 'load' });
             axios.get('/group/welfare/year/' + year)
-                .then(function (result) {
+                .then((result) => {
                     // console.log(result.data);
-                    store.dispatch({ type: 'LIST_WELFARE', payload: result.data })
+                    this.fire('toast', {
+                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+                            store.dispatch({ type: 'LIST_WELFARE', payload: result.data })
+                        }
+                    });
                 })
                 .catch(err => {
 
                 })
         },
         LIST_WELFARE_ID: function (data) {
+            this.fire('toast', { status: 'load' });
             axios.get('/group/welfare/' + data)
-                .then(function (result) {
+                .then((result) => {
                     // console.log(result);
-                    store.dispatch({ type: 'LIST_WELFARE_ID', payload: result.data })
+                    this.fire('toast', {
+                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+                            store.dispatch({ type: 'LIST_WELFARE_ID', payload: result.data })
+                        }
+                    });
                 })
                 .catch(err => {
 

@@ -192,7 +192,7 @@
                 }
             },
             setItemShow: function (data) {
-                // console.log(data);
+                // console.log('1234');
                 this.data.condition.map((item) => {
                     if (typeof item.field.data == 'string') {
                         item.value_showInput = item.value_show;
@@ -209,6 +209,11 @@
                 if (typeof data != 'undefined') {
                     // if(this.resetData == false){
                     // this.set('data.condition.'+index+'.value_show','')
+                    // }
+                    // var a = this.data.condition[index].value_showDropdown;
+                    // var b = this.data.condition[index].value_showInput;
+                    // if(a === '' || b ===''){
+                    //     this.set('data.condition.'+index+'.logic_show','');
                     // }
                     if (typeof data.data == 'string') {
                         this.set('data.condition.' + index + '.value_showDropdown', '')
