@@ -123,11 +123,17 @@ exports.insert = function (req, res) {
         req.body = Object.assign(req.body,
             {
                 condition: req.body.condition.map(function (m) {
+                    var change_value = {};
+                    if (m.logic == ">" || m.logic == "<" || m.logic == ">=" || m.logic == "<=") {
+                        change_value = r.ISO8601(m.value).inTimezone('+07');
+                    } else {
+                        change_value = m.value;
+                    }
                     return {
                         field: m.field,
                         logic: m.logic,
                         logic_show: m.logic_show,
-                        value: r.ISO8601(m.value).inTimezone('+07'),
+                        value: change_value,
                         value_show: m.value_show
                     }
                 })
@@ -157,11 +163,17 @@ exports.update = function (req, res) {
     req.body = Object.assign(req.body,
         {
             condition: req.body.condition.map(function (m) {
+                var change_value = {};
+                if (m.logic == ">" || m.logic == "<" || m.logic == ">=" || m.logic == "<=") {
+                    change_value = r.ISO8601(m.value).inTimezone('+07');
+                } else {
+                    change_value = m.value;
+                }
                 return {
                     field: m.field,
                     logic: m.logic,
                     logic_show: m.logic_show,
-                    value: r.ISO8601(m.value).inTimezone('+07'),
+                    value: change_value,
                     value_show: m.value_show
                 }
             })

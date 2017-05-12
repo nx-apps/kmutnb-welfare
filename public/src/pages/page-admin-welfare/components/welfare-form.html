@@ -280,6 +280,7 @@
                         return item
                     })
                     var arr = [];
+                    var tz = "T00:00:00+07:00";
                         for (var i = 0; i < this.data.condition.length; i++) {
                             var data = conditon[i];
                             var search = data.field.field.search('date')
@@ -287,11 +288,11 @@
                                 // console.log(data.logic_show);
                                 if (data.logic_show.search(">") >= 0) {
                                     var d = this.date.cal_date.split("-");
-                                    data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2];
+                                    data.value = new Date((parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz).toISOString();
                                     data.logic = data.logic_show.replace(">", "<");
                                 } else if (data.logic_show.search("<") >= 0) {
                                     var d = this.date.cal_date.split("-");
-                                    data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2];
+                                    data.value = new Date((parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz).toISOString();
                                     data.logic = data.logic_show.replace("<", ">");
                                 }
                             }
@@ -304,9 +305,7 @@
                     var setCondition = arr.map((item)=>{
                         let {field, logic, logic_show, value, value_show} = item;
                         let newitem = { field, logic, logic_show, value, value_show }
-                        var tz = "T00:00:00+07:00";
                         newitem.field = field.id;
-                        // newitem.value = new Date(item.value + tz).toISOString();
                         return newitem
                     })
                     newData.condition = setCondition;    
