@@ -1,6 +1,7 @@
 module.exports = function (app) {
     var controller = require('../controllers/report.controller');
     app.get('/report1/:id',controller.report1);
+    app.get('/report11/:id',controller.report11);
     app.get('/report2',controller.report2);
     app.get('/report2_1',controller.report2_1);
     app.get('/report3',controller.report3);
@@ -13,5 +14,6 @@ module.exports = function (app) {
     app.get('/report6', controller.report6);
     app.get('/list_group/:id', controller.list_group);
     app.get('/list_year/:year', controller.list_year);
+    app.get('/report_test', controller.report_test);
 }
 
