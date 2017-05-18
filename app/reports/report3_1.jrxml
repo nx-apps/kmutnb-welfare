@@ -83,7 +83,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[" ประจำเดือน "+new nylon.utility.NumberFormat().toThaiDate($P{month}).split(' ')[1]+" ปีงบประมาณ "+new nylon.utility.NumberFormat().toThaiDate($P{year}).split(' ')[2]]]></textFieldExpression>
+				<textFieldExpression><![CDATA[" ประจำเดือน "+new nylon.utility.NumberFormat().toThaiDate($P{month}).split(' ')[1]+" ปีงบประมาณ "+$P{year}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
