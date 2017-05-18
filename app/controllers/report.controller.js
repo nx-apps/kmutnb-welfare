@@ -963,8 +963,8 @@ exports.report5_1 = function (req, res) {
     var year = req.query.year;//2017
     var month = req.query.month;//03
     var date_start = req.query.date_start+ "T00:00:00+07:00"; //year+"-"+month+"-01"
-    var date_end_arr = req.query.date_end+ "T00:00:00+07:00";
-    var date_end = date_end_arr[0] + "-" + date_end_arr[1] + "-" + (parseInt(date_end_arr[2]) + 1); //year+"-"+month+"-31"
+    var date_end = req.query.date_end+ "T00:00:00+07:00";
+    // var date_end = date_end_arr[0] + "-" + date_end_arr[1] + "-" + (parseInt(date_end_arr[2]) + 1); //year+"-"+month+"-31"
 
     r.db('welfare').table('group_welfare').get(params.group_id).pluck('group_welfare_name','id')
         .merge(function (m) {
@@ -994,18 +994,15 @@ exports.report5_1 = function (req, res) {
                     })
                     .without('prefix_name', 'firstname', 'lastname', 'document_ids')
                     
-                    .merge(function (wel_merge) {
-                        return r.db('welfare').table('welfare').get(wel_merge('welfare_id')).pluck('welfare_name')
-                    })
+                    // .merge(function (wel_merge) {
+                    //     return r.db('welfare').table('welfare').get(wel_merge('welfare_id')).pluck('welfare_name')
+                    // })
+                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck("left", { right: "welfare_name" }).zip()
             }
         })
 
         .run()
         .then(function (result) {
-            if (req.query.res_type == 'json') {
-                res.json(result);
-            }
-            //   if (result.length > 0 ) 
             var parameters = {
             CURRENT_DATE: new Date().toISOString().slice(0, 10),
             // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
@@ -1013,6 +1010,11 @@ exports.report5_1 = function (req, res) {
             date_end: date_end
         };
             parameters.group_welfare_name = result.group_welfare_name;
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
+            //   if (result.length > 0 ) 
+            
             res.ireport("report5_1.jasper", req.query.export || "pdf", result.history_welfare, parameters);
         });
 }
