@@ -373,7 +373,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ประวัติการใช้สวัสดิการ "+$F{group_welfare_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ประวัติการใช้สวัสดิการ "+$P{group_welfare_name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Transparent" x="1" y="136" width="554" height="24" uuid="b7cf17fd-682d-4ab4-ae9f-4825366267cc"/>

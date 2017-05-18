@@ -255,7 +255,8 @@ exports.report2 = function (req, res) {
     // console.log(req.query.res_type);
 
     r.db('welfare').table('history_welfare').filter(function (row) {
-        return row('date_use').split('T')(0).eq(req.query.date_start)
+        return row('date_use').date().eq(r.ISO8601('date_start'+"+07:00"))
+        // .eq(req.query.date_start)
     }).filter({ status: 'approve' })
         .merge(function (emp_merge) {
             return r.db('welfare').table('employee').get(emp_merge('emp_id')).pluck('prefix_id', 'emp_no', 'firstname', 'lastname')
@@ -305,7 +306,8 @@ exports.report2_1 = function (req, res) {
                 history_welfare: r.db('welfare').table('history_welfare').coerceTo('array')
                     .filter(function (row) {
                         return row("group_id").eq(params.group_id).and(
-                            row("date_use").split("T")(0).eq(params.date_start)
+                            row("date_use").date().eq(r.ISO8601('date_start'+"+07:00"))
+                            //.eq(params.date_start)
                         )
                     }).filter({ status: 'approve' })
                     .merge(function (emp_merge) {
