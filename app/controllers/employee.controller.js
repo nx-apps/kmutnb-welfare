@@ -230,13 +230,50 @@ exports.welfaresYear = function (req, res) {
                         return {
                             description: names('description').add(' (').add(names('welfare_conditions').getField('welfare_name')).add(')'),
                             budget: names('welfare_conditions').getField('budget'),
-                            budget_balance: 100,
+                                    // budget_use: 100,
+                            // budget_balance: 100,
                             welfare_id: names('welfare_conditions').getField('id'),
                             group_id: names('id'),
                             check_onetime_thai: names('onetime').eq(true).branch(' (ใช้ครั้งเดียว)', ' (ใช้หลายครั้ง)')
                         }
                     })
-                    .without('welfare_conditions', 'id')
+                    //หา _history มีเท่าไร เตรียมเอามาลบ
+                    // .merge((mer_his) => {
+                    //     return {
+                    //         his_length: r.db('welfare').table('history_welfare').getAll(mer_his('welfare_id'), { index: 'welfare_id' })
+                    //             .filter({ status: true }).coerceTo('array').count().sub(1)
+                    //     }
+                    // })
+                    // .merge((mer_his) => {
+                    //     return {
+                    //         his_lengths: mer_his('his_length').eq(-1).branch(0,1)
+                    //     }
+                    // })
+                    // เอามาลบหา ค่าสุดท้ายที่ใช้งาน
+                    .merge((check_his_cost)=>{
+                        return {
+                            budget_for_use:r.db('welfare').table('history_welfare').getAll(check_his_cost('welfare_id'), { index: 'welfare_id' })
+                                .filter({ status: true })
+                                .coerceTo('array')
+                                .orderBy(r.desc('date_approve'))
+                        }
+                    })
+                    // เช็ตว่ามีค่าว่างไหม
+                    .merge((check_budget)=>{
+                        return {
+                            budget_use : check_budget('budget_for_use').count().eq(0).branch(0,
+                                        check_budget('budget_for_use')(0).getField('budget_balance')),
+                        }
+                    })
+                    // เช็คคงเหลือ
+                    .merge((check_budget)=>{
+                        return {
+                            budget_balance : check_budget('budget_for_use').count().eq(0).branch(0,
+                                        check_budget('budget_for_use')(0).getField('budget_balance'))//check_budget('budget').sub(check_budget('budget_use'))
+                        }
+                    })
+                    
+                    // .without('welfare_conditions', 'id','budget_for_use')
                     .coerceTo('array')
             }
         })
@@ -249,13 +286,13 @@ exports.welfaresYear = function (req, res) {
                     .merge((mer_oneTime) => {
                         return {
                             date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0),
-                            status:mer_oneTime('status').eq(true).branch(' อนุญาติ', ' ยกเลิก'),
+                            status: mer_oneTime('status').eq(true).branch(' อนุญาติ', ' ยกเลิก'),
                             description: mer_oneTime('group_welfare_name').add(' (').add(mer_oneTime('welfare_name')).add(')'),
                             check_onetime_thai: mer_oneTime('onetime').eq(true).branch(' (ใช้ครั้งเดียว)', ' (ใช้หลายครั้ง)')
                         }
                     })
 
-                    .pluck('budget_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail','status')
+                    .pluck('budget_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status')
                     .coerceTo('array')
             }
         })
