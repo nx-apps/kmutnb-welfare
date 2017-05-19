@@ -28,8 +28,8 @@ const clearData = (data, callback) => {
 }
 const clearDatawelfare = (data, callback) => {
 
-    let { emp_id, welfare_id, use_budget, status, year, group_id, history_detail } = data;
-    let newData = { emp_id, welfare_id, use_budget, status, year, group_id, history_detail };
+    let { budget_balance,budget_cover,budget_use,emp_id,group_id,history_detail,status,welfare_id } = data;
+    let newData = { budget_balance,budget_cover,budget_use,emp_id,group_id,history_detail,status,welfare_id };
     // console.log(data.date/use_welfare/update_use == '');
 
     newData.document_ids = new Array()
@@ -84,7 +84,7 @@ export function usersAction(store) {
             // console.log(1)
             axios.get('./employee/list')
                 .then(res => {
-                    console.log(res.data)
+                    // console.log(res.data)
                     store.dispatch({ type: 'USERS_LIST', payload: res.data })
                 })
                 .catch(err => {

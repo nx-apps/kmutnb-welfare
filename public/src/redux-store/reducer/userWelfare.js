@@ -26,21 +26,14 @@ const clearData = (data, callback) => {
 }
 const clearDatawelfare = (data, callback) => {
 
-    let { emp_id, welfare_id, use_budget, status, year, group_id } = data;
-    let newData = { emp_id, welfare_id, use_budget, status, year, group_id };
+    let { budget_balance,budget_cover,budget_use,emp_id,group_id,history_detail,status,welfare_id } = data;
+    let newData = { budget_balance,budget_cover,budget_use,emp_id,group_id,history_detail,status,welfare_id };
     // console.log(data.date/use_welfare/update_use == '');
 
     newData.document_ids = new Array()
     data.document_ids.map((file) => {
         newData.document_ids.push(file)
     })
-
-    if (data.date_use == '' || data.date_use == undefined) {
-        newData.date_use = new Date().toISOString();
-    } else {
-        // console.log(data.date_use);
-        newData.date_use = new Date(data.date_use).toISOString();
-    }
     // console.log(newData);
     callback(newData)
 }

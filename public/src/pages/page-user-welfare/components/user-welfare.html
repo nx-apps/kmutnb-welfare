@@ -74,16 +74,16 @@
                     </thead>
                     <tbody class="table-body">
 
-                        <template is="dom-repeat" items={{data.welfare}}>
+                        <template is="dom-repeat" items={{data.group_welfares}}>
                             <tr>
                                 <td>[[_Obindex(index)]]</td>
-                                <td style="text-align: left;">[[item.group_welfare_name]] ([[item.check_onetime_thai]])</td>
+                                <td style="text-align: left;">[[item.description]] [[item.check_onetime_thai]]</td>
                                 <td style="text-align: right;">[[formatNumber(item.budget)]] </td>
                                 <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                 <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
                             </tr>
                         </template>
-                        <template is="dom-if" if={{_ObIsHave(data.welfare)}}>
+                        <template is="dom-if" if={{_ObIsHave(data.group_welfares)}}>
                             <tr>
                                 <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
                             </tr>
@@ -171,7 +171,7 @@
                 <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ขอใช้</paper-button>
             </div>
         </paper-dialog>
-
+        [[check(data)]]
     </template>
     <script>
         Polymer({
@@ -214,6 +214,9 @@
                 if (status_admin || !emp_work || welfare_old)
                     return true
             },
+            check(data){
+                console.log(data);
+            },  
             _checkApprove(status) {
                 // console.log(status);
                 switch (status) {

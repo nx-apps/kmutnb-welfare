@@ -145,6 +145,7 @@
             properties: {
                 data: {
                     statePath: 'users.select_welefares',
+                    observe:'_set'
                 },
                 year: {
                     statePath: 'userWelfare.list',
@@ -154,6 +155,9 @@
             listeners: {
                 '_getReloadData': 'gerYearWelfare'
             },
+            _set(data){
+                console.log(data);
+            },  
             setYear(years) {
                 try {
                     let year = years[years.length - 1].year
