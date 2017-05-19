@@ -53,7 +53,7 @@ exports.requestWelfare = function (req, res) {
     //   }   
     // console.log(req.body.document_ids);
     let data = {
-        date_use: new Date().toISOString()
+        date_use: r.now().inTimezone('+07')
     }
     Object.assign(req.body, data)
 
@@ -76,7 +76,7 @@ exports.requestWelfare = function (req, res) {
 exports.updateApproveWelfare = function (req, res) {
     var r = req.r;
     req.body.map((upStatus) => {
-        upStatus.date_approve = new Date().toISOString()
+        upStatus.date_approve = r.now().inTimezone('+07')
         upStatus.status = "approve"
     })
     r.expr(req.body).forEach(function (fe) {
@@ -97,7 +97,7 @@ exports.updateApproveWelfare = function (req, res) {
 exports.updateRejectWelfare = function (req, res) {
     var r = req.r;
     req.body.map((upStatus) => {
-        upStatus.date_approve = new Date().toISOString()
+        upStatus.date_approve = r.now().inTimezone('+07')
         upStatus.status = "reject"
     })
     // console.log('>>>>>>',req.body);
@@ -119,7 +119,7 @@ exports.updateRejectWelfare = function (req, res) {
 exports.updateCancelWelfare = function (req, res) {
     var r = req.r;
     req.body.map((upStatus) => {
-        upStatus.date_approve = new Date().toISOString()
+        upStatus.date_approve = r.now().inTimezone('+07')
         upStatus.status = "cancel"
     })
     // console.log('>>>>>>',req.body);
@@ -183,7 +183,7 @@ exports.adminApprove = function (req, res) {
     var r = req.r;
     req.body = Object.assign(req.body,
         {
-            date_approve: new Date().toISOString()
+            date_approve: r.now().inTimezone('+07')
         }
     );
     r.db('welfare').table('history_welfare').insert(req.body)('generated_keys')(0)
