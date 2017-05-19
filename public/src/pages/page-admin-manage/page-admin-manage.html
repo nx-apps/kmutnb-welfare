@@ -115,7 +115,7 @@
                                         <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                         <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
                                         <td>
-                                            <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]">ขอใช้</paper-button>
+                                            <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" disabled="[[checkWelfareFull(item)]]">ขอใช้</paper-button>
                                         </td>
                                     </tr>
                                 </template>
@@ -262,6 +262,10 @@
             },
             _btnReject(status){
                 return status == 'request'
+            },
+            checkWelfareFull(data){
+                if(data.budget_balance <= 0)
+                    return true
             },
             btnCancel(e){
                 // console.log(e.currentTarget.data);

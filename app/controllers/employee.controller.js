@@ -230,7 +230,7 @@ exports.welfaresYear = function (req, res) {
                         return {
                             description: names('description').add(' (').add(names('welfare_conditions').getField('welfare_name')).add(')'),
                             budget: names('welfare_conditions').getField('budget'),
-                                    // budget_use: 100,
+                            // budget_use: 100,
                             // budget_balance: 100,
                             welfare_id: names('welfare_conditions').getField('id'),
                             group_id: names('id'),
@@ -250,29 +250,29 @@ exports.welfaresYear = function (req, res) {
                     //     }
                     // })
                     // เอามาลบหา ค่าสุดท้ายที่ใช้งาน
-                    .merge((check_his_cost)=>{
+                    .merge((check_his_cost) => {
                         return {
-                            budget_for_use:r.db('welfare').table('history_welfare').getAll(check_his_cost('welfare_id'), { index: 'welfare_id' })
+                            budget_for_use: r.db('welfare').table('history_welfare').getAll(check_his_cost('welfare_id'), { index: 'welfare_id' })
                                 .filter({ status: true })
                                 .coerceTo('array')
                                 .orderBy(r.desc('date_approve'))
                         }
                     })
                     // เช็ตว่ามีค่าว่างไหม
-                    .merge((check_budget)=>{
+                    .merge((check_budget) => {
                         return {
-                            budget_use : check_budget('budget_for_use').count().eq(0).branch(0,
-                                        check_budget('budget_for_use')(0).getField('budget_balance')),
+                            budget_use: check_budget('budget').sub(check_budget('budget_for_use').count().eq(0).branch(0,
+                                check_budget('budget_for_use')(0).getField('budget_balance'))),
                         }
                     })
                     // เช็คคงเหลือ
-                    .merge((check_budget)=>{
+                    .merge((check_budget) => {
                         return {
-                            budget_balance : check_budget('budget_for_use').count().eq(0).branch(0,
-                                        check_budget('budget_for_use')(0).getField('budget_balance'))//check_budget('budget').sub(check_budget('budget_use'))
+                            budget_balance: check_budget('budget_for_use').count().eq(0).branch(0,
+                                check_budget('budget_for_use')(0).getField('budget_balance'))//check_budget('budget').sub(check_budget('budget_use'))
                         }
                     })
-                    
+
                     // .without('welfare_conditions', 'id','budget_for_use')
                     .coerceTo('array')
             }
