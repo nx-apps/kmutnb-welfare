@@ -182,7 +182,7 @@ export function usersAction(store) {
                 this.fire('toast', { status: 'load' });
                 axios.get(`./employee/${id}/${year}`)
                     .then(res => {
-                        console.log(res)
+                        // console.log(res)
                         this.fire('toast', {
                             status: 'success', text: 'โหลดข้อมูลสำเร็จ',
                             callback: () => {

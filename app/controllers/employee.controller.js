@@ -153,23 +153,7 @@ exports.welfaresYear = function (req, res) {
         //         gender: r.db('welfare_common').table('gender').get(emp('gender_id')).getField('gender_name')
         //     }
         // })
-        // .merge(function (f) {
-        //     return {
-        //         start_work_date: f('start_work_date'),//.split('T')(0),
-        //         birthdate: f('birthdate').toISO8601(),//f('birthdate').split('T')(0)
-        //         academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
-        //         active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
-        //         active_code: r.db('welfare_common').table('active').get(f('active_id')).getField('active_code'),
-        //         department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
-        //         faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
-        //         gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
-        //         matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
-        //         position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
-        //         prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
-        //         type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
-
-        //     }
-        // })
+        
         .merge((group_welfare) => {
             return {
                 group_welfares: r.db('welfare').table('group_welfare').getAll(true, { index: 'status_approve' })
@@ -261,14 +245,15 @@ exports.welfaresYear = function (req, res) {
                     // เช็ตว่ามีค่าว่างไหม
                     .merge((check_budget) => {
                         return {
-                            budget_use: check_budget('budget').sub(check_budget('budget_for_use').count().eq(0).branch(0,
-                                check_budget('budget_for_use')(0).getField('budget_balance'))),
+                            budget_use: check_budget('budget_for_use').sum('budget_use'),
                         }
                     })
                     // เช็คคงเหลือ
                     .merge((check_budget) => {
                         return {
-                            budget_balance: check_budget('budget_for_use').count().eq(0).branch(0,
+                            budget_balance: check_budget('budget_for_use').count().eq(0).branch(
+                                check_budget('budget')
+                                ,
                                 check_budget('budget_for_use')(0).getField('budget_balance'))//check_budget('budget').sub(check_budget('budget_use'))
                         }
                     })
@@ -281,6 +266,7 @@ exports.welfaresYear = function (req, res) {
             return {
                 history_welfare: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
                     .filter({ status: true })
+                    .orderBy(r.desc('date_approve'))
                     .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'onetime'] }).zip()
                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
                     .merge((mer_oneTime) => {
@@ -291,14 +277,38 @@ exports.welfaresYear = function (req, res) {
                             check_onetime_thai: mer_oneTime('onetime').eq(true).branch(' (ใช้ครั้งเดียว)', ' (ใช้หลายครั้ง)')
                         }
                     })
-
-                    .pluck('budget_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status')
+                    .merge((files) => {
+                        return {
+                            file: files('document_ids').map((doc_id) => {
+                                return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
+                                    .without('contents')
+                            })
+                        }
+                    })
+                    .pluck('budget_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status','file')
                     .coerceTo('array')
             }
         })
         .merge((mer_oneTime) => {
             return {
                 start_work_date: mer_oneTime('start_work_date').toISO8601().split('T')(0),
+            }
+        })
+        .merge(function (f) {
+            return {
+                start_work_date: f('start_work_date'),//.split('T')(0),//.split('T')(0),
+                birthdate: f('birthdate').toISO8601().split('T')(0),//f('birthdate').split('T')(0)
+                academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
+                active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
+                active_code: r.db('welfare_common').table('active').get(f('active_id')).getField('active_code'),
+                department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
+                faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
+                gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
+                matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
+                position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
+                prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
+                type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
+
             }
         })
         // .merge((check_welFare)=>{

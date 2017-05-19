@@ -158,7 +158,6 @@
                                                     รอการอนุมัติ
                                                 </template>
                                                 <template is="dom-if" if={{item.date_approve}}>
-                                                    <!--<vaadin-date-picker always-float-label  disabled value="{{item.date_approve}}"></vaadin-date-picker>-->
                                                     [[toThaiDate(item.date_approve)]]
                                                 </template>
                                             </div>
@@ -299,12 +298,14 @@
                 data.welfare_id = e.model.item.welfare_id
                 data.budget = e.model.item.budget
                 data.budget_cover = e.model.item.budget_balance
+                data.budget_use = e.model.item.budget_balance
                 data.status = true
                 data.onetime = e.model.item.onetime
                 // data.year = new Date().getFullYear()
                 data.group_id = e.model.item.group_id
                 this.set('disabled', e.model.item.onetime)
                 this.$$('#welfare_budget').open()
+                // console.log(e.model.item.budget_balance);
                 // console.log(data);
                 this.dataDialog = data;
                 // console.log(data);
