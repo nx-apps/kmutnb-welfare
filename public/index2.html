@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="import" href="./bower_components/polymer/polymer.html">
+  <link rel="import" href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+  <link rel="import" href="./bower_components/paper-listbox/paper-listbox.html">
+  <link rel="import" href="./bower_components/paper-item/paper-item.html">
+
+
+
+</head>
+
+<body>
+  <x-foo></x-foo>
+  <dom-module id="x-foo">
+
+    <template>I am x-foo!
+      <template is="dom-repeat" items="{{data}}">
+        [[_checkSelect(item.*)]]
+        <paper-dropdown-menu on-value-changed="valueChanged" style="margin-top: 15px">
+          <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.list}}">
+            <template is="dom-repeat" as="item2" items="{{list}}">
+              <paper-item value="{{item2}}">{{item2.fname}}</paper-item>
+            </template>
+          </paper-listbox>
+        </paper-dropdown-menu>
+        <button on-tap="clear">clear</button>
+        <button on-tap="toggle">toggle</button>
+      </template>
+      <button on-tap="add">Test</button>
+     
+    </template>
+    <script>
+      Polymer({
+        is: 'x-foo',
+        properties: {
+          data: {
+            type: Array,
+            value: [
+              { id: 1, name: 'test' }
+            ]
+            // observer: '_checkData'
+          },
+          list: {
+            type: Array,
+            value: [
+              { list_id: 1, fname: 'sisi' },
+              { list_id: 2, fname: 'wiwi' },
+              { list_id: 3, fname: 'qiqi' }
+            ]
+          }
+        },
+        clearSelect(e) {
+          // console.log(e.currentTarget.value);
+        },
+        add: function () {
+          this.push('data', { id: 4, name: 'kizki' })
+        },
+        toggle:function(e){
+          
+          var pre = this.data.slice(0);
+          pre[e.model.index].list = {};
+          //console.log(pre);
+          this.data = [];
+          this.data = pre;
+          console.log(this.data);
+          
+          if(this.s){
+            this.set('list',[
+              { list_id: 1, fname: 'sisi' },
+              { list_id: 2, fname: 'wiwi' },
+              { list_id: 3, fname: 'qiqi' }
+            ])
+            this.s = false;
+          }else{
+            this.set('list',[
+              { list_id: 1, fname: 'a' },
+              { list_id: 2, fname: 'b' },
+              { list_id: 3, fname: 'c' }
+            ])
+            this.s = true;
+          }          
+        },
+        clear:function(){
+          this.set('list',[]);
+        },
+        valueChanged(e){
+          //console.log(e);
+        },
+        _checkData(ob,i){
+          //console.log(ob)
+          if(ob.path=="item.name"){
+            console.log(ob.value)
+            console.log(i)
+          }
+        },
+        _checkSelect(x){
+          console.log(x)
+        }
+      });
+    </script>
+
+  </dom-module>
+
+</body>
+
+</html>
