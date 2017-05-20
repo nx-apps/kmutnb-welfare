@@ -114,7 +114,11 @@ exports.update = function (req, res) {
     // req.body = Object.assign(req.body, { year: req.body.year - 543 });
     for (let prop in req.body) {
         req.body[prop] = req.body[prop].replace(/ /g, '').trim()
+        
     }
+    req.body.start_work_date = r.ISO8601(req.body.start_work_date).inTimezone('+07:00')
+    req.body.birthdate = r.ISO8601(req.body.birthdate).inTimezone('+07:00')
+    // console.log(req.body);
     r.db('welfare').table('employee')
         .get(req.body.id)
         .update(req.body)
