@@ -236,8 +236,9 @@ exports.welfaresYear = function (req, res) {
                     // เอามาลบหา ค่าสุดท้ายที่ใช้งาน
                     .merge((check_his_cost) => {
                         return {
-                            budget_for_use: r.db('welfare').table('history_welfare').getAll(check_his_cost('welfare_id'), { index: 'welfare_id' })
-                                .filter({ status: true })
+                            budget_for_use: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                             .filter({ welfare_id: check_his_cost('welfare_id'),status: true })
+                                // .filter({ status: true, })
                                 .coerceTo('array')
                                 .orderBy(r.desc('date_approve'))
                         }
