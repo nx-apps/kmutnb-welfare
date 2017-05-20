@@ -166,6 +166,7 @@ export function userWelfareAction(store) {
             // console.log(data);
             axios.get('./employee/' + data.id + '/' + data.year)
                 .then(function (result) {
+                    // console.log(data);
                     // console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEES_WELFARE', payload: result.data })
                 })
@@ -174,8 +175,11 @@ export function userWelfareAction(store) {
                 })
         },
         EMPLOYEE_GET_WELFARES: function (id, year = new Date().getFullYear()) {
+            // console.log(year);
             axios.get('./employee/' + id + '/' + year)
                 .then(res => {
+                    // console.log(2);
+                    // console.log(res);
                     // store.dispatch({ type: 'EMPLOYEE_GET_WELFARES', payload: res.data })
                     this.fire('toast', {
                         status: 'success', text: 'โหลดข้อมูลสำเร็จ',
@@ -240,9 +244,9 @@ export function userWelfareAction(store) {
                                         callback: () => {
                                             this.fire('back-page');
                                             this.EMPLOYEE_GET_WELFARES(newData.id);
-                                            this.LIST_EMPLOYEE_WELFARE(newData.id);
+                                            // this.LIST_EMPLOYEE_WELFARE(newData.id);
                                             this.EMPLOYEE_USE_SELETE_WELFARE();
-                                            this.LIST_USER();
+                                            // this.LIST_USER();
                                         }
                                     });
                                 })

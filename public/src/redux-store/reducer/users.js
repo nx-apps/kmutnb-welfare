@@ -224,7 +224,7 @@ export function usersAction(store) {
             // console.log(data);
             // clearDatawelfare(data, (newData) => {
             //     newData.id = data.id;
-            console.log(data);
+            // console.log(data);
             this.fire('toast', { status: 'load' });
 
             return axios.put(`./history/update/approve`, data)
@@ -346,7 +346,7 @@ export function usersAction(store) {
             axios.post(`./rvd/signup/`, data)
                 .then(res => {
                     if (res.data.insert_status) {
-                        console.log(1);
+                        // console.log(1);
                         this.fire('toast', {
                             status: 'success', text: 'สมัครสำเร็จ',
                             callback: () => {
@@ -354,7 +354,7 @@ export function usersAction(store) {
                             }
                         });
                     } else {
-                        console.log(2);
+                        // console.log(2);
                         this.fire('toast', {
                             status: 'error', text: 'ไม่สามารถสมัครได้',
                             callback: () => {
