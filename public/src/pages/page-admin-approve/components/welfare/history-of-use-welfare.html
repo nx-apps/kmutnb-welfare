@@ -1,0 +1,112 @@
+<link rel="import" href="./../../../../../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="./../../../components/format-number-behavior.html">
+<link rel="import" href="./../../../components/page-style.html">
+
+<dom-module id="history-of-use-welfare">
+    <template>
+        <style include="page-style ">
+
+        </style>
+        <vaadin-grid id="material" items='{{list}}'>
+            <vaadin-grid-column width="80px" flex-grow="0">
+                <template class="header ">
+                    <div class="text-center">ลำดับ</div>
+                </template>
+                <template>
+                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[index]]</div>
+                </template>
+                <template class="footer">
+                    <div class="text-center">ลำดับ</div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">
+                    <div class="text-center">รหัสพนักงาน</div>
+                </template>
+                <template>
+                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[item.emp_no]]
+                    </div>
+                </template>
+                <template class="footer">
+                    <div class="text-center">รหัสพนักงาน
+                    </div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="300px" flex-grow="0">
+                <template class="header">
+                    <div class="text-center">ชื่อ - นามสกุล
+                    </div>
+                </template>
+                <template>
+                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">[[item.prefix_name]][[item.firstname]]    [[item.lastname]] 
+                    </div>
+                </template>
+                <template class="footer">
+                    <div class="text-center">ชื่อ - นามสกุล
+                    </div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="200px" flex-grow="0">
+                <template class="header ">
+                    <div class="text-center">สวัสดิการที่ใช้งาน</div>
+                </template>
+                <template>
+                    <div class="text-center">[[item.group_welfare_name]]</div>
+                </template>
+                <template class="footer">
+                    <div class="text-center">สวัสดิการที่ใช้งาน</div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="200px" flex-grow="0">
+                <template class="header ">
+                    <div class="text-center">จำนวนเงินที่ใช้งาน</div>
+                </template>
+                <template>
+                    <div class="text-center" >[[formatNumber(item.budget_use)]]</div>
+                </template>
+                <template class="footer">
+                    <div class="text-center">จำนวนเงินที่ใช้งาน</div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="200px" flex-grow="0">
+                <template class="header ">
+                    <div class="text-center">จำนวนเงินคงเหลือ</div>
+                </template>
+                <template>
+                    <div class="text-center">[[formatNumber(item.budget_balance)]]</div>
+                </template>
+                <template class="footer">
+                    <div class="text-center">จำนวนเงินคงเหลือ</div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="200px" flex-grow="0">
+                <template class="header ">
+                    <div class="text-center">วันที่ขอ</div>
+                </template>
+                <template>
+                    <div class="text-center">[[item.date_approve]]</div>
+                </template>
+                <template class="footer">
+                    <div class="text-center">วันที่ขอ</div>
+                </template>
+            </vaadin-grid-column>
+        </vaadin-grid>
+        * เรียงตามวันที่ขอล่าสุด
+    </template>
+    <script>
+        Polymer({
+            is: 'history-of-use-welfare',
+            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            properties: {
+                list: {
+                    statePath: 'users.lisyUserhistoryWelfare',
+                    observer: 'getList'
+                },
+            },
+            getList(data){
+
+                console.log(data);
+            }
+        });
+    </script>
+</dom-module>

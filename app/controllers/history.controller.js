@@ -20,7 +20,7 @@ exports.unapprove = function (req, res) {
         .merge((userName) => {
             return {
                 budget: r.db('welfare').table('welfare').get(userName('welfare_id')).getField('budget'),
-                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('emp_id'),{index:'emp_id'}).filter({status: "approve",welfare_id:userName('welfare_id')}).sum('use_budget')
+                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('emp_id'), { index: 'emp_id' }).filter({ status: "approve", welfare_id: userName('welfare_id') }).sum('use_budget')
                 //.getAll(userName('welfare_id'), { index: 'welfare_id' }).filter({status: "approve"}).sum('use_budget')
                 ,
                 group_welfare_name: r.db('welfare').table('group_welfare').get(userName('group_id')).getField('group_welfare_name'),
@@ -228,47 +228,29 @@ exports.listHistory = function (req, res) {
         );
     }
     // let chengeyear
-    console.log(req.query);
+    // console.log(111111111111111111111111);
+    // r.expr({
+    //     emp: r.db('welfare_common').table('employee').coerceTo('Array'),
+    //     history_welfare: r.db('welfare').table('history_welfare')
+    //         .getAll(true, { index: 'status' })
+    //         .orderBy(r.desc('date_approve')).coerceTo('Array')
+    // })
     r.db('welfare').table('history_welfare')
-        .filter({ year: req.query.year , group_id:req.query.group_id, status:req.query.status})
-        .merge((user) => {
+        .getAll(true, { index: 'status' })
+        .orderBy(r.desc('date_approve')).coerceTo('Array')
+        .merge((mer_oneTime) => {
             return {
-                date_use: user('date_use').split('T')(0),
-                data: r.db('welfare').table('employee').get(user('emp_id')),
-                // testtttt:req.query.year.coerceTo('number')
+                date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0)
             }
         })
-        .merge((getFileName) => {
-            return {
-                file: getFileName('document_ids').map((doc_id) => {
-                    return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
-                        .without('contents')
-                })
-            }
-        })
-        .merge((userName) => {
-            return {
-                budget: r.db('welfare').table('welfare').get(userName('welfare_id')).getField('budget'),
-                history_welfare_budget: r.db('welfare').table('history_welfare').getAll(userName('welfare_id'), { index: 'welfare_id' }).filter({status: "approve"}).sum('use_budget'),
-                group_welfare_name: r.db('welfare').table('group_welfare').get(userName('group_id')).getField('group_welfare_name'),
-                prefix_name: r.db('welfare_common').table('prefix').get(userName('data').getField('prefix_id')).getField('prefix_name'),
-                firstname: userName('data').getField('firstname'),
-                lastname: userName('data').getField('lastname'),
-                personal_id: userName('data').getField('personal_id'),
-                faculty_name: r.db('welfare_common').table('faculty').get(userName('data').getField('faculty_id')).getField('faculty_name')
-            }
-        })
-        .filter((status) => {
-            return status('status').eq('approve').or(status('status').eq('reject')).or(status('status').eq('cancel'))
-        })
-        .merge((money) => {
-            return {
-                budget_cover: money('budget').sub(money('history_welfare_budget')),
-                status_thai: money('status').eq('approve').branch('อนุมัติ',money('status').eq('cancel').branch('พนักงานยกเลิก','ไม่อนุมัติ') )
-            }
-        })
-        .orderBy(r.desc('date_use'),r.desc(req.query.sortBy))
-        .without('data')
+         .eqJoin('group_id', r.db('welfare').table('group_welfare'))
+         .pluck('left', { right: ['group_welfare_name'] }).zip()
+        .eqJoin('emp_id', r.db('welfare').table('employee'))
+        .pluck('left', { right: ['firstname', 'lastname', 'prefix_id','emp_no'] }).zip()
+        .eqJoin('prefix_id', r.db('welfare_common').table('prefix'))
+        .pluck('left', { right: ['prefix_name'] }).zip()
+        // .filter({ year: req.query.year , group_id:req.query.group_id, status:req.query.status})
+
         .run()
         .then(function (result) {
             res.json(result);

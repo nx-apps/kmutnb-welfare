@@ -225,18 +225,6 @@ exports.welfaresYear = function (req, res) {
                             check_onetime_thai: names('onetime').eq(true).branch(' (ใช้ครั้งเดียว)', ' (ใช้หลายครั้ง)')
                         }
                     })
-                    //หา _history มีเท่าไร เตรียมเอามาลบ
-                    // .merge((mer_his) => {
-                    //     return {
-                    //         his_length: r.db('welfare').table('history_welfare').getAll(mer_his('welfare_id'), { index: 'welfare_id' })
-                    //             .filter({ status: true }).coerceTo('array').count().sub(1)
-                    //     }
-                    // })
-                    // .merge((mer_his) => {
-                    //     return {
-                    //         his_lengths: mer_his('his_length').eq(-1).branch(0,1)
-                    //     }
-                    // })
                     // เอามาลบหา ค่าสุดท้ายที่ใช้งาน
                     .merge((check_his_cost) => {
                         return {
