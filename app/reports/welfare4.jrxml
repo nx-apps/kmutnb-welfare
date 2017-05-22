@@ -5,6 +5,8 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="date_start" class="java.lang.String"/>
 	<parameter name="date_end" class="java.lang.String"/>
+	<parameter name="type_employee_name" class="java.lang.String"/>
+	<parameter name="faculty_name" class="java.lang.String"/>
 	<field name="group_welfare_name" class="java.lang.String"/>
 	<field name="budget_use" class="java.lang.String"/>
 	<background>
@@ -56,7 +58,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["คณะ "+" กลุ่มบุคคล"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["คณะ "+($P{faculty_name}== null ?"ทั้งหมด":$P{faculty_name})+" ประเภทบุคคล "+($P{type_employee_name}== null ?"ทั้งหมด":$P{type_employee_name})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="163" y="50" width="96" height="20" uuid="81a68e25-910b-44e5-a957-58e2e0114322"/>

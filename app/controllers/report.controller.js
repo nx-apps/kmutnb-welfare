@@ -1591,7 +1591,7 @@ exports.welfare2 = function (req, res) {
     var group_id = req.query.group_id;
     var faculty_id = req.query.faculty_id
     var type_employee_id = req.query.type_employee_id
-
+ 
     r.db('welfare').table('history_welfare')
         .filter(function (f) {
             return f('date_approve').date().during(
@@ -1636,9 +1636,11 @@ exports.welfare2 = function (req, res) {
                 // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
                 date_start: date_start,
                 date_end: date_end,
-                // group_welfare_name:req.parameters.group_id,
-                // faculty_name:req.parameters.faculty_id
+                group_welfare_name:req.query.group_name,
+                faculty_name:req.query.faculty_name,
+                type_employee_name:req.query.type_employee_name,
             };
+            console.log(req.query.group_name)
             res.ireport("welfare2.jasper", req.query.export || "pdf", result, parameters);
         });
 }
@@ -1691,7 +1693,10 @@ exports.welfare3 = function (req, res) {
                 CURRENT_DATE: new Date().toISOString().slice(0, 10),
                 // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
                 date_start: date_start,
-                date_end: date_end
+                date_end: date_end,
+                group_welfare_name:req.query.group_name,
+                faculty_name:req.query.faculty_name,
+                type_employee_name:req.query.type_employee_name,
             };
             res.ireport("welfare3.jasper", req.query.export || "pdf", result, parameters);
         });
@@ -1732,7 +1737,9 @@ exports.welfare4 = function (req, res) {
                 CURRENT_DATE: new Date().toISOString().slice(0, 10),
                 // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
                 date_start: date_start,
-                date_end: date_end
+                date_end: date_end,
+                faculty_name:req.query.faculty_name,
+                type_employee_name:req.query.type_employee_name,
             };
             res.ireport("welfare4.jasper", req.query.export || "pdf", result, parameters);
         });

@@ -11,6 +11,7 @@
 	<parameter name="group_welfare_name" class="java.lang.String"/>
 	<parameter name="date_start" class="java.lang.String"/>
 	<parameter name="date_end" class="java.lang.String"/>
+	<parameter name="type_employee_name" class="java.lang.String"/>
 	<field name="group_welfare_name" class="java.lang.String"/>
 	<field name="reduction" class="java.lang.Object"/>
 	<field name="sum_budget" class="java.lang.Double"/>
@@ -80,7 +81,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["สรุปการจ่ายสวัสดิการ "+$P{group_welfare_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["สรุปการจ่ายสวัสดิการ "+($P{group_welfare_name}== null ?"ทั้งหมด":$P{group_welfare_name})]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -154,7 +155,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["คณะ "+($P{faculty_name}==""?"ทั้งหมด":$P{faculty_name})+" กลุ่มบุคคล"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["คณะ "+($P{faculty_name}== null ?"ทั้งหมด":$P{faculty_name})+" ประเภทบุคคล "+($P{type_employee_name}== null ?"ทั้งหมด":$P{type_employee_name})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
