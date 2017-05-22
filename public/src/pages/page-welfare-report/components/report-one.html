@@ -1,0 +1,152 @@
+<link rel="import" href="../../components/page-style.html">
+<link rel="import" href="../../components/month-behavior.html">
+<dom-module id="report-one">
+    <template>
+        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+             :host {
+                display: block;
+            }
+
+            gl-form-dropdown-menu,
+            vaadin-date-picker,
+            gl-form-input,
+            gl-combo-box {
+                width: 100%;
+                text-align: left;
+            }
+
+            vaadin-date-picker {
+                margin-top: 0.5px;
+            }
+        </style>
+        <div class="layout horizontal start-justified">
+            <div class="flex" style=" margin-right: 30px">{{getGroupWelfare(data.year)}}
+                <gl-combo-box label="ปี" placeholder="มีทั้งหมด {{list_year.length}} ปี" items="{{list_year}}" item-label-path="year" item-value-path="year"
+                    value="{{data.year}}">
+                    <template>
+                        [[item.year]]
+                    </template>
+                </gl-combo-box>
+            </div>
+
+            <div class="flex">
+                <gl-combo-box label="สวัสดิการ" placeholder="เลือกสวัสดิการ {{list_welfare.length}}" items="{{list_welfare}}" item-label-path="group_welfare_name"
+                    item-value-path="id" value="{{data.group_id}}">
+                    <template>
+                        [[item.group_welfare_name]]
+                    </template>
+                </gl-combo-box>
+            </div>
+
+        </div>
+        <div class="layout horizontal start-justified">
+            <div class="flex" style=" margin-right: 30px">
+                <gl-combo-box label="คณะ" placeholder="คณะ {{list_faculty.length}}" items="{{list_faculty}}" item-label-path="faculty_name"
+                    item-value-path="id" value="{{data.faculty_id}}">
+                    <template>
+                        [[item.faculty_name]]
+                    </template>
+                </gl-combo-box>
+                <!--<gl-form-dropdown-menu label="คณะ" placeholder="คณะ">
+                    <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{data.faculty_name}}">
+                        <paper-item value="">ทั้งหมด</paper-item>
+                        <template is="dom-repeat" items={{list_year}}>
+                            <paper-item value="[[item.year]]">[[item.year]]</paper-item>
+                        </template>
+                    </paper-menu>
+                </gl-form-dropdown-menu>-->
+            </div>
+            <div class="flex">
+                <gl-combo-box label="ประเภทบุคคล" placeholder="ประเภทบุคคล {{list_type_employee.length}}" items="{{list_type_employee}}"
+                    item-label-path="type_employee_name" item-value-path="id" value="{{data.type_employee_id}}">
+                    <template>
+                        [[item.type_employee_name]]
+                    </template>
+                </gl-combo-box>
+                <!--<gl-form-dropdown-menu label="ประเภทบุคคล" placeholder="ประเภทบุคคล">
+                    <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{data.type_employee_name}}">
+                        <paper-item value="">ทั้งหมด</paper-item>
+                        <template is="dom-repeat" items={{list_year}}>
+                            <paper-item value="[[item.year]]">[[item.year]]</paper-item>
+                        </template>
+                    </paper-menu>
+                </gl-form-dropdown-menu>-->
+            </div>
+        </div>
+        <div class="layout horizontal start-justified">
+            <div class="flex">
+                <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_start}}"></vaadin-date-picker>
+            </div>
+            <div style="margin: 31px 10px;">ถึง</div>
+            <div class="flex">
+                <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_end}}"></vaadin-date-picker>
+            </div>
+        </div>
+        <div class="layout horizontal start-justified">
+            <gl-form-input always-float-label label="รหัสบัตรประชาชน" placeholder="รหัสบัตรประชาชน" on-input="searchTableListSearch"
+                value="{{data.personal_id}}">
+            </gl-form-input>
+        </div>
+        <div class="layout horizontal center-justified">
+            <paper-button class="gl-btn-info" on-tap="print">ออกรายงาน</paper-button>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'report-one',
+            behaviors: [ReduxBehavior, nylonBehavior, MonthBehavior],
+            properties: {
+                list_year: {
+                    statePath: 'userWelfare.list',
+                    observer: 'setYear'
+                },
+                list_welfare: {
+                    statePath: 'userWelfare.list_id'
+                },
+                list_faculty: {
+                    statePath: 'commonData.faculty'
+                },
+                list_type_employee: {
+                    statePath: 'commonData.type_employee'
+                },
+
+                data: {
+                    type: Object,
+                    value: {}
+                }
+            },
+            setYear: function (year) {
+                // console.log(year);
+                try {
+                    this.set('data.year', year[0].year)
+                } catch (error) {
+
+                }
+
+            },
+            getGroupWelfare: function (year) {
+                //    console.log(this.data);
+                this.dispatchAction('WELFARE_LIST', this.data.year - 543);
+            },
+            print: function () {
+                try {
+                const getName = (arrays,id)=> arrays.find((wel)=>wel.id === id )
+                const checkUndefined = (value) => value !== undefined && value !== ''
+                const data = JSON.parse(JSON.stringify(this.data))
+                data.year = data.year - 543
+                if(checkUndefined(this.data.group_id))
+                    data.group_name = getName(this.list_welfare,this.data.group_id).group_welfare_name
+                if(checkUndefined(this.data.faculty_id))
+                    data.faculty_name = getName(this.list_faculty,this.data.faculty_id).faculty_name
+                if(checkUndefined(this.data.type_employee_id))
+                    data.type_employee_name  = getName(this.list_type_employee,this.data.type_employee_id).type_employee_name
+                // console.log(data.type_employee_name);
+                console.log(this.genUrl(data));
+                } catch (e) {
+                        console.log(e);
+                } 
+                
+            }
+        });
+    </script>
+</dom-module>

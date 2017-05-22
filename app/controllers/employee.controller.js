@@ -259,11 +259,12 @@ exports.welfaresYear = function (req, res) {
             return {
                 history_welfare: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
                     .filter({ status: true })
-                    .orderBy(r.desc('date_approve'))
+                    
                     .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'onetime'] }).zip()
                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
                     .merge((mer_oneTime) => {
                         return {
+                            date_use: mer_oneTime('date_use').toISO8601().split('T')(0),
                             date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0),
                             status: mer_oneTime('status').eq(true).branch(' อนุญาติ', ' ยกเลิก'),
                             description: mer_oneTime('group_welfare_name').add(' (').add(mer_oneTime('welfare_name')).add(')'),
@@ -278,8 +279,9 @@ exports.welfaresYear = function (req, res) {
                             })
                         }
                     })
-                    .pluck('budget_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status','file')
+                    .pluck('budget_use','date_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status','file')
                     .coerceTo('array')
+                    .orderBy(r.desc('date_approve'))
             }
         })
         .merge((mer_oneTime) => {
@@ -301,7 +303,6 @@ exports.welfaresYear = function (req, res) {
                 position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
                 prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
                 type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
-
             }
         })
         // .merge((check_welFare)=>{

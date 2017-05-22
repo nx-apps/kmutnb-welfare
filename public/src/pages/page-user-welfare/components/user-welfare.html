@@ -12,36 +12,36 @@
          :host {
             display: block;
         }
-        
+
         .head-text {
             font-size: var(--font-size-h4);
             margin: 15px 15px 15px 15px;
         }
-        
+
         table.gl-table-default {
             width: 98%;
             border: 1px solid #ddd;
             /*margin: 15px;*/
         }
-        
+
         .label,
         .inpit {
             font-size: var(--font-size-h5)
         }
-        
+
         .label {
             text-align: right;
             padding-right: 5px;
         }
-        
+
         .left {
             text-align: left;
         }
-        
+
         .right {
             text-align: right;
         }
-        
+
         fieldset {
             margin: 15px;
         }
@@ -104,6 +104,7 @@
                             <th style="width: 10%">ลำดับ</th>
                             <th style="width: 25%">สวัสดิการที่ใช้</th>
                             <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
+                            <th style="width: 10%">วันที่ขอ</th>
                             <th style="width: 10%">วันอนุมัติ</th>
                             <th style="width: 10%">สถานะ</th>
                             <th style="width: 25%">ไฟล์</th>
@@ -116,6 +117,9 @@
                                 <td>[[_Obindex(index)]]</td>
                                 <td style="text-align: left;">[[item.description]] </td>
                                 <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
+                                <td>
+                                    [[toThaiDate(item.date_use)]]
+                                </td>
                                 <td>
                                     <div style="text-align: center">
                                         <template is="dom-if" if={{!item.date_approve}}>

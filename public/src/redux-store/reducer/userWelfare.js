@@ -26,8 +26,8 @@ const clearData = (data, callback) => {
 }
 const clearDatawelfare = (data, callback) => {
 
-    let { budget_balance,budget_cover,budget_use,emp_id,group_id,history_detail,status,welfare_id } = data;
-    let newData = { budget_balance,budget_cover,budget_use,emp_id,group_id,history_detail,status,welfare_id };
+    let { budget_balance, budget_cover, budget_use, emp_id, group_id, history_detail, status, welfare_id, date_use, date_approve } = data;
+    let newData = { budget_balance, budget_cover, budget_use, emp_id, group_id, history_detail, status, welfare_id, date_use, date_approve };
     // console.log(data.date/use_welfare/update_use == '');
 
     newData.document_ids = new Array()
@@ -37,7 +37,23 @@ const clearDatawelfare = (data, callback) => {
     // console.log(newData);
     callback(newData)
 }
-
+const changeTime = (data, timeZone, callback) => {
+    let time
+    data.map((item, index) => {
+        for (var prop in item) {
+            if (prop.indexOf('date') >= 0 && prop !== 'updater') {
+                time = new Date(item[prop])
+                // console.log(data[index][prop]);
+                data[index][prop] = new Date(time.setHours(time.getHours() + timeZone)).toISOString()
+                // console.log(new Date(data[index][prop]).toISOString());
+            }
+            // console.log(typeof item[prop] === 'object');
+            if (typeof item[prop] === 'object')
+                changeTime(item[prop], timeZone)
+        }
+    })
+    callback(data)
+}
 export function userWelfareReducer(state = initialState, action) {
 
     switch (action.type) {
@@ -155,7 +171,7 @@ export function userWelfareAction(store) {
             // console.log(data);
             axios.get('./employee/' + data)
                 .then(function (result) {
-                    // console.log(result.data);
+                    console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEE_WELFARE', payload: result.data })
                 })
                 .catch(err => {
@@ -166,7 +182,10 @@ export function userWelfareAction(store) {
             // console.log(data);
             axios.get('./employee/' + data.id + '/' + data.year)
                 .then(function (result) {
-                    // console.log(data);
+                    console.log(data);
+                    // changeTime(result.date,+7,(data)=>{
+                    //     console.log(data);
+                    // })
                     // console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEES_WELFARE', payload: result.data })
                 })
@@ -179,7 +198,7 @@ export function userWelfareAction(store) {
             axios.get('./employee/' + id + '/' + year)
                 .then(res => {
                     // console.log(2);
-                    // console.log(res);
+                    console.log(res.data);
                     // store.dispatch({ type: 'EMPLOYEE_GET_WELFARES', payload: res.data })
                     this.fire('toast', {
                         status: 'success', text: 'โหลดข้อมูลสำเร็จ',
@@ -280,7 +299,7 @@ export function userWelfareAction(store) {
                                 })
                         })
                     }
-                    else{
+                    else {
                         this.fire('back_page');
                     }
                 }
