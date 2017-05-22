@@ -1,0 +1,28 @@
+
+<link rel="import" href="./components/welfare-report-search.html">
+
+<link rel="import" href="./../components/month-behavior.html">
+
+<dom-module id="page-welfare-report">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <welfare-report-search></welfare-report-search>
+    </template>
+    <script>
+        Polymer({
+            is: 'page-welfare-report',
+            behaviors: [ReduxBehavior, nylonBehavior, userWelfareAction, commonDataAction],
+            nylonPageActive: function () {
+                // this.TESTS();
+                this.WELFARE_LIST_YEAR();
+                this.COMMONDATA_DATA_FACULTY();
+                this.COMMONDATA_DATA_TYPE_EMPLOYEE();
+                this.FACULTY_LIST();
+            },
+        });
+    </script>
+</dom-module>
