@@ -30,8 +30,8 @@
             </div>
 
             <div class="flex">
-                <gl-combo-box label="สวัสดิการ" placeholder="เลือกสวัสดิการ {{list_welfare.length}}" items="{{list_welfare}}" item-label-path="group_welfare_name" item-value-path="id"
-                    value="{{data.group_id}}">
+                <gl-combo-box label="สวัสดิการ" placeholder="เลือกสวัสดิการ {{list_welfare.length}}" items="{{list_welfare}}" item-label-path="group_welfare_name"
+                    item-value-path="id" value="{{data.group_id}}">
                     <template>
                         [[item.group_welfare_name]]
                     </template>
@@ -41,8 +41,8 @@
         </div>
         <div class="layout horizontal start-justified">
             <div class="flex" style=" margin-right: 30px">
-                <gl-combo-box label="คณะ" placeholder="คณะ {{list_faculty.length}}" items="{{list_faculty}}" item-label-path="faculty_name" item-value-path="id"
-                    value="{{data.faculty_id}}">
+                <gl-combo-box label="คณะ" placeholder="คณะ {{list_faculty.length}}" items="{{list_faculty}}" item-label-path="faculty_name"
+                    item-value-path="id" value="{{data.faculty_id}}">
                     <template>
                         [[item.faculty_name]]
                     </template>
@@ -57,8 +57,8 @@
                 </gl-form-dropdown-menu>-->
             </div>
             <div class="flex">
-                <gl-combo-box label="ประเภทบุคคล" placeholder="ประเภทบุคคล {{list_type_employee.length}}" items="{{list_type_employee}}" item-label-path="type_employee_name" item-value-path="id"
-                    value="{{data.type_employee_id}}">
+                <gl-combo-box label="ประเภทบุคคล" placeholder="ประเภทบุคคล {{list_type_employee.length}}" items="{{list_type_employee}}"
+                    item-label-path="type_employee_name" item-value-path="id" value="{{data.type_employee_id}}">
                     <template>
                         [[item.type_employee_name]]
                     </template>
@@ -94,11 +94,11 @@
     <script>
         Polymer({
             is: 'report-one',
-            behaviors: [ReduxBehavior, nylonBehavior,MonthBehavior],
+            behaviors: [ReduxBehavior, nylonBehavior, MonthBehavior],
             properties: {
                 list_year: {
                     statePath: 'userWelfare.list',
-                    observer:'setYear'
+                    observer: 'setYear'
                 },
                 list_welfare: {
                     statePath: 'userWelfare.list_id'
@@ -109,29 +109,43 @@
                 list_type_employee: {
                     statePath: 'commonData.type_employee'
                 },
-                
+
                 data: {
                     type: Object,
                     value: {}
                 }
             },
-            setYear:function(year){
+            setYear: function (year) {
                 // console.log(year);
                 try {
-                    this.set('data.year',year[0].year)
+                    this.set('data.year', year[0].year)
                 } catch (error) {
-                    
+
                 }
+
+            },
+            getGroupWelfare: function (year) {
+                //    console.log(this.data);
+                this.dispatchAction('WELFARE_LIST', this.data.year - 543);
+            },
+            print: function () {
+                try {
+                const getName = (arrays,id)=> arrays.find((wel)=>wel.id === id )
+                const checkUndefined = (value) => value !== undefined && value !== ''
+                const data = JSON.parse(JSON.stringify(this.data))
+                data.year = data.year - 543
+                if(checkUndefined(this.data.group_id))
+                    data.group_name = getName(this.list_welfare,this.data.group_id).group_welfare_name
+                if(checkUndefined(this.data.faculty_id))
+                    data.faculty_name = getName(this.list_faculty,this.data.faculty_id).faculty_name
+                if(checkUndefined(this.data.type_employee_id))
+                    data.type_employee_name  = getName(this.list_type_employee,this.data.type_employee_id).type_employee_name
+                // console.log(data.type_employee_name);
+                console.log(this.genUrl(data));
+                } catch (e) {
+                        console.log(e);
+                } 
                 
-            },
-            getGroupWelfare:function(year){
-            //    console.log(this.data);
-               this.dispatchAction('WELFARE_LIST',this.data.year-543);
-               
-            },
-            print:function() {
-                // console.log(this.data);
-                console.log(this.genUrl(this.data));
             }
         });
     </script>
