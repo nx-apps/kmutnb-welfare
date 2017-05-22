@@ -334,6 +334,13 @@ exports.adminEmployee = function (req, res) {
                 welfare: r.db('welfare').table('welfare').getAll(req.params.groupId, { index: 'group_id' })
                     .merge(function (wel_merge) {
                         return {
+                            condition: wel_merge('condition')
+                                .eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()
+                                .coerceTo('array')
+                        }
+                    })
+                    .merge(function (wel_merge) {
+                        return {
                             countCon: wel_merge('condition').count(),
                             employee: r.branch(wel_merge('condition').count().eq(0),
                                 [group_merge('employees').pluck("id")],
@@ -361,7 +368,7 @@ exports.adminEmployee = function (req, res) {
                     })
             }
         })
-        // .without('employees')
+        .without('employees')
         .getField('welfare')('employee')
         .reduce(function (l, r) {
             return l.add(r)
