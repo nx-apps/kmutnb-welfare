@@ -318,6 +318,8 @@
                 // newData.budget_use  =newData.use_budget
                 newData.budget_use = Number(newData.budget_use)
                 newData.budget_balance = newData.budget_cover - newData.budget_use
+                newData.date_approve = newData.date_approve+'T00:00:00+07:00'
+                newData.date_use = newData.date_use+'T00:00:00+07:00'
                 // console.log(newData);
                 this.$$('#welfare_budget').close()
                 

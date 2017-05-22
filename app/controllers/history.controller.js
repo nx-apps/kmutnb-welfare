@@ -181,11 +181,22 @@ exports.listUploadHistory = function (req, res) {
 }
 exports.adminApprove = function (req, res) {
     var r = req.r;
+    let date_use = req.body.date_use ||  new Date()
+    let date_approve = req.body.date_approve ||  new Date()
     req.body = Object.assign(req.body,
-        {
-            date_approve: r.now().inTimezone('+07')
-        }
-    );
+            {
+                date_approve: r.ISO8601(date_approve),
+                date_create: r.now().inTimezone('+07'),
+                date_use: r.ISO8601(date_approve)
+            }
+        );
+
+    // console.log(,day);
+    // console.log(req.body.date_use);
+    
+    // console.log(new Date());
+    // console.log(date_use,date_approve);
+    // console.log(req.body);
     r.db('welfare').table('history_welfare').insert(req.body)('generated_keys')(0)
         .do((history_id) => {
             return r.db('welfare').table('history_welfare').get(history_id).getField('document_ids').forEach((doc_update) => {
@@ -195,6 +206,7 @@ exports.adminApprove = function (req, res) {
         .run()
         .then(function (result) {
             res.json(result);
+            // res.json([]);
         })
         .catch(function (err) {
             res.status(500).json(err);
@@ -243,14 +255,14 @@ exports.listHistory = function (req, res) {
                 date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0)
             }
         })
-         .eqJoin('group_id', r.db('welfare').table('group_welfare'))
-         .pluck('left', { right: ['group_welfare_name'] }).zip()
+        .eqJoin('group_id', r.db('welfare').table('group_welfare'))
+        .pluck('left', { right: ['group_welfare_name'] }).zip()
         .eqJoin('emp_id', r.db('welfare').table('employee'))
-        .pluck('left', { right: ['firstname', 'lastname', 'prefix_id','emp_no'] }).zip()
+        .pluck('left', { right: ['firstname', 'lastname', 'prefix_id', 'emp_no'] }).zip()
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix'))
         .pluck('left', { right: ['prefix_name'] }).zip()
         // .filter({ year: req.query.year , group_id:req.query.group_id, status:req.query.status})
-.orderBy(r.desc('date_approve'))
+        .orderBy(r.desc('date_approve'))
         .run()
         .then(function (result) {
             res.json(result);
