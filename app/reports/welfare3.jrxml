@@ -9,6 +9,9 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\Users\\Accounting\\Documents\\Project\\kmutnb-welfare\\app\\reports\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="type_employee_name" class="java.lang.String"/>
+	<parameter name="faculty_name" class="java.lang.String"/>
+	<parameter name="group_welfare_name" class="java.lang.String"/>
 	<field name="group_welfare_name" class="java.lang.String"/>
 	<field name="reduction" class="java.lang.Object"/>
 	<field name="faculty_name" class="java.lang.String"/>
@@ -53,7 +56,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["รายละเอียดกรจ่ายสวัสดิการ "+" "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["รายละเอียดการจ่ายสวัสดิการ "+($P{group_welfare_name}== null ?"ทั้งหมด":$P{group_welfare_name})]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -85,7 +88,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["คณะ "+" ประเภทบุคคล"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["คณะ "+($P{faculty_name}== null ?"ทั้งหมด":$P{faculty_name})+" ประเภทบุคคล "+($P{type_employee_name}== null ?"ทั้งหมด":$P{type_employee_name})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="50" width="100" height="20" uuid="4ed77e46-b7ed-41f0-9e0a-f559afd873dd"/>
