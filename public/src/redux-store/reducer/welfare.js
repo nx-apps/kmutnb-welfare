@@ -124,6 +124,7 @@ export function welfareAction(store) {
             // console.log(store.getState().welfare.condition);
             axios.get('/welfare/' + val)
                 .then(function (result) {
+                    console.log(result.data);
                     // console.log("*",result.data);
                     var data = result.data.condition;
                     var condition = store.getState().welfare.condition;
