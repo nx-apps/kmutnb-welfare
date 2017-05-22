@@ -14,6 +14,10 @@ module.exports = function (app) {
     app.get('/report6', controller.report6);
     app.get('/list_group/:id', controller.list_group);
     app.get('/list_year/:year', controller.list_year);
-    app.get('/report_test/:year', controller.report_test);
+    app.get('/report_test/:id', controller.report_test);
+    app.get('/welfare1',controller.welfare1);
+    app.get('/welfare2',controller.welfare2);
+    app.get('/welfare3',controller.welfare3);
+    app.get('/welfare4',controller.welfare4);
 }
 
