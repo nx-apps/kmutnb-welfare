@@ -63,12 +63,15 @@
         },
         toggle:function(e){
           
-          var pre = this.data.slice(0);
-          pre[e.model.index].list = {};
-          //console.log(pre);
-          this.data = [];
-          this.data = pre;
-          console.log(this.data);
+          // var pre = JSON.parse(JSON.stringify(this.data));
+          // pre[e.model.index].list = {};
+          // this.data = pre;
+          this.set(`data.${e.model.index}.list`,{})
+
+          //this.data[e.model.index].list = {};
+          //this.__data__.data = pre;
+
+          //console.log(this.__data__)
           
           if(this.s){
             this.set('list',[
@@ -95,12 +98,12 @@
         _checkData(ob,i){
           //console.log(ob)
           if(ob.path=="item.name"){
-            console.log(ob.value)
-            console.log(i)
+            // console.log(ob.value)
+            // console.log(i)
           }
         },
         _checkSelect(x){
-          console.log(x)
+          // console.log(x)
         }
       });
     </script>

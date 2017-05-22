@@ -59,7 +59,7 @@
                             <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-form-dropdown-menu disabled="{{isEnable}}" on-value-changed="clearSelect" index="{{index}}" style="margin-top: 15px">
+                            <gl-form-dropdown-menu disabled="{{isEnable}}" on-value-changed="clearSelect" style="margin-top: 15px">
                                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
                                     <template is="dom-repeat" items="{{item.itemField}}">
                                         <paper-item value="{{item}}">{{item.label}}</paper-item>
@@ -196,18 +196,27 @@
                 }
             },
             clearSelect:function(e){
+                // console.log(this.data);
                 if(this.isEnable == false && this.checkSplice !== true){
-                    var index = e.target.index;
-                    // this.checkSplice = false;
-                    if(this.data.condition[index].logic_show !== ''){
-                        this.set('data.condition.'+index+'.logic_show','');
-                    }
-                    this.set('data.condition.'+index+'.value_showDropdown','');
-                    this.set('data.condition.'+index+'.value_showInput','');
+                    // console.log(this.data.condition[e.model.index]);
+                    // var pre = JSON.parse(JSON.stringify(this.data.condition));
+                    // if(pre[e.model.index] !== undefined){
+                    //     // console.log(pre[e.model.index].field.conditions);
+                    //     pre[e.model.index]k.field.conditions = {};
+                    //     this.data.condition = pre;
+                    // }
+
+                    // var index = e.target.index;
+                    // // this.checkSplice = false;
+                    // if(this.data.condition[index].logic_show !== ''){
+                    //     this.set('data.condition.'+index+'.logic_show','');
+                    // }
+                    // this.set('data.condition.'+index+'.value_showDropdown','');
+                    // this.set('data.condition.'+index+'.value_showInput','');
                 }
             },
             setItemShow: function (data) {
-                // console.log('1234');
+                // console.log(data);
                 this.data.condition.map((item) => {
                     if (typeof item.field.data == 'string') {
                         item.value_showInput = item.value_show;
@@ -276,74 +285,75 @@
                 }
             },
             save: function () {
-                var check = this.validateForm('.form');
-                // console.log(check);
-                if(check == false) return '';
-                if(check == true){
-                    var newData = {
-                        group_id: this.date.id,
-                        // status: this.data.status,
-                        welfare_name: this.data.welfare_name,
-                        budget: this.unFormat(this.data.budget),
-                    }
-                    var conditon = this.data.condition.map((item)=>{
-                        if(item.value_showDropdown == ''){
-                            item.value_show = item.value_showInput;
-                        }
-                        else if(item.value_showInput == ''){
-                            item.value_show = item.value_showDropdown;
-                        }
-                        return item
-                    })
-                    var arr = [];
-                    var tz = "T00:00:00+07:00";
-                        for (var i = 0; i < this.data.condition.length; i++) {
-                            var data = conditon[i];
-                            var search = data.field.field.search('date')
-                            if (search != -1) {
-                                // console.log(data.logic_show);
-                                if (data.logic_show.search(">") >= 0) {
-                                    var d = this.date.cal_date.split("-");
-                                    data.value = new Date((parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz).toISOString();
-                                    data.logic = data.logic_show.replace(">", "<");
-                                } else if (data.logic_show.search("<") >= 0) {
-                                    var d = this.date.cal_date.split("-");
-                                    data.value = new Date((parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz).toISOString();
-                                    data.logic = data.logic_show.replace("<", ">");
-                                }
-                            }
-                            else{
-                                data.value = data.value_show;
-                                data.logic = data.logic_show;
-                            }
-                            arr.push(data);
-                        }
-                    var setCondition = arr.map((item)=>{
-                        let {field, logic, logic_show, value, value_show} = item;
-                        let newitem = { field, logic, logic_show, value, value_show }
-                        newitem.field = field.id;
-                        return newitem
-                    })
-                    newData.condition = setCondition;    
-                    // console.log(newData);           
-                    if (typeof this.data.id == 'undefined') {
-                        newData.status = true;
-                        //  console.log(newData);
-                        var year = new Date().getFullYear();
-                        this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
-                            this.fire('refresh_group',year);
-                            this.fire('back');
-                        })
-                    }
-                    else {
-                        newData.status = this.data.status
-                        newData.id=this.data.id;
-                        // console.log(newData);
-                        this.dispatchAction('WELFARE_EDIT', newData);
-                        this.isEnable = true;
-                        // this.fire('back');
-                    }
-                }
+                console.log(this.data);
+                // var check = this.validateForm('.form');
+                // // console.log(check);
+                // if(check == false) return '';
+                // if(check == true){
+                //     var newData = {
+                //         group_id: this.date.id,
+                //         // status: this.data.status,
+                //         welfare_name: this.data.welfare_name,
+                //         budget: this.unFormat(this.data.budget),
+                //     }
+                //     var conditon = this.data.condition.map((item)=>{
+                //         if(item.value_showDropdown == ''){
+                //             item.value_show = item.value_showInput;
+                //         }
+                //         else if(item.value_showInput == ''){
+                //             item.value_show = item.value_showDropdown;
+                //         }
+                //         return item
+                //     })
+                //     var arr = [];
+                //     var tz = "T00:00:00+07:00";
+                //         for (var i = 0; i < this.data.condition.length; i++) {
+                //             var data = conditon[i];
+                //             var search = data.field.field.search('date')
+                //             if (search != -1) {
+                //                 // console.log(data.logic_show);
+                //                 if (data.logic_show.search(">") >= 0) {
+                //                     var d = this.date.cal_date.split("-");
+                //                     data.value = new Date((parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz).toISOString();
+                //                     data.logic = data.logic_show.replace(">", "<");
+                //                 } else if (data.logic_show.search("<") >= 0) {
+                //                     var d = this.date.cal_date.split("-");
+                //                     data.value = new Date((parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz).toISOString();
+                //                     data.logic = data.logic_show.replace("<", ">");
+                //                 }
+                //             }
+                //             else{
+                //                 data.value = data.value_show;
+                //                 data.logic = data.logic_show;
+                //             }
+                //             arr.push(data);
+                //         }
+                //     var setCondition = arr.map((item)=>{
+                //         let {field, logic, logic_show, value, value_show} = item;
+                //         let newitem = { field, logic, logic_show, value, value_show }
+                //         newitem.field = field.id;
+                //         return newitem
+                //     })
+                //     newData.condition = setCondition;    
+                //     // console.log(newData);           
+                //     if (typeof this.data.id == 'undefined') {
+                //         newData.status = true;
+                //         //  console.log(newData);
+                //         var year = new Date().getFullYear();
+                //         this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
+                //             this.fire('refresh_group',year);
+                //             this.fire('back');
+                //         })
+                //     }
+                //     else {
+                //         newData.status = this.data.status
+                //         newData.id=this.data.id;
+                //         // console.log(newData);
+                //         this.dispatchAction('WELFARE_EDIT', newData);
+                //         this.isEnable = true;
+                //         // this.fire('back');
+                //     }
+                // }
             },
             _edit: function () {
                 this.isEnable = false;

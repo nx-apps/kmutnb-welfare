@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="import" href="./bower_components/polymer/polymer.html">
+    <link rel="import" href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+    <link rel="import" href="./bower_components/paper-listbox/paper-listbox.html">
+    <link rel="import" href="./bower_components/paper-item/paper-item.html">
+
+</head>
+<body>
+    <welfare-form></welfare-form>
+    <dom-module id="welfare-form">
+        <template>       
+            <template is="dom-repeat" items="{{data.condition}}">
+                <paper-dropdown-menu style="margin-top: 15px">
+                    <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
+                        <template is="dom-repeat" as="item2" items="[[_listChanged(item.field.*)]]">
+                        <paper-item value="{{item2}}">{{item2.label}}</paper-item>
+                        </template>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+                <hr>
+            </template>
+        </template>
+        <script>
+            Polymer({
+                is:'welfare-form',
+                observers:['_conditionChanged(condition)','_dataChanged(data.*)'],
+                ready:function(){
+                    this.initData();
+                },
+                initData:function(){
+                    this.condition = [{conditions:[{name:"ต้องเป็น",symbol:"=="},{name:"ไม่เป็น",symbol:"!="}],data:[{id:"8fe710f0-0111-491a-b085-53e885f82cf9",name:""},{id:"d6303a6b-71ef-4e4f-8fc3-d5ad589bce06",name:"ช่างเทคนิค"},{id:"a1673e88-24d6-4408-b960-8f7a0b96ea8a",name:"นักประชาสัมพันธ์"},{id:"eb9f76bf-322a-494b-95f7-ab6e90a191d3",name:"นักวิชาการคอมพิวเตอร์"},{id:"c6e3a738-0ea3-44a8-8846-e2a48fb8a8f2",name:"นักวิชาการพัสดุ"},{id:"5898e0a5-a62a-4393-8d97-49815ecba0e5",name:"นักวิชาการศึกษา"},{id:"b249626f-c5de-444c-8698-76ca04e6b3fb",name:"นักวิชาการเงินและบัญชี"},{id:"fb37a5d8-32e5-451e-b608-3262eda4ec8d",name:"นักวิเคราะห์นโยบายและแผน"},{id:"98718efd-7f49-4e5d-bb73-f14bc9ff0db5",name:"ผู้ปฏิบัติงานบริหาร"},{id:"40bd9f48-0e81-4462-9bb8-af22ff1473d3",name:"พนักงานขับรถยนต์"},{id:"66af1607-9c65-4d20-8988-8e9edebdcabf",name:"พนักงานบริการ"},{id:"117f0301-9561-473f-8c34-d9da591040c5",name:"เจ้าหน้าที่บริหารงานทั่วไป"}],data_source:"position",field:"position_id",id:"3de0b2cc-b5dd-4666-8461-f12f66cf3840",label:"ตำแหน่ง"},{conditions:[{name:"ต้องเป็น",symbol:"=="},{name:"ไม่เป็น",symbol:"!="}],data:[{id:"6c490289-758e-4037-adba-df6f8606a632",name:""},{id:"f8a4f332-9278-4231-a1d2-8eb989dd4c1c",name:"ข้าราชการ"},{id:"82b8be95-deb4-4148-ab15-39972a4c4308",name:"ที่ปรึกษา สนอ."},{id:"9a644cdc-e773-4c9a-ae1d-1990a0f10119",name:"ผู้เกษียณ"},{id:"f78a6a9a-f28d-43bb-bf45-0477107d3626",name:"ผู้เชี่ยวชาญชาวต่างประเทศ"},{id:"0f337658-685d-4991-bb26-0b424c6a8bfb",name:"พนักงานจ้างหลังเกษียณ"},{id:"7f9719fc-1b44-4451-a383-763adfb2f900",name:"พนักงานจ้างเหมา"},{id:"1224bacb-2806-41ad-8fae-152f3f14a505",name:"พนักงานพิเศษ"},{id:"47c340a9-ccf5-4b6e-9ecb-45e7cb244b31",name:"พนักงานมหาวิทยาลัย"},{id:"6ddc50e2-eaa6-4b41-aaf1-2528183d5993",name:"พนักงานราชการ"},{id:"78c5fa91-5216-4e32-b60e-327cb45d4d98",name:"พนักงานเปลี่ยนสภาพ"},{id:"41c32c29-1f86-423d-b81e-00dc62cf2505",name:"ลูกจ้างชั่วคราวชาวต่างประเทศ"},{id:"5bb436b2-dbfc-4445-a1e3-24042d5a8ecf",name:"ลูกจ้างชาวต่างชาติ"},{id:"189dd463-3f80-4ab4-876c-518b2ae089df",name:"ลูกจ้างประจำ"}],data_source:"type_employee",field:"type_employee_id",id:"ab2268b3-456e-4e04-ad01-b818f0e037fe",label:"ประเภทพนักงาน"},{conditions:[{name:"ต้องเป็น",symbol:"=="},{name:"ไม่เป็น",symbol:"!="}],data:[{id:"0ceca62d-bc56-4f24-94b0-9fabce644af1",name:"empty"},{id:"b061b0cd-ee46-4340-ba56-2f600a0168e8",name:"empty"},{id:"09a3371e-0a9f-4204-aff0-2ff584de8d19",name:"empty"},{id:"a9554598-d298-4994-9188-e0c021e6f0b1",name:"empty"},{id:"fd0563e0-1e67-4a70-9b81-e378b43c33ff",name:"empty"},{id:"43c56c91-129f-464f-ac8a-2d14abacc4cf",name:"empty"},{id:"62aa3634-3575-4c60-bfad-c3364ed0546c",name:"empty"},{id:"66a16c05-8cfa-452c-bcff-d2efe3a881c3",name:"empty"},{id:"7233ced0-a6bc-42e6-9cd5-b20fbbc7f25a",name:"empty"},{id:"e45297f7-8ec8-400c-8519-7da95b4692c3",name:"empty"},{id:"8ebfd5d2-b0a7-48e3-811e-6b31b2a7c3ac",name:"empty"},{id:"bd9bc0de-b058-47cc-a099-0f7e4fc1944f",name:"empty"},{id:"1db98c32-aa88-4f8d-969a-81c3c82f72f5",name:"empty"},{id:"e04db9f9-b56a-4a9e-9aa5-ad77c05fa498",name:"empty"},{id:"778e6cef-415d-41df-b41c-86fec25f3ccb",name:"กองกฎหมาย"},{id:"c8c8c1e7-9d8e-4600-b89a-8226078914c4",name:"กองกลาง"},{id:"8b9baa98-4f78-43fc-9a81-22725cbcfcd2",name:"กองกิจการนักศึกษา"},{id:"92a1cbbf-185e-4f4d-ae1c-351e77d0d79f",name:"กองคลัง "},{id:"e0fea177-0558-4d3b-b4fa-5e5f4e3f902f",name:"กองงาน ปราจีนบุรี"},{id:"c27ec9dd-42bf-4053-9ad0-094ed091d585",name:"กองงานพัสดุ"},{id:"307bd36d-b4c9-4091-8257-416f9d8c6558",name:"กองบริการการศึกษา"},{id:"6b6c70c0-f279-4600-84c4-bc84d83b579f",name:"กองบริหารและจัดการทรัพยากรมนุษย์"},{id:"193f62d4-37e9-47e7-bb33-a83e21f4ba82",name:"กองส่งเสริมวิชาการ"},{id:"e5ef7604-3c3f-45ce-932b-3708c56b56f2",name:"กองอาคารสถานที่และยานพาหนะ"},{id:"c397fbe7-67b0-4c54-97af-3243b620171f",name:"กองแผนงาน"},{id:"19ff90ad-5ed4-4677-9c3c-e5b8d1dc7e68",name:"ผู้บริหารสำนักงานอธิการบดี"},{id:"e6bd8656-9981-47f1-9ef8-87b5ac142953",name:"ภาคการจัดการ ฯ"},{id:"30577afd-1f12-4c4a-8c0d-8a4873ba1a8f",name:"ภาควิชาการจัดการอุตสาหกรรม"},{id:"e4a7fd03-c421-49a4-82fc-2242e5278f91",name:"ภาควิชาการจัดการเทคโนโลยีการผลิตและสารสนเทศ"},{id:"31ad68e3-8265-4067-b4b5-c840daf8ec88",name:"ภาควิชาการออกแบบและบริหารงานก่อสร้าง"},{id:"ceb36ba1-99fc-44dd-9e66-3b93134d326d",name:"ภาควิชาครุศาสตร์เครื่องกล"},{id:"80972236-f041-432d-a84b-b4676e671f37",name:"ภาควิชาครุศาสตร์เทคโนโลยี"},{id:"39ec95a7-33a7-40ac-babd-75e6d97bed32",name:"ภาควิชาครุศาสตร์โยธา"},{id:"f5925496-f448-413d-933b-06aeaa870ea5",name:"ภาควิชาครุศาสตร์ไฟฟ้า"},{id:"07ca029b-f82e-4c48-b7ab-c0f2efe78a14",name:"ภาควิชาคอมพิวเตอร์ศึกษา"},{id:"6e3ad13b-0301-470c-8d7d-a5045593b930",name:"ภาควิชาบริหารธุรกิจอุตสาหกรรมและการค้า"},{id:"608376a1-3115-4353-865e-b4b8b2e74b48",name:"ภาควิชาบริหารเทคนิคศึกษา"},{id:"06610e9c-6194-40d1-a6f9-85b38c890151",name:"ภาควิชาวิศกรรมเกษตรเพื่ออุตสาหกรรม"},{id:"ef220688-bc4b-48c8-8e80-e8323c829b1b",name:"ภาควิชาอุตสาหกรรมท่องเที่ยวและโรงแรม"},{id:"2c04f37e-014d-4d71-8445-eb982730e004",name:"ภาควิชาเทคโนโลยีวิศวกรรมการเชื่อม"},{id:"eeafc243-5d4c-4abc-b893-0c48528b0985",name:"ภาควิชาเทคโนโลยีวิศวกรรมอิเล็กทรอนิกส์"},{id:"ec988de7-4c4b-457c-b00c-fedf15f35674",name:"ภาควิชาเทคโนโลยีวิศวกรรมอุตสาหการ"},{id:"83423f17-e04c-458a-b7d9-33f1f94646e7",name:"ภาควิชาเทคโนโลยีวิศวกรรมเครื่องกล"},{id:"bd42f81e-9417-4b56-9ca5-10e520a5e953",name:"ภาควิชาเทคโนโลยีวิศวกรรมเครื่องต้นกำลัง"},{id:"6bc10537-d84a-4df4-9ff8-14fd76edbd5e",name:"ภาควิชาเทคโนโลยีวิศวกรรมโยธาและสิ่งแวดล้อม"},{id:"36dbd6c8-009f-4618-8cd3-6a14a3d19126",name:"ภาควิชาเทคโนโลยีวิศวกรรมไฟฟ้า"},{id:"33ed3603-e0ea-4beb-ae90-f7168a571bf9",name:"ภาควิชาเทคโนโลยีสารสนเทศ"},{id:"722515d7-d282-4295-9951-7c833fc5e544",name:"ภาควิทยาศาสตร์ประยุกต์และสังคม"},{id:"89f1deeb-60d6-43e8-9073-f00b8a6c55e3",name:"ภาคสถาปัต ฯ"},{id:"4f846c0d-cf02-4d18-b25a-a607720f9bce",name:"ภาคเทคโน ฯ"},{id:"b1af2e84-26f5-4039-b1ea-672f1393c88d",name:"วิทยาลัยนานาชาติ"},{id:"4dcef240-2d32-4246-9987-a7890cc6a191",name:"ศูนย์ความร่วมมือนานาชาติ"},{id:"53c73875-5312-43d1-bd60-63150b385bc7",name:"ศูนย์ที่พักเพื่อการเรียนรู้และสันทนาการ (หอพักนักศึกษา)"},{id:"8e2ee3e4-576a-498e-8767-8b306591bc13",name:"ศูนย์บูรณาการวิชาชีพคณะครุศาสตร์อุตสาหกรรม"},{id:"c4eb6063-1e64-40a9-b157-6ff4dbf7c28f",name:"ศูนย์ประกันคุณภาพการศึกษา"},{id:"68a613e6-0309-4be1-bf48-b8d297036412",name:"ศูนย์ผลิตตำราเรียน"},{id:"72e07a57-3526-4102-8d64-4a6c88efaa5a",name:"ศูนย์ฝึกงานผลิตอุตสาหกรรม"},{id:"4bc5dc95-195c-4c0a-a4f6-3bf82ab66448",name:"ศูนย์ส่งเสริมสวัสดิการและสิ่งจูงใจ"},{id:"d456c3a0-33f1-4322-a029-6662b2eeb608",name:"สถาบันสหกิจศึกษาและพัฒนาสื่ออิเล็กทรอนิกส์ไทย-เยอรมัน"},{id:"5ed6e469-4f80-4d2e-9155-754c5c76d262",name:"สหกรณ์ออมทรัพย์พระจอมเกล้าพระนครเหนือ"},{id:"314b7b9d-9187-4c6b-acc7-fb620685ac6d",name:"สำนักงานคณบดี"},{id:"0cee1c0c-a982-4e0b-9dbf-152f0945ca55",name:"สำนักงานคณบดี"},{id:"ea04677d-faba-4def-9973-6c8b5b043f85",name:"สำนักงานคณบดี"},{id:"7461173b-72bb-4ce1-bcca-00ec962834c1",name:"สำนักงานคณบดี"},{id:"aa465bea-7428-47c8-aaec-79f2ab4548c3",name:"สำนักงานคณบดี"},{id:"1dbecf8a-12e3-45e6-a09b-0d83ff42ddad",name:"สำนักงานสภามหาวิทยาลัย"},{id:"a5d68313-957f-4ff0-b01d-46f0830634b8",name:"สำนักพัฒนาเทคนิคศึกษา"},{id:"24f7c095-940c-4fe9-946a-e6044e943839",name:"สำนักพัฒนาเทคโนโลยีเพื่ออุตสาหกรรม"},{id:"5e99872b-74c4-42a0-ac5d-475b7d7e0186",name:"สำนักวิจัยวิทยาศาสตร์และเทคโนโลยี"},{id:"21b59e44-ef7e-4e66-8826-38ffeafda634",name:"สำนักหอสมุดกลาง"},{id:"1f6fdd00-86a8-43d9-a33d-16abc88560f2",name:"หน่วยตรวจสอบภายใน"},{id:"0bb3e45b-cb82-4130-863c-63f96ebb20dc",name:"โรงเรียนเตรียมวิศวกรรมศาสตร์ ไทย-เยอรมัน"},{id:"10dacb3c-1772-4447-9c34-c5ce44748e87",name:"ไอเอสเต้ไทยแลนต์"}],data_source:"department",field:"department_id",id:"41636227-6a09-439c-bc5a-5c5ab0e8990e",label:"ภาควิชา/กอง"},{conditions:[{name:"น้อยกว่า",symbol:"<"},{name:"น้อยกว่าเท่ากับ",symbol:"<="}],data:"",data_source:"",field:"start_work_date",id:"b84c51b1-6609-469b-9515-69bb624fae84",label:"อายุ (น้อยกว่า)"},{conditions:[{name:"มากกว่า",symbol:">"},{name:"มากกว่าเท่ากับ",symbol:">="}],data:"",data_source:"",field:"birthdate",id:"7779e89e-0fc2-4749-8d42-7af76a1cda01",label:"อายุ (มากกว่า)"},{conditions:[{name:"น้อยกว่า",symbol:"<"},{name:"น้อยกว่าเท่ากับ",symbol:"<="}],data:"",data_source:"",field:"start_work_date",id:"befeeddf-70e9-447d-9db8-790ef8c8a8bc",label:"อายุงาน (น้อยกว่า)"},{conditions:[{name:"มากกว่า",symbol:">"},{name:"มากกว่าเท่ากับ",symbol:">="}],data:"",data_source:"",field:"start_work_date",id:"32f7da0b-2d24-4642-96ec-22e9d24d91f0",label:"อายุงาน (มากกว่า)"},{conditions:[{name:"ต้องเป็น",symbol:"=="},{name:"ไม่เป็น",symbol:"!="}],data:[{id:"e3f4de5d-6612-49b1-9674-1ad1a0500941",name:""},{id:"675f1256-e70f-4f30-8619-a5973b4d230e",name:"ชาย"},{id:"c16d1fba-6d2d-4300-8dc6-2b1582e230cd",name:"หญิง"}],data_source:"gender",field:"gender_id",id:"6e7f3e53-c6d9-4a1c-9b33-c33577b9c450",label:"เพศ"}];
+                    var predata = {budget:100,condition:[{field:"32f7da0b-2d24-4642-96ec-22e9d24d91f0",logic:"<",logic_show:">",value:"2007-05-09T17:00:00.000Z",value_show:"10"},{field:"befeeddf-70e9-447d-9db8-790ef8c8a8bc",logic:">=",logic_show:"<=",value:"1997-05-09T17:00:00.000Z",value_show:"20"}],group_id:"5fe655dd-566b-4145-99ed-2003d4b788d0",id:"3d58c3fb-8615-4e37-8878-b9ffe32b8165",status:true,welfare_name:"test"};
+                    predata.condition = predata.condition.map(row=>{
+                        var conditionSelect = this.condition.filter(row2=>{
+                            return row2.id == row.field
+                        })[0];
+                        conditionSelect.value_show = row.value_show;
+                        conditionSelect.logic = row.logic;
+                        conditionSelect.logic_show = row.logic_show;
+                        conditionSelect.value = row.value;
+
+                        row.field = conditionSelect;
+                        return row;
+                    })
+
+                    this.data = predata;
+                    
+                },
+                _conditionChanged:function(ob){
+                    //console.log(ob)
+                },
+                _dataChanged:function(ob){
+                    console.log('-',ob)
+                },
+                _listChanged:function(ob){
+                    var conditionSelected = this.data.condition.map(row=>{
+                        return row.field.id
+                    })
+
+                    var conditionBalance = this.condition.filter(row=>{
+                        var con = true;
+                        conditionSelected.map(id=>{
+                            if(id==row.id && ob.base.id!=id)
+                            con = false
+                        })
+                        return con
+                    })
+                    
+                    return conditionBalance;
+                },
+                _xx:function(ob){
+                    //console.log('>>>',ob);
+                }
+            })
+        </script>
+    </dom-module>
+</body>
+</html>

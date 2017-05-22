@@ -1,0 +1,33 @@
+<link rel="import" href="./bower_components/polymer/polymer.html">
+<link rel="import" href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="./bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="./bower_components/paper-item/paper-item.html">
+
+<dom-module id="welfare-form-condition-item">
+    <template>       
+        <paper-dropdown-menu style="margin-top: 15px">
+            {{_listChanged(item.field.*,index)}}
+            <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
+                <template is="dom-repeat" as="item2" items="{{itemField}}">
+                    <paper-item value="{{item2}}">{{item2.label}}</paper-item>
+                </template>
+            </paper-listbox>
+        </paper-dropdown-menu>
+        <button on-tap="_listChanged">c</button>
+        <hr>
+        
+    </template>
+    <script>
+        Polymer({
+            is:'welfare-form-condition-item',
+            properties:{
+                itemField:{value:[]}
+            },
+            _listChanged:function(ob,index){
+                this.async(()=>{
+                    this.fire('itemFieldEvent');
+                })
+            }
+        })
+    </script>
+</dom-module>
