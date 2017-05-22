@@ -259,7 +259,7 @@ exports.welfaresYear = function (req, res) {
             return {
                 history_welfare: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
                     .filter({ status: true })
-                    .orderBy(r.desc('date_approve'))
+                    
                     .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'onetime'] }).zip()
                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
                     .merge((mer_oneTime) => {
@@ -280,6 +280,7 @@ exports.welfaresYear = function (req, res) {
                     })
                     .pluck('budget_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status','file')
                     .coerceTo('array')
+                    .orderBy(r.desc('date_approve'))
             }
         })
         .merge((mer_oneTime) => {

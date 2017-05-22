@@ -237,7 +237,7 @@ exports.listHistory = function (req, res) {
     // })
     r.db('welfare').table('history_welfare')
         .getAll(true, { index: 'status' })
-        .orderBy(r.desc('date_approve')).coerceTo('Array')
+        .coerceTo('Array')
         .merge((mer_oneTime) => {
             return {
                 date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0)
@@ -250,7 +250,7 @@ exports.listHistory = function (req, res) {
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix'))
         .pluck('left', { right: ['prefix_name'] }).zip()
         // .filter({ year: req.query.year , group_id:req.query.group_id, status:req.query.status})
-
+.orderBy(r.desc('date_approve'))
         .run()
         .then(function (result) {
             res.json(result);

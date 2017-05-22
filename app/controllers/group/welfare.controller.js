@@ -314,8 +314,66 @@ exports.adminEmployee = function (req, res) {
         )
     };
     var r = req.r;
-    r.expr({ employees: r.db('welfare').table('employee').coerceTo('array') })
-    r.db('welfare').table('group_welfare').get(req.params.welId)
+    r.expr({
+        employees: r.db('welfare').table('employee')
+            .eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: 'active_code' }).zip()
+            .filter({ active_code: 'WORK' }).coerceTo('array')
+        //                 .without({ right: 'id' }).zip().filter({ active_code: 'WORK' }),
+        // academic: r.db('welfare_common').table('academic').coerceTo('Array'),
+        // active: r.db('welfare_common').table('active').coerceTo('Array'),
+        // department: r.db('welfare_common').table('department').coerceTo('Array'),
+        // faculty: r.db('welfare_common').table('faculty').coerceTo('Array'),
+        // gender: r.db('welfare_common').table('gender').coerceTo('Array'),
+        // matier: r.db('welfare_common').table('matier').coerceTo('Array'),
+        // position: r.db('welfare_common').table('position').coerceTo('Array'),
+        // prefix: r.db('welfare_common').table('prefix').coerceTo('Array'),
+        // type_employee: r.db('welfare_common').table('type_employee').coerceTo('Array'),
+    })
+        .merge((group_merge) => {
+            return {
+                welfare: r.db('welfare').table('welfare').getAll(req.params.groupId, { index: 'group_id' })
+                    .merge(function (wel_merge) {
+                        return {
+                            countCon: wel_merge('condition').count(),
+                            employee: r.branch(wel_merge('condition').count().eq(0),
+                                [group_merge('employees').pluck("id")],
+                                wel_merge('condition').map(function (con_map) {
+                                    return group_merge('employees').filter(function (f) {
+                                        return checkLogic(con_map, f)
+                                    }).coerceTo('array').pluck('id')
+                                })
+                            )
+                        }
+                    }).coerceTo('array')
+                    .merge(function (wel_merge) {
+                        return {
+                            employee: wel_merge('employee').reduce(function (l, r) {
+                                return l.add(r)
+                            })
+                                .group('id').count().ungroup()
+                                .filter(function (emp_filter) {
+                                    return r.branch(wel_merge('countCon').eq(0),
+                                        emp_filter('reduction').eq(wel_merge('countCon').add(1)),
+                                        emp_filter('reduction').eq(wel_merge('countCon'))
+                                    )
+                                })//.getField('group')
+                        }
+                    })
+            }
+        })
+        // .without('employees')
+        .getField('welfare')('employee')
+        .reduce(function (l, r) {
+            return l.add(r)
+        })
+        .group('group').ungroup().without('reduction')
+        .eqJoin('group', r.db('welfare').table('employee')).without({ left: "group" }, { right: ['dob', 'active_id', 'birthdate', 'gender_id', 'gender_id', 'position_id', 'start_work_date', 'type_employee_id'] }).zip()
+        .eqJoin('academic_id', r.db('welfare_common').table('academic')).pluck('left', { right: 'academic_name' }).zip()
+        .eqJoin('department_id', r.db('welfare_common').table('department')).pluck('left', { right: 'department_name' }).zip()
+        .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck('left', { right: 'faculty_name' }).zip()
+        .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck('left', { right: 'prefix_name' }).zip()
+        .without('academic_id', 'department_id', 'faculty_id', 'prefix_id')
+        // r.db('welfare').table('group_welfare').get(req.params.welId)
         // r.db('welfare').table('group_welfare').get(req.params.welId)
         //     .merge(function (m) {
         //         return {
