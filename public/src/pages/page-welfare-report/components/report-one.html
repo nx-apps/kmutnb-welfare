@@ -31,7 +31,7 @@
 
             <div class="flex">
                 <gl-combo-box label="สวัสดิการ" placeholder="เลือกสวัสดิการ {{list_welfare.length}}" items="{{list_welfare}}" item-label-path="group_welfare_name" item-value-path="id"
-                    value="{{data.group_welfare_name}}">
+                    value="{{data.group_id}}">
                     <template>
                         [[item.group_welfare_name]]
                     </template>
@@ -42,7 +42,7 @@
         <div class="layout horizontal start-justified">
             <div class="flex" style=" margin-right: 30px">
                 <gl-combo-box label="คณะ" placeholder="คณะ {{list_faculty.length}}" items="{{list_faculty}}" item-label-path="faculty_name" item-value-path="id"
-                    value="{{data.faculty_name}}">
+                    value="{{data.faculty_id}}">
                     <template>
                         [[item.faculty_name]]
                     </template>
@@ -58,7 +58,7 @@
             </div>
             <div class="flex">
                 <gl-combo-box label="ประเภทบุคคล" placeholder="ประเภทบุคคล {{list_type_employee.length}}" items="{{list_type_employee}}" item-label-path="type_employee_name" item-value-path="id"
-                    value="{{data.type_employee_name}}">
+                    value="{{data.type_employee_id}}">
                     <template>
                         [[item.type_employee_name]]
                     </template>
@@ -115,9 +115,6 @@
                     value: {}
                 }
             },
-            // observes:[
-            //     'getGroupWelfare(data.year)'
-            // ],
             setYear:function(year){
                 // console.log(year);
                 try {
@@ -133,7 +130,7 @@
                
             },
             print:function() {
-                console.log(this.data);
+                // console.log(this.data);
                 console.log(this.genUrl(this.data));
             }
         });
