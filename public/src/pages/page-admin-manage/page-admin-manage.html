@@ -308,8 +308,9 @@
                 // console.log(e.model.item.budget_balance);
                 // console.log(data);
                 this.dataDialog = data;
+                console.log(this.dataDialog);
                 // console.log(data);
-                this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', data);
+                this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', this.dataDialog);
             },
             getwelfare() {
                 this.usewelfareProp.document_ids = this.$$('admin-dialog-use-welfare').keepFile()
