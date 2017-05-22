@@ -140,6 +140,7 @@
                                     <th style="width: 10%">ลำดับ</th>
                                     <th style="width: 25%">สวัสดิการที่ใช้</th>
                                     <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
+                                    <th style="width: 10%">วันที่ขอ</th>
                                     <th style="width: 10%">วันอนุมัติ</th>
                                     <th style="width: 10%">สถานะ</th>
                                     <th style="width: 25%">ไฟล์</th>
@@ -152,6 +153,9 @@
                                         <td>[[_Obindex(index)]]</td>
                                         <td style="text-align: left;">[[item.description]] </td>
                                         <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
+                                        <td>
+                                             [[toThaiDate(item.date_use)]]
+                                        </td>
                                         <td>
                                             <div style="text-align: center">
                                                 <template is="dom-if" if={{!item.date_approve}}>
@@ -219,7 +223,7 @@
             observers: ['checkData(seleterYear,id)'],
             properties: {
                 data: {
-                    statePath: 'userWelfare.welfare_employee'
+                    statePath: 'userWelfare.welfare_employee',
                 },
                 year: {
                     statePath: 'userWelfare.list',
@@ -240,6 +244,27 @@
             nylonPageActive: function () {
                 this.id = window.location.pathname.split('/')[2];
                 this.WELFARE_LIST_YEAR();
+            },
+            setDate(data){
+                console.log(data);
+                console.log(this.changeTime(data,+7));
+            },
+            changeTime:function(data,timeZone) {
+                let time
+                data.map((item,index) => {
+                    for (var prop in item) {
+                        if (prop.indexOf('date') >= 0 && prop !== 'updater') {
+                            time = new Date(item[prop])
+                            // console.log(data[index][prop]);
+                            data[index][prop] = new Date(time.setHours(time.getHours() + timeZone)).toISOString()
+                            // console.log(new Date(data[index][prop]).toISOString());
+                        }
+                        // console.log(typeof item[prop] === 'object');
+                        if (typeof item[prop] === 'object')
+                            this.changeTime(item[prop],timeZone)
+                    }
+                })
+                return data
             },
             checkData(year, id) {
                 if (year != '') {
@@ -315,7 +340,6 @@
             getwelfare() {
                 this.usewelfareProp.document_ids = this.$$('admin-dialog-use-welfare').keepFile()
                 let newData = this.usewelfareProp
-                // newData.budget_use  =newData.use_budget
                 newData.budget_use = Number(newData.budget_use)
                 newData.budget_balance = newData.budget_cover - newData.budget_use
                 newData.date_approve = newData.date_approve+'T00:00:00+07:00'
