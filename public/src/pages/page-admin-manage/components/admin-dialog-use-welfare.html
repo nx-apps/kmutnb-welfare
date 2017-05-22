@@ -24,7 +24,7 @@
                 <label for="emp_id">ใช้จำนวน :</label>
             </div>
             <div class="flex-2">
-                [[changeString2Num(data.*,'use_budget')]]
+                [[changeString2Num(data.*,'budget_use')]]
                 [[checkBudget(data.*)]]
                  <gl-form-input id="use_budget" no-label-float allowed-pattern="[0-9||,||.]" format-number="on" value="{{data.budget_use}}"  disabled="[[disabled]]" class="required" required><div suffix>บาท</div></gl-form-input>
             </div> 

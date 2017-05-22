@@ -1,6 +1,8 @@
-<link rel="import" href="./welfare/user-list-unapprove.html">
+<!--<link rel="import" href="./welfare/user-list-unapprove.html">
 
-<link rel="import" href="./welfare/welfare-approve.html">
+<link rel="import" href="./welfare/welfare-approve.html">-->
+
+<link rel="import" href="./welfare/history-of-use-welfare.html">
 
 <dom-module id="list-of-welfare">
     <template>
@@ -63,22 +65,21 @@
                 display: block;
             }
             
-            user-list-unapprove,
-            welfare-approve {
+            history-of-use-welfare {
                 margin-top: 15px;
                 width: 98%;
             }
         </style>
-        <main>
+        <!--<main>
             <input id="tab1" type="radio" name="tabs" checked>
             <label for="tab1">สวัสดิการ</label>
 
             <input id="tab2" type="radio" name="tabs">
-                <label for="tab2">สวัสดิการที่อนุมัติไปแล้ว</label>
+            <label for="tab2">สวัสดิการที่อนุมัติไปแล้ว</label>
+
             <section id="content1">
                 <paper-material elevation="1">
                     <div class="list horizontal center-justified layout">
-                         <!--<welfare-approve></welfare-approve>-->
                         <user-list-unapprove></user-list-unapprove>
                     </div>
                 </paper-material>
@@ -88,6 +89,18 @@
                 <paper-material elevation="1">
                     <div class="list horizontal center-justified layout">
                         <welfare-approve></welfare-approve>
+                    </div>
+                </paper-material>
+            </section>
+        </main>-->
+        <main>
+            <input id="tab1" type="radio" name="tabs" checked>
+            <label for="tab1">ประวัติการใช้สวัสดิการ</label>
+
+            <section id="content1">
+                <paper-material elevation="1">
+                    <div class="list horizontal center-justified layout">
+                        <history-of-use-welfare></history-of-use-welfare>
                     </div>
                 </paper-material>
             </section>

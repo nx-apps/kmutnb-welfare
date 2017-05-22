@@ -115,7 +115,7 @@
                                         <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                         <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
                                         <td>
-                                            <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]">ขอใช้</paper-button>
+                                            <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" disabled="[[checkWelfareFull(item)]]">ขอใช้</paper-button>
                                         </td>
                                     </tr>
                                 </template>
@@ -158,7 +158,6 @@
                                                     รอการอนุมัติ
                                                 </template>
                                                 <template is="dom-if" if={{item.date_approve}}>
-                                                    <!--<vaadin-date-picker always-float-label  disabled value="{{item.date_approve}}"></vaadin-date-picker>-->
                                                     [[toThaiDate(item.date_approve)]]
                                                 </template>
                                             </div>
@@ -263,6 +262,10 @@
             _btnReject(status){
                 return status == 'request'
             },
+            checkWelfareFull(data){
+                if(data.budget_balance <= 0)
+                    return true
+            },
             btnCancel(e){
                 // console.log(e.currentTarget.data);
                 let newData = [{id:e.currentTarget.data.history_welfare_id}]
@@ -295,12 +298,14 @@
                 data.welfare_id = e.model.item.welfare_id
                 data.budget = e.model.item.budget
                 data.budget_cover = e.model.item.budget_balance
+                data.budget_use = e.model.item.budget_balance
                 data.status = true
                 data.onetime = e.model.item.onetime
                 // data.year = new Date().getFullYear()
                 data.group_id = e.model.item.group_id
                 this.set('disabled', e.model.item.onetime)
                 this.$$('#welfare_budget').open()
+                // console.log(e.model.item.budget_balance);
                 // console.log(data);
                 this.dataDialog = data;
                 // console.log(data);
