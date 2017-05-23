@@ -233,10 +233,10 @@ exports.listHistory = function (req, res) {
         );
     }
     let time = new Date()
-    
+
     // console.log('>>>>>>>>oldday>>>>>',today.setMonth(today.getMonth() + 1));
-    req.query.date_start = req.query.date_start || new Date(time.setHours(time.getHours() - 168)).toISOString().split('T')[0]
-    req.query.date_end = req.query.date_end || time.toISOString().split('T')[0]
+    // req.query.date_start = req.query.date_start || new Date(time.setHours(time.getHours() - 168)).toISOString().split('T')[0]
+    // req.query.date_end = req.query.date_end || time.toISOString().split('T')[0]
     // console.log('>>>>>>>>>>',req.query.date_start,req.query.date_end );
     var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
     var date_end = req.query.date_end + "T00:00:00+07:00";
@@ -282,6 +282,17 @@ exports.listHistory = function (req, res) {
             faculty_id: req.query.faculty_id, department_id: req.query.department_id,
             type_employee_id: req.query.type_employee_id
         })
+        .merge((files) => {
+            return {
+                file: files('document_ids').map((doc_id) => {
+                    return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
+                        .without('contents')
+                })
+            }
+        })
+        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck('left', { right: ['type_employee_name'] }).zip()
+        .eqJoin('department_id', r.db('welfare_common').table('department')).pluck('left', { right: ['department_name'] }).zip()
+        .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck('left', { right: ['faculty_name'] }).zip()
         .orderBy(r.desc('date_approve'))
         .run()
         .then(function (result) {

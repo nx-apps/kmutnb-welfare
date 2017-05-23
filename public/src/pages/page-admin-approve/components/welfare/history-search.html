@@ -116,14 +116,18 @@
             setYear: function (year) {
                 // console.log(year);
                 try {
-                    let time = new Date()
-                    let today = new Date()
-                    this.set('data.year', year[0].year)
-                    this.set('data.date_start', new Date(time.setHours(time.getHours() - 168)).toISOString().split('T')[0])
-                    this.set('data.date_end', today.toISOString().split('T')[0])
-                    this.dispatchAction('USERS_LIST_HISTORY_WELFARE',this.genUrl(this.data))
+                    if (year !== '') {
+                        let time = new Date()
+                        let today = new Date()
+                        this.set('data.year', year[0].year)
+                        this.set('data.date_start', new Date(time.setHours(time.getHours() - 168)).toISOString().split('T')[0])
+                        this.set('data.date_end', today.toISOString().split('T')[0])
+                        this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.data))
+                        // console.log(1111); console.log(2222);
+                    }
+
                     // req.query.date_start || 
-    // req.query.date_end = req.query.date_end || time.toISOString().split('T')[0]
+                    // req.query.date_end = req.query.date_end || time.toISOString().split('T')[0]
                 } catch (error) {
 
                 }
@@ -133,11 +137,11 @@
                 //    console.log(this.data);
                 this.dispatchAction('WELFARE_LIST', this.data.year - 543);
             },
-            getdepartment: function(facultyId) {
+            getdepartment: function (facultyId) {
                 try {
-                    this.set('data.department_id','')
+                    this.set('data.department_id', '')
                     let newDepartment = this.list_faculty.find((fid) => fid.id === facultyId)
-                    this.set('list_department',newDepartment.department)
+                    this.set('list_department', newDepartment.department)
                     // console.log(newDepartment.department);
                     //  this.dispatchAction('USERS_LIST_HISTORY_WELFARE',this.genUrl(this.data))
                     // console.log(udF);
@@ -152,7 +156,7 @@
             },
             search: function () {
                 // console.log(this.genUrl(this.data));
-                this.dispatchAction('USERS_LIST_HISTORY_WELFARE',this.genUrl(this.data))
+                this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.data))
             }
         });
     </script>
