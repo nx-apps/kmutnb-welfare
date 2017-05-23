@@ -52,6 +52,7 @@
     "paper-tags": "paper-material-tags#^1.1.0",
     "vaadin-combo-box": "^1.1.4",
     "chart-elements": "^3.1.3",
-    "vaadin-grid": "^2.0.2"
+    "vaadin-grid": "^2.0.2",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0"
   }
 }

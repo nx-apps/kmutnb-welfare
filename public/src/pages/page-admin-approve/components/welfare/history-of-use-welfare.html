@@ -2,6 +2,12 @@
 <link rel="import" href="./../../../components/format-number-behavior.html">
 <link rel="import" href="./../../../components/page-style.html">
 
+<link rel="import" href="./../../../components/common-logic.html">
+
+<link rel="import" href="./../../../components/month-behavior.html">
+
+
+
 <dom-module id="history-of-use-welfare">
     <template>
         <style include="page-style ">
@@ -13,7 +19,7 @@
                     <div class="text-center">ลำดับ</div>
                 </template>
                 <template>
-                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[index]]</div>
+                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[_Obindex(index)]]</div>
                 </template>
                 <template class="footer">
                     <div class="text-center">ลำดับ</div>
@@ -62,7 +68,7 @@
                     <div class="text-center">จำนวนเงินที่ใช้งาน</div>
                 </template>
                 <template>
-                    <div class="text-center" >[[formatNumber(item.budget_use)]]</div>
+                    <div class="text-right" >[[formatNumber(item.budget_use)]]</div>
                 </template>
                 <template class="footer">
                     <div class="text-center">จำนวนเงินที่ใช้งาน</div>
@@ -73,7 +79,7 @@
                     <div class="text-center">จำนวนเงินคงเหลือ</div>
                 </template>
                 <template>
-                    <div class="text-center">[[formatNumber(item.budget_balance)]]</div>
+                    <div class="text-right">[[formatNumber(item.budget_balance)]]</div>
                 </template>
                 <template class="footer">
                     <div class="text-center">จำนวนเงินคงเหลือ</div>
@@ -81,22 +87,22 @@
             </vaadin-grid-column>
             <vaadin-grid-column width="200px" flex-grow="0">
                 <template class="header ">
-                    <div class="text-center">วันที่ขอ</div>
+                    <div class="text-center">วันอนุมัติ</div>
                 </template>
                 <template>
-                    <div class="text-center">[[item.date_approve]]</div>
+                    <div class="text-center">[[toThaiDate(item.date_approve)]]</div>
                 </template>
                 <template class="footer">
-                    <div class="text-center">วันที่ขอ</div>
+                    <div class="text-center">วันอนุมัติ</div>
                 </template>
             </vaadin-grid-column>
         </vaadin-grid>
-        * เรียงตามวันที่ขอล่าสุด
+        * เรียงตามวันอนุมัติ
     </template>
     <script>
         Polymer({
             is: 'history-of-use-welfare',
-            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior,commonLogic,MonthBehavior],
             properties: {
                 list: {
                     statePath: 'users.lisyUserhistoryWelfare',
