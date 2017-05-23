@@ -242,16 +242,21 @@ exports.welfaresYear = function (req, res) {
                         }
                     })
                     // เช็คคงเหลือ
+                    // .merge((check_budget) => {
+                    //     return {
+                    //         budget_balance: check_budget('budget_for_use').count().eq(0).branch(
+                    //             check_budget('budget')
+                    //             ,
+                    //             check_budget('budget_for_use')(0).getField('budget_balance'))//check_budget('budget').sub(check_budget('budget_use'))
+                    //     }
+                    // })
                     .merge((check_budget) => {
                         return {
-                            budget_balance: check_budget('budget_for_use').count().eq(0).branch(
-                                check_budget('budget')
-                                ,
-                                check_budget('budget_for_use')(0).getField('budget_balance'))//check_budget('budget').sub(check_budget('budget_use'))
+                            budget_balance: check_budget('budget').sub(check_budget('budget_use'))
                         }
                     })
 
-                    // .without('welfare_conditions', 'id','budget_for_use')
+                    .without('welfare_conditions', 'id','budget_for_use')
                     .coerceTo('array')
             }
         })
