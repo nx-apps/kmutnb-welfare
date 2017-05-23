@@ -1,0 +1,159 @@
+<!--<link rel="import" href="../../../components/page-style.html">-->
+<!--<link rel="import" href="../../../components/month-behavior.html"-->
+<dom-module id="history-search">
+    <template>
+        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+             :host {
+                display: block;
+            }
+
+            gl-form-dropdown-menu,
+            vaadin-date-picker,
+            gl-form-input,
+            gl-combo-box {
+                width: 100%;
+                text-align: left;
+            }
+
+            vaadin-date-picker {
+                margin-top: 0.5px;
+            }
+        </style>
+        <div class="layout horizontal start-justified">
+            <div class="flex" style=" margin-right: 30px">{{getGroupWelfare(data.year)}}
+                <gl-combo-box label="ปีสวัสดิการ" placeholder="มีทั้งหมด {{list_year.length}} ปี" items="{{list_year}}" item-label-path="year"
+                    item-value-path="year" value="{{data.year}}">
+                    <template>
+                        [[item.year]]
+                    </template>
+                </gl-combo-box>
+            </div>
+
+            <div class="flex-2" style=" margin-right: 30px">
+                <gl-combo-box label="สวัสดิการ" placeholder="เลือกสวัสดิการ {{list_welfare.length}}" items="{{list_welfare}}" item-label-path="group_welfare_name"
+                    item-value-path="id" value="{{data.group_id}}">
+                    <template>
+                        [[item.group_welfare_name]]
+                    </template>
+                </gl-combo-box>
+            </div>
+            <div class="flex">
+                <gl-combo-box label="ประเภทบุคคล" placeholder="ประเภทบุคคล {{list_type_employee.length}}" items="{{list_type_employee}}"
+                    item-label-path="type_employee_name" item-value-path="id" value="{{data.type_employee_id}}">
+                    <template>
+                        [[item.type_employee_name]]
+                    </template>
+                </gl-combo-box>
+            </div>
+        </div>
+        <div class="layout horizontal start-justified">
+            <div class="flex-2" style=" margin-right: 30px">{{getdepartment(data.faculty_id)}}
+                <gl-combo-box label="คณะ" placeholder="คณะ {{list_faculty.length}}" items="{{list_faculty}}" item-label-path="faculty_name"
+                    item-value-path="id" value="{{data.faculty_id}}">
+                    <template>
+                        [[item.faculty_name]]
+                    </template>
+                </gl-combo-box>
+            </div>
+            <div class="flex-3">
+                <gl-combo-box label="ภาควิชา" placeholder="ภาควิชา {{list_department.length}}" items="{{list_department}}" item-label-path="department_name"
+                    item-value-path="id" value="{{data.department_id}}">
+                    <template>
+                        [[item.department_name]]
+                    </template>
+                </gl-combo-box>
+            </div>
+
+        </div>
+        <div class="layout horizontal start-justified">
+            <div class="flex" style=" margin-right: 30px">
+                <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_start}}"></vaadin-date-picker>
+            </div>
+            <div style="margin: 31px 10px;">ถึง</div>
+            <div class="flex" style=" margin-right: 30px">
+                <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_end}}"></vaadin-date-picker>
+            </div>
+            <div class="flex-2">
+                <!--<gl-form-input always-float-label label="รหัสบัตรประชาชน" placeholder="รหัสบัตรประชาชน" on-input="searchTableListSearch"
+                    value="{{data.personal_id}}">
+                </gl-form-input>-->
+            </div>
+        </div>
+        <div class="layout horizontal start-justified">
+
+        </div>
+        <div class="layout horizontal center-justified">
+            <paper-button class="gl-btn-info" on-tap="search">ค้นหา</paper-button>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'history-search',
+            behaviors: [ReduxBehavior, nylonBehavior, MonthBehavior],
+            properties: {
+                list_year: {
+                    statePath: 'userWelfare.list',
+                    observer: 'setYear'
+                },
+                list_welfare: {
+                    statePath: 'userWelfare.list_id'
+                },
+                list_faculty: {
+                    statePath: 'commonData.faculty'
+                },
+                list_department: {
+                    // statePath: 'commonData.department'
+                },
+                list_type_employee: {
+                    statePath: 'commonData.type_employee'
+                },
+
+                data: {
+                    type: Object,
+                    value: {}
+                }
+            },
+            setYear: function (year) {
+                // console.log(year);
+                try {
+                    let time = new Date()
+                    let today = new Date()
+                    this.set('data.year', year[0].year)
+                    this.set('data.date_start', new Date(time.setHours(time.getHours() - 168)).toISOString().split('T')[0])
+                    this.set('data.date_end', today.toISOString().split('T')[0])
+                    this.dispatchAction('USERS_LIST_HISTORY_WELFARE',this.genUrl(this.data))
+                    // req.query.date_start || 
+    // req.query.date_end = req.query.date_end || time.toISOString().split('T')[0]
+                } catch (error) {
+
+                }
+
+            },
+            getGroupWelfare: function (year) {
+                //    console.log(this.data);
+                this.dispatchAction('WELFARE_LIST', this.data.year - 543);
+            },
+            getdepartment: function(facultyId) {
+                try {
+                    this.set('data.department_id','')
+                    let newDepartment = this.list_faculty.find((fid) => fid.id === facultyId)
+                    this.set('list_department',newDepartment.department)
+                    // console.log(newDepartment.department);
+                    //  this.dispatchAction('USERS_LIST_HISTORY_WELFARE',this.genUrl(this.data))
+                    // console.log(udF);
+                    // console.log(this.list_faculty);
+                    // console.log(this.list_department);
+                } catch (e) {
+
+                } finally {
+
+                }
+
+            },
+            search: function () {
+                // console.log(this.genUrl(this.data));
+                this.dispatchAction('USERS_LIST_HISTORY_WELFARE',this.genUrl(this.data))
+            }
+        });
+    </script>
+</dom-module>

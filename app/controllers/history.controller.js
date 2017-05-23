@@ -181,19 +181,19 @@ exports.listUploadHistory = function (req, res) {
 }
 exports.adminApprove = function (req, res) {
     var r = req.r;
-    let date_use = req.body.date_use ||  new Date()
-    let date_approve = req.body.date_approve ||  new Date()
+    let date_use = req.body.date_use || new Date()
+    let date_approve = req.body.date_approve || new Date()
     req.body = Object.assign(req.body,
-            {
-                date_approve: r.ISO8601(date_approve),
-                date_create: r.now().inTimezone('+07'),
-                date_use: r.ISO8601(date_approve)
-            }
-        );
+        {
+            date_approve: r.ISO8601(date_approve),
+            date_create: r.now().inTimezone('+07'),
+            date_use: r.ISO8601(date_approve)
+        }
+    );
 
     // console.log(,day);
     // console.log(req.body.date_use);
-    
+
     // console.log(new Date());
     // console.log(date_use,date_approve);
     // console.log(req.body);
@@ -215,13 +215,6 @@ exports.adminApprove = function (req, res) {
 exports.listHistory = function (req, res) {
     var r = req.r;
     console.log(req.query.year != undefined);
-    if (req.query.sortBy == undefined) {
-        req.query = Object.assign(req.query,
-            {
-                sortBy: 'date_approve'
-            }
-        );
-    }
     if (req.query.year != undefined) {
         // console.log(req.query.year);
         // let year =  parseInt(req.query.year)
@@ -239,6 +232,22 @@ exports.listHistory = function (req, res) {
             }
         );
     }
+    let time = new Date()
+    
+    // console.log('>>>>>>>>oldday>>>>>',today.setMonth(today.getMonth() + 1));
+    req.query.date_start = req.query.date_start || new Date(time.setHours(time.getHours() - 168)).toISOString().split('T')[0]
+    req.query.date_end = req.query.date_end || time.toISOString().split('T')[0]
+    // console.log('>>>>>>>>>>',req.query.date_start,req.query.date_end );
+    var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
+    var date_end = req.query.date_end + "T00:00:00+07:00";
+
+    // req.query.department_id
+    // ==req.query.year
+    // req.query.group_id
+    // req.query.type_employee_id
+    // req.query.faculty_id
+    // req.query.date_start
+    // req.query.date_end
     // let chengeyear
     // console.log(111111111111111111111111);
     // r.expr({
@@ -250,6 +259,14 @@ exports.listHistory = function (req, res) {
     r.db('welfare').table('history_welfare')
         .getAll(true, { index: 'status' })
         .coerceTo('Array')
+        .filter(function (f) {
+            return f('date_approve').date().during(
+                r.ISO8601(date_start),
+                r.ISO8601(date_end),
+                { rightBound: "closed" }
+            )
+        })
+        .filter({ group_id: req.query.group_id })
         .merge((mer_oneTime) => {
             return {
                 date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0)
@@ -258,10 +275,13 @@ exports.listHistory = function (req, res) {
         .eqJoin('group_id', r.db('welfare').table('group_welfare'))
         .pluck('left', { right: ['group_welfare_name'] }).zip()
         .eqJoin('emp_id', r.db('welfare').table('employee'))
-        .pluck('left', { right: ['firstname', 'lastname', 'prefix_id', 'emp_no'] }).zip()
+        .pluck('left', { right: ['firstname', 'lastname', 'prefix_id', 'emp_no', 'department_id', 'faculty_id', 'type_employee_id'] }).zip()
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix'))
         .pluck('left', { right: ['prefix_name'] }).zip()
-        // .filter({ year: req.query.year , group_id:req.query.group_id, status:req.query.status})
+        .filter({
+            faculty_id: req.query.faculty_id, department_id: req.query.department_id,
+            type_employee_id: req.query.type_employee_id
+        })
         .orderBy(r.desc('date_approve'))
         .run()
         .then(function (result) {
