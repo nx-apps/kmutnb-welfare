@@ -79,6 +79,8 @@ exports.list = function (req, res) {
 exports.insert = function (req, res) {
     var r = req.r;
     var result = { result: false, message: null, id: null };
+    req.body.start_work_date = r.ISO8601(req.body.start_work_date).inTimezone('+07:00')
+    req.body.birthdate = r.ISO8601(req.body.birthdate).inTimezone('+07:00')
     r.db('welfare').table('employee').insert(req.body)
         .run()
         .then((response) => {
@@ -97,6 +99,7 @@ exports.insert = function (req, res) {
 exports.delete = function (req, res) {
     console.log(req.body)
     var r = req.r;
+    
     r.db('welfare').table('employee')
         .get(req.params.id)
         .delete()

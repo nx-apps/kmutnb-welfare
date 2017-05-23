@@ -15,25 +15,25 @@
                 padding-top: 15px;
                 padding-bottom: 15px;
             }
-            
+
             .table-detail {
                 margin: 20px;
             }
-            
+
             td,
             th {
                 white-space: nowrap;
             }
-            
+
             table.gl-table-default {
                 border: 1px solid #ddd;
             }
-            
+
             .text-head {
                 margin-left: 20px;
                 font-weight: bold;
             }
-            
+
             paper-fab {
                 position: fixed;
                 right: 25px;
@@ -42,8 +42,6 @@
                 --paper-fab-background: var(--paper-light-blue-500);
                 --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
             }
-            
-            
         </style>
         <div class="container">
             <!--<div class="horizontal layout">
@@ -97,7 +95,7 @@
                                     </div>
                                 </template>
                             </vaadin-grid-column>
-                            <vaadin-grid-column>
+                            <vaadin-grid-column width="300px">
                                 <template class="header">
                                     <div class="text-center">ชื่อ - นามสกุล
                                     </div>
@@ -112,7 +110,7 @@
                                 </template>
                             </vaadin-grid-column>
 
-                            <vaadin-grid-column width="250px">
+                            <vaadin-grid-column width="300px">
                                 <template class="header">
                                     <div class="text-center">คณะ
                                     </div>
@@ -127,7 +125,7 @@
                                     </div>
                                 </template>
                             </vaadin-grid-column>
-                            <vaadin-grid-column width="250px">
+                            <vaadin-grid-column width="300px">
                                 <template class="header">
                                     <div class="text-center">ภาควิชา
                                     </div>
@@ -198,7 +196,7 @@
                                     </div>
                                 </template>
                             </vaadin-grid-column>
-                            <vaadin-grid-column width="350px">
+                            <vaadin-grid-column width="250px">
                                 <template class="header">
                                     <div class="text-center">ชื่อ - นามสกุล
                                     </div>
@@ -213,9 +211,9 @@
                                 </template>
                             </vaadin-grid-column>
 
-                            <vaadin-grid-column width="350px">
+                            <vaadin-grid-column width="300px">
                                 <template class="header">
-                                    <div class="text-center">ภาควิชา
+                                    <div class="text-center">คณะ
                                     </div>
                                 </template>
                                 <template>
@@ -224,13 +222,13 @@
                                     </div>
                                 </template>
                                 <template class="footer">
-                                    <div class="text-center">ภาควิชา
+                                    <div class="text-center">คณะ
                                     </div>
                                 </template>
                             </vaadin-grid-column>
-                            <vaadin-grid-column width="350px">
+                            <vaadin-grid-column width="300px">
                                 <template class="header">
-                                    <div class="text-center">คณะ
+                                    <div class="text-center">ภาควิชา
                                     </div>
                                 </template>
                                 <template>
@@ -238,7 +236,7 @@
                                     </div>
                                 </template>
                                 <template class="footer">
-                                    <div class="text-center">คณะ
+                                    <div class="text-center">ภาควิชา
                                     </div>
                                 </template>
                             </vaadin-grid-column>
@@ -255,7 +253,7 @@
     <script>
         Polymer({
             is: 'admin-list-user',
-            behaviors: [ReduxBehavior, MonthBehavior, FormatNumberBehavior,commonLogic],
+            behaviors: [ReduxBehavior, MonthBehavior, FormatNumberBehavior, commonLogic],
             observers: ['showBtn(newListSearch.*)'],
             properties: {
                 list: {
@@ -369,7 +367,7 @@
                         return newItem;
                     })
                     // console.log(JSON.stringify(saveData));
-                       console.log(saveData);
+                    console.log(saveData);
                     // this.dispatchAction('USER_INSERT', saveData)
                 }
 
@@ -411,6 +409,8 @@
                 // }
             },
             getList: function (list) {
+                // console.log(list);
+                
                 this.newList = list;
             },
             getListSearch: function (list) {
