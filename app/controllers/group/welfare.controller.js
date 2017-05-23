@@ -523,3 +523,26 @@ exports.adminEmployee = function (req, res) {
         })
 
 }
+exports.cloneData = function (req, res) {
+    var newyear = req.body.year;
+    var cloneGroupid = req.body.cloneGroupid;
+    r.expr(cloneGroupid).forEach(function (fe) {
+        return r.db('welfare').table('group_welfare').insert(
+            r.db('welfare').table('group_welfare').get(fe('id')).merge({
+                year: newyear,
+                status_approve: false
+            }).without('id')
+        )
+            .do(function (d) {
+                return r.db('welfare').table('welfare').insert(
+                    r.db('welfare').table('welfare').getAll(fe('id'), { index: 'group_id' }).merge({
+                        group_id: d('generated_keys')(0),
+                        status: false
+                    }).without('id')
+                )
+            })
+    })
+    .then(function(result){
+        res.json(result);
+    })
+}

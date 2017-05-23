@@ -218,10 +218,7 @@
                     status: 'openDialog',
                     text: 'คุณต้องการลบสวัสดิการนี้ใช่หรือไม่ ?',
                     confirmed: this._confirmToast.bind(this),
-                    datas: {
-                        id: this.data.id,
-                        group_id: this.data.group_id
-                    }
+                    datas: this.data
                 });
             },
             _confirmToast: function (result, detail) {

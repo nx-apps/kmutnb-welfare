@@ -62,10 +62,10 @@
             }
         </style>
         <main>
-            <input id="tab1" type="radio" name="tabs">
+            <input id="tab1" type="radio" name="tabs" on-tap="tap1">
             <label for="tab1">สวัสดิการ</label>
 
-            <input id="tab2" type="radio" name="tabs" disabled="[[!isEnable]]">
+            <input id="tab2" type="radio" name="tabs" disabled="[[!isEnable]]" on-tap="tap2">
             <label for="tab2">เงื่อนไข</label>
             <section id="content1">
                 <paper-material elevation="1">
@@ -89,6 +89,14 @@
             },
             getGroupWelfareId:function(val){
                 this.dispatchAction('LIST_WELFARE_ID', val);
+            },
+            tap1:function(){
+                // console.log('tab1');
+                this.$$('group-welfare-manage').cancle();
+            },
+            tap2:function(){
+                // console.log('tab2');
+                this.$$('welfare-manage').back_page();
             }
         });
     </script>

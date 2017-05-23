@@ -4,6 +4,7 @@
 <link rel="import" href="./../components/common-logic.html">
 
 
+
 <dom-module id="page-admin-welfare">
     <template>
         <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -35,6 +36,13 @@
                 margin-top: 35px;
                 font-size: 20px;
             }
+            paper-dialog[id="clone_welfare"] {
+                --paper-dialog: {
+                box-sizing: border-box;
+                width: 360px;
+                height: 640px;
+                }
+            }
         </style>
         <div class="xcontainer">
             <div class="header-page">จัดการสวัสดิการ</div>
@@ -43,7 +51,7 @@
                 <!--<paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_print">
                 <iron-icon icon="print"></iron-icon>ออกรายงาน</paper-button>-->
                 <div class="flex horizontal start-justified layout">
-                    <gl-form-dropdown-menu label="ปี" placeholder="เลือกปี">
+                    <gl-form-dropdown-menu style="margin-left:20px;" label="ปี" placeholder="เลือกปี">
                         <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
                             <template is="dom-repeat" items={{list_year}}>
                                 <paper-item value="[[item.year]]">[[item.year]]</paper-item>
@@ -52,7 +60,9 @@
                     </gl-form-dropdown-menu>
                 </div>
                 <div class="flex horizontal end-justified layout">
-                    <div class="">
+                    <div>
+                        <paper-button raised style="margin: 20px 10px 20px 20px;" class="gl-btn-info" on-tap="_openDialog">
+                            <iron-icon icon="icons:content-copy"></iron-icon>คัดลอกสวัสดิการ</paper-button>
                         <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
                             <iron-icon icon="add"></iron-icon>เพิ่มสวัสดิการ</paper-button>
                     </div>
@@ -108,6 +118,50 @@
                     </div>
                 </iron-pages>
             </panel-right>
+            
+            <paper-dialog id="clone_welfare" modal>
+                <div class="container">
+                    <div class="vertical layout">
+                        <div style="font-size:18px; font-style:bold;">เลือกปีสวัสดิการที่ต้องการคัดลอก</div>
+                        [[_cloneData(year)]]
+                        <gl-form-dropdown-menu label="ปีสวัสดิการ" placeholder="เลือกปี">
+                            <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{year}}">
+                                <template is="dom-repeat" items={{list_year}}>
+                                    <paper-item value="[[item.year]]">[[item.year]]</paper-item>
+                                </template>
+                            </paper-menu>
+                        </gl-form-dropdown-menu>
+                    </div>
+                    <template is="dom-if" if={{_obData(data_clone)}}>
+                        <table class="gl-table-default">
+                            <thead class="table-head">
+                                <tr>
+                                    <th><paper-checkbox on-tap="_changeselectDataAll" checked="{{selectDataAll}}"></paper-checkbox>เลือกทั้งหมด</th>
+                                    <th>ชื่อสวัสดิการ</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+                                <template is="dom-repeat" items="{{data_clone}}">
+                                    <tr style="cursor:pointer;">
+                                        <td style="text-align:center"><paper-checkbox on-tap="checkData" checked="{{item.check}}"></paper-checkbox></td>
+                                        <td style="text-align:left" on-tap="_checkedData">[[item.group_welfare_name]]</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                </div>
+                <div class="buttons">
+                    <paper-button dialog-dismiss autofocus>ยกเลิก</paper-button>
+                    <paper-button autofocus class="gl-btn-primary" on-tap="_submitClone">คัดลอก</paper-button>
+                </div>
+            </paper-dialog>
+
+            <paper-dialog id="dialogInput" modal>
+                <div>เป็นสวัสดิการปี</div>
+                <gl-form-input class="checkValidate" required label="ปี" allowed-pattern="[0-9]" 
+                maxlength="4" value="{{yearClone.year}}" placeholder="กรุณากรอกปี พ.ศ." on-keyup="_insertClone"></gl-form-input>
+            </paper-dialog>
         </div>
 
     </template>
@@ -123,10 +177,22 @@
                 list_year: {
                     statePath: 'groupWelfare.list_year'
                 },
+                data_clone:{
+                    statePath: 'groupWelfare.data_clone'
+                },
                 pages: {
                     type: Number,
                     value: 0
                 },
+                yearClone:{
+                    type: Object,
+                    value: {}
+                },
+                selectDataAll: {
+                    type: Boolean,
+                    value: false
+                    // observer: '_changeselectDataAll'
+                }
             },
             listeners:
             {
@@ -197,6 +263,72 @@
             },
             _print: function () {
                 this.fire('nylon-change-page', { path: '/report' })
+            },
+            _openDialog:function(){
+                this.$.clone_welfare.open();
+                this.year = '';
+                this.data_clone = [];
+            },
+            _cloneData:function(year){
+                if(year !== ''){
+                    this.CLONE_DATA(year);
+                }
+            },
+            _submitClone:function(){
+                var arr = [];
+                var data = this.data_clone.filter((val) => {
+                    if(val.check == true){
+                        arr.push({id:val.id});
+                    }
+                })
+                this.cloneGroupid = arr;
+                this.$.dialogInput.open();
+            },
+            _checkedData:function(e){
+                var index = e.model.index;
+                if(this.data_clone[index].check === undefined || this.data_clone[index].check === false){
+                    this.set(`data_clone.${index}.check`,!this.data_clone[index].check);
+                    ;
+                }else{
+                    this.set(`data_clone.${index}.check`,!this.data_clone[index].check);
+                }
+                if(this.data_clone[index].check === false)
+                    this.set('selectDataAll', false)
+                
+            },
+            _insertClone:function(e){
+                if(e.code == 'Enter'){
+                    var obj = {};
+                    obj.year = parseInt(this.yearClone.year)-543;
+                    obj.cloneGroupid = this.cloneGroupid;
+                    this.dispatchAction('INSERT_CLONE_DATA',obj);
+                }
+            },
+            _closeDialog:function(){
+                this.$.clone_welfare.close();
+                this.$.dialogInput.close();
+            },
+            _changeselectDataAll:function(val){
+                try {
+                    this.data_clone.map((item,index)=>{
+                        this.set('data_clone.'+index+'.check',this.selectDataAll);
+                    });
+                } catch (error) {
+                    
+                }
+            },
+            _obData:function(data){
+                if(data.length > 0){
+                    return true
+                }else{
+                    return false
+                }
+            },
+            checkData:function(e){
+                var index = e.model.index;
+                if(this.data_clone[index].check === false){
+                    this.set('selectDataAll', false)
+                }
             }
         });
     </script>

@@ -18,7 +18,8 @@
                 <template is="dom-repeat" items="{{data.condition}}">
                     <welfare-form-condition-item item="{{item}}" index="{{index}}"></welfare-form-condition-item>
                 </template>
-            </div>    
+            </div>
+            <button on-tap="add_condition">เพิ่มเงื่อนไข</button>    
             
         </template>
         <script>
@@ -94,6 +95,11 @@
                 },
                 _dataChanged:function(ob){
                     //console.log('-',ob)
+                },
+                add_condition: function () {
+                    this.push('data.condition', {
+                        itemField: this._itemFieldEvent()
+                    })
                 }
             })
         </script>

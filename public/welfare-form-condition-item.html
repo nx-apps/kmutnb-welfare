@@ -2,6 +2,7 @@
 <link rel="import" href="./bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="./bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="./bower_components/paper-item/paper-item.html">
+<link rel="import" href="./bower_components/paper-input/paper-input.html">
 
 <dom-module id="welfare-form-condition-item">
     <template>       
@@ -13,10 +14,27 @@
                 </template>
             </paper-listbox>
         </paper-dropdown-menu>
-        <button on-tap="_listChanged">c</button>
+        <!--<button on-tap="_listChanged">c</button>-->
+        <paper-dropdown-menu style="margin-top: 15px">
+            <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.logic_show}}">
+                <template is="dom-repeat" items="{{item.field.conditions}}">
+                    <paper-item value="{{item.symbol}}">{{item.name}}</paper-item>
+                </template>
+            </paper-listbox>
+        </paper-dropdown-menu>
+        <paper-dropdown-menu style="margin-top:15px;width:100%;">
+            <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.value_show}}">
+                <template is="dom-repeat" items="{{item.field.data}}">
+                    <paper-item value="{{item.id}}">{{item.name}}</paper-item>
+                </template>
+            </paper-listbox>
+        </paper-dropdown-menu>
+        <paper-input pattern="[0-9]*" value="{{item.value_show}}">
+            <div suffix>ปี</div>
+        </paper-input>
         <hr>
-        
     </template>
+        
     <script>
         Polymer({
             is:'welfare-form-condition-item',
@@ -24,6 +42,24 @@
                 itemField:{value:[]}
             },
             _listChanged:function(ob,index){
+                console.log(ob);
+                // var cloneOb = JSON.parse(JSON.stringify(ob.base));
+                if(ob.path == 'item.field'){
+                    // if(this.item.logic_show === ''){
+                        this.set(`item.logic_show`,'');
+                    // }
+                    // console.log(this.item.field.conditions);
+                    
+                    // console.log(cloneOb);
+                    // console.log(ob.base,index);
+                    // this.item.field = {};
+                }
+
+                this.async(()=>{
+                    this.fire('itemFieldEvent');
+                })
+            },
+            test:function(){
                 this.async(()=>{
                     this.fire('itemFieldEvent');
                 })

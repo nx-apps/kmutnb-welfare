@@ -5,7 +5,8 @@ const initialState = {
     list: [],
     select: {},
     list_id: [],
-    list_year: []
+    list_year: [],
+    data_clone: []
 }
 
 export function groupWelfareReducer(state = initialState, action) {
@@ -23,6 +24,8 @@ export function groupWelfareReducer(state = initialState, action) {
             return Object.assign({}, state, { select: action.payload });
         case 'CLEAR_WELFARE_ID':
             return Object.assign({}, state, { list_id: action.payload });
+        case 'CLONE_DATA':
+            return Object.assign({}, state, { data_clone: action.payload });
         default:
             return state
     }
@@ -77,10 +80,11 @@ export function groupWelfareAction(store) {
             axios.post(`./group/welfare/insert`, newData)
                 .then((result) => {
                     // console.log(result);
-                    this.LIST_WELFARE(data.year - 543);
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-                            console.log('success');
+                            // console.log('success');
+                            this.LIST_WELFARE(data.year - 543);
+                            this.selectYear = data.year;
                             this.clearData();
                             this.GET_YEAR();
                             // this.fire('closePanel');
@@ -90,25 +94,27 @@ export function groupWelfareAction(store) {
                     });
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                 })
         },
         DELETE_WELFARE: function (data) {
             // console.log(data);
-            var year = new Date().getFullYear();
+            // var year = new Date().getFullYear();
             axios.delete(`./group/welfare/delete/id/` + data.id)
                 .then((result) => {
-                    console.log(result);
+                    // console.log(result);
                     this.fire('toast', {
                         status: 'success', text: 'ลบสำเร็จ', callback: () => {
-                            console.log('success');
+                            // console.log('success');
                             this.$$('panel-right').close();
-                            this.LIST_WELFARE(year);
+                            this.LIST_WELFARE(data.year - 543);
+                            this.selectYear = data.year;
+                            this.GET_YEAR();
                         }
                     });
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                 })
         },
         EDIT_WELFARE: function (data) {
@@ -126,12 +132,12 @@ export function groupWelfareAction(store) {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             this.LIST_WELFARE(newData.year - 543);
-                            console.log('success');
+                            // console.log('success');
                         }
                     });
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                 })
         },
         SELECT_DATA: function (val) {
@@ -163,12 +169,12 @@ export function groupWelfareAction(store) {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             this.LIST_WELFARE_ID(data.id);
                             this.SELECT_DATA(data.id)
-                            console.log('success');
+                            // console.log('success');
                         }
                     });
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                 })
         },
         CLEAR_WELFARE: function (data) {
@@ -178,6 +184,37 @@ export function groupWelfareAction(store) {
         CLEAR_WELFARE_ID: function (data) {
             // console.log(data);
             store.dispatch({ type: 'CLEAR_WELFARE_ID', payload: [] })
+        },
+        CLONE_DATA:function (year){
+            // console.log(year);
+            axios.get('/group/welfare/year/' + (year-543))
+            .then((result) => {
+                // console.log(result.data);
+                result.data.map((val) => {
+                    return val.check = false
+                })
+                store.dispatch({ type: 'CLONE_DATA', payload: result.data })
+            })
+        },
+        INSERT_CLONE_DATA:function(data){
+            // console.log(data);
+            this.fire('toast', { status: 'load' });
+            axios.post(`./group/welfare/clone`, data)
+                .then((result) => {
+                    // console.log(result);
+                    this.fire('toast', {
+                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+                            // console.log('success');
+                            this._closeDialog();
+                            this.LIST_WELFARE(data.year);
+                            this.selectYear = data.year+543;
+                            this.GET_YEAR();
+                        }
+                    });
+                })
+                .catch((err) => {
+                    // console.log(err);
+                })
         }
     }
     ]
