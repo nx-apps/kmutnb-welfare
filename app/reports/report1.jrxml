@@ -212,7 +212,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[สิทธิ์ที่ได้รับ :]]></text>
+				<text><![CDATA[สิทธิ์เบิก :]]></text>
 			</staticText>
 		</band>
 	</pageHeader>

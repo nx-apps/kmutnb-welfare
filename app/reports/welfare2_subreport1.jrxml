@@ -4,36 +4,36 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<field name="faculty_name" class="java.lang.String"/>
-	<field name="sum_budget_use" class="java.lang.String"/>
+	<field name="sum_budget_use" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="187" height="20" uuid="87aced60-9ebe-4f83-ad1a-eb3215f2b259"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="187" height="20" uuid="87aced60-9ebe-4f83-ad1a-eb3215f2b259"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
+					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{faculty_name}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="187" y="0" width="147" height="20" uuid="fb5b0481-33c0-4fa0-aa43-70662b2e56e9"/>
+			<textField pattern="#,##0.00">
+				<reportElement stretchType="RelativeToBandHeight" x="187" y="0" width="147" height="20" uuid="fb5b0481-33c0-4fa0-aa43-70662b2e56e9"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
+					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="0.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{sum_budget_use}]]></textFieldExpression>
