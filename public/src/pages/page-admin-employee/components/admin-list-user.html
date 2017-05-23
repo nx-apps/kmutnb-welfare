@@ -1,6 +1,7 @@
 <link rel="import" href="./../../../../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../../components/month-behavior.html">
+<link rel="import" href="./../../components/month-behavior.html">
 <link rel="import" href="./../../components/format-number-behavior.html">
+<link rel="import" href="./../../components/common-logic.html">
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
 
 <link rel="import" href="./../../components/page-style.html">
@@ -77,7 +78,7 @@
                                     <div class="text-center">ลำดับ</div>
                                 </template>
                                 <template>
-                                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[index]]</div>
+                                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[_Obindex(index)]]</div>
                                 </template>
                                 <template class="footer">
                                     <div class="text-center">ลำดับ</div>
@@ -160,7 +161,7 @@
                             </div>
                         </div>
                         <vaadin-grid id="material" items='{{newListSearch}}'>
-                            <vaadin-grid-column width="100px" flex-grow="0">
+                            <!--<vaadin-grid-column width="100px" flex-grow="0">
                                 <template class="header ">
                                     <div class="text-center"><paper-checkbox checked="{{dataCheck}}" on-tap="selectAll"></paper-checkbox>เลือกทั้งหมด</div>
                                 </template>
@@ -172,13 +173,13 @@
                                 <template class="footer">
                                     <div class="text-center">ลำดับ</div>
                                 </template>
-                            </vaadin-grid-column>
+                            </vaadin-grid-column>-->
                             <vaadin-grid-column width="80px" flex-grow="0">
                                 <template class="header ">
                                     <div class="text-center">ลำดับ</div>
                                 </template>
                                 <template>
-                                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[index]]</div>
+                                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[_Obindex(index)]]</div>
                                 </template>
                                 <template class="footer">
                                     <div class="text-center">ลำดับ</div>
@@ -197,7 +198,7 @@
                                     </div>
                                 </template>
                             </vaadin-grid-column>
-                            <vaadin-grid-column>
+                            <vaadin-grid-column width="350px">
                                 <template class="header">
                                     <div class="text-center">ชื่อ - นามสกุล
                                     </div>
@@ -212,9 +213,9 @@
                                 </template>
                             </vaadin-grid-column>
 
-                            <vaadin-grid-column width="250px">
+                            <vaadin-grid-column width="350px">
                                 <template class="header">
-                                    <div class="text-center">คณะ
+                                    <div class="text-center">ภาควิชา
                                     </div>
                                 </template>
                                 <template>
@@ -223,13 +224,13 @@
                                     </div>
                                 </template>
                                 <template class="footer">
-                                    <div class="text-center">คณะ
+                                    <div class="text-center">ภาควิชา
                                     </div>
                                 </template>
                             </vaadin-grid-column>
-                            <vaadin-grid-column width="250px">
+                            <vaadin-grid-column width="350px">
                                 <template class="header">
-                                    <div class="text-center">ภาควิชา
+                                    <div class="text-center">คณะ
                                     </div>
                                 </template>
                                 <template>
@@ -237,7 +238,7 @@
                                     </div>
                                 </template>
                                 <template class="footer">
-                                    <div class="text-center">ภาควิชา
+                                    <div class="text-center">คณะ
                                     </div>
                                 </template>
                             </vaadin-grid-column>
@@ -254,7 +255,7 @@
     <script>
         Polymer({
             is: 'admin-list-user',
-            behaviors: [ReduxBehavior, MonthBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, MonthBehavior, FormatNumberBehavior,commonLogic],
             observers: ['showBtn(newListSearch.*)'],
             properties: {
                 list: {
@@ -305,10 +306,11 @@
                 }
             },
             showBtn: function (show) {
+                console.log(show);
                 var check = show.base.filter((item) => {
                     return item.check == true
                 })
-                // console.log(check);
+                console.log(check);
                 if (check.length != 0) {
                     this.paperFab = false;
                 }
@@ -320,7 +322,7 @@
                 var check = e.target.checked;
                 if (check == true) {
                     this.newListSearch.map((item, index) => {
-                        console.log(item.admin_use);
+                        // console.log(item);
                         if (item.admin_use == true) {
                             this.set('newListSearch.' + index + '.check', true);
                         } else {
@@ -354,10 +356,11 @@
                     var saveData = newData.map((item) => {
                         var newItem = {
                             group_id: item.group_id,
-                            year: item.year,
                             emp_id: item.emp_id,
                             welfare_id: item.welfare_id,
-                            use_budget: item.value_budget - item.value_use,
+                            // budget_cover:,
+                            // budget_balance:,
+                            budget_use: item.value_budget - item.value_use,
                             date_approve: new Date().toISOString(),
                             date_use: new Date().toISOString(),
                             document_ids: [],
@@ -365,14 +368,14 @@
                         };
                         return newItem;
                     })
-                    console.log(JSON.stringify(saveData));
-                    //    console.log(saveData);
-                    this.dispatchAction('USER_INSERT', saveData)
+                    // console.log(JSON.stringify(saveData));
+                       console.log(saveData);
+                    // this.dispatchAction('USER_INSERT', saveData)
                 }
 
             },
             selectTable: function (id) {
-                console.log(id);
+                // console.log(id);
                 if (id == true) {
                     this.isSearch = true;
                 }
@@ -506,9 +509,11 @@
                     var storeData = this.list;
                     this.newList = storeData;
                     var getList = this.newList;
+                    console.log(getList);
                     this.newList = getList.filter((item) => {
                         return item.faculty_id == id
                     })
+                    console.log(this.newList);
                     this.listFilter = this.newList;
                 }
                 else {

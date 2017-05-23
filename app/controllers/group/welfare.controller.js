@@ -369,17 +369,47 @@ exports.adminEmployee = function (req, res) {
             }
         })
         .without('employees')
+        // .merge((setbudget) => {
+        //     return setbudget('welfare').merge((set) => {
+        //         return set('employee').merge((sertvalueBBudget) => {
+        //             return {
+        //                 value_budget: set('budget'),
+        //                 admin_use: set('admin_use'),
+        //             }
+        //         })
+        //     })
+        // })
         .getField('welfare')('employee')
         .reduce(function (l, r) {
             return l.add(r)
         })
-        .group('group').ungroup().without('reduction')
+        .group('group').ungroup()
+        // .merge((set) => {
+        //     return {
+        //         value_budget: set.getField('reduction')(0).getField('value_budget')
+        //     }
+        // })
+        .without('reduction')
+        // .merge(function (emp_merge) {
+        //     return {
+        //         value_use: r.db('welfare').table('history_welfare').getAll(emp_merge('group'), { index: 'emp_id' })
+        //             .filter({ group_id: req.params.groupId }).sum('budget_use'),
+        //         emp_id: emp_merge('group')
+        //     }
+        // })
+        // .merge(function (emp_merge) {
+        //     return {
+        //         admin_use: r.branch(emp_merge('value_budget').sub(emp_merge('value_use')).le(0),
+        //             false, true)
+        //     }
+        // })
         .eqJoin('group', r.db('welfare').table('employee')).without({ left: "group" }, { right: ['dob', 'active_id', 'birthdate', 'gender_id', 'gender_id', 'position_id', 'start_work_date', 'type_employee_id'] }).zip()
         .eqJoin('academic_id', r.db('welfare_common').table('academic')).pluck('left', { right: 'academic_name' }).zip()
         .eqJoin('department_id', r.db('welfare_common').table('department')).pluck('left', { right: 'department_name' }).zip()
         .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck('left', { right: 'faculty_name' }).zip()
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck('left', { right: 'prefix_name' }).zip()
-        .without('academic_id', 'department_id', 'faculty_id', 'prefix_id')
+        .without('academic_id', 'prefix_id')
+
         // r.db('welfare').table('group_welfare').get(req.params.welId)
         // r.db('welfare').table('group_welfare').get(req.params.welId)
         //     .merge(function (m) {

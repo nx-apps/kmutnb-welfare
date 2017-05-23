@@ -22,12 +22,12 @@ exports.list = function (req, res) {
     //     .without('academic_id','active_id','department_id','faculty_id','gender_id','matier_id','position_id','type_employee_id','prefix_id')
     r.expr({
         academic: r.db('welfare_common').table('academic').coerceTo('Array'),
-        // active: r.db('welfare_common').table('active').coerceTo('Array'),
+        active: r.db('welfare_common').table('active').coerceTo('Array'),
         // department: r.db('welfare_common').table('department').coerceTo('Array'),
         // faculty: r.db('welfare_common').table('faculty').coerceTo('Array'),
         // gender: r.db('welfare_common').table('gender').coerceTo('Array'),
         // matier: r.db('welfare_common').table('matier').coerceTo('Array'),
-        // position: r.db('welfare_common').table('position').coerceTo('Array'),
+        position: r.db('welfare_common').table('position').coerceTo('Array'),
         // prefix: r.db('welfare_common').table('prefix').coerceTo('Array'),
         // type_employee: r.db('welfare_common').table('type_employee').coerceTo('Array'),
     })
@@ -36,12 +36,12 @@ exports.list = function (req, res) {
                 emp: r.db('welfare').table('employee').coerceTo('Array')//.limit(1)
                     .merge((merName) => {
                         return {
-                            academic_name: emp('academic').filter({ id: merName('academic_id') })//.reduce((left, right) => {
-                            // return left.add(right);
-                            // }).default('-').pluck('academic_name').getField('academic_name'),
-                            // active_name: emp('active').filter({ id: merName('active_id') }).reduce((left, right) => {
-                            //     return left.add(right);
-                            // }).default('-').pluck('active_name').getField('active_name'),
+                            academic_name: emp('academic').filter({ id: merName('academic_id') }).reduce((left, right) => {
+                            return left.add(right);
+                            }).default('-').pluck('academic_name').getField('academic_name'),
+                            active_name: emp('active').filter({ id: merName('active_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').pluck('active_name').getField('active_name'),
                             // department_name: emp('department').filter({ id: merName('department_id') }).reduce((left, right) => {
                             //     return left.add(right);
                             // }).default('-').pluck('department_name').getField('department_name'),
@@ -54,9 +54,9 @@ exports.list = function (req, res) {
                             // matier_name: emp('matier').filter({ id: merName('matier_id') }).reduce((left, right) => {
                             //     return left.add(right);
                             // }).default('-').pluck('matier_name').getField('matier_name'),
-                            // position_name: emp('position').filter({ id: merName('position_id') }).reduce((left, right) => {
-                            //     return left.add(right);
-                            // }).default('-').pluck('position_name').getField('position_name'),
+                            position_name: emp('position').filter({ id: merName('position_id') }).reduce((left, right) => {
+                                return left.add(right);
+                            }).default('-').pluck('position_name').getField('position_name'),
                             // prefix_name: emp('prefix').filter({ id: merName('prefix_id') }).reduce((left, right) => {
                             //     return left.add(right);
                             // }).default('-').pluck('prefix_name').getField('prefix_name'),
@@ -232,7 +232,7 @@ exports.welfaresYear = function (req, res) {
                              .filter({ welfare_id: check_his_cost('welfare_id'),status: true })
                                 // .filter({ status: true, })
                                 .coerceTo('array')
-                                .orderBy(r.desc('date_approve'))
+                                .orderBy(r.desc('date_create'))
                         }
                     })
                     // เช็ตว่ามีค่าว่างไหม
@@ -711,7 +711,7 @@ exports.welfaresEmployeeWork = function (req, res) {
         .eqJoin('position_id', r.db('welfare_common').table('position')).pluck('left', { right: ['position_name'] }).zip()
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck('left', { right: ['prefix_name'] }).zip()
         .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck('left', { right: ['type_employee_name'] }).zip()
-        .without('academic_id', 'active_id', 'department_id', 'faculty_id', 'gender_id', 'matier_id', 'position_id', 'type_employee_id', 'prefix_id')
+        .without('academic_id', 'active_id', 'gender_id', 'matier_id', 'position_id', 'type_employee_id', 'prefix_id')
         // .filter({ active_code: 'WORK' })
         .run()
         .then(function (result) {
