@@ -216,11 +216,12 @@
             },
             select_faculty: function (id) {
                 if (id != '' || typeof id == 'undefined') {
-                    // console.log('id',id);
+                    console.log('id',id);
                     this.selectDepartment = "";
                     var newItem = this.listFaculty.filter((item) => {
                         return id == item.id
                     })
+                    console.log(newItem);
                     this.departmentList = []
                     newItem.map((item) => {
                         this.departmentList = item.department;
