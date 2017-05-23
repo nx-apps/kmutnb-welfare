@@ -52,6 +52,22 @@
                     </div>
                 </template>
             </vaadin-grid-column>
+            
+            <vaadin-grid-column width="350px">
+                <template class="header">
+                    <div class="text-center">ประเภทบุคคล
+                    </div>
+                </template>
+                <template>
+                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">
+                        <p style="white-space: nowrap">[[item.type_employee_name]]</p>
+                    </div>
+                </template>
+                <template class="footer">
+                    <div class="text-center">ประเภทบุคคล
+                    </div>
+                </template>
+            </vaadin-grid-column>
             <vaadin-grid-column width="350px">
                 <template class="header">
                     <div class="text-center">ภาควิชา
