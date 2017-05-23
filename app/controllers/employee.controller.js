@@ -303,6 +303,7 @@ exports.welfaresYear = function (req, res) {
                 position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
                 prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
                 type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
+                employee_edit: r.db('welfare').table('system_config')(0).getField('employee_edit'),
             }
         })
         // .merge((check_welFare)=>{
