@@ -1514,10 +1514,14 @@ exports.report_test = function (req, res, next) {
 exports.welfare1 = function (req, res) {
     var r = req.r
 
-    var year = req.query.year;//2017
-    var month = req.query.month;//03
+    // var year = req.query.year;//2017
+    // var month = req.query.month;//03
     var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
     var date_end = req.query.date_end + "T00:00:00+07:00";
+
+    var param = req.query;
+    param.year = Number(param.year) + 543;
+    // res.json(parammeter);
 
     // r.db('welfare').table('history_welfare')
     //     .filter(function (f) {
@@ -1545,8 +1549,8 @@ exports.welfare1 = function (req, res) {
             )
         })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
-        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: 'type_employee_id' }).zip()
-        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip()
+        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: 'type_employee_id' }).zip().filter({ 'faculty_id': param.faculty_id })
+        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip().filter({ 'type_employee_id': param.type_employee_id })
         .group('group_id').ungroup()
         .merge(function (m) {
             return {
@@ -1572,26 +1576,21 @@ exports.welfare1 = function (req, res) {
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
-            var parameters = {
-                CURRENT_DATE: new Date().toISOString().slice(0, 10),
-                // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
-                date_start: date_start,
-                date_end: date_end
-            };
-            res.ireport("welfare1.jasper", req.query.export || "pdf", result, parameters);
+            param = keysToUpper(param);
+            res.ireport("welfare1.jasper", req.query.export || "pdf", result, param);
         });
 }
 exports.welfare2 = function (req, res) {
     var r = req.r
 
-    var year = req.query.year;//2017
-    var month = req.query.month;//03
+    // var year = req.query.year;//2017
+    // var month = req.query.month;//03
     var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
     var date_end = req.query.date_end + "T00:00:00+07:00";
-    var group_id = req.query.group_id;
-    var faculty_id = req.query.faculty_id
-    var type_employee_id = req.query.type_employee_id
- 
+
+    var param = req.query;
+    param.year = Number(param.year) + 543;
+
     r.db('welfare').table('history_welfare')
         .filter(function (f) {
             return f('date_approve').date().during(
@@ -1600,11 +1599,10 @@ exports.welfare2 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ 'group_id': group_id })
+        .filter({ 'group_id': param.group_id })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
-        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: ['type_employee_id', 'faculty_id'] }).zip()
-        .filter({ 'faculty_id': faculty_id })
-        .filter({ 'type_employee_id': type_employee_id })
+        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: ['type_employee_id', 'faculty_id'] }).zip().filter({ 'faculty_id': param.faculty_id })
+        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip().filter({ 'type_employee_id': param.type_employee_id })
         .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck("left", { right: 'faculty_name' }).zip()
         .group('group_id').ungroup()
         .merge(function (m) {
@@ -1631,29 +1629,21 @@ exports.welfare2 = function (req, res) {
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
-            var parameters = {
-                CURRENT_DATE: new Date().toISOString().slice(0, 10),
-                // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
-                date_start: date_start,
-                date_end: date_end,
-                group_welfare_name:req.query.group_name,
-                faculty_name:req.query.faculty_name,
-                type_employee_name:req.query.type_employee_name,
-            };
-            console.log(req.query.group_name)
-            res.ireport("welfare2.jasper", req.query.export || "pdf", result, parameters);
+            param = keysToUpper(param);
+            // console.log(req.query.group_name)
+            res.ireport("welfare2.jasper", req.query.export || "pdf", result, param);
         });
 }
 exports.welfare3 = function (req, res) {
     var r = req.r
 
-    var year = req.query.year;//2017
-    var month = req.query.month;//03
+    // var year = req.query.year;//2017
+    // var month = req.query.month;//03
     var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
     var date_end = req.query.date_end + "T00:00:00+07:00";
-    var group_id = req.query.group_id;
-    // var faculty_id = req.query.faculty_id
-    // var type_employee_id = req.query.type_employee_id
+
+    var param = req.query;
+    param.year = Number(param.year) + 543;
 
     r.db('welfare').table('history_welfare')
         .filter(function (f) {
@@ -1663,9 +1653,9 @@ exports.welfare3 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ 'group_id': group_id })
+        .filter({ 'group_id': param.group_id })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
-        .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
+        .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip().filter({ 'faculty_id': param.faculty_id })
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck("left", { right: 'prefix_name' }).zip()
         .merge(function (name_merge) {
             return {
@@ -1674,13 +1664,14 @@ exports.welfare3 = function (req, res) {
         })
         .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck("left", { right: 'faculty_name' }).zip()
         .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip()
-        .pluck('faculty_name', 'group_id', 'group_welfare_name', 'name', 'budget_use', 'type_employee_name', 'faculty_id', 'type_employee_id')
-        //.group('group_id').ungroup()
-        // .merge(function (m){
-        //     return {
-        //         group_welfare_name:m('reduction')('group_welfare_name')(0)
-        //     }
-        // })
+        .pluck('faculty_name', 'group_id', 'group_welfare_name', 'name', 'budget_use', 'type_employee_name', 'faculty_id', 'type_employee_id', 'date_approve')
+        .group('group_id').ungroup()
+        .merge(function (m) {
+            return {
+                group_welfare_name: m('reduction')('group_welfare_name')(0),
+                sum: m('reduction').sum('budget_use')
+            }
+        })
         // .filter({'faculty_id':faculty_id})
         // .filter({'type_employee_id':type_employee_id})  
         .orderBy('group_welfare_name')
@@ -1689,26 +1680,20 @@ exports.welfare3 = function (req, res) {
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
-            var parameters = {
-                CURRENT_DATE: new Date().toISOString().slice(0, 10),
-                // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
-                date_start: date_start,
-                date_end: date_end,
-                group_welfare_name:req.query.group_name,
-                faculty_name:req.query.faculty_name,
-                type_employee_name:req.query.type_employee_name,
-            };
-            res.ireport("welfare3.jasper", req.query.export || "pdf", result, parameters);
+            param = keysToUpper(param);
+            res.ireport("welfare3.jasper", req.query.export || "pdf", result, param);
         });
 }
 exports.welfare4 = function (req, res) {
     var r = req.r
 
-    var year = req.query.year;//2017
-    var month = req.query.month;//03
+    // var year = req.query.year;//2017
+    // var month = req.query.month;//03
     var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
     var date_end = req.query.date_end + "T00:00:00+07:00";
-    var group_id = req.query.group_id;
+
+    var param = req.query;
+    param.year = Number(param.year) + 543;
 
     r.db('welfare').table('history_welfare')
         .filter(function (f) {
@@ -1718,29 +1703,80 @@ exports.welfare4 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ 'group_id': group_id })
+        .filter({ 'group_id': param.group_id })
         .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
+        .filter({ 'personal_id': param.personal_id })
+        .filter({ 'faculty_id': param.faculty_id })
+        .filter({ 'type_employee_id': param.type_employee_id })
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck("left", { right: 'prefix_name' }).zip()
         .merge(function (name_merge) {
             return {
                 name: name_merge('prefix_name').add(name_merge('firstname')).add('  ', name_merge('lastname'))
             }
         })
+        .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck("left", { right: 'faculty_name' }).zip()
+        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip()
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
-        .pluck('budget_use', 'group_welfare_name', 'id', 'name', 'faculty_id', 'type_employee_id', 'group_id')
+        .pluck('budget_use', 'group_welfare_name', 'id', 'name', 'faculty_id', 'type_employee_id', 'group_id', 'date_approve', 'faculty_name', 'type_employee_name', 'personal_id')
         .run()
         .then(function (result) {
             if (req.query.res_type == 'json') {
-            res.json(result);
+                res.json(result);
             }
-            var parameters = {
-                CURRENT_DATE: new Date().toISOString().slice(0, 10),
-                // SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
-                date_start: date_start,
-                date_end: date_end,
-                faculty_name:req.query.faculty_name,
-                type_employee_name:req.query.type_employee_name,
-            };
-            res.ireport("welfare4.jasper", req.query.export || "pdf", result, parameters);
+            if (result.length > 0) {
+                param.employee_name = result[0].name;
+            }
+            param = keysToUpper(param);
+
+            // res.json(param);
+            res.ireport("welfare4.jasper", req.query.export || "pdf", result, param);
         });
+}
+exports.welfare5 = function (req, res) {
+    var r = req.r
+
+    // var year = req.query.year;//2017
+    // var month = req.query.month;//03
+    var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
+    var date_end = req.query.date_end + "T00:00:00+07:00";
+    // var group_id = req.query.group_id;
+    // var faculty_id = req.query.faculty_id;
+    // var type_employee_id = req.query.type_employee_id;
+    // var personal_id = req.query.personal_id;
+    var param = req.query;
+    param.year = Number(param.year) + 543;
+
+    r.db('welfare').table('history_welfare')//.getAll(req.query.group_id, { index: 'group_id' })
+        .filter(function (f) {
+            return f('date_approve').date().during(
+                r.ISO8601(date_start),
+                r.ISO8601(date_end),
+                { rightBound: "closed" }
+            )
+        })
+        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck({ left: 'budget_use' }, { right: 'faculty_id' }).zip()
+        .group('faculty_id').sum('budget_use').ungroup()
+        .eqJoin('group', r.db('welfare_common').table('faculty')).pluck({ left: 'reduction' }, { right: 'faculty_name' }).zip()
+        .merge(function (m) {
+            return {
+                sum_budget: m('reduction')
+            }
+        }).without('reduction')
+        .run()
+        .then(function (result) {
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
+            param = keysToUpper(param);
+            res.ireport("welfare5.jasper", req.query.export || "pdf", result, param);
+        });
+}
+
+function keysToUpper(param) {
+    var keyname = Object.keys(param);
+    for (var i = 0; i < keyname.length; i++) {
+        param[keyname[i].toUpperCase()] = param[keyname[i]];
+        delete param[keyname[i]];
+    }
+    return param;
 }

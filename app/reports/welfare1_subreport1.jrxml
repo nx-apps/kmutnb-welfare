@@ -16,7 +16,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField pattern="#,##0.00">
-				<reportElement x="187" y="0" width="147" height="20" uuid="7bf31ae8-45fc-463d-96af-58c898be4910"/>
+				<reportElement stretchType="RelativeToBandHeight" x="187" y="0" width="147" height="20" uuid="7bf31ae8-45fc-463d-96af-58c898be4910"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -30,13 +30,13 @@
 				<textFieldExpression><![CDATA[$F{sum_budget_use}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="187" height="20" uuid="8a8ad057-2f49-40a2-a4d1-b343020b9185"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="187" height="20" uuid="8a8ad057-2f49-40a2-a4d1-b343020b9185"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
+					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
