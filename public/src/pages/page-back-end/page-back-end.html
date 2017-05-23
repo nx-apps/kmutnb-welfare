@@ -3,6 +3,7 @@
 <link rel="import" href="components/logic-panel.html">
 <link rel="import" href="components/list-of-logic.html">
 <link rel="import" href="./components/list-welfare-common.html">
+<link rel="import" href="./components/system-setting.html">
 <link rel="import" href="./components/common-components/academic-manage.html">
 <link rel="import" href="./components/common-components/active-manage.html">
 <link rel="import" href="./components/common-components/department-manage.html">
@@ -13,6 +14,7 @@
 <link rel="import" href="./components/common-components/prefixname-manage.html">
 <link rel="import" href="./components/common-components/relation-manage.html">
 <link rel="import" href="./components/common-components/TypeEmployee-manage.html">
+
 
 <dom-module id="page-back-end">
     <style include="iron-flex iron-flex-factors iron-flex-alignment page-style">
@@ -90,12 +92,14 @@
         }
         
         #tab1:checked~#content1,
-        #tab2:checked~#content2 {
+        #tab2:checked~#content2,
+        #tab3:checked~#content3  {
             display: block;
         }
         
         list-of-logic,
-        list-welfare-common {
+        list-welfare-common,
+        system-setting {
             margin-top: 15px;
             width: 98%;
         }
@@ -116,6 +120,10 @@
 
                 <input id="tab2" type="radio" name="tabs">
                 <label for="tab2">ข้อมูลพื้นฐาน</label>
+
+                <input id="tab3" type="radio" name="tabs">
+                <label for="tab3">ตั้งค่าระบบ</label>
+
                 <section id="content1">
                     <paper-material elevation="1">
                         <div class="list horizontal center-justified layout">
@@ -128,6 +136,13 @@
                     <paper-material elevation="1">
                         <div class="list horizontal center-justified layout">
                             <list-welfare-common></list-welfare-common>
+                        </div>
+                    </paper-material>
+                </section>
+                <section id="content3">
+                    <paper-material elevation="1">
+                        <div class="list horizontal center-justified layout">
+                            <system-setting></system-setting>
                         </div>
                     </paper-material>
                 </section>
@@ -184,7 +199,7 @@
     <script>
         Polymer({
             is: 'page-back-end',
-            behaviors: [nylonBehavior, ReduxBehavior, conditionReadWelfareAction, commonDataAction],
+            behaviors: [nylonBehavior, ReduxBehavior, conditionReadWelfareAction, commonDataAction,systemConfigsAction,dateDbAction],
             properties: {
                 data: {
                     statePath: 'conditionReadWelfare.select'
@@ -194,6 +209,8 @@
                 this.dispatchAction('CONDITIONREADWELFARE_LIST');
                 this.dispatchAction('CONDITIONREADWELFARE_TABLE_LIST');
                 this.dispatchAction('CONDITIONREADWELFARE_FIEID_LIST');
+                this.dispatchAction('GET_SYSTEM_CONFIG');
+                this.GET_DATE()
                 this.COMMONDATA_DATA_ACADEMIC();
                 this.COMMONDATA_DATA_ACTIVE();
                 this.COMMONDATA_DATA_DEPARTMENT();

@@ -1,0 +1,61 @@
+<dom-module id="system-setting">
+    <template>
+        <style include="page-style">
+             :host {
+                display: block;
+            }
+
+            .head-text {
+                font-size: var(--font-size-h4);
+                margin: 15px 15px 15px 15px;
+            }
+        </style>
+        <div class="head-text">
+            ตั้งค่าระบบ
+        </div>
+        <div class="content vertical start-justified layout">
+            <div class="flex ">
+                <div class="horizontal start-justified layout">
+                    <div class="flex">เปิดการแก้ไขข้อมูลพนักงาน :</div>
+                    <div class="flex-3">
+                        <div class="horizontal start-justified layout">
+                            <paper-toggle-button checked={{data.employee_edit}}></paper-toggle-button>
+                            <span>{{setText(data.employee_edit)}}</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="flex">
+                <div class="horizontal end-justified layout">
+                    <paper-button raised class="gl-btn-primary" on-tap="updateSystem"> บันทึกการตั้งค่า</paper-button>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'system-setting',
+            behaviors: [ReduxBehavior],
+            properties: {
+                data: {
+                    statePath: 'systemConfigs.config',
+                    observer: 'setw'
+                },
+            },
+            setw(data) {
+                // console.log(data);
+            },
+            updateSystem() {
+                this.dispatchAction('UPDATE_SYSTEM_CONFIG', this.data);
+                // console.log(this.data);
+            },
+            setText(data) {
+                if (data === true)
+                    return 'เปิดการแก้ไข'
+                return 'ปิดการแก้ไข'
+            }
+
+        });
+    </script>
+</dom-module>

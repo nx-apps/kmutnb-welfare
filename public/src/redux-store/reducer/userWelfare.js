@@ -252,6 +252,7 @@ export function userWelfareAction(store) {
                 text: 'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
                 confirmed: (result) => {
                     if (result == true) {
+                        // this.disabled = true;
                         this.fire('toast', { status: 'load' })
                         clearData(data, (newData) => {
                             this.fire('toast', { status: 'load' });

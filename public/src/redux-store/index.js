@@ -15,7 +15,7 @@ import {uploadReducer,uploadAction} from './reducer/upload'
 import {fundRvdReducer,fundRvdAction} from './reducer/fundRvd'
 import {dateDbReducer,dateDbAction} from './reducer/dateDb'
 import {chartReducer,chartAction} from './reducer/chart'
-
+import {systemConfigsReducer,systemConfigsAction} from './reducer/systemConfigs'
 
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
@@ -30,7 +30,8 @@ const rootReducer = combineReducers({
     upload:uploadReducer,
     fundRvd: fundRvdReducer,
     dateDb: dateDbReducer,
-    chart: chartReducer
+    chart: chartReducer,
+    systemConfigs: systemConfigsReducer,
 });
 const storeApp = createStore(
     rootReducer,
@@ -53,3 +54,4 @@ window.uploadAction = uploadAction(storeApp);
 window.fundRvdAction = fundRvdAction(storeApp);
 window.dateDbAction = dateDbAction(storeApp);
 window.chartAction = chartAction(storeApp);
+window.systemConfigsAction = systemConfigsAction(storeApp);

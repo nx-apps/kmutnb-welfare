@@ -1,6 +1,7 @@
 <link rel="import" href="./../components/panel-right/panel-right.html">
 <link rel="import" href="./../components/page-style.html">
 <link rel="import" href="./../components/format-number-behavior.html">
+<link rel="import" href="./../components/month-behavior.html">
 <!--<link rel="import" href="./components/user-list-unapprove.html">
 <link rel="import" href="./components/rvd-approve.html">-->
 
@@ -79,22 +80,22 @@
     </style>
     <template>
         <div class="xcontainer">
-            <div>
+            <!--<div>
                 <div>
                     <div class="header-page container">สถิติ</div>
                 </div>
-                <!--<chart-search></chart-search>-->
-            </div>
+                <chart-search></chart-search>
+            </div>-->
             <div class="flex-equal-justified">
 
                 <div>
-                    <div class="header-page container">รายการคำขอใช้</div>
+                    <div class="header-page container">ประวัติคำขอใช้</div>
                 </div>
                 <div class="container">
                     <paper-dropdown-menu no-label-float>
                         <paper-listbox class="dropdown-content" selected="{{pageComponents}}">
                             <paper-item>สวัสดิการ</paper-item>
-                            <paper-item>กองทุนสำรองเลี้ยงชีพ</paper-item>
+                            <!--<paper-item>กองทุนสำรองเลี้ยงชีพ</paper-item>-->
                         </paper-listbox>
                     </paper-dropdown-menu>
                 </div>
@@ -116,7 +117,7 @@
             is: 'page-admin-approve',
             behaviors: [
                 ReduxBehavior, nylonBehavior, usersAction, fundRvdAction, userWelfareAction
-                ,dateDbAction,chartAction
+                ,dateDbAction,chartAction, commonDataAction
             ],
             properties: {
                 pageComponents: {
@@ -128,11 +129,12 @@
             nylonPageActive() {
                 this.dispatchAction('WELFARE_LIST_YEAR');
                 this.dispatchAction('GET_DATE')
-                // this.dispatchAction('TEST')
-                // console.log(111);
-                // this.dispatchAction('USERS_FALSE_LIST','');
-                 this.dispatchAction('USERS_LIST_HISTORY_WELFARE','');
-                this.FUND_RVD_GET_USER_LIST();
+                this.WELFARE_LIST_YEAR();
+                this.COMMONDATA_DATA_FACULTY();
+                this.COMMONDATA_DATA_TYPE_EMPLOYEE();
+                this.COMMONDATA_DATA_DEPARTMENT()
+                //  this.dispatchAction('USERS_LIST_HISTORY_WELFARE','');
+                // this.FUND_RVD_GET_USER_LIST();
 
             }
         });

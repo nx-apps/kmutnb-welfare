@@ -4,6 +4,8 @@
 
 <link rel="import" href="./welfare/history-of-use-welfare.html">
 
+<link rel="import" href="./welfare/history-search.html">
+
 <dom-module id="list-of-welfare">
     <template>
         <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -65,7 +67,8 @@
                 display: block;
             }
             
-            history-of-use-welfare {
+            history-of-use-welfare,
+            history-search {
                 margin-top: 15px;
                 width: 98%;
             }
@@ -99,7 +102,8 @@
 
             <section id="content1">
                 <paper-material elevation="1">
-                    <div class="list horizontal center-justified layout">
+                    <div class="list vertical center justified layout">
+                        <history-search></history-search>
                         <history-of-use-welfare></history-of-use-welfare>
                     </div>
                 </paper-material>
