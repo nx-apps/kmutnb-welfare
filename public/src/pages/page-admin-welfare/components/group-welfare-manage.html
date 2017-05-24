@@ -122,9 +122,17 @@
                 // console.log(check);
                 if(check == true){
                     if (typeof this.data.id != 'undefined' && this.data.id != '') {
-                        this.data.year = this.unFormat(this.data.year);
-                        this.dispatchAction('EDIT_WELFARE', this.data);
-                        this.isEnable = true;
+                        this.fire('toast', {
+                            status: 'openDialog',
+                            text: 'ต้องการแก้ไขสวัสดิการใช่หรือไม่ ?',
+                            confirmed: (result) => {
+                                if (result == true) {
+                                    this.data.year = this.unFormat(this.data.year);
+                                    this.dispatchAction('EDIT_WELFARE', this.data);
+                                    this.isEnable = true;
+                                }
+                            }
+                        })
                     }
                     else {
                         this.data.year = this.unFormat(this.data.year);
@@ -136,7 +144,15 @@
                             this.data.admin_use = false;
                         }
                         // console.log(this.data);
-                        this.dispatchAction('INSERT_WELFARE', this.data)
+                        this.fire('toast', {
+                            status: 'openDialog',
+                            text: 'ต้องการเพิ่มสวัสดิการใช่หรือไม่ ?',
+                            confirmed: (result) => {
+                                if (result == true) {
+                                    this.dispatchAction('INSERT_WELFARE', this.data)
+                                }
+                            }
+                        })
                     }
                 }
                 else{

@@ -36,7 +36,7 @@ exports.list = function (req, res) {
                                 .merge(function (wel_merge) {
                                     return {
                                         condition: wel_merge('condition').without('logic_show', 'value_show')
-                                            /*.eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()*/
+                                        /*.eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()*/
                                     }
                                 })
                                 .merge(function (wel_merge) {
@@ -67,7 +67,7 @@ exports.list = function (req, res) {
                                             .group('id').count().ungroup()
                                             .filter(function (emp_filter) {
                                                 return r.branch(wel_merge('countCon').eq(0),
-                                                    emp_filter('reduction').eq(wel_merge('countCon').add(1)),
+                                                    emp_filter('reduction').eq(wel_merge('countCon')),/*.add(1)*/
                                                     emp_filter('reduction').eq(wel_merge('countCon'))
                                                 )
                                             }).count()
@@ -542,7 +542,39 @@ exports.cloneData = function (req, res) {
                 )
             })
     })
-    .then(function(result){
-        res.json(result);
+        .then(function (result) {
+            res.json(result);
+        })
+}
+exports.updateGroup = function (req, res) {
+    var r = req.r
+    for (var i = 0; i < req.body.length; i++) {
+        req.body[i] = Object.assign(req.body[i],
+            {
+                condition: req.body[i].condition.map(function (m) {
+                    var change_value = {};
+                    if (m.logic == ">" || m.logic == "<" || m.logic == ">=" || m.logic == "<=") {
+                        change_value = r.ISO8601(m.value).inTimezone('+07');
+                    } else {
+                        change_value = m.value;
+                    }
+                    return {
+                        field: m.field,
+                        field_name: m.field_name,
+                        logic: m.logic,
+                        logic_show: m.logic_show,
+                        value: change_value,
+                        value_show: m.value_show
+                    }
+                })
+            }
+        );
+    }
+    var welfare = req.body;
+    r.expr(welfare).forEach(function (fe) {
+        return r.db('welfare').table('welfare').get(fe('id')).update(fe)
     })
+        .then(function (result) {
+            res.json(result);
+        })
 }

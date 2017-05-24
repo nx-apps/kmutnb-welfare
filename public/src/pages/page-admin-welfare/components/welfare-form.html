@@ -313,11 +313,11 @@
                                 // console.log(data.logic_show);
                                 if (data.logic_show.search(">") >= 0) {
                                     var d = this.date.cal_date.split("-");
-                                    data.value = new Date((parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz).toISOString();
+                                    data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz;
                                     data.logic = data.logic_show.replace(">", "<");
                                 } else if (data.logic_show.search("<") >= 0) {
                                     var d = this.date.cal_date.split("-");
-                                    data.value = new Date((parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz).toISOString();
+                                    data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz;
                                     data.logic = data.logic_show.replace("<", ">");
                                 }
                             }
@@ -331,26 +331,44 @@
                         let {field, logic, logic_show, value, value_show} = item;
                         let newitem = { field, logic, logic_show, value, value_show }
                         newitem.field = field.id;
+                        newitem.field_name = field.field;
                         return newitem
                     })
                     newData.condition = setCondition;    
-                    // console.log(newData);           
+                    // console.log(newData);   
                     if (typeof this.data.id == 'undefined') {
-                        newData.status = true;
-                        //  console.log(newData);
-                        var year = new Date().getFullYear();
-                        this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
-                            this.fire('refresh_group',year);
-                            this.fire('back');
+                        this.fire('toast', {
+                            status: 'openDialog',
+                            text: 'ต้องการเพิ่มเงื่อนไขใช่หรือไม่ ?',
+                            confirmed: (result) => {
+                                if (result == true) {
+                                    newData.status = true;
+                                    //  console.log(newData);
+                                    var year = new Date().getFullYear();
+                                    this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
+                                        // this.fire('refresh_group',year);
+                                        this.fire('back');
+                                    })
+                                }
+                            }
                         })
                     }
                     else {
-                        newData.status = this.data.status
-                        newData.id=this.data.id;
-                        // console.log(newData);
-                        this.dispatchAction('WELFARE_EDIT', newData);
-                        this.isEnable = true;
-                        // this.fire('back');
+                        this.fire('toast', {
+                            status: 'openDialog',
+                            text: 'ต้องการแก้ไขเงื่อนไขใช่หรือไม่ ?',
+                            confirmed: (result) => {
+                                if (result == true) {
+                                    newData.status = this.data.status
+                                    newData.id=this.data.id;
+                                    // console.log(newData);
+                                    this.dispatchAction('WELFARE_EDIT', newData).then((val)=>{
+                                        this.isEnable = true;
+                                    })
+                                    // this.fire('back');
+                                }
+                            }
+                        })
                     }
                 }
             },

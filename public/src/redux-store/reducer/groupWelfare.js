@@ -72,9 +72,9 @@ export function groupWelfareAction(store) {
             let { year, start_date, end_date, cal_date, group_welfare_name, admin_use, description, onetime, status_approve } = data;
             let newData = { year, group_welfare_name, admin_use, description, onetime, status_approve };
             var tz = "T00:00:00+07:00";
-            newData.start_date = new Date(data.start_date + tz).toISOString();
-            newData.end_date = new Date(data.end_date + tz).toISOString();
-            newData.cal_date = new Date(data.cal_date + tz).toISOString();
+            newData.start_date = data.start_date + tz;
+            newData.end_date = data.end_date + tz;
+            newData.cal_date = data.cal_date + tz;
             // console.log(newData);
             this.fire('toast', { status: 'load' });
             axios.post(`./group/welfare/insert`, newData)
@@ -122,23 +122,24 @@ export function groupWelfareAction(store) {
             let { id, year, start_date, end_date, cal_date, group_welfare_name, admin_use, description, onetime } = data;
             let newData = { id, year, group_welfare_name, admin_use, description, onetime };
             var tz = "T00:00:00+07:00";
-            newData.start_date = new Date(data.start_date + tz).toISOString();
-            newData.end_date = new Date(data.end_date + tz).toISOString();
-            newData.cal_date = new Date(data.cal_date + tz).toISOString();
+            newData.start_date = data.start_date + tz;
+            newData.end_date = data.end_date + tz;
+            newData.cal_date = data.cal_date + tz;
             // console.log(newData);
-            // this.fire('toast', { status: 'load' });
-            // axios.put(`./group/welfare/update`, newData)
-            //     .then((result) => {
-            //         this.fire('toast', {
-            //             status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-            //                 this.LIST_WELFARE(newData.year - 543);
-            //                 // console.log('success');
-            //             }
-            //         });
-            //     })
-            //     .catch((err) => {
-            //         // console.log(err);
-            //     })
+            this.fire('toast', { status: 'load' });
+            axios.put(`./group/welfare/update`, newData)
+            .then((result) => {
+                this.fire('toast', {
+                    status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+                        this.LIST_WELFARE(newData.year - 543);
+                        // console.log('success');
+                    }
+                });
+            })
+            .catch((err) => {
+                // console.log(err);
+            })
+
             axios.get('/group/welfare/' + newData.id)
                 .then((result) => {
                     // console.log(result.data);
@@ -147,7 +148,7 @@ export function groupWelfareAction(store) {
                         // console.log(data[i].condition);
                         var condition = data[i].condition;
                         var arr = [];
-                        var tz = "T00:00:00+07:00";
+                        // var tz = "T00:00:00+07:00";
                         for(var j = 0; j < condition.length; j++){
                             var data2 = condition[j];
                             // console.log(data2);
@@ -155,11 +156,11 @@ export function groupWelfareAction(store) {
                             if (search != -1) {
                                 if (data2.logic_show.search(">") >= 0) {
                                     var d = newData.cal_date.split("-");
-                                    data2.value = new Date((parseInt(d[0]) - parseInt(data2.value_show)) + "-" + d[1] + "-" + d[2].split("T")[0] + tz).toISOString();
+                                    data2.value = (parseInt(d[0]) - parseInt(data2.value_show)) + "-" + d[1] + "-" + d[2].split("T")[0] + tz;
                                     data2.logic = data2.logic_show.replace(">", "<");
                                 } else if (data2.logic_show.search("<") >= 0) {
                                     var d = newData.cal_date.split("-");
-                                    data2.value = new Date((parseInt(d[0]) - parseInt(data2.value_show)) + "-" + d[1] + "-" + d[2].split("T")[0] + tz).toISOString();
+                                    data2.value = (parseInt(d[0]) - parseInt(data2.value_show)) + "-" + d[1] + "-" + d[2].split("T")[0] + tz;
                                     data2.logic = data2.logic_show.replace("<", ">");
                                 }
                             }
@@ -170,15 +171,21 @@ export function groupWelfareAction(store) {
                             arr.push(data2);
                             // console.log(arr);
                         }
-                        var setCondition = arr.map((item)=>{
-                            let {field, field_name, logic, logic_show, value, value_show} = item;
-                            let newitem = { field, field_name, logic, logic_show, value, value_show }
-                            return newitem
-                        })
-                        // console.log(setCondition);
-                        data[i].condition = setCondition;
+                        data[i].condition = arr;
                     }
-                    console.log(result.data.welfare);
+                    var setWelfare = data.map((item) => {
+                                        let {budget, condition, group_id, id, status, welfare_name} = item;
+                                        let newitem = { budget, condition, group_id, id, status, welfare_name }
+                                        return newitem;
+                                    })
+                    // console.log(setWelfare);
+                    axios.put(`./group/welfare/updateGroup`, setWelfare)
+                    .then((result) => {
+                        // console.log(result);
+                    })
+                    .catch((err) => {
+                        // console.log(err);
+                    })
                 })
                 .catch(err => {
 

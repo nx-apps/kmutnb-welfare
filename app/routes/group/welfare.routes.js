@@ -10,4 +10,5 @@ module.exports = function (app) {
     app.get('/groupByYear/year/:year', controller.groupByYear);
     app.get('/adminEmployee/:groupId', controller.adminEmployee); 
     app.post('/clone', controller.cloneData);
+    app.put('/updateGroup', controller.updateGroup);
 }
