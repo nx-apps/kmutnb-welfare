@@ -322,9 +322,11 @@ export function usersAction(store) {
                 })
         },
         USERS_LIST_HISTORY_WELFARE(data = '') {
-            axios.get(`./history/search?` + data)
+            
+         axios.get(`./history/search?` + data)
                 .then(res => {
                     // console.log(res)
+                    
                     store.dispatch({ type: 'USERS_LIST_HISTORY_WELFARE', payload: res.data })
                 })
                 .catch(err => {

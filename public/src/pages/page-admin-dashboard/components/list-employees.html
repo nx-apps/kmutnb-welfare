@@ -106,7 +106,7 @@
                     </div>
                 </template>
                 <template>
-                    <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[item.start_work_date_cal]] 
+                    <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[item.start_work_date_cal]]
                     </div>
                 </template>
                 <template class="footer">
@@ -161,20 +161,27 @@
     <script>
         Polymer({
             is: 'list-employees',
-            behaviors: [ReduxBehavior, nylonBehavior,FormatNumberBehavior,commonLogic],
+            behaviors: [ReduxBehavior, nylonBehavior, FormatNumberBehavior, commonLogic],
             properties: {
                 list_employees: {
                     statePath: 'users.lisyUserhistoryWelfare',
-                    observer: 'setYear'
+                    observer: 'setLoad'
                 },
             },
-            setYear(data){
-                // console.log(data);
+            setLoad(data) {
+
+                this.fire('toast', {
+                    status: 'success', text: 'โหลดสำเร็จ',
+                    callback: () => {
+                    }
+                });
+
             },
-            chagePageDetail(e){
+            chagePageDetail(e) {
                 var item = e.currentTarget.data;
                 var id = item.id;
-                window.open('https://localhost:3000/admin-manage/' + id);
+                // console.log(item);
+                window.open('/admin-manage/' + id);
             }
 
         });

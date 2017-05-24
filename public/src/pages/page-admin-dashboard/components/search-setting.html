@@ -20,8 +20,8 @@ pe
         </style>
         <div class="layout horizontal start-justified">
             <div class="flex" style=" margin-right: 30px">{{getGroupWelfare(data.year)}}
-                <gl-combo-box label="ปีสวัสดิการ" placeholder="ปีทั้งหมด" items="{{list_year}}" item-label-path="year"
-                    item-value-path="year" value="{{data.year}}">
+                <gl-combo-box label="ปีสวัสดิการ" placeholder="ปีทั้งหมด" items="{{list_year}}" item-label-path="year" item-value-path="year"
+                    value="{{data.year}}">
                     <template>
                         [[item.year]]
                     </template>
@@ -37,8 +37,8 @@ pe
                 </gl-combo-box>
             </div>
             <div class="flex">
-                <gl-combo-box label="ประเภทบุคคล" placeholder="ประเภทบุคคลทั้งหมด" items="{{list_type_employee}}"
-                    item-label-path="type_employee_name" item-value-path="id" value="{{data.type_employee_id}}">
+                <gl-combo-box label="ประเภทบุคคล" placeholder="ประเภทบุคคลทั้งหมด" items="{{list_type_employee}}" item-label-path="type_employee_name"
+                    item-value-path="id" value="{{data.type_employee_id}}">
                     <template>
                         [[item.type_employee_name]]
                     </template>
@@ -47,8 +47,8 @@ pe
         </div>
         <div class="layout horizontal start-justified">
             <div class="flex-2" style=" margin-right: 30px">{{getdepartment(data.faculty_id)}}
-                <gl-combo-box label="คณะ" placeholder="คณะทั้งหมด" items="{{list_faculty}}" item-label-path="faculty_name"
-                    item-value-path="id" value="{{data.faculty_id}}">
+                <gl-combo-box label="คณะ" placeholder="คณะทั้งหมด" items="{{list_faculty}}" item-label-path="faculty_name" item-value-path="id"
+                    value="{{data.faculty_id}}">
                     <template>
                         [[item.faculty_name]]
                     </template>
@@ -73,7 +73,7 @@ pe
                 <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_end}}"></vaadin-date-picker>
             </div>
             <div class="flex-2">
-                <gl-form-input always-float-label label="รหัสบัตรประชาชน" minlength="13" maxlength="13" allowed-pattern="[0-9||,||.]" placeholder="รหัสบัตรประชาชน" on-input="searchTableListSearch"
+                <gl-form-input always-float-label label="รหัสบัตรประชาชน" minlength="13" maxlength="13" allowed-pattern="[0-9||,||.]" placeholder="รหัสบัตรประชาชน"
                     value="{{data.personal_id}}">
                 </gl-form-input>
             </div>
@@ -143,21 +143,16 @@ pe
                     this.set('data.department_id', '')
                     let newDepartment = this.list_faculty.find((fid) => fid.id === facultyId)
                     this.set('list_department', newDepartment.department)
-                    // console.log(newDepartment.department);
-                    //  this.dispatchAction('USERS_LIST_HISTORY_WELFARE',this.genUrl(this.data))
-                    // console.log(udF);
-                    // console.log(this.list_faculty);
-                    // console.log(this.list_department);
                 } catch (e) {
-
-                } finally {
 
                 }
 
             },
             search: function () {
                 // console.log(this.genUrl(this.data));
+                this.fire('toast', { status: 'load' })
                 this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.data))
+               
             }
         });
     </script>

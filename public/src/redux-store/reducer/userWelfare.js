@@ -13,14 +13,18 @@ const initialState = {
 }
 const clearData = (data, callback) => {
 
-    let { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id } = data;
-    let newData = { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id };
+    let { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id,
+        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name } = data;
+    let newData = {
+        prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id,
+        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name
+    };
     // newData.period = new Array();
     // data.period.map((tag)=>{
     //     newData.period.push({no:tag.no,quality:tag.quality});
     // });
-    newData.start_work_date = new Date(data.start_work_date).toISOString();
-    newData.birthdate = new Date(data.birthdate).toISOString();
+    newData.start_work_date = data.start_work_date+'T00:00:00+07:00'
+    newData.birthdate = data.birthdate+'T00:00:00+07:00'
     callback(newData)
     // callback(data)
 }
@@ -285,19 +289,22 @@ export function userWelfareAction(store) {
                 confirmed: (result) => {
                     if (result == true) {
                         clearData(data, (newData) => {
-                            axios.post('./employee/insert', newData)
-                                .then(res => {
-                                    this.fire('toast', {
-                                        status: 'success', text: 'บันทึกสำเร็จ',
-                                        callback: () => {
-                                            this.LIST_USER();
-                                            this.fire('back_page');
-                                        }
-                                    });
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                })
+                            // console.log(newData);
+                                axios.post('./employee/insert', newData)
+                                    .then(res => {
+                                        this.fire('toast', {
+                                            status: 'success', text: 'บันทึกสำเร็จ',
+                                            callback: () => {
+                                                this.dispatchAction('USERS_LIST_HISTORY_WELFARE', '')
+                                                this.fire('close-panel-right');
+                                                // this.LIST_USER();
+                                                // this.fire('back_page');
+                                            }
+                                        });
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                    })
                         })
                     }
                     else {
