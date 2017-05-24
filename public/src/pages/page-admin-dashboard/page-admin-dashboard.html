@@ -199,7 +199,7 @@
                 if (checkUndefined(this.data.type_employee_id))
                     data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
                 // console.log(data.type_employee_name);
-                console.log(this.genUrl(data));
+                // console.log(this.genUrl(data));
                 window.open('/api/report/welfare' + idReport + '?' + this.genUrl(data));
                 // https://localhost:3000/api/report/welfare1?
             }

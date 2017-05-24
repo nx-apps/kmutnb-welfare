@@ -369,7 +369,7 @@ exports.listHistory = function (req, res) {
                 department_id: params.department_id,
                 faculty_id: params.faculty_id
             })
-            .pluck('id','birthdate', 'start_work_date', 'personal_id', 'prefix_name', 'firstname', 'lastname','type_employee_name')
+            .pluck('id', 'birthdate', 'start_work_date', 'personal_id', 'prefix_name', 'firstname', 'lastname', 'type_employee_name')
             .merge((use) => {
                 return {
                     birthdate_cal: calculateAge(use('birthdate')),
@@ -379,8 +379,10 @@ exports.listHistory = function (req, res) {
                     budget_use: 0,
                 }
             })
-            // console.log(params.personal_id);
+        // console.log(params.personal_id);
     } else {
+        var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
+        var date_end = req.query.date_end + "T00:00:00+07:00";
         querys = r.expr({
             employees: r.db('welfare').table('employee').getAll('ทำงาน', { index: 'active_name' })
                 .without('active_name', 'dob', 'emp_no')
@@ -433,12 +435,12 @@ exports.listHistory = function (req, res) {
             })
             .without('employees')
             .getField('welfare')
-            .merge((budget)=>{
-                return budget.merge((getBudget)=>{
+            .merge((budget) => {
+                return budget.merge((getBudget) => {
                     return {
-                        employee :  getBudget('employee').merge((setBudget)=>{
+                        employee: getBudget('employee').merge((setBudget) => {
                             return {
-                                budget:getBudget('budget')
+                                budget: getBudget('budget')
                             }
                         })
                     }
@@ -449,21 +451,28 @@ exports.listHistory = function (req, res) {
                 return l.add(r)
             })
             .group('group').ungroup()
-            .merge((getBudget)=>{
+            .merge((getBudget) => {
                 return {
-                    budget_cover:getBudget('reduction')(0)('budget')
+                    budget_cover: getBudget('reduction')(0)('budget')
                 }
             })
             .without('reduction')
             .eqJoin('group', r.db('welfare').table('employee')).zip()
-            .pluck('birthdate', 'start_work_date','id' ,'personal_id','budget_cover', 'prefix_name', 'firstname', 'lastname','type_employee_name')
-            .merge((his)=>{
+            .pluck('birthdate', 'start_work_date', 'id', 'personal_id', 'budget_cover', 'prefix_name', 'firstname', 'lastname', 'type_employee_name')
+            .merge((his) => {
                 return {
-                    group_id : params.group_id,
-                    budget_use : r.db('welfare').table('history_welfare').getAll(his('id'), { index: 'emp_id' })
-                             .filter({ group_id: params.group_id,status: true })
-                             .coerceTo('array')
-                             .sum('budget_use')
+                    group_id: params.group_id,
+                    budget_use: r.db('welfare').table('history_welfare').getAll(his('id'), { index: 'emp_id' })
+                        // .filter(function (f) {
+                        //     return f('date_approve').date().during(
+                        //         r.ISO8601(date_start),
+                        //         r.ISO8601(date_end),
+                        //         { rightBound: "closed" }
+                        //     )
+                        // })
+                        .filter({ group_id: params.group_id, status: true })
+                        .coerceTo('array')
+                        .sum('budget_use')
                 }
             })
             .merge((use) => {
