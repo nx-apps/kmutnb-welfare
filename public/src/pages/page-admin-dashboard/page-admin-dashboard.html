@@ -36,6 +36,19 @@
                 width: 98%;
                 margin: 10px;
             }
+
+            gl-form-dropdown-menu {
+                width: 70%;
+            }
+
+            paper-item {
+                width: 100%;
+            }
+
+            .gl-btn-defalse {
+                margin: 0px 15px;
+                /*padding: 0px 15px;*/
+            }
         </style>
         <div class="xcontainer">
             <div class="flex-equal-justified">
@@ -46,7 +59,7 @@
             </div>
             <paper-material elevation="1">
                 <div class="title">ค้นหา</div>
-                <search-setting></search-setting>
+                <search-setting data="{{data}}"></search-setting>
             </paper-material>
             <div class="horizontal end-justified layout">
                 <!--<paper-button raised class="gl-btn-info" on-tap="_print">
@@ -57,22 +70,96 @@
                 </paper-button>
             </div>
             <paper-material elevation="1">
+                <div class="horizontal end-justified layout">
+                    <div class="">
+                        <gl-form-dropdown-menu always-float-label label="ประเภทรายงาน" placeholder="ประเภทรายงาน" style="margin-top:15px;width:100%;">
+                            <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_type}}">
+                                <template is="dom-repeat" items={{typeReport}}>
+                                    <paper-item value="[[item.report_id]]">[[item.report_name]]</paper-item>
+                                </template>
+                            </paper-menu>
+                        </gl-form-dropdown-menu>
+                    </div>
+                    <div class="horizontal layout center">
+                        <paper-button raised class="gl-btn-defalse" on-tap="_print">
+                            <iron-icon icon="print"></iron-icon> ออกรายงาน
+                        </paper-button>
+                    </div>
+
+                </div>
                 <div class="title">รายชื่อผู้มีสิทธิสวัสดิการ</div>
+
                 <list-employees></list-employees>
             </paper-material>
         </div>
         <panel-right id="test" title="{{title}}">
-                <employee-manage-add></employee-manage-add>
-            </panel-right>
+
+            <employee-manage-add></employee-manage-add>
+        </panel-right>
         <!--<welfare-report-search></welfare-report-search>-->
     </template>
     <script>
         Polymer({
             is: 'page-admin-dashboard',
-            behaviors: [ReduxBehavior, nylonBehavior, usersAction, userWelfareAction, commonDataAction],
+            behaviors: [ReduxBehavior, nylonBehavior, usersAction, userWelfareAction, commonDataAction, MonthBehavior],
             listeners: {
                 'back-page': 'changePage',
-                'close-panel-right':'closePanelRight'
+                'close-panel-right': 'closePanelRight'
+            },
+            properties: {
+                data: {
+                    type: Object,
+                },
+                typeReport: {
+                    type: Array,
+                    value: [
+                        {
+                            report_id: 0,
+                            report_name: 'รายงาน 1'
+                        },
+                        {
+                            report_id: 1,
+                            report_name: 'รายงาน 2'
+                        },
+                        {
+                            report_id: 2,
+                            report_name: 'รายงาน 3'
+                        },
+                        {
+                            report_id: 3,
+                            report_name: 'รายงาน 4'
+                        },
+                        {
+                            report_id: 4,
+                            report_name: 'รายงาน 5'
+                        },
+                        {
+                            report_id: 5,
+                            report_name: 'รายงาน 6'
+                        },
+                        {
+                            report_id: 6,
+                            report_name: 'รายงาน 6'
+                        },
+                        {
+                            report_id: 7,
+                            report_name: 'รายงาน 8'
+                        },
+                    ]
+                },
+                report_type: {
+                    type: Number,
+                    value: 0
+                },
+                list_welfare: {
+                    statePath: 'userWelfare.list_id'
+                },
+                list_faculty: {
+                    statePath: 'commonData.faculty'
+                },
+                list_type_employee: {
+                    statePath: 'commonData.type_employee'
+                },
             },
             nylonPageActive: function () {
                 // this.TESTS();
@@ -93,8 +180,28 @@
                 this.$$('panel-right').open();
                 this.CLEAR_INSERT();
             },
-            closePanelRight:function(){
+            closePanelRight: function () {
                 this.$$('panel-right').close();
+            },
+            _print: function () {
+                // this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.data))
+                let idReport = this.report_type + 1
+                // let data = this.data
+                // data.year = 
+                const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
+                const checkUndefined = (value) => value !== undefined && value !== ''
+                const data = JSON.parse(JSON.stringify(this.data))
+                data.year = data.year - 543
+                if (checkUndefined(this.data.group_id))
+                    data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
+                if (checkUndefined(this.data.faculty_id))
+                    data.faculty_name = getName(this.list_faculty, this.data.faculty_id).faculty_name
+                if (checkUndefined(this.data.type_employee_id))
+                    data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
+                // console.log(data.type_employee_name);
+                // console.log(this.genUrl(data));
+                window.open('/api/report/welfare' + idReport + '?' + this.genUrl(data));
+                // https://localhost:3000/api/report/welfare1?
             }
         });
     </script>

@@ -1,4 +1,4 @@
-pe
+
 <dom-module id="search-setting">
     <template>
         <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -111,7 +111,8 @@ pe
 
                 data: {
                     type: Object,
-                    value: {}
+                    value: {},
+                    notify:true
                 }
             },
             setYear: function (year) {
@@ -151,6 +152,7 @@ pe
             search: function () {
                 // console.log(this.genUrl(this.data));
                 this.fire('toast', { status: 'load' })
+                
                 this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.data))
                
             }
