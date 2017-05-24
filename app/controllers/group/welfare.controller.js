@@ -2,16 +2,16 @@ exports.list = function (req, res) {
     var checkLogic = function (select, row) {
         return r.branch(
             select('logic').eq('=='),
-            row(select('field')).eq(select('value')),
+            row(select('field_name')).eq(select('value')),
             select('logic').eq('>'),
-            row(select('field')).gt(select('value')),
+            row(select('field_name')).gt(select('value')),
             select('logic').eq('>='),
-            row(select('field')).ge(select('value')),
+            row(select('field_name')).ge(select('value')),
             select('logic').eq('<'),
-            row(select('field')).lt(select('value')),
+            row(select('field_name')).lt(select('value')),
             select('logic').eq('<='),
-            row(select('field')).le(select('value')),
-            row(select('field')).eq(select('value'))
+            row(select('field_name')).le(select('value')),
+            row(select('field_name')).eq(select('value'))
         )
     };
     var r = req.r
@@ -36,7 +36,7 @@ exports.list = function (req, res) {
                                 .merge(function (wel_merge) {
                                     return {
                                         condition: wel_merge('condition').without('logic_show', 'value_show')
-                                            .eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()
+                                            /*.eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()*/
                                     }
                                 })
                                 .merge(function (wel_merge) {
@@ -107,16 +107,16 @@ exports.listId = function (req, res) {
     var checkLogic = function (select, row) {
         return r.branch(
             select('logic').eq('=='),
-            row(select('field')).eq(select('value')),
+            row(select('field_name')).eq(select('value')),
             select('logic').eq('>'),
-            row(select('field')).gt(select('value')),
+            row(select('field_name')).gt(select('value')),
             select('logic').eq('>='),
-            row(select('field')).ge(select('value')),
+            row(select('field_name')).ge(select('value')),
             select('logic').eq('<'),
-            row(select('field')).lt(select('value')),
+            row(select('field_name')).lt(select('value')),
             select('logic').eq('<='),
-            row(select('field')).le(select('value')),
-            row(select('field')).eq(select('value'))
+            row(select('field_name')).le(select('value')),
+            row(select('field_name')).eq(select('value'))
         )
     };
 
@@ -140,8 +140,8 @@ exports.listId = function (req, res) {
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
                                 .merge(function (wel_merge) {
                                     return {
-                                        condition: wel_merge('condition').without('logic_show', 'value_show')
-                                            .eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()
+                                        condition: wel_merge('condition')/*.without('logic_show', 'value_show')
+                                            .eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()*/
                                     }
                                 })
                                 .merge(function (wel_merge) {
@@ -301,16 +301,16 @@ exports.adminEmployee = function (req, res) {
     var checkLogic = function (select, row) {
         return r.branch(
             select('logic').eq('=='),
-            row(select('field')).eq(select('value')),
+            row(select('field_name')).eq(select('value')),
             select('logic').eq('>'),
-            row(select('field')).gt(select('value')),
+            row(select('field_name')).gt(select('value')),
             select('logic').eq('>='),
-            row(select('field')).ge(select('value')),
+            row(select('field_name')).ge(select('value')),
             select('logic').eq('<'),
-            row(select('field')).lt(select('value')),
+            row(select('field_name')).lt(select('value')),
             select('logic').eq('<='),
-            row(select('field')).le(select('value')),
-            row(select('field')).eq(select('value'))
+            row(select('field_name')).le(select('value')),
+            row(select('field_name')).eq(select('value'))
         )
     };
     var r = req.r;
@@ -335,7 +335,7 @@ exports.adminEmployee = function (req, res) {
                     .merge(function (wel_merge) {
                         return {
                             condition: wel_merge('condition')
-                                .eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()
+                                /*.eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()*/
                                 .coerceTo('array')
                         }
                     })

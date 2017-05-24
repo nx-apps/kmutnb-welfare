@@ -43,7 +43,7 @@ export function groupWelfareAction(store) {
                 .then((result) => {
                     // console.log(result.data);
                     this.fire('toast', {
-                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+                        status: 'success', text: 'โหลดข้อมูลสำเร็จ', callback: () => {
                             store.dispatch({ type: 'LIST_WELFARE', payload: result.data })
                         }
                     });
@@ -58,7 +58,7 @@ export function groupWelfareAction(store) {
                 .then((result) => {
                     // console.log(result);
                     this.fire('toast', {
-                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+                        status: 'success', text: 'โหลดข้อมูลสำเร็จ', callback: () => {
                             store.dispatch({ type: 'LIST_WELFARE_ID', payload: result.data })
                         }
                     });
@@ -126,18 +126,62 @@ export function groupWelfareAction(store) {
             newData.end_date = new Date(data.end_date + tz).toISOString();
             newData.cal_date = new Date(data.cal_date + tz).toISOString();
             // console.log(newData);
-            this.fire('toast', { status: 'load' });
-            axios.put(`./group/welfare/update`, newData)
+            // this.fire('toast', { status: 'load' });
+            // axios.put(`./group/welfare/update`, newData)
+            //     .then((result) => {
+            //         this.fire('toast', {
+            //             status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+            //                 this.LIST_WELFARE(newData.year - 543);
+            //                 // console.log('success');
+            //             }
+            //         });
+            //     })
+            //     .catch((err) => {
+            //         // console.log(err);
+            //     })
+            axios.get('/group/welfare/' + newData.id)
                 .then((result) => {
-                    this.fire('toast', {
-                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-                            this.LIST_WELFARE(newData.year - 543);
-                            // console.log('success');
+                    // console.log(result.data);
+                    var data = result.data.welfare;
+                    for(var i = 0; i < data.length; i++){
+                        // console.log(data[i].condition);
+                        var condition = data[i].condition;
+                        var arr = [];
+                        var tz = "T00:00:00+07:00";
+                        for(var j = 0; j < condition.length; j++){
+                            var data2 = condition[j];
+                            // console.log(data2);
+                            var search = data2.field_name.search('date')
+                            if (search != -1) {
+                                if (data2.logic_show.search(">") >= 0) {
+                                    var d = newData.cal_date.split("-");
+                                    data2.value = new Date((parseInt(d[0]) - parseInt(data2.value_show)) + "-" + d[1] + "-" + d[2].split("T")[0] + tz).toISOString();
+                                    data2.logic = data2.logic_show.replace(">", "<");
+                                } else if (data2.logic_show.search("<") >= 0) {
+                                    var d = newData.cal_date.split("-");
+                                    data2.value = new Date((parseInt(d[0]) - parseInt(data2.value_show)) + "-" + d[1] + "-" + d[2].split("T")[0] + tz).toISOString();
+                                    data2.logic = data2.logic_show.replace("<", ">");
+                                }
+                            }
+                            else{
+                                data2.value = data2.value_show;
+                                data2.logic = data2.logic_show;
+                            }
+                            arr.push(data2);
+                            // console.log(arr);
                         }
-                    });
+                        var setCondition = arr.map((item)=>{
+                            let {field, field_name, logic, logic_show, value, value_show} = item;
+                            let newitem = { field, field_name, logic, logic_show, value, value_show }
+                            return newitem
+                        })
+                        // console.log(setCondition);
+                        data[i].condition = setCondition;
+                    }
+                    console.log(result.data.welfare);
                 })
-                .catch((err) => {
-                    // console.log(err);
+                .catch(err => {
+
                 })
         },
         SELECT_DATA: function (val) {
