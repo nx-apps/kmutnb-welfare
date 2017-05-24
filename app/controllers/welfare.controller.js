@@ -131,6 +131,7 @@ exports.insert = function (req, res) {
                     }
                     return {
                         field: m.field,
+                        field_name: m.field_name,
                         logic: m.logic,
                         logic_show: m.logic_show,
                         value: change_value,
@@ -171,6 +172,7 @@ exports.update = function (req, res) {
                 }
                 return {
                     field: m.field,
+                    field_name: m.field_name,
                     logic: m.logic,
                     logic_show: m.logic_show,
                     value: change_value,

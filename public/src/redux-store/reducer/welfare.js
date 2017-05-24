@@ -64,14 +64,14 @@ export function welfareAction(store) {
                     // console.log(result);
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-                            console.log('success');
+                            // console.log('success');
                             this.LIST_WELFARE_ID(data.group_id);
                             this.fire('refresh_group', year);
                         }
                     });
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                 })
         },
         WELFARE_DELETE: function (data) {
@@ -81,13 +81,13 @@ export function welfareAction(store) {
                     // console.log(result);
                     this.fire('toast', {
                         status: 'success', text: 'ลบสำเร็จ', callback: () => {
-                            console.log('success');
+                            // console.log('success');
                             this.LIST_WELFARE_ID(data.group_id);
                         }
                     });
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                 })
         },
         WELFARE_EDIT: function (data) {
@@ -106,8 +106,8 @@ export function welfareAction(store) {
                 .then((result) => {
                     // console.log(result);
                     this.fire('toast', {
-                        status: 'success', text: 'บันทึกสำเร็จ', callback: () =>  {
-                            console.log('success');
+                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+                            // console.log('success');
                             this.WELFARE_DATA_SELECT(data.id);
                             this.LIST_WELFARE_ID(data.group_id);
                             this.fire('refresh_group', year);
@@ -115,7 +115,7 @@ export function welfareAction(store) {
                     });
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                 })
         },
         WELFARE_DATA_SELECT: function (val) {
@@ -124,7 +124,7 @@ export function welfareAction(store) {
             // console.log(store.getState().welfare.condition);
             axios.get('/welfare/' + val)
                 .then(function (result) {
-                    console.log(result.data);
+                    // console.log(result.data);
                     // console.log("*",result.data);
                     var data = result.data.condition;
                     var condition = store.getState().welfare.condition;
