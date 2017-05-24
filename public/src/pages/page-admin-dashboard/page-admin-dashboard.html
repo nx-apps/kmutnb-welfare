@@ -4,7 +4,7 @@
 <link rel="import" href="./../components/month-behavior.html">
 <link rel="import" href="./components/search-setting.html">
 <link rel="import" href="./components/list-employees.html">
-
+<link rel="import" href="./components/employee-manage-add.html">
 <dom-module id="page-admin-dashboard">
     <template>
         <style include="page-style flex-style">
@@ -20,13 +20,16 @@
             .container {
                 padding: 20px;
             }
+
             paper-material {
                 margin-top: 20px;
             }
-            paper-material > .title {
+
+            paper-material>.title {
                 font-size: 20px;
                 padding: 15px;
             }
+
             search-setting,
             list-employees {
                 /*margin-top: 15px;*/
@@ -45,23 +48,54 @@
                 <div class="title">ค้นหา</div>
                 <search-setting></search-setting>
             </paper-material>
+            <div class="horizontal end-justified layout">
+                <!--<paper-button raised class="gl-btn-info" on-tap="_print">
+                            <iron-icon icon="print"></iron-icon> ออกรายงาน
+                        </paper-button>-->
+                <paper-button raised class="gl-btn-primary" on-tap="_insertEmployee">
+                    <iron-icon icon="add"></iron-icon>เพิ่มพนักงาน
+                </paper-button>
+            </div>
             <paper-material elevation="1">
                 <div class="title">รายชื่อผู้มีสิทธิสวัสดิการ</div>
                 <list-employees></list-employees>
             </paper-material>
         </div>
+        <panel-right id="test" title="{{title}}">
+                <employee-manage-add></employee-manage-add>
+            </panel-right>
         <!--<welfare-report-search></welfare-report-search>-->
     </template>
     <script>
         Polymer({
             is: 'page-admin-dashboard',
-            behaviors: [ReduxBehavior, nylonBehavior,usersAction,userWelfareAction,commonDataAction],
+            behaviors: [ReduxBehavior, nylonBehavior, usersAction, userWelfareAction, commonDataAction],
+            listeners: {
+                'back-page': 'changePage',
+                'close-panel-right':'closePanelRight'
+            },
             nylonPageActive: function () {
                 // this.TESTS();
                 this.WELFARE_LIST_YEAR();
-                this.COMMONDATA_DATA_FACULTY();
-                this.COMMONDATA_DATA_TYPE_EMPLOYEE();
+                this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
+                this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
+                this.dispatchAction('COMMONDATA_DATA_ACTIVE');
+                this.dispatchAction('COMMONDATA_DATA_FACULTY');
+                this.dispatchAction('COMMONDATA_DATA_GENDER');
+                this.dispatchAction('COMMONDATA_DATA_MATIER');
+                this.dispatchAction('COMMONDATA_DATA_POSITION');
+                this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
+                this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             },
+            _insertEmployee: function () {
+                // this.selected = 2;
+                this.set('title', 'เพิ่มสมาชิก')
+                this.$$('panel-right').open();
+                this.CLEAR_INSERT();
+            },
+            closePanelRight:function(){
+                this.$$('panel-right').close();
+            }
         });
     </script>
 </dom-module>

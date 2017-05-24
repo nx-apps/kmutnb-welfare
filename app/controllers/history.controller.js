@@ -97,14 +97,15 @@ exports.updateApproveWelfare = function (req, res) {
 exports.updateRejectWelfare = function (req, res) {
     var r = req.r;
     req.body.map((upStatus) => {
-        upStatus.date_approve = r.now().inTimezone('+07')
-        upStatus.status = "reject"
+        // upStatus.date_approve = r.now().inTimezone('+07')
+        upStatus.date_update = r.now().inTimezone('+07')
+        upStatus.status = false
     })
     // console.log('>>>>>>',req.body);
     r.expr(req.body).forEach(function (fe) {
         return r.db('welfare').table('history_welfare').get(fe('id'))
             .update({
-                date_approve: fe('date_approve'),
+                date_update: fe('date_update'),
                 status: fe('status')
             }, { nonAtomic: true })
     })
@@ -185,9 +186,9 @@ exports.adminApprove = function (req, res) {
     let date_approve = req.body.date_approve || new Date()
     req.body = Object.assign(req.body,
         {
-            date_approve: r.ISO8601(date_approve),
+            date_approve: r.ISO8601(date_approve),//.inTimezone('+07'),
             date_create: r.now().inTimezone('+07'),
-            date_use: r.ISO8601(date_approve)
+            date_use: r.ISO8601(date_approve),//.inTimezone('+07'),
         }
     );
 
@@ -358,7 +359,7 @@ exports.listHistory = function (req, res) {
     // faculty_id
     // type_employee_id
     // personal_id
-    console.log('sssssssssssssssssssss', params.group_id === undefined)
+    // console.log('sssssssssssssssssssss', params.group_id === undefined)
     let querys = ''
     if (req.query.group_id === undefined) {
         querys = r.db('welfare').table('employee').getAll('ทำงาน', { index: 'active_name' })
@@ -368,7 +369,7 @@ exports.listHistory = function (req, res) {
                 department_id: params.department_id,
                 faculty_id: params.faculty_id
             })
-            .pluck('birthdate', 'start_work_date', 'personal_id', 'prefix_name', 'firstname', 'lastname','type_employee_name')
+            .pluck('id','birthdate', 'start_work_date', 'personal_id', 'prefix_name', 'firstname', 'lastname','type_employee_name')
             .merge((use) => {
                 return {
                     birthdate_cal: calculateAge(use('birthdate')),
@@ -378,6 +379,7 @@ exports.listHistory = function (req, res) {
                     budget_use: 0,
                 }
             })
+            // console.log(params.personal_id);
     } else {
         querys = r.expr({
             employees: r.db('welfare').table('employee').getAll('ทำงาน', { index: 'active_name' })

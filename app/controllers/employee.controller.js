@@ -255,7 +255,8 @@ exports.welfaresYear = function (req, res) {
                     // })
                     .merge((check_budget) => {
                         return {
-                            budget_balance: check_budget('budget').sub(check_budget('budget_use'))
+                            budget_balance: check_budget('budget').sub(check_budget('budget_use')),
+                            
                         }
                     })
 
@@ -272,6 +273,7 @@ exports.welfaresYear = function (req, res) {
                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
                     .merge((mer_oneTime) => {
                         return {
+                            history_welfare_id: mer_oneTime('id'),
                             date_use: mer_oneTime('date_use').toISO8601().split('T')(0),
                             date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0),
                             status: mer_oneTime('status').eq(true).branch(' อนุญาติ', ' ยกเลิก'),
@@ -287,7 +289,7 @@ exports.welfaresYear = function (req, res) {
                             })
                         }
                     })
-                    .pluck('budget_use','date_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status','file')
+                    .pluck('history_welfare_id','budget_use','date_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status','file')
                     .coerceTo('array')
                     .orderBy(r.desc('date_approve'))
             }

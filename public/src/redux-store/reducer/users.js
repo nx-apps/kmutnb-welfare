@@ -243,7 +243,7 @@ export function usersAction(store) {
                 })
             // })
         },
-        USER_DELETE_USE_WELFARE(data, url = () => { }) {
+        USER_REJECT_USE_WELFARE(data, url = () => { }) {
             // clearDatawelfare(data, (newData) => {
             //     newData.id = data.id;
             this.fire('toast', { status: 'load' });
@@ -292,7 +292,7 @@ export function usersAction(store) {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ',
                         callback: () => {
-                            url()
+                            // url()
                         }
                     });
                 })
@@ -322,9 +322,11 @@ export function usersAction(store) {
                 })
         },
         USERS_LIST_HISTORY_WELFARE(data = '') {
-            axios.get(`./history/search?` + data)
+            
+         axios.get(`./history/search?` + data)
                 .then(res => {
                     // console.log(res)
+                    
                     store.dispatch({ type: 'USERS_LIST_HISTORY_WELFARE', payload: res.data })
                 })
                 .catch(err => {
