@@ -87,7 +87,7 @@
 			</textField>
 			<textField>
 				<reportElement x="535" y="0" width="50" height="20" uuid="d1712374-d17f-4dea-bed3-c3a8da825fd8"/>
-				<box leftPadding="2" rightPadding="0">
+				<box leftPadding="5" rightPadding="0">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
