@@ -90,7 +90,7 @@ export function userWelfareAction(store) {
         WELFARE_LIST_YEAR: function () {
             axios.get('./group/welfare/year')
                 .then(function (result) {
-                    // console.log(result.data);
+                    console.log(result.data);
                     store.dispatch({ type: 'WELFARE_LIST_YEAR', payload: result.data })
                 })
                 .catch(err => {
@@ -171,7 +171,7 @@ export function userWelfareAction(store) {
             // console.log(data);
             axios.get('./employee/' + data)
                 .then(function (result) {
-                    console.log(result.data);
+                    // console.log(result.data);
                     store.dispatch({ type: 'LIST_EMPLOYEE_WELFARE', payload: result.data })
                 })
                 .catch(err => {
@@ -182,7 +182,7 @@ export function userWelfareAction(store) {
             // console.log(data);
             axios.get('./employee/' + data.id + '/' + data.year)
                 .then(function (result) {
-                    console.log(data);
+                    // console.log(result.data);
                     // changeTime(result.date,+7,(data)=>{
                     //     console.log(data);
                     // })
@@ -198,7 +198,7 @@ export function userWelfareAction(store) {
             axios.get('./employee/' + id + '/' + year)
                 .then(res => {
                     // console.log(2);
-                    console.log(res.data);
+                    // console.log(res.data);
                     // store.dispatch({ type: 'EMPLOYEE_GET_WELFARES', payload: res.data })
                     this.fire('toast', {
                         status: 'success', text: 'โหลดข้อมูลสำเร็จ',

@@ -243,7 +243,7 @@ export function usersAction(store) {
                 })
             // })
         },
-        USER_DELETE_USE_WELFARE(data, url = () => { }) {
+        USER_REJECT_USE_WELFARE(data, url = () => { }) {
             // clearDatawelfare(data, (newData) => {
             //     newData.id = data.id;
             this.fire('toast', { status: 'load' });
@@ -292,7 +292,7 @@ export function usersAction(store) {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ',
                         callback: () => {
-                            url()
+                            // url()
                         }
                     });
                 })

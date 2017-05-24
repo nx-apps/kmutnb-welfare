@@ -97,14 +97,15 @@ exports.updateApproveWelfare = function (req, res) {
 exports.updateRejectWelfare = function (req, res) {
     var r = req.r;
     req.body.map((upStatus) => {
-        upStatus.date_approve = r.now().inTimezone('+07')
-        upStatus.status = "reject"
+        // upStatus.date_approve = r.now().inTimezone('+07')
+        upStatus.date_update = r.now().inTimezone('+07')
+        upStatus.status = false
     })
     // console.log('>>>>>>',req.body);
     r.expr(req.body).forEach(function (fe) {
         return r.db('welfare').table('history_welfare').get(fe('id'))
             .update({
-                date_approve: fe('date_approve'),
+                date_update: fe('date_update'),
                 status: fe('status')
             }, { nonAtomic: true })
     })

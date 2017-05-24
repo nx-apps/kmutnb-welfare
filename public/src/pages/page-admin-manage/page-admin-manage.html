@@ -75,7 +75,7 @@
                     </fieldset>
                     <div class="content horizontal start-justified layout">
                         [[setYear(year)]]
-                        <gl-combo-box label="ปีงบประมาณ" items="{{year}}" value="{{seleterYear}}" item-label-path="year" item-value-path="year" on-value-changed="gerYearWelfare"></gl-combo-box>
+                        <!--<gl-combo-box label="ปีงบประมาณ" items="{{year}}" value="{{seleterYear}}" item-label-path="year" item-value-path="year" on-value-changed="gerYearWelfare"></gl-combo-box>-->
 
 
                     </div>
@@ -144,7 +144,7 @@
                                     <th style="width: 10%">วันอนุมัติ</th>
                                     <th style="width: 10%">สถานะ</th>
                                     <th style="width: 25%">ไฟล์</th>
-
+                                    <th style="width: 25%">จัดการ</th>
                                 </tr>
                             </thead>
                             <tbody class="table-body">
@@ -176,6 +176,11 @@
                                             <template is="dom-if" if={{_ObIsHave(item.file)}}>
                                                 <div style="text-align: center;">ไม่ได้อัพโหลดไฟล์</div>
                                             </template>
+                                        </td>
+                                        <td style="text-align: left;">
+                                            
+                                            <paper-button raised class="gl-btn-danger" on-tap="btnCancel" data="[[item]]">ยกเลิก</paper-button>
+                                            
                                         </td>
                                     </tr>
                                 </template>
@@ -215,7 +220,7 @@
             is: 'page-admin-manage',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
                 commonLogic, userWelfareAction, uploadAction, commonDataAction,
-                MonthBehavior],
+                MonthBehavior,usersAction],
             listeners: {
                 'back-page': 'changePage',
                 'close-panel-right':'closePanelRight'
@@ -243,10 +248,11 @@
             },
             nylonPageActive: function () {
                 this.id = window.location.pathname.split('/')[2];
+                // console.log(this.id);
                 this.WELFARE_LIST_YEAR();
             },
             setDate(data){
-                console.log(data);
+                // console.log(data);
                 console.log(this.changeTime(data,+7));
             },
             changeTime:function(data,timeZone) {
@@ -259,7 +265,6 @@
                             data[index][prop] = new Date(time.setHours(time.getHours() + timeZone)).toISOString()
                             // console.log(new Date(data[index][prop]).toISOString());
                         }
-                        // console.log(typeof item[prop] === 'object');
                         if (typeof item[prop] === 'object')
                             this.changeTime(item[prop],timeZone)
                     }
@@ -270,7 +275,7 @@
                 if (year != '') {
                     var datas = {
                         id: id,
-                        year: year - 543
+                        // year: year - 543
                     }
                     this.dispatchAction('LIST_EMPLOYEES_WELFARE', datas);
                 }
@@ -278,8 +283,6 @@
             setYear(year) {
                 try {
                     this.set('seleterYear', year[year.length - 1].year)
-                    // console.log(year[year.length-1].year);
-                    // console.log(this.seleterYear);
                 } catch (error) {
 
                 }
@@ -294,13 +297,20 @@
             btnCancel(e){
                 // console.log(e.currentTarget.data);
                 let newData = [{id:e.currentTarget.data.history_welfare_id}]
+                // console.log(newData);
                 this.fire('toast', {
                     status: 'openDialog',
                     text: 'ต้องการยกเลิกการขอใช่หรือไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
-                            this.dispatchAction('USER_CANCEL_USE_WELFARE', newData);
-                            this.fire('_getReloadData','')
+                            this.dispatchAction('USER_REJECT_USE_WELFARE', newData)
+                            .then((el)=>{
+                                let id = window.location.pathname.split('/')[2];
+                                this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
+                                // console.log(222);
+                            })
+                            // console.log(11111);
+                            // this.fire('_getReloadData','')
                         }
                     }
                 })
@@ -312,6 +322,7 @@
                         var id = this.data.id;
                     if (typeof id != 'undefined') {
                         this.dispatchAction('EMPLOYEE_GET_WELFARES', id, e.detail.value - 543);
+                        console.log(66666);
                     }
                 }
             },
@@ -381,7 +392,7 @@
                 // }
             },
             downloadFile(e) {
-                console.log(e.currentTarget.data);
+                // console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id);
                 // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
             },
