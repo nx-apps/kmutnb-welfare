@@ -1,0 +1,67 @@
+<!--<link rel="import" href="./components/welfare-report-search.html">-->
+<link rel="import" href="./../components/panel-right/panel-right.html">
+<link rel="import" href="./../components/page-style.html">
+<link rel="import" href="./../components/month-behavior.html">
+<link rel="import" href="./components/search-setting.html">
+<link rel="import" href="./components/list-employees.html">
+
+<dom-module id="page-admin-dashboard">
+    <template>
+        <style include="page-style flex-style">
+             :host {
+                display: block;
+            }
+
+            * {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            .container {
+                padding: 20px;
+            }
+            paper-material {
+                margin-top: 20px;
+            }
+            paper-material > .title {
+                font-size: 20px;
+                padding: 15px;
+            }
+            search-setting,
+            list-employees {
+                /*margin-top: 15px;*/
+                width: 98%;
+                margin: 10px;
+            }
+        </style>
+        <div class="xcontainer">
+            <div class="flex-equal-justified">
+
+                <div>
+                    <div class="header-page container">สิทธิสวัสดิการ</div>
+                </div>
+            </div>
+            <paper-material elevation="1">
+                <div class="title">ค้นหา</div>
+                <search-setting></search-setting>
+            </paper-material>
+            <paper-material elevation="1">
+                <div class="title">รายชื่อผู้มีสิทธิสวัสดิการ</div>
+                <list-employees></list-employees>
+            </paper-material>
+        </div>
+        <!--<welfare-report-search></welfare-report-search>-->
+    </template>
+    <script>
+        Polymer({
+            is: 'page-admin-dashboard',
+            behaviors: [ReduxBehavior, nylonBehavior,usersAction,userWelfareAction,commonDataAction],
+            nylonPageActive: function () {
+                // this.TESTS();
+                this.WELFARE_LIST_YEAR();
+                this.COMMONDATA_DATA_FACULTY();
+                this.COMMONDATA_DATA_TYPE_EMPLOYEE();
+            },
+        });
+    </script>
+</dom-module>
