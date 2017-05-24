@@ -170,6 +170,11 @@
             },
             setYear(data){
                 // console.log(data);
+            },
+            chagePageDetail(e){
+                var item = e.currentTarget.data;
+                var id = item.id;
+                window.open('https://localhost:3000/admin-manage/' + id);
             }
 
         });
