@@ -67,7 +67,7 @@ exports.list = function (req, res) {
                                             .group('id').count().ungroup()
                                             .filter(function (emp_filter) {
                                                 return r.branch(wel_merge('countCon').eq(0),
-                                                    emp_filter('reduction').eq(wel_merge('countCon')),/*.add(1)*/
+                                                    emp_filter('reduction').eq(wel_merge('countCon').add(1)),
                                                     emp_filter('reduction').eq(wel_merge('countCon'))
                                                 )
                                             }).count()
