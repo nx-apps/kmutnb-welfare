@@ -43,6 +43,11 @@
                 height: 640px;
                 }
             }
+            paper-dialog[id="dialogInput"] {
+                --paper-dialog: {
+                width: 500px;
+                }
+            }
         </style>
         <div class="xcontainer">
             <div class="header-page">จัดการสวัสดิการ</div>
@@ -143,22 +148,26 @@
                             <tbody class="table-body">
                                 <template is="dom-repeat" items="{{data_clone}}">
                                     <tr style="cursor:pointer;">
-                                        <td style="text-align:center"><paper-checkbox on-tap="checkData" checked="{{item.check}}"></paper-checkbox></td>
-                                        <td style="text-align:left" on-tap="_checkedData">[[item.group_welfare_name]]</td>
+                                        <td style="text-align:center"><paper-checkbox on-tap="_checkData" checked="{{item.check}}"></paper-checkbox></td>
+                                        <td style="text-align:left" on-tap="_clickCheckedData">[[item.group_welfare_name]]</td>
                                     </tr>
                                 </template>
                             </tbody>
                         </table>
                     </template>
+                    {{_obChecked(data_clone.*)}}
                 </div>
                 <div class="buttons">
                     <paper-button dialog-dismiss autofocus>ยกเลิก</paper-button>
-                    <paper-button autofocus class="gl-btn-primary" on-tap="_submitClone">คัดลอก</paper-button>
+                    <paper-button autofocus class="gl-btn-primary" on-tap="_submitClone" hidden="{{isHidden}}">คัดลอก</paper-button>
                 </div>
             </paper-dialog>
 
             <paper-dialog id="dialogInput" modal>
-                <div>เป็นสวัสดิการปี</div>
+                <div class="horizontal end-justified layout">
+                    <paper-icon-button icon="icons:close"  dialog-dismiss></paper-icon-button>
+                </div>
+                <div style="font-size:18px; font-style:bold;">คัดลอกเป็นสวัสดิการปี</div>
                 <gl-form-input class="checkValidate" required label="ปี" allowed-pattern="[0-9]" 
                 maxlength="4" value="{{yearClone.year}}" placeholder="กรุณากรอกปี พ.ศ." on-keyup="_insertClone"></gl-form-input>
             </paper-dialog>
@@ -192,6 +201,10 @@
                     type: Boolean,
                     value: false
                     // observer: '_changeselectDataAll'
+                },
+                isHidden:{
+                    type: Boolean,
+                    value: true
                 }
             },
             listeners:
@@ -284,11 +297,10 @@
                 this.cloneGroupid = arr;
                 this.$.dialogInput.open();
             },
-            _checkedData:function(e){
+            _clickCheckedData:function(e){
                 var index = e.model.index;
                 if(this.data_clone[index].check === undefined || this.data_clone[index].check === false){
                     this.set(`data_clone.${index}.check`,!this.data_clone[index].check);
-                    ;
                 }else{
                     this.set(`data_clone.${index}.check`,!this.data_clone[index].check);
                 }
@@ -319,15 +331,30 @@
             },
             _obData:function(data){
                 if(data.length > 0){
+                    this.set('selectDataAll', false)
                     return true
                 }else{
                     return false
                 }
             },
-            checkData:function(e){
+            _checkData:function(e){
                 var index = e.model.index;
                 if(this.data_clone[index].check === false){
                     this.set('selectDataAll', false)
+                }
+            },
+            _obChecked:function(data){
+                try {
+                    var checkTrue = this.data_clone.filter((val) => {
+                                        return val.check == true
+                                    })
+                    if(checkTrue.length > 0){
+                        this.isHidden = false;
+                    }else{
+                        this.isHidden = true;
+                    }
+                } catch (error) {
+                    
                 }
             }
         });
