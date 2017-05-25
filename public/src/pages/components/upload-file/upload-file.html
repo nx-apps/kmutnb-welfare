@@ -104,27 +104,13 @@
               if(fileChange.path=='file.complete'){
                 if(fileChange.base.xhr){
                   var res = JSON.parse(fileChange.base.xhr.response);
-                  console.log(res.generated_keys[0]);
+                //   console.log(res.generated_keys[0]);
                   this.getData = res.generated_keys;
-                 
-                //   this.dispatchAction('UPLOAD_FILECHANGE',res.generated_keys[0]);
-                  // axios.get('/document_file/id/'+res.generated_keys[0])
-                  // .then((response)=> {
-                  //   this.fileIdUpload = response.data.file_id;
-                  //   // console.log(response.data.file_id);
-                  // })
-                  // // return res.generated_keys[0];
-                  // .catch((error)=> {
-                  //   // console.log("error");
-                  //   console.log(error);
-                  // })
                 }
               }
             },
             getList:function(){
-                // console.log(this.welfareId);
               if (this.refPath != {} && this.empId != '' && this.empId != undefined) {
-                // this.dispatchAction('UPLOAD_LISTFILE', this.refPath, this.requestId);
                 // axios.defaults.headers.common['ref-path'] = this.refPath;
                 // axios.defaults.headers.common['welfare-id'] = this.welfareId;
                 axios.get('/document/path/?emp_id='+this.empId+'&refPath='+this.refPath+'&welfareId='+this.welfareId)
@@ -132,7 +118,7 @@
                     this.listFiles = response.data;
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    // console.log(error);
                 });
               }
             },
@@ -157,7 +143,7 @@
                   idFile = this.fileIdUpload
                 }else{
                   idFile = e.target.fileId
-                  console.log("ID File = "+idFile);
+                //   console.log("ID File = "+idFile);
                 }
                 this.fire('toast',{status:'openDialog',
                 text:'คุณต้องการจะลบไฟล์ใช่หรือไม่ ?',

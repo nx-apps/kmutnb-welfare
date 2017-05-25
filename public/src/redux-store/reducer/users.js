@@ -28,21 +28,14 @@ const clearData = (data, callback) => {
 }
 const clearDatawelfare = (data, callback) => {
 
-    let { budget_balance,budget_cover,budget_use,emp_id,group_id,history_detail,status,welfare_id,date_use,date_approve } = data;
-    let newData = { budget_balance,budget_cover,budget_use,emp_id,group_id,history_detail,status,welfare_id,date_use,date_approve };
+    let { budget_balance, budget_cover, budget_use, emp_id, group_id, history_detail, status, welfare_id, date_use, date_approve } = data;
+    let newData = { budget_balance, budget_cover, budget_use, emp_id, group_id, history_detail, status, welfare_id, date_use, date_approve };
     // console.log(data.date/use_welfare/update_use == '');
 
     newData.document_ids = new Array()
     data.document_ids.map((file) => {
         newData.document_ids.push(file)
     })
-
-    // if (data.date_use == '' || data.date_use == undefined) {
-    //     newData.date_use = new Date().toISOString();
-    // } else {
-    //     // console.log(data.date_use);
-    //     newData.date_use = new Date(data.date_use).toISOString();
-    // }
     // console.log(newData);
     callback(newData)
 }
@@ -222,26 +215,35 @@ export function usersAction(store) {
         },
         USER_USE_WELFARE_APPROVE(data, url = () => { }) {
             // console.log(data);
-            // clearDatawelfare(data, (newData) => {
-            //     newData.id = data.id;
-            // console.log(data);
             this.fire('toast', { status: 'load' });
-
-            return axios.put(`./history/update/approve`, data)
+            let myFirstPromise = new Promise((resolve, reject) => {
+                let newData = data.map((item) => {
+                    clearDatawelfare(item, (newData) => {
+                        item = newData
+                    })
+                    return item
+                })
+                resolve(newData)
+            });
+            myFirstPromise.then((data) => {
+                // console.log(el);
+                axios.put(`./history/update/approve`, data)
                 .then(res => {
+                    console.log(res.data);
                     // this.dispatchAction('USERS_FALSE_LIST');
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ',
                         callback: () => {
                             // console.log(url);
-                            url()
+                            // url()
                         }
                     });
                 })
                 .catch(err => {
                     console.log(err);
                 })
-            // })
+            })
+            
         },
         USER_REJECT_USE_WELFARE(data, url = () => { }) {
             // clearDatawelfare(data, (newData) => {
@@ -322,11 +324,11 @@ export function usersAction(store) {
                 })
         },
         USERS_LIST_HISTORY_WELFARE(data = '') {
-            
-         axios.get(`./history/search?` + data)
+
+            axios.get(`./history/search?` + data)
                 .then(res => {
                     // console.log(res)
-                    
+
                     store.dispatch({ type: 'USERS_LIST_HISTORY_WELFARE', payload: res.data })
                 })
                 .catch(err => {

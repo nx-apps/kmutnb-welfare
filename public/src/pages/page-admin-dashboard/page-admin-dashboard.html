@@ -89,7 +89,7 @@
                 </div>
                 <div class="title">รายชื่อผู้มีสิทธิสวัสดิการ</div>
 
-                <list-employees></list-employees>
+                <list-employees data-check="{{data}}"></list-employees>
             </paper-material>
         </div>
         <panel-right id="test" title="{{title}}">
@@ -109,6 +109,7 @@
             properties: {
                 data: {
                     type: Object,
+
                 },
                 typeReport: {
                     type: Array,

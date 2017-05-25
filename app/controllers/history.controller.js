@@ -55,9 +55,9 @@ exports.requestWelfare = function (req, res) {
     let data = {
         date_use: r.now().inTimezone('+07')
     }
-    Object.assign(req.body, data)
+    // Object.assign(req.body, data)
 
-    console.log(req.body);
+    // console.log(req.body);
     var r = req.r;
     r.db('welfare').table('history_welfare').insert(req.body)('generated_keys')(0)
         .do((history_id) => {
@@ -76,13 +76,16 @@ exports.requestWelfare = function (req, res) {
 exports.updateApproveWelfare = function (req, res) {
     var r = req.r;
     req.body.map((upStatus) => {
-        upStatus.date_approve = r.now().inTimezone('+07')
-        upStatus.status = "approve"
+            upStatus.date_approve = r.ISO8601(date_approve)//.inTimezone('+07'),
+            upStatus.date_create = r.now().inTimezone('+07')
+            upStatus.date_use = r.ISO8601(date_approve)//.inTimezone('+07'),
     })
     r.expr(req.body).forEach(function (fe) {
         return r.db('welfare').table('history_welfare').get(fe('id'))
             .update({
                 date_approve: fe('date_approve'),
+                date_create: fe('date_create'),
+                date_use: fe('date_use'),
                 status: fe('status')
             }, { nonAtomic: true })
     })
@@ -142,7 +145,7 @@ exports.updateCancelWelfare = function (req, res) {
 exports.listUploadHistory = function (req, res) {
     var r = req.r;
     var params = req.params;
-    console.log(params.id);
+    // console.log(params.id);
     // console.log('params=>',params);
     r.db('welfare').table('history_welfare').get(params.id)
         .merge((doc_id) => {
@@ -182,8 +185,8 @@ exports.listUploadHistory = function (req, res) {
 }
 exports.adminApprove = function (req, res) {
     var r = req.r;
-    let date_use = req.body.date_use || new Date()
-    let date_approve = req.body.date_approve || new Date()
+    let date_use = req.body.date_use || new Date().toISOString()
+    let date_approve = req.body.date_approve || new Date().toISOString()
     req.body = Object.assign(req.body,
         {
             date_approve: r.ISO8601(date_approve),//.inTimezone('+07'),
@@ -192,12 +195,6 @@ exports.adminApprove = function (req, res) {
         }
     );
 
-    // console.log(,day);
-    // console.log(req.body.date_use);
-
-    // console.log(new Date());
-    // console.log(date_use,date_approve);
-    // console.log(req.body);
     r.db('welfare').table('history_welfare').insert(req.body)('generated_keys')(0)
         .do((history_id) => {
             return r.db('welfare').table('history_welfare').get(history_id).getField('document_ids').forEach((doc_update) => {
@@ -392,7 +389,8 @@ exports.listHistory = function (req, res) {
                     department_id: params.department_id,
                     faculty_id: params.faculty_id
                 })
-                .coerceTo('Array'),//s.filter({id:'d78ec1f4-19fc-4908-ac02-efb003733b82'}),
+                .coerceTo('Array'),
+            group_welfare: r.db('welfare').table('group_welfare').get(params.group_id)
         })
             .merge((group_merge) => {
                 return {
@@ -434,31 +432,49 @@ exports.listHistory = function (req, res) {
                 }
             })
             .without('employees')
-            .getField('welfare')
-            .merge((budget) => {
-                return budget.merge((getBudget) => {
+            .merge((admin_use) => {
+                return admin_use('welfare').merge((admin) => {
                     return {
-                        employee: getBudget('employee').merge((setBudget) => {
-                            return {
-                                budget: getBudget('budget')
-                            }
-                        })
+                        admin_use: admin_use('group_welfare')('admin_use')
                     }
                 })
             })
-            .getField('employee')
+            .merge((set) => {
+                return set('employee').merge((set2) => {
+                    return {
+                        budget: set('budget'),
+                        admin_use: set('admin_use'),
+                        welfare_id: set('id'),
+                    }
+                })
+            })
+            // // .getField('welfare')
+            // // .merge((budget) => {
+            // //     return budget.merge((getBudget) => {
+            // //         return {
+            // //             employee: getBudget('employee').merge((setBudget) => {
+            // //                 return {
+            // //                     budget: getBudget('budget')
+            // //                 }
+            // //             })
+            // //         }
+            // //     })
+            // // })
+            // // .getField('employee')
             .reduce(function (l, r) {
                 return l.add(r)
             })
             .group('group').ungroup()
             .merge((getBudget) => {
                 return {
-                    budget_cover: getBudget('reduction')(0)('budget')
+                    budget_cover: getBudget('reduction')(0)('budget'),
+                    admin_use: getBudget('reduction')(0)('admin_use'),
+                    welfare_id: getBudget('reduction')(0)('welfare_id'),
                 }
             })
             .without('reduction')
             .eqJoin('group', r.db('welfare').table('employee')).zip()
-            .pluck('birthdate', 'start_work_date', 'id', 'personal_id', 'budget_cover', 'prefix_name', 'firstname', 'lastname', 'type_employee_name')
+            .pluck('birthdate', 'start_work_date', 'id', 'welfare_id', 'personal_id', 'admin_use', 'budget_cover', 'prefix_name', 'firstname', 'lastname', 'type_employee_name')
             .merge((his) => {
                 return {
                     group_id: params.group_id,
@@ -480,6 +496,7 @@ exports.listHistory = function (req, res) {
                     birthdate_cal: calculateAge(use('birthdate')),
                     start_work_date_cal: calculateAge(use('start_work_date')),
                     budget_balance: use('budget_cover').sub(use('budget_use')),
+                    check: false
                 }
             })
     }
