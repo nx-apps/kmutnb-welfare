@@ -49,6 +49,10 @@
                 margin: 0px 15px;
                 /*padding: 0px 15px;*/
             }
+
+            vaadin-date-picker {
+                margin-top: 0.5px;
+            }
         </style>
         <div class="xcontainer">
             <div class="flex-equal-justified">
@@ -92,6 +96,21 @@
                 <list-employees data-check="{{data}}"></list-employees>
             </paper-material>
         </div>
+        <paper-dialog id="report">
+            <div class="layout horizontal start-justified">
+                <div class="flex" style=" margin-right: 30px">
+                    <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_start}}"></vaadin-date-picker>
+                </div>
+                <div style="margin: 31px 10px;">ถึง</div>
+                <div class="flex" style=" margin-right: 30px">
+                    <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_end}}"></vaadin-date-picker>
+                </div>
+            </div>
+            <div class="flex horizontal end-justified layout buttons">
+                <!--<paper-button raised class="gl-btn-defalse">ปิด</paper-button>-->
+                <paper-button raised class="gl-btn-primary" on-tap="printReport" dialog-confirm autofocus>ออกรายงาน</paper-button>
+            </div>
+        </paper-dialog>
         <panel-right id="test" title="{{title}}">
 
             <employee-manage-add></employee-manage-add>
@@ -140,7 +159,7 @@
                         },
                         {
                             report_id: 6,
-                            report_name: 'รายงาน 6'
+                            report_name: 'รายงาน 7'
                         },
                         {
                             report_id: 7,
@@ -176,7 +195,6 @@
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             },
             _insertEmployee: function () {
-                // this.selected = 2;
                 this.set('title', 'เพิ่มสมาชิก')
                 this.$$('panel-right').open();
                 this.CLEAR_INSERT();
@@ -185,10 +203,11 @@
                 this.$$('panel-right').close();
             },
             _print: function () {
-                // this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.data))
+                this.$$('#report').open()
+
+            },
+            printReport: function () {
                 let idReport = this.report_type + 1
-                // let data = this.data
-                // data.year = 
                 const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
                 const checkUndefined = (value) => value !== undefined && value !== ''
                 const data = JSON.parse(JSON.stringify(this.data))
