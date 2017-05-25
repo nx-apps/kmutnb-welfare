@@ -31,161 +31,173 @@
                 --paper-fab-background: var(--paper-light-blue-500);
                 --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
             }
+            .title{
+                text-align: center;
+                font-size: 30px;
+            }
         </style>
-        <vaadin-grid id="material" items='{{list_employees}}'>
 
-            <!--<template is="dom-if" if={{setCheck}}>-->
-            <vaadin-grid-column width="100px" flex-grow="0" hidden="{{setCheck}}">
-                <template class="header ">
-                    <div class="text-center">
-                        <paper-checkbox checked="{{statusCheck}}" on-tap="selectAll"></paper-checkbox>#</div>
-                </template>
-                <template>
-                    <div class="text-center">
-                        <paper-checkbox checked="{{item.check}}" on-tap="useWelfare" disabled="{{checkboxUse(item.admin_use,item.budget_balance)}}"></paper-checkbox>
-                    </div>
-                </template>
-                <template class="footer">
-                    <div class="text-center">ลำดับ</div>
-                </template>
-            </vaadin-grid-column>
-            <!--</template>-->
-
-
-            <vaadin-grid-column width="80px" flex-grow="0">
-                <template class="header ">
-                    <div class="text-center">ลำดับ</div>
-                </template>
-                <template>
-                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[_Obindex(index)]]</div>
-                </template>
-                <template class="footer">
-                    <div class="text-center">ลำดับ</div>
-                </template>
-            </vaadin-grid-column>
-            <vaadin-grid-column width="150px" flex-grow="0">
-                <template class="header">
-                    <div class="text-center">รหัสประชาชน</div>
-                </template>
-                <template>
-                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[item.personal_id]]
-                    </div>
-                </template>
-                <template class="footer">
-                    <div class="text-center">รหัสประชาชน
-                    </div>
-                </template>
-            </vaadin-grid-column>
-            <vaadin-grid-column width="400px">
-                <template class="header">
-                    <div class="text-center">ชื่อ - นามสกุล
-                    </div>
-                </template>
-                <template>
-                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">[[item.prefix_name]] [[item.firstname]] [[item.lastname]]
-                    </div>
-                </template>
-                <template class="footer">
-                    <div class="text-center">ชื่อ - นามสกุล
-                    </div>
-                </template>
-            </vaadin-grid-column>
-
-            <vaadin-grid-column width="300px">
-                <template class="header">
-                    <div class="text-center">ประเภทพนักงาน
-                    </div>
-                </template>
-                <template>
-                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">
-                        <p style="white-space: nowrap">[[item.type_employee_name]]</p>
-                    </div>
-                </template>
-                <template class="footer">
-                    <div class="text-center">ประเภทพนักงาน
-                    </div>
-                </template>
-            </vaadin-grid-column>
-            <vaadin-grid-column width="70px">
-                <template class="header">
-                    <div class="text-center">อายุ
-                    </div>
-                </template>
-                <template>
-                    <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[item.birthdate_cal]]
-                    </div>
-                </template>
-                <template class="footer">
-                    <div class="text-center">อายุ
-                    </div>
-                </template>
-            </vaadin-grid-column>
-            <vaadin-grid-column width="70px">
-                <template class="header">
-                    <div class="text-center">อายุงาน
-                    </div>
-                </template>
-                <template>
-                    <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[item.start_work_date_cal]]
-                    </div>
-                </template>
-                <template class="footer">
-                    <div class="text-center">อายุงาน
-                    </div>
-                </template>
-            </vaadin-grid-column>
-            <vaadin-grid-column width="150px">
-                <template class="header">
-                    <div class="text-center">จำนวนเงินที่ใช้ได้
-                    </div>
-                </template>
-                <template>
-                    <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[formatNumber(item.budget_cover)]]
-                    </div>
-                </template>
-                <template class="footer">
-                    <div class="text-center">จำนวนเงินที่ใช้ได้
-                    </div>
-                </template>
-            </vaadin-grid-column>
-            <vaadin-grid-column width="150px">
-                <template class="header">
-                    <div class="text-center">ยอดการใช้
-                    </div>
-                </template>
-                <template>
-                    <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[formatNumber(item.budget_use)]]
-                    </div>
-                </template>
-                <template class="footer">
-                    <div class="text-center">ยอดการใช้
-                    </div>
-                </template>
-            </vaadin-grid-column>
-            <vaadin-grid-column width="150px">
-                <template class="header">
-                    <div class="text-center">คงเหลือ
-                    </div>
-                </template>
-                <template>
-                    <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[formatNumber(item.budget_balance)]]
-                    </div>
-                </template>
-                <template class="footer">
-                    <div class="text-center">คงเหลือ
-                    </div>
-                </template>
-            </vaadin-grid-column>
-        </vaadin-grid>
-        <div hidden="{{paperFab}}">
-            <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
-        </div>
-        <paper-dialog id="welfare_budget">
-            <admin-dialog-use-all-welfare id="admin-dialog-use-all-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-all-welfare>
-            <div class="flex horizontal end-justified layout buttons">
-                <paper-button raised class="gl-btn-primary" on-tap="getwelfare" dialog-confirm autofocus>ใช้งาน</paper-button>
+        <template is="dom-if" if={{isEnabled}}>
+            <div class="title">
+                ไม่มีข้อมูล
             </div>
-        </paper-dialog>
+
+        </template>
+        <template is="dom-if" if={{!isEnabled}}>
+
+            <vaadin-grid id="material" items='{{list_employees}}'>
+
+                <vaadin-grid-column width="100px" flex-grow="0" hidden="{{setCheck}}">
+                    <template class="header ">
+                        <div class="text-center">
+                            <paper-checkbox checked="{{statusCheck}}" on-tap="selectAll"></paper-checkbox>#</div>
+                    </template>
+                    <template>
+                        <div class="text-center">
+                            <paper-checkbox checked="{{item.check}}" on-tap="useWelfare" disabled="{{checkboxUse(item.admin_use,item.budget_balance)}}"></paper-checkbox>
+                        </div>
+                    </template>
+                    <template class="footer">
+                        <div class="text-center">ลำดับ</div>
+                    </template>
+                </vaadin-grid-column>
+
+
+                <vaadin-grid-column width="80px" flex-grow="0">
+                    <template class="header ">
+                        <div class="text-center">ลำดับ</div>
+                    </template>
+                    <template>
+                        <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[_Obindex(index)]]</div>
+                    </template>
+                    <template class="footer">
+                        <div class="text-center">ลำดับ</div>
+                    </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">
+                        <div class="text-center">รหัสประชาชน</div>
+                    </template>
+                    <template>
+                        <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[item.personal_id]]
+                        </div>
+                    </template>
+                    <template class="footer">
+                        <div class="text-center">รหัสประชาชน
+                        </div>
+                    </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column width="400px">
+                    <template class="header">
+                        <div class="text-center">ชื่อ - นามสกุล
+                        </div>
+                    </template>
+                    <template>
+                        <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">[[item.prefix_name]] [[item.firstname]] [[item.lastname]]
+                        </div>
+                    </template>
+                    <template class="footer">
+                        <div class="text-center">ชื่อ - นามสกุล
+                        </div>
+                    </template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="300px">
+                    <template class="header">
+                        <div class="text-center">ประเภทพนักงาน
+                        </div>
+                    </template>
+                    <template>
+                        <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">
+                            <p style="white-space: nowrap">[[item.type_employee_name]]</p>
+                        </div>
+                    </template>
+                    <template class="footer">
+                        <div class="text-center">ประเภทพนักงาน
+                        </div>
+                    </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column width="70px">
+                    <template class="header">
+                        <div class="text-center">อายุ
+                        </div>
+                    </template>
+                    <template>
+                        <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[item.birthdate_cal]]
+                        </div>
+                    </template>
+                    <template class="footer">
+                        <div class="text-center">อายุ
+                        </div>
+                    </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column width="70px">
+                    <template class="header">
+                        <div class="text-center">อายุงาน
+                        </div>
+                    </template>
+                    <template>
+                        <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[item.start_work_date_cal]]
+                        </div>
+                    </template>
+                    <template class="footer">
+                        <div class="text-center">อายุงาน
+                        </div>
+                    </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column width="150px">
+                    <template class="header">
+                        <div class="text-center">จำนวนเงินที่ใช้ได้
+                        </div>
+                    </template>
+                    <template>
+                        <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[formatNumber(item.budget_cover)]]
+                        </div>
+                    </template>
+                    <template class="footer">
+                        <div class="text-center">จำนวนเงินที่ใช้ได้
+                        </div>
+                    </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column width="150px">
+                    <template class="header">
+                        <div class="text-center">ยอดการใช้
+                        </div>
+                    </template>
+                    <template>
+                        <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[formatNumber(item.budget_use)]]
+                        </div>
+                    </template>
+                    <template class="footer">
+                        <div class="text-center">ยอดการใช้
+                        </div>
+                    </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column width="150px">
+                    <template class="header">
+                        <div class="text-center">คงเหลือ
+                        </div>
+                    </template>
+                    <template>
+                        <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[formatNumber(item.budget_balance)]]
+                        </div>
+                    </template>
+                    <template class="footer">
+                        <div class="text-center">คงเหลือ
+                        </div>
+                    </template>
+                </vaadin-grid-column>
+            </vaadin-grid>
+            <div hidden="{{paperFab}}">
+                <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
+            </div>
+            <paper-dialog id="welfare_budget">
+                <admin-dialog-use-all-welfare id="admin-dialog-use-all-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-all-welfare>
+                <div class="flex horizontal end-justified layout buttons">
+                    <paper-button raised class="gl-btn-primary" on-tap="getwelfare" dialog-confirm autofocus>ใช้งาน</paper-button>
+                </div>
+            </paper-dialog>
+        </template>
     </template>
     <script>
         Polymer({
@@ -209,9 +221,9 @@
                     value: true
                 }
             },
-            observers: [
-                'checkDepart(dataCheck.*)',
-            ],
+            // observers: [
+            //     'checkDepart(dataCheck.*)',
+            // ],
             checkDepart(data) {
                 // console.log(this.dataCheck);
                 try {
@@ -220,10 +232,11 @@
                         && checkNull(this.dataCheck.faculty_id)
                         && checkNull(this.dataCheck.department_id)) {
                         // console.log(1111);
-                        this.set('setCheck', true)
+                        this.set('setCheck', false)
                         // console.log(this.setCheck);
                     } else {
-                        this.set('setCheck', false)
+                        this.set('setCheck',true )
+                        // console.log(2222);
                         // console.log(this.setCheck);
                     }
                 } catch (e) {
@@ -238,16 +251,21 @@
                     callback: () => {
                     }
                 });
-                let xx = data.find((set, index) =>set.admin_use === true )
+                let xx = data.find((set, index) => set.admin_use === true)
                 if (xx === undefined) {
                     this.set('setCheck', true)
-                }else  {
+                    this.checkDepart(this.dataCheck)
+                } else {
                     this.set('setCheck', false)
+                    this.checkDepart(this.dataCheck)
                 }
+
                 this.set('paperFab', true)
-                // console.log(xx);
-                // console.log(data.find((set, index) => set.admin_use === true));
-                // setCheck
+                if (data.length) {
+                    this.set('isEnabled', false)
+                } else {
+                    this.set('isEnabled', true)
+                }
 
             },
             chagePageDetail(e) {
@@ -292,20 +310,13 @@
                 let data = new Object();
                 let newArray = this.list_employees.find((set, index) => set.check === true)
                 newArray = JSON.parse(JSON.stringify(newArray))
-                // data.title = e.model.item.description
-                // data.emp_id = this.data.id
-                // data.welfare_id = e.model.item.welfare_id
                 data.budget = newArray.budget_cover
                 data.budget_cover = newArray.budget_balance
                 data.budget_use = newArray.budget_balance
                 data.status = true
                 data.onetime = newArray.admin_use
                 data.history_detail = ''
-                // data.group_id = e.model.item.group_id
-                // this.set('disabled', e.model.item.onetime)
                 this.$$('#welfare_budget').open()
-                // console.log(e.model.item.budget_balance);
-                // console.log(data);
                 this.dataDialog = data;
                 // this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', this.dataDialog);
             },
@@ -338,10 +349,6 @@
                     this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
                     this.set('paperFab', true)
                 }
-
-                // console.log(this.dataCheck);
-                // console.log(newArray);
-                // console.log(this.dataDialog);
             },
 
         });
