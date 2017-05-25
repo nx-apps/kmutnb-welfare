@@ -18,8 +18,9 @@ exports.list = function (req, res) {
 
     req.params.year = parseInt(req.params.year);
     r.expr({
-        employees: r.db('welfare').table('employee').eqJoin('active_id', r.db('welfare_common').table('active'))
-            .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
+        employees: r.db('welfare').table('employee').filter({ active_name: 'ทำงาน' })
+            /*.eqJoin('active_id', r.db('welfare_common').table('active'))
+            .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })*/
             .without('dob', 'emp_no', 'firstname', 'lastname')
             .coerceTo('array'),
         group: []
@@ -122,8 +123,9 @@ exports.listId = function (req, res) {
 
     var r = req.r
     r.expr({
-        employees: r.db('welfare').table('employee').eqJoin('active_id', r.db('welfare_common').table('active'))
-            .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })
+        employees: r.db('welfare').table('employee').filter({active_name:'ทำงาน'})
+            /*.eqJoin('active_id', r.db('welfare_common').table('active'))
+            .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })*/
             .without('dob', 'emp_no', 'firstname', 'lastname')
             .coerceTo('array'),
         group: []
@@ -315,9 +317,10 @@ exports.adminEmployee = function (req, res) {
     };
     var r = req.r;
     r.expr({
-        employees: r.db('welfare').table('employee')
-            .eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: 'active_code' }).zip()
-            .filter({ active_code: 'WORK' }).coerceTo('array')
+        employees: r.db('welfare').table('employee').filter({active_name:'ทำงาน'})
+            /*.eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: 'active_code' }).zip()
+            .filter({ active_code: 'WORK' })*/
+            .coerceTo('array')
         //                 .without({ right: 'id' }).zip().filter({ active_code: 'WORK' }),
         // academic: r.db('welfare_common').table('academic').coerceTo('Array'),
         // active: r.db('welfare_common').table('active').coerceTo('Array'),
