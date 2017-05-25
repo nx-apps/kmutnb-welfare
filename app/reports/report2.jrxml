@@ -16,12 +16,12 @@
 	<parameter name="CURRENT_DATE_1" class="java.lang.String"/>
 	<field name="emp_no" class="java.lang.String"/>
 	<field name="group_welfare_name" class="java.lang.String"/>
-	<field name="budget_use" class="java.lang.Integer"/>
+	<field name="budget_use" class="java.lang.Double"/>
 	<field name="name" class="java.lang.String"/>
 	<field name="date_use" class="java.lang.String"/>
 	<field name="welfare_id" class="java.lang.String"/>
 	<field name="welfare_name" class="java.lang.String"/>
-	<variable name="SUM" class="java.lang.Integer" calculation="Sum">
+	<variable name="SUM" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{budget_use}]]></variableExpression>
 	</variable>
 	<variable name="CURRENT_PAGE" class="java.lang.Integer" resetType="None" calculation="DistinctCount">
@@ -153,7 +153,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement x="430" y="0" width="80" height="20" uuid="4d14c95c-c0db-419c-bc64-eaa7ea1ad37d"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
@@ -273,7 +273,7 @@
 	</pageFooter>
 	<summary>
 		<band height="20">
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement x="430" y="0" width="80" height="20" uuid="fc48ca7a-65ad-4b68-baf7-d01572ce5b7e"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
