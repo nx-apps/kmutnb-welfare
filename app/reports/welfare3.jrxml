@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare3" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="81da0a84-f091-4996-8a00-eee2ccda3f2c">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="74"/>
+	<property name="ireport.y" value="76"/>
 	<import value="nylon.report.*"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -32,7 +32,7 @@
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
 	</variable>
-	<group name="GP">
+	<group name="GP" isStartNewPage="true" isReprintHeaderOnEachPage="true">
 		<groupExpression><![CDATA[$F{group_welfare_name}]]></groupExpression>
 		<groupFooter>
 			<band height="20">
@@ -70,10 +70,10 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="213" splitType="Stretch">
+	<pageHeader>
+		<band height="215" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="95" width="802" height="20" uuid="e2291e17-ed38-49d7-8acc-60a11312599d"/>
+				<reportElement x="0" y="99" width="802" height="20" uuid="e2291e17-ed38-49d7-8acc-60a11312599d"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -87,11 +87,11 @@
 				<textFieldExpression><![CDATA["รายละเอียดการจ่ายสวัสดิการของมหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ "]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="361" y="5" width="80" height="80" uuid="cce7d67d-38c9-4e0d-9636-3276309ab20c"/>
+				<reportElement x="361" y="9" width="80" height="80" uuid="cce7d67d-38c9-4e0d-9636-3276309ab20c"/>
 				<imageExpression><![CDATA[new java.io.ByteArrayInputStream(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.decode($P{KMUTNB_BASE64}))]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="0" y="155" width="289" height="20" uuid="0dedd94b-e3e4-49ea-9da7-8340f5a8a3b5"/>
+				<reportElement x="0" y="159" width="289" height="20" uuid="0dedd94b-e3e4-49ea-9da7-8340f5a8a3b5"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -105,7 +105,7 @@
 				<textFieldExpression><![CDATA["คณะ     "+($P{FACULTY_NAME}== null ?"ทั้งหมด":$P{FACULTY_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="289" y="125" width="197" height="20" uuid="b5feb16f-b9a8-4053-b45b-289e02f50b67"/>
+				<reportElement x="289" y="129" width="197" height="20" uuid="b5feb16f-b9a8-4053-b45b-289e02f50b67"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -119,7 +119,7 @@
 				<textFieldExpression><![CDATA["สวัสดิการ     "+($P{GROUP_NAME}== null ?"ทั้งหมด":$P{GROUP_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="289" y="155" width="197" height="20" uuid="28ce64cd-6ead-442b-9705-59bacf567d4f"/>
+				<reportElement x="289" y="159" width="197" height="20" uuid="28ce64cd-6ead-442b-9705-59bacf567d4f"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -133,7 +133,7 @@
 				<textFieldExpression><![CDATA["ประเภทบุคคล     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="185" width="532" height="20" uuid="3e11aad8-f46a-47a3-ac9d-08bd5e35df79"/>
+				<reportElement x="0" y="189" width="532" height="20" uuid="3e11aad8-f46a-47a3-ac9d-08bd5e35df79"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -147,7 +147,7 @@
 				<textFieldExpression><![CDATA["วันที่ "+new nylon.utility.NumberFormat().toThaiDate($P{DATE_START})+"  ถึง  วันที่ "+new nylon.utility.NumberFormat().toThaiDate($P{DATE_END})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="125" width="289" height="20" uuid="e32f40bb-6b8c-48b4-9e8f-58c143575753"/>
+				<reportElement x="0" y="129" width="289" height="20" uuid="e32f40bb-6b8c-48b4-9e8f-58c143575753"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -161,9 +161,9 @@
 				<textFieldExpression><![CDATA["ปีงบประมาณ     "+($P{YEAR}== null ?"ทั้งหมด":$P{YEAR})]]></textFieldExpression>
 			</textField>
 		</band>
-	</title>
-	<pageHeader>
-		<band height="20" splitType="Stretch">
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
 			<staticText>
 				<reportElement x="0" y="0" width="121" height="20" uuid="4ed77e46-b7ed-41f0-9e0a-f559afd873dd"/>
 				<box leftPadding="5" rightPadding="5">
@@ -249,7 +249,7 @@
 				<text><![CDATA[จำนวนเงิน]]></text>
 			</staticText>
 		</band>
-	</pageHeader>
+	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<subreport>

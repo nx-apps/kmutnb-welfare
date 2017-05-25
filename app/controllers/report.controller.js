@@ -99,7 +99,7 @@ exports.report1 = function (req, res, next) {
         .run()
         .then(function (result) {
             // res.json(result);
-            res.ireport("report1.jasper", req.query.export || "pdf", result);
+            res.ireport("report1.jasper", req.query.export || "pdf", result , parameters);
         });
 }
 exports.report11 = function (req, res, next) {
@@ -260,7 +260,7 @@ exports.report2 = function (req, res) {
     console.log(date_start);
 
     r.db('welfare').table('history_welfare').filter(function (row) {
-        return row('date_use').date().eq(r.ISO8601(date_start))
+        return row('date_approve').date().eq(r.ISO8601(date_start))
         // .eq(req.query.date_start)
     }).filter({ status: true })
         .merge(function (emp_merge) {
@@ -304,17 +304,20 @@ exports.report2_1 = function (req, res) {
         date_start: params.date_start
         // group_welfare_name:params.group_welfare_name
     };
+    
     r.db('welfare').table('group_welfare').get(params.group_id)
         .pluck('group_welfare_name')
         .merge(function (m) {
             return {
                 history_welfare: r.db('welfare').table('history_welfare').coerceTo('array')
-                    .filter(function (row) {
-                        return row("group_id").eq(params.group_id).and(
-                            row("date_use").date().eq(r.ISO8601(row('date_start' + "+07:00")))
-                            //.eq(params.date_start)
-                        )
-                    }).filter({ status: 'approve' })
+                    // .filter(function (row) {
+                    //     return row("group_id").eq(params.group_id).and(
+                    //         row("date_approve").date().eq(r.ISO8601(row('date_start' + "+07:00")))
+                    //         // .eq(params.date_start)
+                            
+                    //     )
+                    // })
+                    .filter({ status: true })
                     .merge(function (emp_merge) {
                         return r.db('welfare').table('employee').get(emp_merge('emp_id')).pluck('prefix_id', 'emp_no', 'firstname', 'lastname')
                     })
@@ -334,6 +337,7 @@ exports.report2_1 = function (req, res) {
                     })
             }
         })
+        
         // .merge(function(m){
         //     return m('history_welfare')
         // })
@@ -1805,7 +1809,19 @@ exports.welfare6 = function (req, res) {
                 r.ISO8601(date_end),
                 { rightBound: "closed" }
             )
+        }).filter({ status: true })
+        .filter({ 'group_id': param.group_id })
+        .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
+        .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
+        .filter({ 'faculty_id': param.faculty_id })
+        .filter({ 'type_employee_id': param.type_employee_id })
+        .merge(function (name_merge) {
+            return {
+                name: name_merge('prefix_name').add(name_merge('firstname')).add('  ', name_merge('lastname'))
+            }
         })
+        .pluck('name', 'date_use', 'budget_use')
+
 
         .run()
         .then(function (result) {
@@ -1907,17 +1923,24 @@ exports.welfare8 = function (req, res) {
         .filter({ status: true })
         .filter({ 'group_id': param.group_id })
         .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
+        .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck("left", { right: 'welfare_name' }).zip()
+        .filter({ 'personal_id': param.personal_id })
+        .filter({ 'faculty_id': param.faculty_id })
+        .filter({ 'type_employee_id': param.type_employee_id })
         .merge(function (name_merge) {
             return {
                 name: name_merge('prefix_name').add(name_merge('firstname')).add('  ', name_merge('lastname'))
             }
         })
-        .filter({ 'faculty_id': param.faculty_id })
-        .filter({ 'type_employee_id': param.type_employee_id })
+        .pluck('date_use', 'welfare_name', 'budget_use','name')
+
         .run()
         .then(function (result) {
             if (req.query.res_type == 'json') {
                 res.json(result);
+            }
+            if (result.length > 0) {
+                param.employee_name = result[0].name;
             }
             param = keysToUpper(param);
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
@@ -1949,7 +1972,7 @@ exports.welfare9 = function (req, res) {
 
     var param = req.query;
     param.year = Number(param.year) + 543;
-
+    // req.params.year = parseInt(req.params.year);
     r.expr({
         employees: r.db('welfare').table('employee').eqJoin('active_id', r.db('welfare_common').table('active'))
             .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })

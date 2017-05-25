@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare7" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a011282e-cb53-4394-8f5d-70e1bd4120b9">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="250"/>
+	<property name="ireport.y" value="144"/>
 	<parameter name="CURRENT_DATE" class="java.lang.String"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -25,8 +25,8 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="211" splitType="Stretch">
+	<pageHeader>
+		<band height="215" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="95" width="555" height="20" uuid="d999c901-fe4c-437b-94c9-ea5ea0972d02"/>
 				<box leftPadding="5" rightPadding="5">
@@ -116,9 +116,9 @@
 				<textFieldExpression><![CDATA["ปีงบประมาณ     "+($P{YEAR}== null ?"ทั้งหมด":$P{YEAR})]]></textFieldExpression>
 			</textField>
 		</band>
-	</title>
-	<pageHeader>
-		<band height="20" splitType="Stretch">
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
 			<staticText>
 				<reportElement x="20" y="0" width="141" height="20" uuid="8623b783-d7fd-4b5e-bc6b-78d60e8ba4f3"/>
 				<box leftPadding="5" rightPadding="5">
@@ -176,7 +176,7 @@
 				<text><![CDATA[จำนวนเงินที่ได้]]></text>
 			</staticText>
 		</band>
-	</pageHeader>
+	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
@@ -309,7 +309,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["รวมทั้งหมด "]]></textFieldExpression>
 			</textField>
@@ -323,7 +323,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM}]]></textFieldExpression>
 			</textField>
@@ -337,7 +337,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
@@ -351,7 +351,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>

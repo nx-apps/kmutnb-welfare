@@ -9,9 +9,6 @@
 	<field name="type_employee_name" class="java.lang.String"/>
 	<field name="date_use" class="java.lang.String"/>
 	<field name="group_welfare_name" class="java.lang.String"/>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>

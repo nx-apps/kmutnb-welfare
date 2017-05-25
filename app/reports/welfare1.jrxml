@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare1" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="788d30cf-e68f-42dc-aa98-0e2f375fcaf5">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="201"/>
+	<property name="ireport.y" value="144"/>
 	<import value="nylon.report.*"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -78,8 +78,8 @@
 			</band>
 		</groupFooter>
 	</group>
-	<title>
-		<band height="214" splitType="Stretch">
+	<pageHeader>
+		<band height="215" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="95" width="555" height="20" uuid="ffa4ce81-9a4c-4bab-923a-630b42d63ffe"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -88,7 +88,7 @@
 				<text><![CDATA[สรุปการจ่ายสวัสดิการของมหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ]]></text>
 			</staticText>
 			<image>
-				<reportElement x="237" y="3" width="80" height="80" uuid="c8a3b97b-c812-4f3c-9923-7d6d27c12f2d"/>
+				<reportElement x="237" y="5" width="80" height="80" uuid="c8a3b97b-c812-4f3c-9923-7d6d27c12f2d"/>
 				<imageExpression><![CDATA[new java.io.ByteArrayInputStream(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.decode($P{KMUTNB_BASE64}))]]></imageExpression>
 			</image>
 			<textField>
@@ -162,9 +162,9 @@
 				<textFieldExpression><![CDATA["วันที่ "+new nylon.utility.NumberFormat().toThaiDate($P{DATE_START})+"  ถึง  วันที่ "+new nylon.utility.NumberFormat().toThaiDate($P{DATE_END})]]></textFieldExpression>
 			</textField>
 		</band>
-	</title>
-	<pageHeader>
-		<band height="20" splitType="Stretch">
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
 			<staticText>
 				<reportElement x="23" y="0" width="175" height="20" uuid="afe48178-a75d-49b1-8095-9180435eb5dd"/>
 				<box leftPadding="5" rightPadding="5">
@@ -208,7 +208,7 @@
 				<text><![CDATA[จำนวนเงิน]]></text>
 			</staticText>
 		</band>
-	</pageHeader>
+	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<subreport>
@@ -318,7 +318,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM}]]></textFieldExpression>
 			</textField>
