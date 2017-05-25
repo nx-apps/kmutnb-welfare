@@ -30,7 +30,7 @@ exports.downloadFile = function (req, res) {
 exports.uploadFile = function (req, res) {
     var r = req.r;
     var params = req.params;
-    console.log(req.body);
+    // console.log(req.body);
     var form = new multiparty.Form();
     form.parse(req, function (err, fields, files) {
 
@@ -42,7 +42,7 @@ exports.uploadFile = function (req, res) {
                 name: prefile.originalFilename.split('.')[0] + '_' + new Date().getTime() + "." + prefile.originalFilename.split('.')[1],
                 type: prefile.headers['content-type'],
                 contents: data,
-                timestamp: new Date(),
+                timestamp: r.now().inTimezone('+07'),
                 ref_path: req.headers['ref-path']
             })('generated_keys')(0)
                 .do(function (file_id) {
@@ -52,8 +52,8 @@ exports.uploadFile = function (req, res) {
                         emp_id: params.emp_id,
                         welfare_id: req.headers['welfare-id'],
                         doc_status: false,
-                        date_upload: new Date().toISOString(),
-                        date_update: new Date().toISOString()
+                        date_upload: r.now().inTimezone('+07'),
+                        date_update: r.now().inTimezone('+07')
                     })
                 })
                 .run().then(function (result) {
@@ -83,7 +83,7 @@ exports.uploadFileadmin = function (req, res) {
                 name: prefile.originalFilename.split('.')[0] + '_' + new Date().getTime() + "." + prefile.originalFilename.split('.')[1],
                 type: prefile.headers['content-type'],
                 contents: data,
-                timestamp: new Date(),
+                timestamp: r.now().inTimezone('+07'),
                 ref_path: req.headers['ref-path']
             })('generated_keys')(0)
                 .do(function (file_id) {
@@ -93,8 +93,8 @@ exports.uploadFileadmin = function (req, res) {
                         emp_id: params.emp_id,
                         welfare_id: req.headers['welfare-id'],
                         doc_status: true,
-                        date_upload: new Date().toISOString(),
-                        date_update: new Date().toISOString()
+                        date_upload: r.now().inTimezone('+07'),
+                        date_update: r.now().inTimezone('+07')
                     })
                 })('generated_keys')(0)
                 .do((doc_id) => {

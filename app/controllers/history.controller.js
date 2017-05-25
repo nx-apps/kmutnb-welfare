@@ -212,7 +212,7 @@ exports.adminApprove = function (req, res) {
 }
 exports.listHistory = function (req, res) {
     var r = req.r;
-    console.log(req.query.year != undefined);
+    // console.log(req.query.year != undefined);
     if (req.query.year != undefined) {
         // console.log(req.query.year);
         // let year =  parseInt(req.query.year)
