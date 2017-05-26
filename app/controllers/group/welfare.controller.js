@@ -44,7 +44,7 @@ exports.list = function (req, res) {
                                     return {
                                         countCon: wel_merge('condition').count(),
                                         employee: r.branch(wel_merge('condition').count().eq(0),
-                                            [group_merge('employees')],
+                                            [group_merge('employees').pluck('id')],
                                             wel_merge('condition').map(function (con_map) {
                                                 return group_merge('employees').filter(function (f) {
                                                     return checkLogic(con_map, f)
@@ -85,12 +85,12 @@ exports.list = function (req, res) {
                         return {
                             value_budget: m('welfare').sum('value_budget'),
                             value_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                                .filter({ year: req.params.year }).sum('use_budget'),
+                                /*.filter({ year: req.params.year })*/.sum('budget_use'),
                             emp_budget: m('welfare').sum('emp_budget'),
                             emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                                .filter({ year: req.params.year }).pluck('emp_id').distinct().count(),
+                                /*.filter({ year: req.params.year })*/.pluck('emp_id').distinct().count(),
                             time_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                                .filter({ year: req.params.year }).count()
+                                /*.filter({ year: req.params.year })*/.count()
                         }
                     })
                     .without('welfare')
@@ -177,11 +177,16 @@ exports.listId = function (req, res) {
                                                     emp_filter('reduction').eq(wel_merge('countCon').add(1)),
                                                     emp_filter('reduction').eq(wel_merge('countCon'))
                                                 )
-                                            }).count(),
-                                        emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' })
-                                            .filter({ year: req.params.year }).pluck('emp_id').distinct().count()
+                                            }).count()
                                     }
-                                }).without('employee')
+                                })
+                                .merge(function (m) {
+                                                return {
+                                                    emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'welfare_id' })
+                                                    .pluck('emp_id').distinct().count()
+                                                }
+                                            })
+                                .without('employee')
                         }
                     })
             }

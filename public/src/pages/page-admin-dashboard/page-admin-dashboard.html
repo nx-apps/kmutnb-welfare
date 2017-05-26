@@ -5,6 +5,9 @@
 <link rel="import" href="./components/search-setting.html">
 <link rel="import" href="./components/list-employees.html">
 <link rel="import" href="./components/employee-manage-add.html">
+
+<link rel="import" href="./../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
+
 <dom-module id="page-admin-dashboard">
     <template>
         <style include="page-style flex-style">
@@ -185,7 +188,7 @@
                 // this.TESTS();
                 this.WELFARE_LIST_YEAR();
                 // WELFARE_LIST
-                this.dispatchAction('WELFARE_LIST');
+                // this.dispatchAction('WELFARE_LIST');
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
                 this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
                 this.dispatchAction('COMMONDATA_DATA_ACTIVE');
@@ -209,21 +212,26 @@
 
             },
             printReport: function () {
-                let idReport = this.report_type + 1
-                const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
-                const checkUndefined = (value) => value !== undefined && value !== ''
-                const data = JSON.parse(JSON.stringify(this.data))
-                data.year = data.year - 543
-                if (checkUndefined(this.data.group_id))
-                    data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
-                if (checkUndefined(this.data.faculty_id))
-                    data.faculty_name = getName(this.list_faculty, this.data.faculty_id).faculty_name
-                if (checkUndefined(this.data.type_employee_id))
-                    data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
-                // console.log(data.type_employee_name);
-                console.log(this.genUrl(data));
-                window.open('/api/report/welfare' + idReport + '?' + this.genUrl(data));
-                // https://localhost:3000/api/report/welfare1?
+                try {
+                    let idReport = this.report_type + 1
+                    const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
+                    const checkUndefined = (value) => value !== undefined && value !== ''
+                    const data = JSON.parse(JSON.stringify(this.data))
+                    data.year = data.year - 543
+                    if (checkUndefined(this.data.group_id))
+                        data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
+                    if (checkUndefined(this.data.faculty_id))
+                        data.faculty_name = getName(this.list_faculty, this.data.faculty_id).faculty_name
+                    if (checkUndefined(this.data.type_employee_id))
+                        data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
+                    // console.log(data.type_employee_name);
+                    // console.log(this.genUrl(data));
+                    window.open('/api/report/welfare' + idReport + '?' + this.genUrl(data));
+                    // https://localhost:3000/api/report/welfare1?
+                } catch (error) {
+
+                }
+
             }
         });
     </script>

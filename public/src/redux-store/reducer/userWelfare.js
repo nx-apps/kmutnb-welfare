@@ -101,11 +101,11 @@ export function userWelfareAction(store) {
 
                 })
         },
-        WELFARE_LIST: function (data) {
+        WELFARE_LISTS: function (data) {
             // console.log(data);
             axios.get('./group/welfare/groupByYear/year/' + data)
                 .then(function (result) {
-                    // console.log(result.data);
+                    console.log(result.data);
                     // console.log(JSON.stringify(result.data));
                     store.dispatch({ type: 'WELFARE_LIST', payload: result.data })
                 })

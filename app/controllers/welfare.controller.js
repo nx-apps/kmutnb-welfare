@@ -19,7 +19,7 @@ exports.welfare = function (req, res) {
                         return {
                             countCon: wel_merge('condition').count(),
                             employee: r.branch(wel_merge('condition').count().eq(0),
-                                [root_merge('employees')],
+                                [root_merge('employees').pluck('id')],
                                 wel_merge('condition').map(function (con_map) {
                                     return root_merge('employees').filter(function (f) {
                                         return f(con_map('field')).do(function (d) {
@@ -42,6 +42,7 @@ exports.welfare = function (req, res) {
                                         })
                                     })
                                         .coerceTo('array')
+                                        .pluck('id')
                                 })
                             )
                         }
