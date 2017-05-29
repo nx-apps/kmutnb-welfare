@@ -37,7 +37,7 @@ exports.list = function (req, res) {
                     .merge((merName) => {
                         return {
                             academic_name: emp('academic').filter({ id: merName('academic_id') }).reduce((left, right) => {
-                            return left.add(right);
+                                return left.add(right);
                             }).default('-').pluck('academic_name').getField('academic_name'),
                             active_name: emp('active').filter({ id: merName('active_id') }).reduce((left, right) => {
                                 return left.add(right);
@@ -76,6 +76,25 @@ exports.list = function (req, res) {
             res.status(500).json(err);
         })
 }
+exports.searchPid = function (req, res) {
+    var r = req.r;
+    let personal_id = req.params.pid
+    r.db('welfare').table('employee').getAll(personal_id, { index: 'personal_id' })
+        .orderBy(r.desc('date_update'))
+        .run()
+        .then((response) => {
+            let newData = []
+            if (response.length > 0) {
+                newData.push(response[0])
+            }
+            res.json(newData);
+        })
+        .error((err) => {
+            result.message = err;
+            res.json(result);
+        })
+
+}
 exports.insert = function (req, res) {
     var r = req.r;
     var result = { result: false, message: null, id: null };
@@ -99,7 +118,7 @@ exports.insert = function (req, res) {
 exports.delete = function (req, res) {
     console.log(req.body)
     var r = req.r;
-    
+
     r.db('welfare').table('employee')
         .get(req.params.id)
         .delete()
@@ -117,7 +136,7 @@ exports.update = function (req, res) {
     // req.body = Object.assign(req.body, { year: req.body.year - 543 });
     for (let prop in req.body) {
         req.body[prop] = req.body[prop].replace(/ /g, '').trim()
-        
+
     }
     req.body.start_work_date = r.ISO8601(req.body.start_work_date).inTimezone('+07:00')
     req.body.birthdate = r.ISO8601(req.body.birthdate).inTimezone('+07:00')
@@ -160,7 +179,7 @@ exports.welfaresYear = function (req, res) {
         //         gender: r.db('welfare_common').table('gender').get(emp('gender_id')).getField('gender_name')
         //     }
         // })
-        
+
         .merge((group_welfare) => {
             return {
                 group_welfares: r.db('welfare').table('group_welfare').getAll(true, { index: 'status_approve' })
@@ -232,7 +251,7 @@ exports.welfaresYear = function (req, res) {
                     .merge((check_his_cost) => {
                         return {
                             budget_for_use: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
-                             .filter({ welfare_id: check_his_cost('welfare_id'),status: true })
+                                .filter({ welfare_id: check_his_cost('welfare_id'), status: true })
                                 // .filter({ status: true, })
                                 .coerceTo('array')
                                 .orderBy(r.desc('date_create'))
@@ -256,11 +275,11 @@ exports.welfaresYear = function (req, res) {
                     .merge((check_budget) => {
                         return {
                             budget_balance: check_budget('budget').sub(check_budget('budget_use')),
-                            
+
                         }
                     })
 
-                    .without('welfare_conditions', 'id','budget_for_use')
+                    .without('welfare_conditions', 'id', 'budget_for_use')
                     .coerceTo('array')
             }
         })
@@ -268,7 +287,7 @@ exports.welfaresYear = function (req, res) {
             return {
                 history_welfare: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
                     .filter({ status: true })
-                    
+
                     .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'onetime'] }).zip()
                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
                     .merge((mer_oneTime) => {
@@ -289,7 +308,7 @@ exports.welfaresYear = function (req, res) {
                             })
                         }
                     })
-                    .pluck('history_welfare_id','budget_use','date_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status','file')
+                    .pluck('history_welfare_id', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status', 'file')
                     .coerceTo('array')
                     .orderBy(r.desc('date_approve'))
             }

@@ -4,6 +4,7 @@ import { commonAction } from '../config'
 const initialState = {
     lists: [],
     select: {},
+    select_personal_id: {},
     select_welefares: {},
     select_use_welefares: { date_use: new Date().toISOString().split('T')[0] },
     disabled: true,
@@ -47,6 +48,8 @@ export function usersReducer(state = initialState, action) {
             return Object.assign({}, state, { lists: action.payload });
         case 'USER_SELECT':
             return Object.assign({}, state, { select: action.payload });
+        case 'USER_SEARCH_PERSONAL_ID':
+            return Object.assign({}, state, { select_personal_id: action.payload });
         case 'USER_GET_WELFARES':
             return Object.assign({}, state, { select_welefares: action.payload });
         case 'USER_BTN':
@@ -101,6 +104,30 @@ export function usersAction(store) {
                         console.log(err);
                     })
             })
+        },
+        USER_SEARCH_PERSONAL_ID: function (pid) {
+            axios.get(`./employee/search/${pid}`)
+                .then(res => {
+                    // console.log(res.data)
+                    // console.log(res.data.length);
+                    // console.log(res.data.length > 0);
+                    let newData = {}
+                    if (res.data.length > 0) {
+                        newData = res.data[0]
+                    } else {
+                        this.fire('toast', {
+                            status: 'error', text: 'ไม่พบข้อมล',
+                            callback: () => {
+                                // this.$$('panel-right').close();
+                            }
+                        });
+                    }
+
+                    store.dispatch({ type: 'USER_SEARCH_PERSONAL_ID', payload: newData })
+                })
+                .catch(err => {
+
+                })
         },
         USER_SELECT: function (data) {
             store.dispatch({ type: 'USER_SELECT', payload: data })
@@ -216,34 +243,34 @@ export function usersAction(store) {
         USER_USE_WELFARE_APPROVE(data, url = () => { }) {
             // console.log(data);
             this.fire('toast', { status: 'load' });
-            let myFirstPromise = new Promise((resolve, reject) => {
-                let newData = data.map((item) => {
-                    clearDatawelfare(item, (newData) => {
-                        item = newData
-                    })
-                    return item
-                })
-                resolve(newData)
-            });
-            myFirstPromise.then((data) => {
-                // console.log(el);
+            // let myFirstPromise = new Promise((resolve, reject) => {
+            //     let newData = data.map((item) => {
+            clearDatawelfare(data, (newData) => {
+                //             item = newData
+                //         })
+                //         return item
+                //     })
+                //     resolve(newData)
+                // });
+                // myFirstPromise.then((data) => {
+                //     // console.log(el);
                 axios.put(`./history/update/approve`, data)
-                .then(res => {
-                    console.log(res.data);
-                    // this.dispatchAction('USERS_FALSE_LIST');
-                    this.fire('toast', {
-                        status: 'success', text: 'บันทึกสำเร็จ',
-                        callback: () => {
-                            // console.log(url);
-                            // url()
-                        }
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+                    .then(res => {
+                        console.log(res.data);
+                        // this.dispatchAction('USERS_FALSE_LIST');
+                        this.fire('toast', {
+                            status: 'success', text: 'บันทึกสำเร็จ',
+                            callback: () => {
+                                // console.log(url);
+                                // url()
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             })
-            
+
         },
         USER_REJECT_USE_WELFARE(data, url = () => { }) {
             // clearDatawelfare(data, (newData) => {
