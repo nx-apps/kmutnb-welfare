@@ -47,7 +47,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[รายชื่อพนักงานที่ได้รับสิทธิ์ ]]></text>
+				<text><![CDATA[รายชื่อพนักงานที่ได้รับสิทธิ ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="220" width="88" height="20" uuid="4ea906e7-96b2-487f-afc4-e8c09138be40"/>
@@ -195,7 +195,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[สิทธิ์เบิก :]]></text>
+				<text><![CDATA[สิทธิเบิก :]]></text>
 			</staticText>
 			<image>
 				<reportElement x="348" y="5" width="80" height="80" uuid="7adf5b43-b46c-424c-8036-e6ac54155751"/>
@@ -213,7 +213,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[รายชื่อพนักงานที่ได้รับสิทธิ์ตามสวัสดิการ]]></text>
+				<text><![CDATA[รายชื่อพนักงานที่ได้รับสิทธิตามสวัสดิการ]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -310,7 +310,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[รายชื่อพนักงานที่ได้รับสิทธิ์ ]]></text>
+				<text><![CDATA[รายชื่อพนักงานที่ได้รับสิทธิ ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="220" width="88" height="20" uuid="3370e03c-6b59-4ff5-b427-90c2a396dddc"/>
@@ -416,7 +416,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[สิทธิ์เบิก :]]></text>
+				<text><![CDATA[สิทธิเบิก :]]></text>
 			</staticText>
 			<image>
 				<reportElement x="348" y="5" width="80" height="80" uuid="2c13d4e2-ada9-4a6f-ad16-4ea56cb520db"/>
@@ -434,7 +434,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="18" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[รายชื่อพนักงานที่ได้รับสิทธิ์ตามสวัสดิการ]]></text>
+				<text><![CDATA[รายชื่อพนักงานที่ได้รับสิทธิตามสวัสดิการ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="240" width="801" height="55" uuid="5bbe11d2-c82b-4620-b0fd-cbb7a807d4a8"/>

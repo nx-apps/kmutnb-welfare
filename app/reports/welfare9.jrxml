@@ -116,7 +116,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ผู้มีสิทธิ์]]></text>
+				<text><![CDATA[ผู้มีสิทธิ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="312" y="0" width="80" height="20" uuid="f5e55eb8-9633-41cf-b455-fc256f37c2ed"/>
@@ -130,7 +130,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ผู้ใช้สิทธิ์]]></text>
+				<text><![CDATA[ผู้ใช้สิทธิ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="392" y="0" width="82" height="20" uuid="337cc85c-34ca-4b09-b23f-f9afced1e220"/>
@@ -402,7 +402,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ผู้มีสิทธิ์]]></text>
+				<text><![CDATA[ผู้มีสิทธิ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="312" y="115" width="80" height="20" uuid="1be7d12e-2b29-41d8-990f-55e39d9cc36c"/>
@@ -416,7 +416,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ผู้ใช้สิทธิ์]]></text>
+				<text><![CDATA[ผู้ใช้สิทธิ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="392" y="115" width="82" height="20" uuid="3bcf6f5d-20b9-47be-a6a1-01e9aea8f73b"/>

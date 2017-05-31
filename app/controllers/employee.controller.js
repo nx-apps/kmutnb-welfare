@@ -238,7 +238,7 @@ exports.welfaresYear = function (req, res) {
                     })
                     .merge((names) => {
                         return {
-                            description: names('description').add(' (').add(names('welfare_conditions').getField('welfare_name')).add(')'),
+                            description: names('description').add('-').add(names('welfare_conditions').getField('welfare_name')),
                             budget: names('welfare_conditions').getField('budget'),
                             // budget_use: 100,
                             // budget_balance: 100,
@@ -295,7 +295,7 @@ exports.welfaresYear = function (req, res) {
                             history_welfare_id: mer_oneTime('id'),
                             date_use: mer_oneTime('date_use').toISO8601().split('T')(0),
                             date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0),
-                            status: mer_oneTime('status').eq(true).branch(' อนุญาติ', ' ยกเลิก'),
+                            status: mer_oneTime('status').eq(true).branch(' อนุมัติ', ' ยกเลิก'),
                             description: mer_oneTime('group_welfare_name').add(' (').add(mer_oneTime('welfare_name')).add(')'),
                             check_onetime_thai: mer_oneTime('onetime').eq(true).branch(' (ใช้ครั้งเดียว)', ' (ใช้หลายครั้ง)')
                         }

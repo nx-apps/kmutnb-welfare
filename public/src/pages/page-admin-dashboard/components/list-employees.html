@@ -76,14 +76,14 @@
                 </vaadin-grid-column>
                 <vaadin-grid-column width="150px" flex-grow="0">
                     <template class="header">
-                        <div class="text-center">รหัสประชาชน</div>
+                        <div class="text-center">เลขประจำตัวประชาชน</div>
                     </template>
                     <template>
                         <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[item.personal_id]]
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">รหัสประชาชน
+                        <div class="text-center">เลขประจำตัวประชาชน
                         </div>
                     </template>
                 </vaadin-grid-column>
@@ -252,10 +252,15 @@
                     }
                 });
                 let xx = data.find((set, index) => set.admin_use === true)
+                // console.log(xx);
                 if (xx === undefined) {
-                    this.set('setCheck', true)
+                    // console.log(1);
                     this.checkDepart(this.dataCheck)
+                    this.set('setCheck', true)
+
+                    
                 } else {
+                    // console.log(2);
                     this.set('setCheck', false)
                     this.checkDepart(this.dataCheck)
                 }

@@ -51,7 +51,7 @@
 
         <gl-form-panel-body label="" set-padding="10px" set-border="1px">
             <div class="head-text">
-                สวัสดิการที่ได้รับสิทธิ์
+                สวัสดิการที่ได้รับสิทธิ
             </div>
             <div class="content horizontal center-justified layout">
                 <table class="gl-table-default">
@@ -60,14 +60,14 @@
                             <th style="width: 5%" rowspan="2">ลำดับ</th>
                             <th style="width: 40%" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
                             <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
-                            <!--<th style="width: 15%">จำนวนเงินที่ใช้ไปแล้ว (บาท)</th>
+                            <!--<th style="width: 15%">จำนวนเงินที่ใช้สิทธิ (บาท)</th>
                                 <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>-->
                         </tr>
                         <tr>
                             <!--<th style="width: 5%">ลำดับ</th>-->
                             <!--<th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>-->
-                            <th style="width: 15%">วงเงิน </th>
-                            <th style="width: 15%">ใช้ไปแล้ว </th>
+                            <th style="width: 15%">มีสิทธิ </th>
+                            <th style="width: 15%">ใช้สิทธิ </th>
                             <th style="width: 15%">คงเหลือ </th>
                             <!--<th style="width: 15%">ขอใช้ (บาท)</th>-->
                         </tr>
@@ -95,7 +95,7 @@
         </gl-form-panel-body>
         <gl-form-panel-body label="" set-padding="10px" set-border="1px">
             <div class="head-text">
-                สวัสดิการที่ได้ใช้สิทธิ์ไปแล้ว
+                รายการสวัสดิการที่ขอใช้สิทธิ
             </div>
             <div class="content horizontal center-justified layout">
                 <table class="gl-table-default">
@@ -103,11 +103,11 @@
                         <tr>
                             <th style="width: 10%">ลำดับ</th>
                             <th style="width: 25%">สวัสดิการที่ใช้</th>
-                            <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
-                            <th style="width: 10%">วันที่ขอ</th>
-                            <th style="width: 10%">วันอนุมัติ</th>
+                            <th style="width: 18%;text-align: right;">จำนวนเงินที่ใช้</th>
+                            <th style="width: 10%">วันที่ใช้สิทธิ</th>
+                            <th style="width: 10%">วันที่อนุมัติ</th>
                             <th style="width: 10%">สถานะ</th>
-                            <th style="width: 25%">ไฟล์</th>
+                            <th style="width: 25%">เอกสารแนบ</th>
 
                         </tr>
                     </thead>
@@ -138,7 +138,7 @@
                                         </template>
                                     </template>
                                     <template is="dom-if" if={{_ObIsHave(item.file)}}>
-                                        <div style="text-align: center;">ไม่ได้อัพโหลดไฟล์</div>
+                                        <div style="text-align: center;">-</div>
                                     </template>
                                 </td>
                             </tr>
@@ -237,7 +237,7 @@
                 let newData = [{ id: e.currentTarget.data.history_welfare_id }]
                 this.fire('toast', {
                     status: 'openDialog',
-                    text: 'ต้องการยกเลิกการขอใช่หรือไม่ ?',
+                    text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
                             this.dispatchAction('USER_CANCEL_USE_WELFARE', newData);

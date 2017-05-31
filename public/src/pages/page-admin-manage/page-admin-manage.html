@@ -12,32 +12,40 @@
             font-family: 'CSChatThaiUI', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
+
         .head-text {
             font-size: var(--font-size-h4);
             margin: 15px 15px 15px 15px;
         }
+
         table.gl-table-default {
             width: 98%;
             border: 1px solid #ddd;
             /*margin: 15px;*/
         }
+
         .label,
         .inpit {
             font-size: var(--font-size-h5)
         }
+
         .label {
             text-align: right;
             padding-right: 5px;
         }
+
         .left {
             text-align: left;
         }
+
         .right {
             text-align: right;
         }
+
         fieldset {
             margin: 15px;
         }
+
         .header {
             padding: 10px;
             font-size: 35px;
@@ -48,12 +56,12 @@
             <!--<iron-pages selected="{{pages}}">-->
             <!--<section>-->
             <div class="header-page container">
-                จัดการข้อมูลส่วนตัว
+                ใช้สิทธิสวัสดิการรายบุคคล
             </div>
             <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <div class="horizontal end-justified layout">
-                        <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลส่วนตัว</paper-button>
+                        <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
                     </div>
 
                 </gl-form-panel-body>
@@ -83,7 +91,7 @@
 
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <div class="head-text">
-                        สวัสดิการที่ได้รับสิทธิ์
+                        สวัสดิการที่ได้รับสิทธิ
                     </div>
                     <div class="content horizontal center-justified layout">
                         <table class="gl-table-default">
@@ -92,15 +100,15 @@
                                     <th style="width: 5%" rowspan="2">ลำดับ</th>
                                     <th style="width: 40%" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
                                     <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
-                                    <!--<th style="width: 15%">จำนวนเงินที่ใช้ไปแล้ว (บาท)</th>
+                                    <!--<th style="width: 15%">จำนวนเงินที่ใช้สิทธิ (บาท)</th>
                                 <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>-->
                                     <th style="width: 15%" rowspan="2">ดำเนินการ</th>
                                 </tr>
                                 <tr>
                                     <!--<th style="width: 5%">ลำดับ</th>-->
                                     <!--<th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>-->
-                                    <th style="width: 15%">วงเงิน </th>
-                                    <th style="width: 15%">ใช้ไปแล้ว </th>
+                                    <th style="width: 15%">มีสิทธิ </th>
+                                    <th style="width: 15%">ใช้สิทธิ </th>
                                     <th style="width: 15%">คงเหลือ </th>
                                     <!--<th style="width: 15%">ขอใช้ (บาท)</th>-->
                                 </tr>
@@ -115,7 +123,7 @@
                                         <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                         <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
                                         <td>
-                                            <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" disabled="[[checkWelfareFull(item)]]">ขอใช้</paper-button>
+                                            <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" disabled="[[checkWelfareFull(item)]]">ใช้สิทธิ</paper-button>
                                         </td>
                                     </tr>
                                 </template>
@@ -131,7 +139,7 @@
                 </gl-form-panel-body>
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <div class="head-text">
-                        สวัสดิการที่ได้ใช้สิทธิ์ไปแล้ว
+                        รายการสวัสดิการที่ขอใช้สิทธิ
                     </div>
                     <div class="content horizontal center-justified layout">
                         <table class="gl-table-default">
@@ -139,11 +147,11 @@
                                 <tr>
                                     <th style="width: 10%">ลำดับ</th>
                                     <th style="width: 25%">สวัสดิการที่ใช้</th>
-                                    <th style="width: 15%;text-align: right;">จำนวนเงินที่ใช้ (บาท)</th>
-                                    <th style="width: 10%">วันที่ขอ</th>
-                                    <th style="width: 10%">วันอนุมัติ</th>
+                                    <th style="width: 18%;text-align: right;">จำนวนเงินที่ใช้</th>
+                                    <th style="width: 10%">วันที่ใช้สิทธิ</th>
+                                    <th style="width: 10%">วันที่อนุมัติ</th>
                                     <th style="width: 10%">สถานะ</th>
-                                    <th style="width: 25%">ไฟล์</th>
+                                    <th style="width: 25%">เอกสารแนบ</th>
                                     <th style="width: 25%">จัดการ</th>
                                 </tr>
                             </thead>
@@ -154,7 +162,7 @@
                                         <td style="text-align: left;">[[item.description]] </td>
                                         <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                         <td>
-                                             [[toThaiDate(item.date_use)]]
+                                            [[toThaiDate(item.date_use)]]
                                         </td>
                                         <td>
                                             <div style="text-align: center">
@@ -174,13 +182,13 @@
                                                 </template>
                                             </template>
                                             <template is="dom-if" if={{_ObIsHave(item.file)}}>
-                                                <div style="text-align: center;">ไม่ได้อัพโหลดไฟล์</div>
+                                                <div style="text-align: center;">-</div>
                                             </template>
                                         </td>
                                         <td style="text-align: left;">
-                                            
+
                                             <paper-button raised class="gl-btn-danger" on-tap="btnCancel" data="[[item]]">ยกเลิก</paper-button>
-                                            
+
                                         </td>
                                     </tr>
                                 </template>
@@ -198,10 +206,10 @@
                 
                 </gl-form-panel-footer>-->
             </gl-form-panel>
-            <paper-dialog id="welfare_budget">
+            <paper-dialog id="welfare_budget" modal>
                 <admin-dialog-use-welfare id="admin-dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-welfare>
                 <div class="flex horizontal end-justified layout">
-                    <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้งาน</paper-button>
+                    <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้สิทธิ</paper-button>
                 </div>
             </paper-dialog>
             <!--</section>-->
@@ -220,10 +228,10 @@
             is: 'page-admin-manage',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
                 commonLogic, userWelfareAction, uploadAction, commonDataAction,
-                MonthBehavior,usersAction],
+                MonthBehavior, usersAction],
             listeners: {
                 'back-page': 'changePage',
-                'close-panel-right':'closePanelRight'
+                'close-panel-right': 'closePanelRight'
             },
             observers: ['checkData(seleterYear,id)'],
             properties: {
@@ -251,13 +259,13 @@
                 // console.log(this.id);
                 this.WELFARE_LIST_YEAR();
             },
-            setDate(data){
+            setDate(data) {
                 // console.log(data);
-                console.log(this.changeTime(data,+7));
+                console.log(this.changeTime(data, +7));
             },
-            changeTime:function(data,timeZone) {
+            changeTime: function (data, timeZone) {
                 let time
-                data.map((item,index) => {
+                data.map((item, index) => {
                     for (var prop in item) {
                         if (prop.indexOf('date') >= 0 && prop !== 'updater') {
                             time = new Date(item[prop])
@@ -266,7 +274,7 @@
                             // console.log(new Date(data[index][prop]).toISOString());
                         }
                         if (typeof item[prop] === 'object')
-                            this.changeTime(item[prop],timeZone)
+                            this.changeTime(item[prop], timeZone)
                     }
                 })
                 return data
@@ -287,28 +295,28 @@
 
                 }
             },
-            _btnReject(status){
+            _btnReject(status) {
                 return status == 'request'
             },
-            checkWelfareFull(data){
-                if(data.budget_balance <= 0)
+            checkWelfareFull(data) {
+                if (data.budget_balance <= 0)
                     return true
             },
-            btnCancel(e){
+            btnCancel(e) {
                 // console.log(e.currentTarget.data);
-                let newData = [{id:e.currentTarget.data.history_welfare_id}]
+                let newData = [{ id: e.currentTarget.data.history_welfare_id }]
                 // console.log(newData);
                 this.fire('toast', {
                     status: 'openDialog',
-                    text: 'ต้องการยกเลิกการขอใช่หรือไม่ ?',
+                    text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
                             this.dispatchAction('USER_REJECT_USE_WELFARE', newData)
-                            .then((el)=>{
-                                let id = window.location.pathname.split('/')[2];
-                                this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
-                                // console.log(222);
-                            })
+                                .then((el) => {
+                                    let id = window.location.pathname.split('/')[2];
+                                    this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
+                                    // console.log(222);
+                                })
                             // console.log(11111);
                             // this.fire('_getReloadData','')
                         }
@@ -353,14 +361,23 @@
                 let newData = this.usewelfareProp
                 newData.budget_use = Number(newData.budget_use)
                 newData.budget_balance = newData.budget_cover - newData.budget_use
-                newData.date_approve = newData.date_approve+'T00:00:00+07:00'
-                newData.date_use = newData.date_use+'T00:00:00+07:00'
+                newData.date_approve = newData.date_approve + 'T00:00:00+07:00'
+                newData.date_use = newData.date_use + 'T00:00:00+07:00'
                 // console.log(newData);
-                this.$$('#welfare_budget').close()
                 
-                if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
-                    this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
-                }
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'กรุณายืนยันการทำรายการ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            this.$$('#welfare_budget').close()
+                            if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
+                                this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
+                            }
+                        }
+                    }
+                })
+
             },
             _checkApprove(status) {
                 switch (status) {
@@ -407,7 +424,7 @@
                 this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             },
-            closePanelRight(){
+            closePanelRight() {
                 this.$$('panel-right').close();
             }
         });

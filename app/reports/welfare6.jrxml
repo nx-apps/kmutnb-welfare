@@ -223,7 +223,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[สิทธิ์เบิก]]></text>
+				<text><![CDATA[สิทธิเบิก]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="350" y="0" width="111" height="20" uuid="4264a3dc-af38-47c9-9122-92bf97d268ea"/>
@@ -519,7 +519,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[สิทธิ์เบิก]]></text>
+				<text><![CDATA[สิทธิเบิก]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="350" y="205" width="111" height="20" uuid="3311a447-4458-4a6c-aec4-8499a0d435f2"/>
