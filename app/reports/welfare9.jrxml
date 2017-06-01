@@ -239,34 +239,6 @@
 	<pageFooter>
 		<band height="40" splitType="Stretch">
 			<textField>
-				<reportElement x="1" y="0" width="175" height="20" uuid="ee7c4aad-d1c5-419f-9ae7-e61f2486b1e8"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["วันที่พิมพ์ "+ new nylon.utility.NumberFormat().toThaiDate($P{CURRENT_DATE})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="1" y="20" width="110" height="20" uuid="3230f8f2-adc6-4c48-93d1-91517c4ea5a9"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["พิมพ์โดย " + " Admin"]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="445" y="20" width="110" height="20" uuid="a4a2b445-9fda-47b0-adbb-8da097645599"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
@@ -278,9 +250,9 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["welfare8"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["รายงาน welfare9"]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField evaluationTime="Auto">
 				<reportElement x="325" y="0" width="230" height="20" uuid="67071104-b072-4ba4-bb03-fc2d15cbf599"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
@@ -293,6 +265,20 @@
 					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["หน้า " + $V{CURRENT_PAGE}+" จาก " +$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="20" width="361" height="20" uuid="dadc7fc2-7cd6-41e4-8e36-8153d39aada6"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["พิมพ์โดย " + " Admin "+new nylon.utility.NumberFormat().toThaiDate($P{CURRENT_DATE})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
