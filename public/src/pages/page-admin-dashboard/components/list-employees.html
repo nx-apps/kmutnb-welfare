@@ -344,30 +344,31 @@
                 let newData = this.usewelfareProp
                 let dataDialog = JSON.parse(JSON.stringify(dia))
                 let newArray = JSON.parse(JSON.stringify(this.list_employees.filter((set, index) => set.check === true)))
-                console.log(newArray);
-                // newArray.map((item) => {
-                //     item.budget_balance = 0
-                //     item.budget_cover = dataDialog.budget_cover
-                //     item.budget_use = dataDialog.budget_cover
-                //     item.date_approve = dataDialog.date_approve + 'T00:00:00+07:00'
-                //     item.date_use = dataDialog.date_use + 'T00:00:00+07:00'
-                //     item.emp_id = item.id
-                //     item.personal_id = 
-                //     item.document_ids = new Array()
-                //     item.status = true
-                //     item.history_detail = dataDialog.history_detail
-                // })
-                // this.$$('#welfare_budget').close()
-                // // console.log(this.$$('#admin-dialog-use-all-welfare').validateForm('.required'));
-                // if (this.$$('#admin-dialog-use-all-welfare').validateForm('.required')) {
-                //     newArray.map((data) => {
-                //         // console.log(data);
-                //         this.dispatchAction('EMPLOYEE_USE_WELFARE', data);
-                //     })
-                //     // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);
-                //     this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
-                //     this.set('paperFab', true)
-                // }
+                
+                newArray.map((item) => {
+                    item.budget_balance = 0
+                    item.budget_cover = dataDialog.budget_cover
+                    item.budget_use = dataDialog.budget_cover
+                    item.date_approve = dataDialog.date_approve + 'T00:00:00+07:00'
+                    item.date_use = dataDialog.date_use + 'T00:00:00+07:00'
+                    item.emp_id = item.id
+                    item.personal_id = item.personal_id
+                    item.document_ids = new Array()
+                    item.status = true
+                    item.history_detail = dataDialog.history_detail
+                })
+                // console.log(newArray);
+                this.$$('#welfare_budget').close()
+                // console.log(this.$$('#admin-dialog-use-all-welfare').validateForm('.required'));
+                if (this.$$('#admin-dialog-use-all-welfare').validateForm('.required')) {
+                    newArray.map((data) => {
+                        // console.log(data);
+                        this.dispatchAction('EMPLOYEE_USE_WELFARE', data);
+                    })
+                    // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);
+                    this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
+                    this.set('paperFab', true)
+                }
             },
 
         });
