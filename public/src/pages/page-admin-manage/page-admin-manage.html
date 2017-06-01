@@ -4,6 +4,8 @@
 <link rel="import" href="./components/admin-dialog-use-welfare.html">
 <link rel="import" href="./components/employee-manage.html">
 
+<link rel="import" href="./../components/validateFormBehaviors.html">
+
 <link rel="import" href="./../components/page-style.html">
 
 <dom-module id="page-admin-manage">
@@ -209,6 +211,7 @@
             <paper-dialog id="welfare_budget" modal>
                 <admin-dialog-use-welfare id="admin-dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-welfare>
                 <div class="flex horizontal end-justified layout">
+                    <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
                     <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้สิทธิ</paper-button>
                 </div>
             </paper-dialog>
@@ -228,7 +231,7 @@
             is: 'page-admin-manage',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
                 commonLogic, userWelfareAction, uploadAction, commonDataAction,
-                MonthBehavior, usersAction],
+                MonthBehavior, usersAction, ValidateFormBehavior],
             listeners: {
                 'back-page': 'changePage',
                 'close-panel-right': 'closePanelRight'
@@ -364,19 +367,21 @@
                 newData.date_approve = newData.date_approve + 'T00:00:00+07:00'
                 newData.date_use = newData.date_use + 'T00:00:00+07:00'
                 // console.log(newData);
-                
-                this.fire('toast', {
-                    status: 'openDialog',
-                    text: 'กรุณายืนยันการทำรายการ ?',
-                    confirmed: (result) => {
-                        if (result == true) {
-                            this.$$('#welfare_budget').close()
-                            if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
-                                this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
+                if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'กรุณายืนยันการทำรายการ ?',
+                        confirmed: (result) => {
+                            if (result == true) {
+                                this.$$('#welfare_budget').close()
+                                // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
+                                    this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
+                                // }
                             }
                         }
-                    }
-                })
+                    })
+                }
+
 
             },
             _checkApprove(status) {
