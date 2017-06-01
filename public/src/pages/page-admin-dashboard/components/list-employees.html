@@ -31,12 +31,13 @@
                 --paper-fab-background: var(--paper-light-blue-500);
                 --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
             }
-            .title{
+
+            .title {
                 text-align: center;
                 font-size: 30px;
             }
         </style>
-
+        <!--{{dataCheck.group_name}}-->
         <template is="dom-if" if={{isEnabled}}>
             <div class="title">
                 ไม่มีข้อมูล
@@ -104,7 +105,7 @@
 
                 <vaadin-grid-column width="300px">
                     <template class="header">
-                        <div class="text-left">ประเภทพนักงาน 
+                        <div class="text-left">ประเภทพนักงาน
                         </div>
                     </template>
                     <template>
@@ -133,7 +134,7 @@
                 </vaadin-grid-column>
                 <vaadin-grid-column width="90px">
                     <template class="header">
-                        <div class="text-center">อายุงาน (ปี)
+                        <div class="text-right">อายุงาน (ปี)
                         </div>
                     </template>
                     <template>
@@ -141,13 +142,13 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">อายุงาน (ปี)
+                        <div class="text-right">อายุงาน (ปี)
                         </div>
                     </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="180px">
                     <template class="header">
-                        <div class="text-center">จำนวนเงินที่ใช้ได้ (บาท)
+                        <div class="text-right">จำนวนเงินที่ใช้ได้ (บาท)
                         </div>
                     </template>
                     <template>
@@ -155,13 +156,13 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">จำนวนเงินที่ใช้ได้ (บาท)
+                        <div class="text-right">จำนวนเงินที่ใช้ได้ (บาท)
                         </div>
                     </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="150px">
                     <template class="header">
-                        <div class="text-center">ยอดการใช้ (บาท)
+                        <div class="text-right">ยอดการใช้ (บาท)
                         </div>
                     </template>
                     <template>
@@ -169,13 +170,13 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">ยอดการใช้ (บาท)
+                        <div class="text-right">ยอดการใช้ (บาท)
                         </div>
                     </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="150px">
                     <template class="header">
-                        <div class="text-center">คงเหลือ (บาท)
+                        <div class="text-right">คงเหลือ (บาท)
                         </div>
                     </template>
                     <template>
@@ -183,7 +184,7 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">คงเหลือ (บาท)
+                        <div class="text-right">คงเหลือ (บาท)
                         </div>
                     </template>
                 </vaadin-grid-column>
@@ -236,7 +237,7 @@
                         this.set('setCheck', false)
                         // console.log(this.setCheck);
                     } else {
-                        this.set('setCheck',true )
+                        this.set('setCheck', true)
                         // console.log(2222);
                         // console.log(this.setCheck);
                     }
@@ -259,7 +260,7 @@
                     this.checkDepart(this.dataCheck)
                     this.set('setCheck', true)
 
-                    
+
                 } else {
                     // console.log(2);
                     this.set('setCheck', false)
@@ -314,16 +315,26 @@
             },
             confirmSend(e) {
                 let data = new Object();
+                let date = new Date().toISOString().split('T')[0]
                 let newArray = this.list_employees.find((set, index) => set.check === true)
                 newArray = JSON.parse(JSON.stringify(newArray))
-                data.budget = newArray.budget_cover
-                data.budget_cover = newArray.budget_balance
-                data.budget_use = newArray.budget_balance
-                data.status = true
-                data.onetime = newArray.admin_use
-                data.history_detail = ''
+                console.log(date);
+                data = {
+                    title: this.dataCheck.group_name,
+                    budget: newArray.budget_cover,
+                    budget_cover: newArray.budget_balance,
+                    budget_use: newArray.budget_balance,
+                    status: true,
+                    onetime: newArray.admin_use,
+                    date_use: date,
+                    date_approve: date,
+                    history_detail: ''
+                }
+
                 this.$$('#welfare_budget').open()
-                this.dataDialog = data;
+                // console.log(data);
+                this.set('dataDialog', data)
+                // this.dataDialog = data;
                 // this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', this.dataDialog);
             },
             getwelfare() {
@@ -333,28 +344,30 @@
                 let newData = this.usewelfareProp
                 let dataDialog = JSON.parse(JSON.stringify(dia))
                 let newArray = JSON.parse(JSON.stringify(this.list_employees.filter((set, index) => set.check === true)))
-                newArray.map((item) => {
-                    item.budget_balance = dataDialog.budget - dataDialog.budget_use
-                    item.budget_cover = dataDialog.budget_cover
-                    item.budget_use = dataDialog.budget_use
-                    item.date_approve = dataDialog.date_approve + 'T00:00:00+07:00'
-                    item.date_use = dataDialog.date_use + 'T00:00:00+07:00'
-                    item.emp_id = item.id
-                    item.document_ids = new Array()
-                    item.status = true
-                    item.history_detail = dataDialog.history_detail
-                })
-                this.$$('#welfare_budget').close()
-                // console.log(this.$$('#admin-dialog-use-all-welfare').validateForm('.required'));
-                if (this.$$('#admin-dialog-use-all-welfare').validateForm('.required')) {
-                    newArray.map((data) => {
-                        // console.log(data);
-                        this.dispatchAction('EMPLOYEE_USE_WELFARE', data);
-                    })
-                    // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);
-                    this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
-                    this.set('paperFab', true)
-                }
+                console.log(newArray);
+                // newArray.map((item) => {
+                //     item.budget_balance = 0
+                //     item.budget_cover = dataDialog.budget_cover
+                //     item.budget_use = dataDialog.budget_cover
+                //     item.date_approve = dataDialog.date_approve + 'T00:00:00+07:00'
+                //     item.date_use = dataDialog.date_use + 'T00:00:00+07:00'
+                //     item.emp_id = item.id
+                //     item.personal_id = 
+                //     item.document_ids = new Array()
+                //     item.status = true
+                //     item.history_detail = dataDialog.history_detail
+                // })
+                // this.$$('#welfare_budget').close()
+                // // console.log(this.$$('#admin-dialog-use-all-welfare').validateForm('.required'));
+                // if (this.$$('#admin-dialog-use-all-welfare').validateForm('.required')) {
+                //     newArray.map((data) => {
+                //         // console.log(data);
+                //         this.dispatchAction('EMPLOYEE_USE_WELFARE', data);
+                //     })
+                //     // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);
+                //     this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
+                //     this.set('paperFab', true)
+                // }
             },
 
         });

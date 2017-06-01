@@ -58,17 +58,18 @@
                     <thead class="table-head">
                         <tr>
                             <th style="width: 5%" rowspan="2">ลำดับ</th>
-                            <th style="width: 40%" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
+                            <th style="width: 40%; text-align: left;" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
                             <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
                             <!--<th style="width: 15%">จำนวนเงินที่ใช้สิทธิ (บาท)</th>
                                 <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>-->
+                            <!--<th style="width: 15%" rowspan="2">ดำเนินการ</th>-->
                         </tr>
                         <tr>
                             <!--<th style="width: 5%">ลำดับ</th>-->
                             <!--<th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>-->
-                            <th style="width: 15%">มีสิทธิ </th>
-                            <th style="width: 15%">ใช้สิทธิ </th>
-                            <th style="width: 15%">คงเหลือ </th>
+                            <th style="width: 15%; text-align: right;" class="right">มีสิทธิ </th>
+                            <th style="width: 15%; text-align: right;" class="right">ใช้สิทธิ </th>
+                            <th style="width: 15%; text-align: right;" class="right">คงเหลือ </th>
                             <!--<th style="width: 15%">ขอใช้ (บาท)</th>-->
                         </tr>
                     </thead>
@@ -102,7 +103,7 @@
                     <thead class="table-head">
                         <tr>
                             <th style="width: 10%">ลำดับ</th>
-                            <th style="width: 25%">สวัสดิการที่ใช้</th>
+                            <th style="width: 25% ;text-align: left;">สวัสดิการที่ใช้</th>
                             <th style="width: 18%;text-align: right;">จำนวนเงินที่ใช้</th>
                             <th style="width: 10%">วันที่ใช้สิทธิ</th>
                             <th style="width: 10%">วันที่อนุมัติ</th>
@@ -200,16 +201,16 @@
 
             //     }
             // },
-            _wordApprove(admin_use, welfare_old) {
-                return (welfare_old ? 'ไม่สามารถใช้ของปีที่แล้วได้' : (admin_use ? 'ผู้ดูแลระบบอนุมัติเท่านั้น' : 'ไม่สามารถใช้งานได้'));
-            },
-            _checkAdmin(emp_work, status_admin, welfare_old) {
-                if (status_admin || !emp_work || welfare_old)
-                    return true
-            },
-            check(data) {
-                // console.log(data);
-            },
+            // _wordApprove(admin_use, welfare_old) {
+            //     return (welfare_old ? 'ไม่สามารถใช้ของปีที่แล้วได้' : (admin_use ? 'ผู้ดูแลระบบอนุมัติเท่านั้น' : 'ไม่สามารถใช้งานได้'));
+            // },
+            // _checkAdmin(emp_work, status_admin, welfare_old) {
+            //     if (status_admin || !emp_work || welfare_old)
+            //         return true
+            // },
+            // check(data) {
+            //     // console.log(data);
+            // },
             _checkApprove(status) {
                 // console.log(status);
                 switch (status) {
@@ -229,23 +230,23 @@
 
                 }
             },
-            _btnReject(status) {
-                return status == 'request'
-            },
-            btnCancel(e) {
-                // console.log(e.currentTarget.data);
-                let newData = [{ id: e.currentTarget.data.history_welfare_id }]
-                this.fire('toast', {
-                    status: 'openDialog',
-                    text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
-                    confirmed: (result) => {
-                        if (result == true) {
-                            this.dispatchAction('USER_CANCEL_USE_WELFARE', newData);
-                            this.fire('_getReloadData', '')
-                        }
-                    }
-                })
-            },
+            // _btnReject(status) {
+            //     return status == 'request'
+            // },
+            // btnCancel(e) {
+            //     // console.log(e.currentTarget.data);
+            //     let newData = [{ id: e.currentTarget.data.history_welfare_id }]
+            //     this.fire('toast', {
+            //         status: 'openDialog',
+            //         text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
+            //         confirmed: (result) => {
+            //             if (result == true) {
+            //                 this.dispatchAction('USER_CANCEL_USE_WELFARE', newData);
+            //                 this.fire('_getReloadData', '')
+            //             }
+            //         }
+            //     })
+            // },
             // gerYearWelfare(e){
             //     // console.log(window.location.pathname.split('/')[2]);
             //     // console.log(e.detail.value);
@@ -260,38 +261,38 @@
             _Obindex(index) {
                 return index + 1
             },
-            usewelfare(e) {
-                let data = new Object();
-                // console.log(this.data.id);
-                data.title = e.currentTarget.data.name
-                data.emp_id = this.data.id
-                data.welfare_id = e.currentTarget.data.welfare_id
-                data.budget_cover = e.currentTarget.data.budget_balance
-                data.status = 'request'
-                data.onetime = e.currentTarget.data.onetime
-                data.year = this.year - 543
-                data.group_id = e.currentTarget.data.group_id
-                this.set('disabled', e.currentTarget.data.onetime)
-                this.$$('#welfare_budget').open()
+            // usewelfare(e) {
+            //     let data = new Object();
+            //     // console.log(this.data.id);
+            //     data.title = e.currentTarget.data.name
+            //     data.emp_id = this.data.id
+            //     data.welfare_id = e.currentTarget.data.welfare_id
+            //     data.budget_cover = e.currentTarget.data.budget_balance
+            //     data.status = 'request'
+            //     data.onetime = e.currentTarget.data.onetime
+            //     data.year = this.year - 543
+            //     data.group_id = e.currentTarget.data.group_id
+            //     this.set('disabled', e.currentTarget.data.onetime)
+            //     this.$$('#welfare_budget').open()
 
-                this.dispatchAction('USER_USE_SELETE_WELFARE', data);
-            },
-            getwelfare() {
-                // console.log(this.usewelfareProp);
-                // console.log(this.data.file);
-                this.$$('#welfare_budget').close()
-                this.usewelfareProp.document_ids = this.$$('dialog-use-welfare').keepFile()
-                // console.log(this.usewelfareProp);
-                // console.log(this.$$('#dialog-use-welfare'));
-                // console.log(this.usewelfareProp.use_budget);
-                // console.log();
-                if (this.$$('#dialog-use-welfare').validateForm('.required'))
-                    this.dispatchAction('USER_USE_WELFARE', this.usewelfareProp);
-            },
-            deleteHistoryWelfare(e) {
-                // console.log(e.currentTarget.data);
-                this.dispatchAction('USER_DELETE_USE_WELFARE', e.currentTarget.data);
-            },
+            //     this.dispatchAction('USER_USE_SELETE_WELFARE', data);
+            // },
+            // getwelfare() {
+            //     // console.log(this.usewelfareProp);
+            //     // console.log(this.data.file);
+            //     this.$$('#welfare_budget').close()
+            //     this.usewelfareProp.document_ids = this.$$('dialog-use-welfare').keepFile()
+            //     // console.log(this.usewelfareProp);
+            //     // console.log(this.$$('#dialog-use-welfare'));
+            //     // console.log(this.usewelfareProp.use_budget);
+            //     // console.log();
+            //     if (this.$$('#dialog-use-welfare').validateForm('.required'))
+            //         this.dispatchAction('USER_USE_WELFARE', this.usewelfareProp);
+            // },
+            // deleteHistoryWelfare(e) {
+            //     // console.log(e.currentTarget.data);
+            //     this.dispatchAction('USER_DELETE_USE_WELFARE', e.currentTarget.data);
+            // },
             downloadFile(e) {
                 // console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id)

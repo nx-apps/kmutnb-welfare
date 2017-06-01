@@ -28,7 +28,7 @@
                 margin: 20px 0px;
             }
 
-            paper-material>.title {
+            .title {
                 font-size: 20px;
                 padding: 15px;
             }
@@ -64,10 +64,6 @@
                     <div class="header-page container">สิทธิสวัสดิการ</div>
                 </div>
             </div>
-            <paper-material elevation="1">
-                <div class="title">ค้นหา</div>
-                <search-setting data="{{data}}"></search-setting>
-            </paper-material>
             <div class="horizontal end-justified layout">
                 <!--<paper-button raised class="gl-btn-info" on-tap="_print">
                             <iron-icon icon="print"></iron-icon> ออกรายงาน
@@ -77,12 +73,24 @@
                 </paper-button>
             </div>
             <paper-material elevation="1">
-                <div class="horizontal end-justified layout">
+                <div class="title">ค้นหา</div>
+                <search-setting data="{{data}}"></search-setting>
+            </paper-material>
+
+            <paper-material elevation="1">
+                <!--<div class="horizontal end-justified layout">
                     <div class="">
                         <gl-form-dropdown-menu always-float-label label="ประเภทรายงาน" placeholder="ประเภทรายงาน" style="margin-top:15px;width:100%;">
-                            <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_type}}">
+                            <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_id}}">
                                 <template is="dom-repeat" items={{typeReport}}>
                                     <paper-item value="[[item.report_id]]">[[item.report_name]]</paper-item>
+                                </template>
+                            </paper-menu>
+                        </gl-form-dropdown-menu>
+                        <gl-form-dropdown-menu always-float-label label="ประเภทรายงาน" placeholder="ประเภทรายงาน" style="margin-top:15px;width:100%;">
+                            <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_type}}">
+                                <template is="dom-repeat" items={{report_type}}>
+                                    <paper-item value="[[item.report_type_id]]">[[item.report_type]]</paper-item>
                                 </template>
                             </paper-menu>
                         </gl-form-dropdown-menu>
@@ -94,8 +102,42 @@
                     </div>
 
                 </div>
-                <div class="title">รายชื่อพนักงาน</div>
+                <div class="title">รายชื่อพนักงาน</div>-->
+                <div class="layout horizontal start-justified">
+                    <div class="flex">
+                        <div class="title">รายชื่อพนักงาน</div>
+                    </div>
+                    <div class="flex-2">
+                        <div class="horizontal end-justified layout">
+                            <div class="flex-2">
+                                <gl-form-dropdown-menu always-float-label label="ประเภทรายงาน" placeholder="ประเภทรายงาน" style="margin-top:15px;width:100%;">
+                                    <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_id}}">
+                                        <template is="dom-repeat" items={{typeReport}}>
+                                            <paper-item value="[[item.report_id]]">[[item.report_name]]</paper-item>
+                                        </template>
+                                    </paper-menu>
+                                </gl-form-dropdown-menu>
+                            </div>
+                            <div class="flex-2" style="margin-left:5px;">
+                                <gl-form-dropdown-menu always-float-label label="รูปแบบรายงาน" placeholder="รูปแบบรายงาน" style="margin-top:15px;width:100%;">
+                                    <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_type_seleted}}">
+                                        <template is="dom-repeat" items={{report_type}}>
+                                            <paper-item value="[[item.report_type_id]]">[[item.report_type]]</paper-item>
+                                        </template>
+                                    </paper-menu>
+                                </gl-form-dropdown-menu>
+                            </div>
+                            <div class="flex">
+                                <div style="margin:0">
+                                    <paper-button raised class="gl-btn-defalse" on-tap="_print">
+                                        <iron-icon icon="print"></iron-icon> ออกรายงาน
+                                    </paper-button>
+                                </div>
 
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <list-employees data-check="{{data}}"></list-employees>
             </paper-material>
         </div>
@@ -138,41 +180,53 @@
                     value: [
                         {
                             report_id: 0,
-                            report_name: 'รายงาน 1'
+                            report_name: 'รายงาน 1 สรุปการจ่ายสวัสดิการ'
                         },
                         {
                             report_id: 1,
-                            report_name: 'รายงาน 2'
+                            report_name: 'รายงาน 2 สรุปการจ่ายสวัสดิการ'
                         },
                         {
                             report_id: 2,
-                            report_name: 'รายงาน 3'
+                            report_name: 'รายงาน 3 รายละเอียดการจ่ายสวัสดิการ'
                         },
                         {
                             report_id: 3,
-                            report_name: 'รายงาน 4'
+                            report_name: 'รายงาน 4 การจ่ายสวัสดิการรายบุุคคล'
                         },
                         {
                             report_id: 4,
-                            report_name: 'รายงาน 5'
+                            report_name: 'รายงาน 5 สรุปการเบิกสวัสดิการ'
                         },
                         {
                             report_id: 5,
-                            report_name: 'รายงาน 6'
+                            report_name: 'รายงาน 6 รายงานการเบิกสวัสดิการรายบุคคล'
                         },
                         {
                             report_id: 6,
-                            report_name: 'รายงาน 7'
+                            report_name: 'รายงาน 7 สรุปรายงานการเบิกประจำปี'
                         },
                         {
                             report_id: 7,
-                            report_name: 'รายงาน 8'
+                            report_name: 'รายงาน 8 รายงานการเบิกสวัสดิการรายบุคคล'
                         },
                     ]
                 },
-                report_type: {
+                report_id: {
                     type: Number,
                     value: 0
+                },
+                report_type: {
+                    type: Array,
+                    value: [
+                        { report_type: 'PDF', report_type_id: 'pdf' },
+                        { report_type: 'WORD', report_type_id: 'word' },
+                        { report_type: 'EXCEL', report_type_id: 'excel' }
+                    ]
+                },
+                report_type_seleted: {
+                    type: Object,
+                    value: 'PDF'
                 },
                 list_welfare: {
                     statePath: 'userWelfare.list_id'
@@ -213,7 +267,7 @@
             },
             printReport: function () {
                 try {
-                    let idReport = this.report_type + 1
+                    let idReport = this.report_id + 1
                     const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
                     const checkUndefined = (value) => value !== undefined && value !== ''
                     const data = JSON.parse(JSON.stringify(this.data))
@@ -222,18 +276,17 @@
                         data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
                     if (checkUndefined(this.data.faculty_id))
                         data.faculty_name = getName(this.list_faculty, this.data.faculty_id).faculty_name
-                    if (checkUndefined(this.data.department_id)){
+                    if (checkUndefined(this.data.department_id)) {
                         let department_list = getName(this.list_faculty, this.data.faculty_id).department
                         data.department_name = getName(department_list, data.department_id).department_name
-                        // console.log(data.department_name);
                     }
-                        
+
                     if (checkUndefined(this.data.type_employee_id))
                         data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
                     // console.log(data.type_employee_name);
                     // console.log(data.department_id);
                     // console.log(this.genUrl(data));
-                    window.open('/api/report/welfare' + idReport + '?' + this.genUrl(data));
+                    window.open('/api/report/welfare' + idReport + '?' + this.genUrl(data) + '&type=' + this.report_type);
                     // https://localhost:3000/api/report/welfare1?
                 } catch (error) {
 
