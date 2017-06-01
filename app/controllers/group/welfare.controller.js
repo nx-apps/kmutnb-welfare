@@ -30,16 +30,11 @@ exports.list = function (req, res) {
                 group: r.db('welfare').table('group_welfare').getAll(req.params.year, { index: 'year' })
                     .merge(function (m) {
                         return {
+                            status_approve_name: r.branch(m('status_approve').eq(true),'อนุมัติ','ไม่อนุมัติ') ,
                             year: m('year').add(543),
                             start_date: m('start_date').toISO8601().split('T')(0),
                             end_date: m('end_date').toISO8601().split('T')(0),
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
-                                // .merge(function (wel_merge) {
-                                //     return {
-                                //         condition: wel_merge('condition').without('logic_show', 'value_show')
-                                //         /*.eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()*/
-                                //     }
-                                // })
                                 .merge(function (wel_merge) {
                                     return {
                                         countCon: wel_merge('condition').count(),

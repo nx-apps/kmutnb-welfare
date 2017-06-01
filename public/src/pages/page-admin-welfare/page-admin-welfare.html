@@ -2,8 +2,7 @@
 <!--<link rel="import" href="components/group-welfare-chart.html">-->
 <link rel="import" href="./../components/page-style.html">
 <link rel="import" href="./../components/common-logic.html">
-
-
+<link rel="import" href="./../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 
 <dom-module id="page-admin-welfare">
     <template>
@@ -12,23 +11,19 @@
                 /*background-color: var(--gl-white-color);*/
                 padding: 0px;
             }
-            
             * {
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
             }
-            
             .table-detail {
                 margin: auto;
                 /*width: 80%;*/
                 padding: 20px;
             }
-            
             table.gl-table-default {
                 width: 100%;
                 border: 1px solid #ddd;
             }
-            
             .title-text {
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
@@ -48,13 +43,17 @@
                 width: 500px;
                 }
             }
+            .fix-head-table{
+                height: 450px;
+                overflow: auto;
+                position: relative;
+            }
         </style>
         <div class="xcontainer">
             <div class="header-page">เงือนไขสวัสดิการ</div>
             <!--<group-welfare-chart></group-welfare-chart>-->
+            [[_obYear(selectYear)]]
             <div class="horizontal layout">
-                <!--<paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_print">
-                <iron-icon icon="print"></iron-icon>ออกรายงาน</paper-button>-->
                 <div class="flex horizontal start-justified layout">
                     <gl-form-dropdown-menu style="margin-left:20px;" label="ปี" placeholder="เลือกปี">
                         <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
@@ -66,6 +65,8 @@
                 </div>
                 <div class="flex horizontal end-justified layout">
                     <div>
+                        <paper-button raised style="margin: 20px 10px 20px 20px;" class="gl-btn-info" on-tap="_print">
+                            <iron-icon icon="icons:print"></iron-icon>ออกรายงาน</paper-button>
                         <paper-button raised style="margin: 20px 10px 20px 20px;" class="gl-btn-info" on-tap="_openDialog">
                             <iron-icon icon="icons:content-copy"></iron-icon>คัดลอกสวัสดิการ</paper-button>
                         <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
@@ -81,7 +82,7 @@
                             <thead class="table-head">
                                 <tr>
                                     <th style="text-align:center; width:15%;">ปี</th>
-                                    <th>ชื่อสวัสดิการ</th>
+                                    <th style="text-align:left">ชื่อสวัสดิการ</th>
                                     <th style="text-align:center">จำนวนผู้มีสิทธิ</th>
                                     <th style="text-align:center">จำนวนผู้ใช้สิทธิ</th>
                                     <th style="text-align:center;width:15%;">ยอดเต็ม (บาท)</th>
@@ -93,7 +94,7 @@
                                 <template is="dom-repeat" items="{{list}}">
                                     <tr style="cursor:pointer;">
                                         <td style="text-align:center">[[item.year]]</td>
-                                        <td>[[item.group_welfare_name]]</td>
+                                        <td style="text-align:left">[[item.group_welfare_name]]</td>
                                         <td style="text-align:center">[[item.emp_budget]]</td>
                                         <td style="text-align:center">[[item.emp_use]]</td>
                                         <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
@@ -138,6 +139,7 @@
                         </gl-form-dropdown-menu>
                     </div>
                     <template is="dom-if" if={{_obData(data_clone)}}>
+                        <div class="fix-head-table">
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
@@ -154,6 +156,7 @@
                                 </template>
                             </tbody>
                         </table>
+                        </div>
                     </template>
                     {{_obChecked(data_clone.*)}}
                 </div>
@@ -274,8 +277,12 @@
                     this.LIST_WELFARE(year);
                 }
             },
+            _obYear:function(year){
+                this.select_year = year;
+            },
             _print: function () {
-                this.fire('nylon-change-page', { path: '/report' })
+                var year = this.select_year-543;
+                window.open('./api/report/welfare9?year='+year);
             },
             _openDialog:function(){
                 this.$.clone_welfare.open();

@@ -167,7 +167,7 @@ exports.update = function (req, res) {
             condition: req.body.condition.map(function (m) {
                 var change_value = {};
                 if (m.logic == ">" || m.logic == "<" || m.logic == ">=" || m.logic == "<=") {
-                    change_value = r.ISO8601(m.value).inTimezone('+07');
+                    change_value = r.ISO8601(m.value);
                 } else {
                     change_value = m.value;
                 }

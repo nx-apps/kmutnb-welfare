@@ -132,6 +132,7 @@ export function groupWelfareAction(store) {
                 this.fire('toast', {
                     status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                         this.LIST_WELFARE(newData.year - 543);
+                        this.LIST_WELFARE_ID(data.id);
                         // console.log('success');
                     }
                 });
@@ -244,7 +245,10 @@ export function groupWelfareAction(store) {
                 result.data.map((val) => {
                     return val.check = false
                 })
-                store.dispatch({ type: 'CLONE_DATA', payload: result.data })
+                var data = result.data.filter((item) => {
+                    return item.status_approve == true
+                })
+                store.dispatch({ type: 'CLONE_DATA', payload: data })
             })
         },
         INSERT_CLONE_DATA:function(data){
