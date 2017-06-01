@@ -365,21 +365,21 @@
                 newData.budget_balance = newData.budget_cover - newData.budget_use
                 newData.date_approve = newData.date_approve + 'T00:00:00+07:00'
                 newData.date_use = newData.date_use + 'T00:00:00+07:00'
-                console.log(newData);
-                // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
-                //     this.fire('toast', {
-                //         status: 'openDialog',
-                //         text: 'กรุณายืนยันการทำรายการ ?',
-                //         confirmed: (result) => {
-                //             if (result == true) {
-                //                 this.$$('#welfare_budget').close()
-                //                 // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
-                //                     this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
-                //                 // }
-                //             }
-                //         }
-                //     })
-                // }
+                // console.log("newData",newData);
+                if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'กรุณายืนยันการทำรายการ ?',
+                        confirmed: (result) => {
+                            if (result == true) {
+                                this.$$('#welfare_budget').close()
+                                // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
+                                    this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
+                                // }
+                            }
+                        }
+                    })
+                }
 
 
             },
