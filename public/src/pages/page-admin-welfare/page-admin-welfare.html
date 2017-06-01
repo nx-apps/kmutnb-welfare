@@ -81,12 +81,13 @@
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <th style="text-align:center; width:15%;">ปี</th>
-                                    <th style="text-align:left">ชื่อสวัสดิการ</th>
+                                    <th style="text-align:center; width:10%;">ปี</th>
+                                    <th style="text-align:left; width:20%;">ชื่อสวัสดิการ</th>
                                     <th style="text-align:center">จำนวนผู้มีสิทธิ</th>
                                     <th style="text-align:center">จำนวนผู้ใช้สิทธิ</th>
                                     <th style="text-align:center;width:15%;">ยอดเต็ม (บาท)</th>
                                     <th style="text-align:center;width:15%;">ยอดที่ใช้ (บาท)</th>
+                                    <th style="text-align:left">สถานะการใช้งาน</th>
                                     <th style="width:15%;text-align:center;">เครื่องมือ</th>
                                 </tr>
                             </thead>
@@ -94,11 +95,12 @@
                                 <template is="dom-repeat" items="{{list}}">
                                     <tr style="cursor:pointer;">
                                         <td style="text-align:center">[[item.year]]</td>
-                                        <td style="text-align:left">[[item.group_welfare_name]]</td>
+                                        <td style="text-align:left">[[item.group_welfare_name]] ([[item.admin_use_name]])</td>
                                         <td style="text-align:center">[[item.emp_budget]]</td>
                                         <td style="text-align:center">[[item.emp_use]]</td>
                                         <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
                                         <td style="text-align:right">[[formatNumber(item.value_use)]]</td>
+                                        <td style="text-align:left">[[item.status_approve_name]]</td>
                                         <td style="text-align:center">
                                             <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="แก้ไขสวัสดิการ"></paper-icon-button>
                                         </td>
