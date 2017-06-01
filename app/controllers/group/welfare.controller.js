@@ -30,7 +30,8 @@ exports.list = function (req, res) {
                 group: r.db('welfare').table('group_welfare').getAll(req.params.year, { index: 'year' })
                     .merge(function (m) {
                         return {
-                            status_approve_name: r.branch(m('status_approve').eq(true),'อนุมัติ','ไม่อนุมัติ') ,
+                            status_approve_name: r.branch(m('status_approve').eq(true),'อนุมัติ','ไม่อนุมัติ'),
+                            admin_use_name: r.branch(m('admin_use').eq(true),'แบบกลุ่ม','แบบเดี่ยว'),
                             year: m('year').add(543),
                             start_date: m('start_date').toISO8601().split('T')(0),
                             end_date: m('end_date').toISO8601().split('T')(0),
