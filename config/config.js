@@ -63,7 +63,7 @@ var config = {
     },
     database: {
       servers: [
-        { host: '192.168.10.22', port: 28015 }
+        { host: 'rdb.codeunbug.com', port: 28015 }
       ],
       db: 'oauth'
     },
