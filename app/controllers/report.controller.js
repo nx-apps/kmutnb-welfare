@@ -62,16 +62,16 @@ exports.report1 = function (req, res, next) {
                                         emp_filter('reduction').eq(wel_merge('countCon'))
                                     )
                                 })
-                                .eqJoin('group',r.db('welfare').table('employee')).zip()
-                                .pluck(['emp','firstname','gender_name','lastname','department_name',
-                                'faculty_name','prefix_name','start_work_date','type_employee_name'])
-                                .merge(function(add_name){
-                                    return{
+                                .eqJoin('group', r.db('welfare').table('employee')).zip()
+                                .pluck(['emp', 'firstname', 'gender_name', 'lastname', 'department_name',
+                                    'faculty_name', 'prefix_name', 'start_work_date', 'type_employee_name'])
+                                .merge(function (add_name) {
+                                    return {
                                         name: add_name('prefix_name').add(add_name('firstname'), add_name('lastname')),
                                         department_fuculty_name: add_name('department_name').add(' ', add_name('faculty_name'))
                                     }
                                 })
-                                .without('prefix_name','firstname','lastname','department_name','faculty_name')
+                                .without('prefix_name', 'firstname', 'lastname', 'department_name', 'faculty_name')
                         }
                     })
                     .merge(function (wel_merge) {
@@ -79,7 +79,7 @@ exports.report1 = function (req, res, next) {
                             count_employee: wel_merge('employee').count()
                         }
                     })
-                .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: 'group_welfare_name' }).zip()
+                    .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: 'group_welfare_name' }).zip()
             }
         })
         .without('employees')
@@ -1532,7 +1532,7 @@ exports.welfare1 = function (req, res) {
 
     var param = req.query;
     param.year = Number(param.year) + 543;
-
+    // console.log("lllllllllllllllllllllll", param.group_id)
     // res.json(param);
 
     // r.db('welfare').table('history_welfare')
@@ -1560,11 +1560,15 @@ exports.welfare1 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true })
-        .filter({ 'group_id': param.group_id })
+        .filter({ status: true, 'group_id': param.group_id })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
-        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: 'type_employee_id' }).zip().filter({ 'faculty_id': param.faculty_id })
-        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip().filter({ 'type_employee_id': param.type_employee_id })
+        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: ['type_employee_id', 'faculty_id', 'department_id'] }).zip()
+        .filter({
+            'faculty_id': param.faculty_id,
+            'type_employee_id': param.type_employee_id,
+            'department_id': param.department_id
+        })
+        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip()
         .group('group_id').ungroup()
         .merge(function (m) {
             return {
@@ -1587,6 +1591,7 @@ exports.welfare1 = function (req, res) {
         })
         .run()
         .then(function (result) {
+            // res.json(result);
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
@@ -1618,8 +1623,14 @@ exports.welfare2 = function (req, res) {
         .filter({ status: true })
         .filter({ 'group_id': param.group_id })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
-        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: ['type_employee_id', 'faculty_id'] }).zip().filter({ 'faculty_id': param.faculty_id })
-        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip().filter({ 'type_employee_id': param.type_employee_id })
+        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: ['type_employee_id', 'faculty_id', 'department_id'] }).zip()
+        .filter({
+            'faculty_id': param.faculty_id,
+            'type_employee_id': param.type_employee_id,
+            'department_id': param.department_id
+        })
+        .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip()
+        //.filter({ 'type_employee_id': param.type_employee_id })
         .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck("left", { right: 'faculty_name' }).zip()
         .group('group_id').ungroup()
         .merge(function (m) {
@@ -1675,7 +1686,12 @@ exports.welfare3 = function (req, res) {
         .filter({ status: true })
         .filter({ 'group_id': param.group_id })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
-        .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip().filter({ 'faculty_id': param.faculty_id })
+        .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
+        .filter({
+            'faculty_id': param.faculty_id,
+            'type_employee_id': param.type_employee_id,
+            'department_id': param.department_id
+        })
         .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck("left", { right: 'prefix_name' }).zip()
         .merge(function (name_merge) {
             return {
@@ -1718,6 +1734,7 @@ exports.welfare4 = function (req, res) {
     param.year = Number(param.year) + 543;
 
     r.db('welfare').table('history_welfare')
+        .filter({ 'personal_id': param.personal_id })
         .filter(function (f) {
             return f('date_approve').date().during(
                 r.ISO8601(date_start),
@@ -1725,10 +1742,8 @@ exports.welfare4 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true })
-        .filter({ 'group_id': param.group_id })
+        .filter({ status: true, 'group_id': param.group_id })
         .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
-        .filter({ 'personal_id': param.personal_id })
         .filter({ 'faculty_id': param.faculty_id })
         .filter({ 'type_employee_id': param.type_employee_id })
         // .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck("left", { right: 'prefix_name' }).zip()
@@ -1773,11 +1788,13 @@ exports.welfare5 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true })
-        .filter({ 'group_id': param.group_id })
-        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck({ left: 'budget_use' }, { right: 'faculty_id' }).zip()
-        .filter({ 'faculty_id': param.faculty_id })
-        .filter({ 'type_employee_id': param.type_employee_id })
+        .filter({ status: true, 'group_id': param.group_id })
+        .eqJoin('emp_id', r.db('welfare').table('employee')).pluck({ left: 'budget_use' }, { right: ['faculty_id', 'department_id', 'type_employee_id'] }).zip()
+        .filter({
+            'faculty_id': param.faculty_id,
+            'type_employee_id': param.type_employee_id,
+            'department_id': param.department_id
+        })
         .group('faculty_id').sum('budget_use').ungroup()
         .eqJoin('group', r.db('welfare_common').table('faculty')).pluck({ left: 'reduction' }, { right: 'faculty_name' }).zip()
         .merge(function (m) {
@@ -1812,12 +1829,15 @@ exports.welfare6 = function (req, res) {
                 r.ISO8601(date_end),
                 { rightBound: "closed" }
             )
-        }).filter({ status: true })
-        .filter({ 'group_id': param.group_id })
+        })
+        .filter({ status: true, 'group_id': param.group_id })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
         .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
-        .filter({ 'faculty_id': param.faculty_id })
-        .filter({ 'type_employee_id': param.type_employee_id })
+        .filter({
+            'faculty_id': param.faculty_id,
+            'type_employee_id': param.type_employee_id,
+            'department_id': param.department_id
+        })
         .merge(function (name_merge) {
             return {
                 name: name_merge('prefix_name').add(name_merge('firstname')).add('  ', name_merge('lastname'))
@@ -1877,11 +1897,13 @@ exports.welfare7 = function (req, res) {
         .merge(function (data_merge) {
             return {
                 sum_budget: r.db('welfare').table('history_welfare').coerceTo('array')
-                    .filter({ status: true })
-                    .filter({ 'group_id': param.group_id })
+                    .filter({ status: true, 'group_id': param.group_id })
                     .eqJoin('emp_id', r.db('welfare').table('employee')).zip()
-                    .filter({ 'faculty_id': param.faculty_id })
-                    .filter({ 'type_employee_id': param.type_employee_id })
+                    .filter({
+                        'faculty_id': param.faculty_id,
+                        'type_employee_id': param.type_employee_id,
+                        'department_id': param.department_id
+                    })
                     .filter(function (f) {
                         return f('date_approve').date().during(
                             r.ISO8601(data_merge('date_start')),
@@ -1916,6 +1938,7 @@ exports.welfare8 = function (req, res) {
     param.year = Number(param.year) + 543;
 
     r.db('welfare').table('history_welfare')
+        .filter({ 'personal_id': param.personal_id })
         .filter(function (f) {
             return f('date_approve').date().during(
                 r.ISO8601(date_start),
@@ -1923,13 +1946,14 @@ exports.welfare8 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true })
-        .filter({ 'group_id': param.group_id })
+        .filter({ status: true, 'group_id': param.group_id })
         .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
         .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck("left", { right: 'welfare_name' }).zip()
-        .filter({ 'personal_id': param.personal_id })
-        .filter({ 'faculty_id': param.faculty_id })
-        .filter({ 'type_employee_id': param.type_employee_id })
+        .filter({
+            'faculty_id': param.faculty_id,
+            'type_employee_id': param.type_employee_id,
+            'department_id': param.department_id
+        })
         .merge(function (name_merge) {
             return {
                 name: name_merge('prefix_name').add(name_merge('firstname')).add('  ', name_merge('lastname'))
