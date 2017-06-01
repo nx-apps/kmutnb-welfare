@@ -1758,10 +1758,10 @@ exports.welfare4 = function (req, res) {
         .pluck('budget_use', 'group_welfare_name', 'id', 'name', 'faculty_id', 'type_employee_id', 'group_id', 'date_approve', 'faculty_name', 'type_employee_name', 'personal_id')
         .run()
         .then(function (result) {
-            res.json(result)
-            // if (req.query.res_type == 'json') {
-            //     res.json(result);
-            // }
+            // res.json(result)
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
             // if (result.length > 0) {
             //     param.employee_name = result[0].name;
             // }
@@ -1769,7 +1769,7 @@ exports.welfare4 = function (req, res) {
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
             // res.json(param);
-            // res.ireport("welfare4.jasper", req.query.export || "pdf", result, param);
+            res.ireport("welfare4.jasper", req.query.export || "pdf", result, param);
         });
 }
 exports.welfare5 = function (req, res) {
