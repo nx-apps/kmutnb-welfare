@@ -100,7 +100,7 @@
                             <thead class="table-head">
                                 <tr>
                                     <th style="width: 5%" rowspan="2">ลำดับ</th>
-                                    <th style="width: 40%" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
+                                    <th style="width: 40%; text-align: left;" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
                                     <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
                                     <!--<th style="width: 15%">จำนวนเงินที่ใช้สิทธิ (บาท)</th>
                                 <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>-->
@@ -109,9 +109,9 @@
                                 <tr>
                                     <!--<th style="width: 5%">ลำดับ</th>-->
                                     <!--<th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>-->
-                                    <th style="width: 15%">มีสิทธิ </th>
-                                    <th style="width: 15%">ใช้สิทธิ </th>
-                                    <th style="width: 15%">คงเหลือ </th>
+                                    <th style="width: 15%; text-align: right;" class="right">มีสิทธิ </th>
+                                    <th style="width: 15%; text-align: right;" class="right">ใช้สิทธิ </th>
+                                    <th style="width: 15%; text-align: right;" class="right">คงเหลือ </th>
                                     <!--<th style="width: 15%">ขอใช้ (บาท)</th>-->
                                 </tr>
                             </thead>
@@ -148,7 +148,7 @@
                             <thead class="table-head">
                                 <tr>
                                     <th style="width: 10%">ลำดับ</th>
-                                    <th style="width: 25%">สวัสดิการที่ใช้</th>
+                                    <th style="width: 25%;text-align: left;">สวัสดิการที่ใช้</th>
                                     <th style="width: 18%;text-align: right;">จำนวนเงินที่ใช้</th>
                                     <th style="width: 10%">วันที่ใช้สิทธิ</th>
                                     <th style="width: 10%">วันที่อนุมัติ</th>
@@ -320,8 +320,6 @@
                                     this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
                                     // console.log(222);
                                 })
-                            // console.log(11111);
-                            // this.fire('_getReloadData','')
                         }
                     }
                 })
@@ -342,6 +340,7 @@
                 // console.log(this.data.id);
                 data.title = e.model.item.description
                 data.emp_id = this.data.id
+                data.personal_id = this.data.personal_id
                 data.welfare_id = e.model.item.welfare_id
                 data.budget = e.model.item.budget
                 data.budget_cover = e.model.item.budget_balance
@@ -366,21 +365,21 @@
                 newData.budget_balance = newData.budget_cover - newData.budget_use
                 newData.date_approve = newData.date_approve + 'T00:00:00+07:00'
                 newData.date_use = newData.date_use + 'T00:00:00+07:00'
-                // console.log(newData);
-                if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
-                    this.fire('toast', {
-                        status: 'openDialog',
-                        text: 'กรุณายืนยันการทำรายการ ?',
-                        confirmed: (result) => {
-                            if (result == true) {
-                                this.$$('#welfare_budget').close()
-                                // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
-                                    this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
-                                // }
-                            }
-                        }
-                    })
-                }
+                console.log(newData);
+                // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
+                //     this.fire('toast', {
+                //         status: 'openDialog',
+                //         text: 'กรุณายืนยันการทำรายการ ?',
+                //         confirmed: (result) => {
+                //             if (result == true) {
+                //                 this.$$('#welfare_budget').close()
+                //                 // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
+                //                     this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
+                //                 // }
+                //             }
+                //         }
+                //     })
+                // }
 
 
             },

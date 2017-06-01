@@ -80,6 +80,9 @@ exports.searchPid = function (req, res) {
     var r = req.r;
     let personal_id = req.params.pid
     r.db('welfare').table('employee').getAll(personal_id, { index: 'personal_id' })
+        .filter(function (row) {
+            return row("active_name").ne("ทำงาน");
+        })
         .orderBy(r.desc('date_update'))
         .run()
         .then((response) => {

@@ -27,7 +27,7 @@
                 </gl-combo-box>
             </div>
 
-            <div class="flex-2" style=" margin-right: 30px">
+            <div class="flex-2" style=" margin-right: 30px">{{getWelareName(data.group_id)}}
                 <gl-combo-box label="สวัสดิการ" placeholder="สวัสดิการทั้งหมด" items="{{list_welfare}}" item-label-path="label" item-value-path="id"
                     value="{{data.group_id}}">
                     <template>
@@ -128,6 +128,16 @@
                 })
                 // console.log(newWelFare);
                 return newWelFare
+            },
+            getWelareName(group_id){
+                
+                const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
+                const checkUndefined = (value) => value !== undefined && value !== ''
+                let name = ''
+                if (checkUndefined(group_id)) 
+                     name = getName(this.list_welfare,group_id).label
+               this.set('data.group_name',name)
+                // console.log(name);
             },
             setYear: function (year) {
                 // console.log(year);
