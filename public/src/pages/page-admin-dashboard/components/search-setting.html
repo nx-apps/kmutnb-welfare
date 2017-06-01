@@ -118,7 +118,7 @@
             setCombo(data) {
                 // console.log(data);
                 let newWelFare = data.map((el) => {
-                    console.log(el.admin_use);
+                    // console.log(el.admin_use);
                     if (el.admin_use === true) {
                         el.label = el.group_welfare_name + ' (กลุ่ม)'
                     } else {
@@ -126,7 +126,7 @@
                     }
                     return el
                 })
-                console.log(newWelFare);
+                // console.log(newWelFare);
                 return newWelFare
             },
             setYear: function (year) {

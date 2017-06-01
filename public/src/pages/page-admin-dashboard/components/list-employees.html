@@ -89,7 +89,7 @@
                 </vaadin-grid-column>
                 <vaadin-grid-column width="400px">
                     <template class="header">
-                        <div class="text-center">ชื่อ - นามสกุล
+                        <div class="text-left">ชื่อ - นามสกุล
                         </div>
                     </template>
                     <template>
@@ -97,14 +97,14 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">ชื่อ - นามสกุล
+                        <div class="text-left">ชื่อ - นามสกุล
                         </div>
                     </template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column width="300px">
                     <template class="header">
-                        <div class="text-center">ประเภทพนักงาน 
+                        <div class="text-left">ประเภทพนักงาน 
                         </div>
                     </template>
                     <template>
@@ -113,7 +113,7 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">ประเภทพนักงาน
+                        <div class="text-left">ประเภทพนักงาน
                         </div>
                     </template>
                 </vaadin-grid-column>
@@ -191,9 +191,10 @@
             <div hidden="{{paperFab}}">
                 <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
             </div>
-            <paper-dialog id="welfare_budget">
+            <paper-dialog id="welfare_budget" modal>
                 <admin-dialog-use-all-welfare id="admin-dialog-use-all-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-all-welfare>
                 <div class="flex horizontal end-justified layout buttons">
+                    <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
                     <paper-button raised class="gl-btn-primary" on-tap="getwelfare" dialog-confirm autofocus>ใช้งาน</paper-button>
                 </div>
             </paper-dialog>

@@ -5,25 +5,25 @@
             table.gl-table-default>tbody.table-body>tr>td {
                 text-align: center;
             }
-            
+
             table.gl-table-default {
                 width: 98%;
                 border: 1px solid #ddd;
                 /*margin: 15px;*/
             }
-            
+
             paper-button.gl-small {
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
                 font-size: var(--font-size-h5);
             }
-            
+
             paper-material {
                 background-color: #FFFFFF;
                 padding-top: 15px;
                 padding-bottom: 15px;
             }
-            
+
             paper-material>div.head {
                 padding: 10px;
                 font-size: 35px;
@@ -31,7 +31,7 @@
                 text-align: center;
                 @apply(--layout-flex);
             }
-            
+
             div.label {
                 text-align: left;
                 padding-top: 10px;
@@ -39,35 +39,36 @@
                 padding-left: 5px;
                 /*padding-top: 17px;*/
             }
-            
+
             vaadin-date-picker {
                 margin-top: -19px;
             }
-            
+
             .xcontainer {
                 margin: auto;
             }
-            
+
             @media screen and (min-width: 1275px) {
                 .xcontainer {
                     width: 85%;
                 }
             }
-            
+
             .tabe-overflow-x {
                 overflow-x: auto;
                 border-right: 1px solid #ddd;
                 border-left: 1px solid #ddd
             }
-            
+
             .header-page {
                 padding: 10px;
                 font-size: 35px;
             }
-            
+
             .header-page::after {
                 content: ":";
             }
+
             vaadin-grid#material {
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
@@ -108,14 +109,21 @@
                 }
                 ;
             }
-            
+
+            vaadin-grid#material .text-left {
+                text-align: left;
+            }
+
             vaadin-grid#material .text-center {
                 text-align: center;
             }
+
             vaadin-grid#material .text-right {
                 text-align: right;
             }
-            
+
+
+
             vaadin-grid#material .cursor {
                 cursor: pointer
             }

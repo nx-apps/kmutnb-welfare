@@ -190,7 +190,7 @@
                 // WELFARE_LIST
                 // this.dispatchAction('WELFARE_LIST');
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
-                this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
+                // this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
                 this.dispatchAction('COMMONDATA_DATA_ACTIVE');
                 this.dispatchAction('COMMONDATA_DATA_FACULTY');
                 this.dispatchAction('COMMONDATA_DATA_GENDER');
@@ -222,9 +222,16 @@
                         data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
                     if (checkUndefined(this.data.faculty_id))
                         data.faculty_name = getName(this.list_faculty, this.data.faculty_id).faculty_name
+                    if (checkUndefined(this.data.department_id)){
+                        let department_list = getName(this.list_faculty, this.data.faculty_id).department
+                        data.department_name = getName(department_list, data.department_id).department_name
+                        // console.log(data.department_name);
+                    }
+                        
                     if (checkUndefined(this.data.type_employee_id))
                         data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
                     // console.log(data.type_employee_name);
+                    // console.log(data.department_id);
                     // console.log(this.genUrl(data));
                     window.open('/api/report/welfare' + idReport + '?' + this.genUrl(data));
                     // https://localhost:3000/api/report/welfare1?
