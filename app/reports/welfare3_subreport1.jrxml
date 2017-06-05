@@ -7,7 +7,7 @@
 	<field name="name" class="java.lang.String"/>
 	<field name="budget_use" class="java.lang.Double"/>
 	<field name="type_employee_name" class="java.lang.String"/>
-	<field name="date_use" class="java.lang.String"/>
+	<field name="date_approve" class="java.lang.String"/>
 	<field name="group_welfare_name" class="java.lang.String"/>
 	<detail>
 		<band height="20" splitType="Stretch">
@@ -65,7 +65,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDateShort ($F{date_use})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDateShort ($F{date_approve})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="301" y="0" width="150" height="20" uuid="af179246-e51e-4262-9f77-28c22ef2cc92"/>

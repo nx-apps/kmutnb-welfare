@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare3" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="81da0a84-f091-4996-8a00-eee2ccda3f2c">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="172"/>
+	<property name="ireport.y" value="408"/>
 	<import value="nylon.report.*"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -247,7 +247,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[วันที่]]></text>
+				<text><![CDATA[วันที่เบิก]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="691" y="0" width="111" height="20" uuid="f9321842-29e0-43d3-be6c-02ae68ab19e2"/>
@@ -432,7 +432,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[วันที่]]></text>
+				<text><![CDATA[วันที่เบิก]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="284" width="802" height="50" uuid="108d2493-a840-4014-8fbd-f380637e955f"/>

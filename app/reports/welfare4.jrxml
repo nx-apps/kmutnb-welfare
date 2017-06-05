@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare4" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bba718c9-3e2c-426e-89cf-deb749d2268f">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="576"/>
+	<property name="ireport.y" value="432"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
 	<parameter name="TYPE_EMPLOYEE_NAME" class="java.lang.String"/>
@@ -20,6 +20,7 @@
 	<field name="budget_use" class="java.lang.Double"/>
 	<field name="date_approve" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
+	<field name="name_employee" class="java.lang.String"/>
 	<variable name="CURRENT_PAGE" class="java.lang.Integer" resetType="None" calculation="DistinctCount">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
@@ -160,7 +161,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{name}== null ?"ทั้งหมด":$F{name})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{name_employee}== null ?"ทั้งหมด":$F{name_employee})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

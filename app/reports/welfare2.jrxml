@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare2" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="30a35a0d-06ce-4c7f-a6ee-141c7e7ead6e">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="342"/>
+	<property name="ireport.y" value="771"/>
 	<import value="nylon.report.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\Users\\Accounting\\Documents\\Project\\kmutnb-welfare\\app\\reports\\"]]></defaultValueExpression>
@@ -186,7 +186,7 @@
 				<text><![CDATA[จำนวนเงิน]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="198" y="0" width="187" height="20" uuid="c564c2f9-ed35-4aaf-9845-863824a6764d"/>
+				<reportElement x="188" y="0" width="197" height="20" uuid="c564c2f9-ed35-4aaf-9845-863824a6764d"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -200,7 +200,7 @@
 				<text><![CDATA[คณะ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="23" y="0" width="175" height="20" uuid="678f9f1b-2f5f-4433-8394-415a59f7e7fa"/>
+				<reportElement x="23" y="0" width="165" height="20" uuid="678f9f1b-2f5f-4433-8394-415a59f7e7fa"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -218,7 +218,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="23" y="0" width="175" height="20" uuid="06abc85d-7795-46a2-9aeb-7c41c4a18bb3"/>
+				<reportElement stretchType="RelativeToBandHeight" x="23" y="0" width="165" height="20" uuid="06abc85d-7795-46a2-9aeb-7c41c4a18bb3"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -232,7 +232,7 @@
 				<textFieldExpression><![CDATA[$F{group_welfare_name}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="198" y="0" width="334" height="20" uuid="336bcbf3-ffb7-4a05-ba87-e4f281670546"/>
+				<reportElement x="188" y="0" width="344" height="20" uuid="336bcbf3-ffb7-4a05-ba87-e4f281670546"/>
 				<dataSourceExpression><![CDATA[new iJsonDS($F{reduction})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "welfare2_subreport1.jasper"]]></subreportExpression>
 			</subreport>
@@ -301,7 +301,7 @@
 	<noData>
 		<band height="325">
 			<staticText>
-				<reportElement x="25" y="255" width="175" height="20" uuid="cf497f61-6d9e-47d6-9386-53abf904a700"/>
+				<reportElement x="25" y="255" width="165" height="20" uuid="cf497f61-6d9e-47d6-9386-53abf904a700"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -315,7 +315,7 @@
 				<text><![CDATA[สวัสดิการ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="255" width="187" height="20" uuid="ac6e9de7-7329-4fcb-9571-6fecc37b7bd2"/>
+				<reportElement x="190" y="255" width="197" height="20" uuid="ac6e9de7-7329-4fcb-9571-6fecc37b7bd2"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
