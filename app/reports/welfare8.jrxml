@@ -2,7 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare8" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="78de3fd9-1562-4c5b-91dc-09fb29caa9ad">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="675"/>
+	<property name="ireport.y" value="240"/>
+	<import value="nylon.report.*"/>
 	<parameter name="CURRENT_DATE" class="java.lang.String"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -15,18 +16,23 @@
 	</parameter>
 	<parameter name="EMPLOYEE_NAME" class="java.lang.String"/>
 	<parameter name="DEPARTMENT_NAME" class="java.lang.String"/>
-	<field name="date_use" class="java.lang.String"/>
-	<field name="welfare_name" class="java.lang.String"/>
-	<field name="budget_use" class="java.lang.Double"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Accounting\\Documents\\Project\\kmutnb-welfare\\app\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<field name="type_employee_name" class="java.lang.String"/>
+	<field name="faculty_name" class="java.lang.String"/>
+	<field name="department_name" class="java.lang.String"/>
+	<field name="name_employee" class="java.lang.String"/>
+	<field name="reduction" class="java.lang.Object"/>
+	<field name="sum_budget" class="java.lang.Double"/>
+	<field name="sum_budget_use" class="java.lang.Double"/>
+	<field name="balance" class="java.lang.Double"/>
 	<variable name="CURRENT_PAGE" class="java.lang.Integer" resetType="None" calculation="DistinctCount">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
 	</variable>
-	<variable name="SUM_BUDGET_USE" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{budget_use}]]></variableExpression>
-	</variable>
-	<group name="GP">
-		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+	<group name="GP" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{name_employee}]]></groupExpression>
 		<groupFooter>
 			<band height="60">
 				<textField>
@@ -83,9 +89,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$V{SUM_BUDGET_USE}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{sum_budget_use}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="false">
 					<reportElement x="151" y="40" width="382" height="20" uuid="7bfde5b7-9b0a-4ec5-8477-888bc49685fb"/>
 					<box leftPadding="5" rightPadding="5">
 						<pen lineWidth="0.0"/>
@@ -97,9 +103,9 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[""]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{balance}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="#,##0.00">
 					<reportElement x="151" y="0" width="382" height="20" uuid="006cbba1-9795-4bd8-9586-3856455a7d01"/>
 					<box leftPadding="5" rightPadding="5">
 						<pen lineWidth="0.0"/>
@@ -111,7 +117,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[""]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{sum_budget}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -165,7 +171,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($P{EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{EMPLOYEE_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{name_employee}== null ?"ทั้งหมด":$F{name_employee})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="95" width="555" height="20" uuid="36fe4687-27fb-4886-ae1a-6db31aae7bfa"/>
@@ -182,7 +188,7 @@
 				<textFieldExpression><![CDATA["มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="357" y="144" width="200" height="20" uuid="0daf8f67-374b-464a-bde0-bc27ab4e0963"/>
+				<reportElement x="292" y="144" width="241" height="20" uuid="0daf8f67-374b-464a-bde0-bc27ab4e0963"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -193,10 +199,10 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ประเภทบุคคล     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ประเภทบุคคล     "+($F{type_employee_name}== null ?"ทั้งหมด":$F{type_employee_name})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="23" y="144" width="185" height="20" uuid="137ca47f-ee33-4682-9251-7234e0bc9c45"/>
+				<reportElement x="23" y="144" width="120" height="20" uuid="137ca47f-ee33-4682-9251-7234e0bc9c45"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -210,7 +216,7 @@
 				<textFieldExpression><![CDATA["ปีงบประมาณ    "+($P{YEAR}== null ?"ทั้งหมด":$P{YEAR})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="208" y="144" width="149" height="20" uuid="5fbf0bdf-45ff-4d76-95f4-ba81418e8571"/>
+				<reportElement x="143" y="144" width="149" height="20" uuid="5fbf0bdf-45ff-4d76-95f4-ba81418e8571"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -235,7 +241,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["คณะ     "+($P{FACULTY_NAME}== null ?"ทั้งหมด":$P{FACULTY_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["คณะ     "+($F{faculty_name}== null ?"ทั้งหมด":$F{faculty_name})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="23" y="231" width="488" height="20" uuid="e263703e-d1d9-4da4-8cfe-8249d05c5dbb"/>
@@ -249,7 +255,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ภาควิชา    "+($P{DEPARTMENT_NAME}== null ?"ทั้งหมด":$P{DEPARTMENT_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ภาควิชา    "+($F{department_name}== null ?"ทั้งหมด":$F{department_name})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -315,62 +321,11 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
-				<reportElement x="23" y="0" width="128" height="20" uuid="b425efaa-9cb2-4546-96cc-d6483765923f"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDateShort ($F{date_use})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="151" y="0" width="133" height="20" uuid="ec04ccf3-a424-4114-9817-a5ec077c2016"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{welfare_name}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="284" y="0" width="125" height="20" uuid="9134bf1b-7824-4994-b03f-57379395dc8c"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{budget_use}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="409" y="0" width="124" height="20" uuid="41db9ea3-0ad9-4c7f-8e78-d7e9222b5a74"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[""]]></textFieldExpression>
-			</textField>
+			<subreport>
+				<reportElement x="23" y="0" width="510" height="20" uuid="20b1dfb0-9319-405c-8144-7d58f3b62202"/>
+				<dataSourceExpression><![CDATA[new iJsonDS($F{reduction})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "welfare8_subreport1.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<pageFooter>
@@ -495,7 +450,7 @@
 				<text><![CDATA[ไม่มีข้อมูล]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="23" y="138" width="149" height="20" uuid="f0dbc0a7-4e85-4187-b908-6d02e7204792"/>
+				<reportElement x="143" y="138" width="149" height="20" uuid="f0dbc0a7-4e85-4187-b908-6d02e7204792"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -509,7 +464,7 @@
 				<textFieldExpression><![CDATA["สวัสดิการ     "+($P{GROUP_NAME}== null ?"ทั้งหมด":$P{GROUP_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="172" y="138" width="185" height="20" uuid="d503593a-13e7-48ae-8b97-8e6908caa69d"/>
+				<reportElement x="23" y="138" width="120" height="20" uuid="d503593a-13e7-48ae-8b97-8e6908caa69d"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -523,7 +478,7 @@
 				<textFieldExpression><![CDATA["ปีงบประมาณ    "+($P{YEAR}== null ?"ทั้งหมด":$P{YEAR})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="357" y="138" width="198" height="20" uuid="ba50432b-bcf5-498a-b8fa-e43cf0eefbd6"/>
+				<reportElement x="292" y="138" width="241" height="20" uuid="ba50432b-bcf5-498a-b8fa-e43cf0eefbd6"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -534,7 +489,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ประเภทบุคคล     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ประเภทบุคคล     "+($F{type_employee_name}== null ?"ทั้งหมด":$F{type_employee_name})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="23" y="225" width="488" height="20" uuid="90af9b3a-e7db-474f-afd0-ca780be45b1f"/>
@@ -548,7 +503,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ภาควิชา    "+($P{DEPARTMENT_NAME}== null ?"ทั้งหมด":$P{DEPARTMENT_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ภาควิชา    "+($F{department_name}== null ?"ทั้งหมด":$F{department_name})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="23" y="253" width="510" height="20" uuid="2846103c-3014-4d56-8646-2f022ed83ba9"/>
@@ -576,7 +531,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($P{EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{EMPLOYEE_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{name_employee}== null ?"ทั้งหมด":$F{name_employee})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="90" width="555" height="20" uuid="c82a5cf5-9bbb-4512-a3fb-195772a58e14"/>
@@ -604,7 +559,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["คณะ     "+($P{FACULTY_NAME}== null ?"ทั้งหมด":$P{FACULTY_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["คณะ     "+($F{faculty_name}== null ?"ทั้งหมด":$F{faculty_name})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="110" width="555" height="20" uuid="bb18fba5-d224-41f4-a483-4810a7845b15"/>

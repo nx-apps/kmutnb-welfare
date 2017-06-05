@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare6" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="340c9a75-a796-41c2-8899-4bb2cc2f89cb">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="153"/>
+	<property name="ireport.y" value="297"/>
 	<parameter name="CURRENT_DATE" class="java.lang.String"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -39,7 +39,7 @@
 		<groupFooter>
 			<band height="20">
 				<textField>
-					<reportElement x="0" y="0" width="257" height="20" uuid="673c9d71-c035-49f6-9a2d-4e72d21b048b"/>
+					<reportElement x="0" y="0" width="270" height="20" uuid="673c9d71-c035-49f6-9a2d-4e72d21b048b"/>
 					<box leftPadding="5" rightPadding="5">
 						<pen lineWidth="0.0"/>
 						<topPen lineWidth="1.0"/>
@@ -53,7 +53,7 @@
 					<textFieldExpression><![CDATA["รวม "]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00">
-					<reportElement x="257" y="0" width="93" height="20" uuid="10233cf3-6a12-47a8-a8cc-8687039adecb"/>
+					<reportElement x="270" y="0" width="95" height="20" uuid="10233cf3-6a12-47a8-a8cc-8687039adecb"/>
 					<box leftPadding="5" rightPadding="5">
 						<pen lineWidth="0.0"/>
 						<topPen lineWidth="1.0"/>
@@ -67,7 +67,7 @@
 					<textFieldExpression><![CDATA[$V{SUM_BUDGET}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00">
-					<reportElement x="350" y="0" width="111" height="20" uuid="ec213098-6581-4188-a132-a9624206d08b"/>
+					<reportElement x="365" y="0" width="95" height="20" uuid="ec213098-6581-4188-a132-a9624206d08b"/>
 					<box leftPadding="5" rightPadding="5">
 						<pen lineWidth="0.0"/>
 						<topPen lineWidth="1.0"/>
@@ -81,7 +81,7 @@
 					<textFieldExpression><![CDATA[$V{SUM_BUDGET_USE}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00">
-					<reportElement x="461" y="0" width="93" height="20" uuid="b836293c-fe07-4f01-a51f-749f4a433cd4"/>
+					<reportElement x="460" y="0" width="95" height="20" uuid="b836293c-fe07-4f01-a51f-749f4a433cd4"/>
 					<box leftPadding="5" rightPadding="5">
 						<pen lineWidth="0.0"/>
 						<topPen lineWidth="1.0"/>
@@ -223,7 +223,7 @@
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement x="49" y="0" width="116" height="20" uuid="6b3058b9-f709-4de5-aa34-0e3c3b56fa8d"/>
+				<reportElement x="49" y="0" width="129" height="20" uuid="6b3058b9-f709-4de5-aa34-0e3c3b56fa8d"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -237,7 +237,7 @@
 				<text><![CDATA[ชื่อผู้เบิก]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="165" y="0" width="92" height="20" uuid="75b3b49c-ef56-4139-9633-ad15519df05d"/>
+				<reportElement x="178" y="0" width="92" height="20" uuid="75b3b49c-ef56-4139-9633-ad15519df05d"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -251,7 +251,7 @@
 				<text><![CDATA[วันที่]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="257" y="0" width="93" height="20" uuid="68e668b7-9007-441e-9c25-8d3c445cc74b"/>
+				<reportElement x="270" y="0" width="95" height="20" uuid="68e668b7-9007-441e-9c25-8d3c445cc74b"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -265,7 +265,7 @@
 				<text><![CDATA[สิทธิเบิก]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="350" y="0" width="111" height="20" uuid="4264a3dc-af38-47c9-9122-92bf97d268ea"/>
+				<reportElement x="365" y="0" width="95" height="20" uuid="4264a3dc-af38-47c9-9122-92bf97d268ea"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -279,7 +279,7 @@
 				<text><![CDATA[จำนวนเบิก]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="461" y="0" width="94" height="20" uuid="ab237d83-39f9-4899-b1e1-7e9322025d92"/>
+				<reportElement x="460" y="0" width="95" height="20" uuid="ab237d83-39f9-4899-b1e1-7e9322025d92"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -311,7 +311,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="49" y="0" width="116" height="20" uuid="168fa809-6f9d-4826-b32d-9a5c675876a3"/>
+				<reportElement x="49" y="0" width="129" height="20" uuid="168fa809-6f9d-4826-b32d-9a5c675876a3"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -325,7 +325,7 @@
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="165" y="0" width="92" height="20" uuid="b0d9014c-9a01-48b3-8814-3f5006978b01"/>
+				<reportElement x="178" y="0" width="92" height="20" uuid="b0d9014c-9a01-48b3-8814-3f5006978b01"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -339,7 +339,7 @@
 				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDateShort ($F{date_use})]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="257" y="0" width="93" height="20" uuid="a458f9cb-e6a0-4b70-8905-71c7678e86a0"/>
+				<reportElement x="270" y="0" width="95" height="20" uuid="a458f9cb-e6a0-4b70-8905-71c7678e86a0"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -353,7 +353,7 @@
 				<textFieldExpression><![CDATA[$F{budget}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="350" y="0" width="111" height="20" uuid="791bd38e-f6d4-4ec0-8c89-784a95cee988"/>
+				<reportElement x="365" y="0" width="95" height="20" uuid="791bd38e-f6d4-4ec0-8c89-784a95cee988"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -367,7 +367,7 @@
 				<textFieldExpression><![CDATA[$F{budget_use}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="461" y="0" width="94" height="20" uuid="13559612-2456-444a-91c3-0fb64cc97067"/>
+				<reportElement x="460" y="0" width="95" height="20" uuid="13559612-2456-444a-91c3-0fb64cc97067"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -449,7 +449,7 @@
 				<imageExpression><![CDATA[new java.io.ByteArrayInputStream(com.sun.org.apache.xerces.internal.impl.dv.util.Base64.decode($P{KMUTNB_BASE64}))]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="257" y="256" width="93" height="20" uuid="f9a9fdaa-abec-4030-8217-0b4ca6898251"/>
+				<reportElement x="270" y="256" width="95" height="20" uuid="f9a9fdaa-abec-4030-8217-0b4ca6898251"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -463,7 +463,7 @@
 				<text><![CDATA[สิทธิเบิก]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="350" y="256" width="111" height="20" uuid="3311a447-4458-4a6c-aec4-8499a0d435f2"/>
+				<reportElement x="365" y="256" width="95" height="20" uuid="3311a447-4458-4a6c-aec4-8499a0d435f2"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -477,7 +477,7 @@
 				<text><![CDATA[จำนวนเบิก]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="165" y="256" width="92" height="20" uuid="db44fbf5-b59a-4d11-844c-64b2d4ade180"/>
+				<reportElement x="178" y="256" width="92" height="20" uuid="db44fbf5-b59a-4d11-844c-64b2d4ade180"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -491,7 +491,7 @@
 				<text><![CDATA[วันที่]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="49" y="256" width="116" height="20" uuid="c172912c-835a-495b-81af-69aeda855921"/>
+				<reportElement x="49" y="256" width="129" height="20" uuid="c172912c-835a-495b-81af-69aeda855921"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -505,7 +505,7 @@
 				<text><![CDATA[ชื่อผู้เบิก]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="461" y="256" width="94" height="20" uuid="7ea91138-b476-4de5-9597-f74b371cbd45"/>
+				<reportElement x="460" y="256" width="95" height="20" uuid="7ea91138-b476-4de5-9597-f74b371cbd45"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
