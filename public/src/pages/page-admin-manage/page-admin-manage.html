@@ -120,7 +120,7 @@
                                 <template is="dom-repeat" items={{data.group_welfares}}>
                                     <tr>
                                         <td>[[_Obindex(index)]]</td>
-                                        <td style="text-align: left;">[[item.description]] [[item.check_onetime_thai]]</td>
+                                        <td style="text-align: left;">[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime)]]</td>
                                         <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
                                         <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
                                         <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
@@ -383,16 +383,13 @@
 
 
             },
-            _checkApprove(status) {
+            checkOnce(status) {
                 switch (status) {
-                    case 'request':
-                        return 'รออนุมัติ'
+                    case true:
+                        return 'ครั้งเดียว'
                         break;
-                    case 'approve':
-                        return 'อนุมัติ'
-                        break;
-                    case 'reject':
-                        return 'ไม่อนุมัติ'
+                    case false:
+                        return 'หลายครั้ง'
                         break;
                     default:
 
