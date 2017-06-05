@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare6" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="340c9a75-a796-41c2-8899-4bb2cc2f89cb">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="537"/>
+	<property name="ireport.y" value="153"/>
 	<parameter name="CURRENT_DATE" class="java.lang.String"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -17,12 +17,22 @@
 	<field name="name" class="java.lang.String"/>
 	<field name="date_use" class="java.lang.String"/>
 	<field name="budget_use" class="java.lang.Double"/>
+	<field name="budget" class="java.lang.Double"/>
 	<variable name="CURRENT_PAGE" class="java.lang.Integer" resetType="None" calculation="DistinctCount">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
 	</variable>
 	<variable name="SUM_BUDGET_USE" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{budget_use}]]></variableExpression>
+	</variable>
+	<variable name="SUM_BUDGET" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{budget}]]></variableExpression>
+	</variable>
+	<variable name="SUB_BUDGET" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{budget}-$F{budget_use}]]></variableExpression>
+	</variable>
+	<variable name="SUM_SUB_BUDGET" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{SUB_BUDGET}]]></variableExpression>
 	</variable>
 	<group name="GP">
 		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
@@ -42,7 +52,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA["รวม "]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="#,##0.00">
 					<reportElement x="257" y="0" width="93" height="20" uuid="10233cf3-6a12-47a8-a8cc-8687039adecb"/>
 					<box leftPadding="5" rightPadding="5">
 						<pen lineWidth="0.0"/>
@@ -51,10 +61,10 @@
 						<bottomPen lineWidth="1.0"/>
 						<rightPen lineWidth="1.0"/>
 					</box>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[""]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{SUM_BUDGET}]]></textFieldExpression>
 				</textField>
 				<textField pattern="#,##0.00">
 					<reportElement x="350" y="0" width="111" height="20" uuid="ec213098-6581-4188-a132-a9624206d08b"/>
@@ -70,7 +80,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SUM_BUDGET_USE}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField pattern="#,##0.00">
 					<reportElement x="461" y="0" width="93" height="20" uuid="b836293c-fe07-4f01-a51f-749f4a433cd4"/>
 					<box leftPadding="5" rightPadding="5">
 						<pen lineWidth="0.0"/>
@@ -79,10 +89,10 @@
 						<bottomPen lineWidth="1.0"/>
 						<rightPen lineWidth="1.0"/>
 					</box>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[""]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{SUM_SUB_BUDGET}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -328,7 +338,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDateShort ($F{date_use})]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement x="257" y="0" width="93" height="20" uuid="a458f9cb-e6a0-4b70-8905-71c7678e86a0"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
@@ -337,10 +347,10 @@
 					<bottomPen lineWidth="0.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["??????????"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{budget}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="350" y="0" width="111" height="20" uuid="791bd38e-f6d4-4ec0-8c89-784a95cee988"/>
@@ -356,7 +366,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{budget_use}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement x="461" y="0" width="94" height="20" uuid="13559612-2456-444a-91c3-0fb64cc97067"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
@@ -365,10 +375,10 @@
 					<bottomPen lineWidth="0.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["?????????"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{SUB_BUDGET}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="49" height="20" uuid="2176eb88-3f88-48c5-84bf-d7dcb6def9e8"/>
