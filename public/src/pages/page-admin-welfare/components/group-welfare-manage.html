@@ -120,6 +120,9 @@
             save: function () {
                 var check = this.validateForm('.checkValidate');
                 // console.log(check);
+                if(this.data.description === undefined){
+                    this.data.description = '';
+                }
                 if(check == true){
                     if (typeof this.data.id != 'undefined' && this.data.id != '') {
                         this.fire('toast', {
