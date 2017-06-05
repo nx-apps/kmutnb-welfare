@@ -1700,7 +1700,7 @@ exports.welfare3 = function (req, res) {
         })
         .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck("left", { right: 'faculty_name' }).zip()
         .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip()
-        .pluck('faculty_name', 'group_id', 'group_welfare_name', 'name', 'budget_use', 'type_employee_name', 'faculty_id', 'type_employee_id', 'date_use')
+        .pluck('faculty_name', 'group_id', 'group_welfare_name', 'name', 'budget_use', 'type_employee_name', 'faculty_id', 'type_employee_id', 'date_approve')
         .group('group_id').ungroup()
         .merge(function (m) {
             return {
@@ -1755,7 +1755,13 @@ exports.welfare4 = function (req, res) {
         .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck("left", { right: 'faculty_name' }).zip()
         .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck("left", { right: 'type_employee_name' }).zip()
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
-        .pluck('budget_use', 'group_welfare_name', 'id', 'name', 'faculty_id', 'type_employee_id', 'group_id', 'date_approve', 'faculty_name', 'type_employee_name', 'personal_id')
+        .pluck('budget_use', 'group_welfare_name', 'id', 'name', 'date_approve', 'emp_id')
+        .group('emp_id').ungroup()
+        .merge(function (group_merge) {
+            return {
+                name_employee: group_merge('reduction')('name')(0)
+            }
+        })
         .run()
         .then(function (result) {
             // res.json(result)
