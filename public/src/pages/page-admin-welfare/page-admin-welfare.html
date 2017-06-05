@@ -239,11 +239,13 @@
                 this.$$('panel-right').close();
             },
             clearData: function () {
+                var getYear = new Date().getFullYear();
                 this.data = {
-                    year: parseInt(new Date().toISOString().split('-')[0]) + 543,
+                    year: getYear + 543,
                     name: '',
-                    start_date: new Date().toISOString().split('-')[0] + '-01-01',
-                    end_date: new Date().toISOString().split('-')[0] + '-12-31',
+                    start_date: getYear + '-01-01',
+                    end_date: getYear + '-12-31',
+                    cal_date: getYear + '-09-30',
                     admin_use: false,
                     onetime: false
                 };

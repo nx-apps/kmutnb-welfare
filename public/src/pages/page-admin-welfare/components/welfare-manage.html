@@ -167,36 +167,36 @@
                 }
             },
             welfare_approve: function () {
+                var data = {
+                                id: this.list.id,
+                                status_approve: true,
+                                year: this.list.year-543
+                            };
                 this.fire('toast', {
                     status: 'openDialog',
                     text: 'คุณต้องการที่อนุมัติใช่หรือไม่ ?',
-                    confirmed: this._toastApprove.bind(this),
-                    datas: {
-                        id: this.list.id,
-                        status_approve: true
+                    confirmed: (result) => {
+                        if (result == true) {
+                            this.dispatchAction('APPROVE_WELFARE', data);
+                        }
                     }
                 });
             },
-            _toastApprove: function (result, detail) {
-                if (result == true) {
-                    this.dispatchAction('APPROVE_WELFARE', detail.datas);
-                }
-            },
             welfare_unapprove: function () {
+                var data = {
+                                id: this.list.id,
+                                status_approve: false,
+                                year: this.list.year-543
+                            };
                 this.fire('toast', {
                     status: 'openDialog',
                     text: 'คุณต้องการที่ยกเลิกใช้ใช่หรือไม่ ?',
-                    confirmed: this._toastUnapprove.bind(this),
-                    datas: {
-                        id: this.list.id,
-                        status_approve: false
-                    }
+                    confirmed: (result) => {
+                        if (result == true) {
+                            this.dispatchAction('APPROVE_WELFARE', data);
+                        }
+                    } 
                 });
-            },
-            _toastUnapprove: function (result, detail) {
-                if (result == true) {
-                    this.dispatchAction('APPROVE_WELFARE', detail.datas);
-                }
             },
             setPage: function (pages) {
                 this.pages = pages

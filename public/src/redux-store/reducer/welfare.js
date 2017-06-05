@@ -98,7 +98,8 @@ export function welfareAction(store) {
                 group_id: data.group_id,
                 welfare_name: data.welfare_name,
                 condition: data.condition,
-                id: data.id
+                id: data.id,
+                year: data.year
             }
             // console.log(datas);
             this.fire('toast', { status: 'load' });

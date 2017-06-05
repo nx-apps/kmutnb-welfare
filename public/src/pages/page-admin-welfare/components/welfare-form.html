@@ -48,7 +48,7 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน (บาท)" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <template is="dom-repeat" items="{{data.condition}}">
@@ -285,12 +285,14 @@
                 }
             },
             save: function () {
+                // console.log(this.date)
                 var check = this.validateForm('.form');
                 // console.log(check);
                 if(check == false) return '';
                 if(check == true){
                     var newData = {
                         group_id: this.date.id,
+                        year: this.date.year-543,
                         // status: this.data.status,
                         welfare_name: this.data.welfare_name,
                         budget: this.unFormat(this.data.budget),

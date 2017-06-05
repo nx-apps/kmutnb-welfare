@@ -56,7 +56,7 @@ export function groupWelfareAction(store) {
             this.fire('toast', { status: 'load' });
             axios.get('/group/welfare/' + data)
                 .then((result) => {
-                    // console.log(result);
+                    console.log(result);
                     this.fire('toast', {
                         status: 'success', text: 'โหลดข้อมูลสำเร็จ', callback: () => {
                             store.dispatch({ type: 'LIST_WELFARE_ID', payload: result.data })
@@ -196,7 +196,7 @@ export function groupWelfareAction(store) {
             // console.log(val);
             axios.get('/group/welfare/' + val)
                 .then(function (result) {
-                    // console.log(result.data);
+                    console.log(result.data);
                     store.dispatch({ type: 'SELECT_DATA', payload: result.data })
                 })
                 .catch(err => {
@@ -217,13 +217,14 @@ export function groupWelfareAction(store) {
             this.fire('toast', { status: 'load' });
             axios.put(`./group/welfare/approve`, data)
                 .then((result) => {
-                    this.fire('toast', {
-                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+                    // this.fire('toast', {
+                    //     status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             this.LIST_WELFARE_ID(data.id);
-                            this.SELECT_DATA(data.id)
+                            this.SELECT_DATA(data.id);
+                            this.LIST_WELFARE(data.year);
                             // console.log('success');
-                        }
-                    });
+                    //     }
+                    // });
                 })
                 .catch((err) => {
                     // console.log(err);
