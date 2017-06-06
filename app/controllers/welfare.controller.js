@@ -218,7 +218,7 @@ exports.listId = function (req, res) {
             row(select('field_name')).lt(select('value')),
             select('logic').eq('<='),
             row(select('field_name')).le(select('value')),
-            row(select('field_name')).eq(select('value'))
+            row(select('field_name')).ne(select('value'))
         )
     };
 
