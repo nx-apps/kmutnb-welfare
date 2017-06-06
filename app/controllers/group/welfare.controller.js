@@ -11,7 +11,7 @@ exports.list = function (req, res) {
             row(select('field_name')).lt(select('value')),
             select('logic').eq('<='),
             row(select('field_name')).le(select('value')),
-            row(select('field_name')).eq(select('value'))
+            row(select('field_name')).ne(select('value'))
         )
     };
     var r = req.r
@@ -113,7 +113,7 @@ exports.listId = function (req, res) {
             row(select('field_name')).lt(select('value')),
             select('logic').eq('<='),
             row(select('field_name')).le(select('value')),
-            row(select('field_name')).eq(select('value'))
+            row(select('field_name')).ne(select('value'))
         )
     };
 
@@ -306,7 +306,7 @@ exports.adminEmployee = function (req, res) {
             row(select('field_name')).lt(select('value')),
             select('logic').eq('<='),
             row(select('field_name')).le(select('value')),
-            row(select('field_name')).eq(select('value'))
+            row(select('field_name')).ne(select('value'))
         )
     };
     var r = req.r;
