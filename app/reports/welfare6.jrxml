@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare6" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="340c9a75-a796-41c2-8899-4bb2cc2f89cb">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="297"/>
+	<property name="ireport.y" value="489"/>
 	<parameter name="CURRENT_DATE" class="java.lang.String"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -149,7 +149,7 @@
 				<textFieldExpression><![CDATA["รายงานการเบิกสวัสดิการ"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="185" y="143" width="149" height="20" uuid="06b530de-11d6-455a-909f-9b94753055d2"/>
+				<reportElement x="0" y="143" width="180" height="20" uuid="06b530de-11d6-455a-909f-9b94753055d2"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -163,7 +163,7 @@
 				<textFieldExpression><![CDATA["สวัสดิการ     "+($P{GROUP_NAME}== null ?"ทั้งหมด":$P{GROUP_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="334" y="143" width="219" height="20" uuid="1794fe38-25b4-422f-80e6-476e01d143de"/>
+				<reportElement x="180" y="143" width="219" height="20" uuid="1794fe38-25b4-422f-80e6-476e01d143de"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -189,20 +189,6 @@
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["คณะ     "+($P{FACULTY_NAME}== null ?"ทั้งหมด":$P{FACULTY_NAME})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="143" width="185" height="20" uuid="2a162fc6-4aa3-4629-9c16-f7d900c8087f"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["ปีงบประมาณ    "+($P{YEAR}== null ?"ทั้งหมด":$P{YEAR})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="200" width="488" height="20" uuid="77fe3165-2f1a-4085-9c1f-ff0e68f00b4c"/>
@@ -546,7 +532,7 @@
 				<text><![CDATA[ลำดับที่]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="185" y="139" width="149" height="20" uuid="fa74e1b7-b48d-4189-9078-5b4ba4ff7d2c"/>
+				<reportElement x="0" y="139" width="180" height="20" uuid="fa74e1b7-b48d-4189-9078-5b4ba4ff7d2c"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -574,21 +560,7 @@
 				<textFieldExpression><![CDATA["คณะ     "+($P{FACULTY_NAME}== null ?"ทั้งหมด":$P{FACULTY_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="139" width="185" height="20" uuid="a2e3bf98-0fe8-4ce1-b1f9-11fb3136e146"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["ปีงบประมาณ    "+($P{YEAR}== null ?"ทั้งหมด":$P{YEAR})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="334" y="139" width="219" height="20" uuid="e645a3ee-d807-4838-a4f0-ead0d4ad2408"/>
+				<reportElement x="180" y="139" width="219" height="20" uuid="e645a3ee-d807-4838-a4f0-ead0d4ad2408"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>

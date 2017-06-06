@@ -2006,20 +2006,20 @@ exports.welfare8 = function (req, res) {
                     .merge(function (mm) {
                         return r.db('welfare').table('welfare').get(mm('welfare_id'))
                     })
-                    .pluck('budget_use', 'date_approve', 'welfare_name', 'budget')
+                    // .pluck('budget_use', 'date_approve', 'welfare_name', 'budget')
             }
         })
-        .merge(function (budget_merge) {
-            return {
-                sum_budget: budget_merge('reduction').sum('budget'),
-                sum_budget_use: budget_merge('reduction').sum('budget_use')
-            }
-        })
-        .merge(function (mul_merge) {
-            return {
-                balance: mul_merge('sum_budget').sub(mul_merge('sum_budget_use'))
-            }
-        })
+        // .merge(function (budget_merge) {
+        //     return {
+        //         sum_budget: budget_merge('reduction').sum('budget'),
+        //         sum_budget_use: budget_merge('reduction').sum('budget_use')
+        //     }
+        // })
+        // .merge(function (mul_merge) {
+        //     return {
+        //         balance: mul_merge('sum_budget').sub(mul_merge('sum_budget_use'))
+        //     }
+        // })
         .run()
         .then(function (result) {
             if (req.query.res_type == 'json') {

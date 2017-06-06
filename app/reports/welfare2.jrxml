@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare2" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="30a35a0d-06ce-4c7f-a6ee-141c7e7ead6e">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="771"/>
+	<property name="ireport.y" value="102"/>
 	<import value="nylon.report.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\Users\\Accounting\\Documents\\Project\\kmutnb-welfare\\app\\reports\\"]]></defaultValueExpression>
@@ -98,21 +98,7 @@
 				<text><![CDATA[สรุปการจ่ายสวัสดิการ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="25" y="145" width="161" height="20" uuid="8fe7744a-bfe6-49a7-bf60-abda3c986d5d"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["ปีงบประมาณ    "+($P{YEAR}== null ?"ทั้งหมด":$P{YEAR})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="335" y="145" width="219" height="20" uuid="76dd931e-c65c-424c-a048-ee22e3f9651d"/>
+				<reportElement x="205" y="145" width="219" height="20" uuid="76dd931e-c65c-424c-a048-ee22e3f9651d"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -154,7 +140,7 @@
 				<textFieldExpression><![CDATA["คณะ     "+($P{FACULTY_NAME}== null ?"ทั้งหมด":$P{FACULTY_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="186" y="145" width="149" height="20" uuid="5f8adbe4-50f2-4d1b-a8ed-9dd040513440"/>
+				<reportElement x="25" y="145" width="180" height="20" uuid="5f8adbe4-50f2-4d1b-a8ed-9dd040513440"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -395,21 +381,7 @@
 				<text><![CDATA[มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="25" y="140" width="161" height="20" uuid="824ae555-6459-4576-934e-129fea61a63f"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA["ปีงบประมาณ    "+($P{YEAR}== null ?"ทั้งหมด":$P{YEAR})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="186" y="140" width="149" height="20" uuid="51052c5c-1e67-4582-92fd-76e6cbea7a47"/>
+				<reportElement x="25" y="140" width="180" height="20" uuid="51052c5c-1e67-4582-92fd-76e6cbea7a47"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -430,7 +402,7 @@
 				<text><![CDATA[สรุปการจ่ายสวัสดิการ]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="335" y="140" width="219" height="20" uuid="5446f866-c0f8-445f-b95f-80ead063b67e"/>
+				<reportElement x="205" y="140" width="219" height="20" uuid="5446f866-c0f8-445f-b95f-80ead063b67e"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
