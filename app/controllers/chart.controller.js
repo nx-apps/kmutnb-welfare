@@ -470,7 +470,7 @@ exports.month = (req, res) => {
                 id: name('group_welfare_name')
             }
         })
-        .without('group_welfare_name', 'year', 'description', 'admin_use', 'end_date', 'onetime', 'start_date', 'status_approve','employees','conditions')
+        .without('group_welfare_name', 'year', 'description', 'group_use', 'end_date', 'onetime', 'start_date', 'status_approve','employees','conditions')
         .run()
         .then(function (result) {
             res.json(result);

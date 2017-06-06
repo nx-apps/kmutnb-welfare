@@ -432,10 +432,10 @@ exports.listHistory = function (req, res) {
                 }
             })
             .without('employees')
-            .merge((admin_use) => {
-                return admin_use('welfare').merge((admin) => {
+            .merge((group_use) => {
+                return group_use('welfare').merge((admin) => {
                     return {
-                        admin_use: admin_use('group_welfare')('admin_use')
+                        group_use: group_use('group_welfare')('group_use')
                     }
                 })
             })
@@ -443,7 +443,7 @@ exports.listHistory = function (req, res) {
                 return set('employee').merge((set2) => {
                     return {
                         budget: set('budget'),
-                        admin_use: set('admin_use'),
+                        group_use: set('group_use'),
                         welfare_id: set('id'),
                     }
                 })
@@ -468,13 +468,13 @@ exports.listHistory = function (req, res) {
             .merge((getBudget) => {
                 return {
                     budget_cover: getBudget('reduction')(0)('budget'),
-                    admin_use: getBudget('reduction')(0)('admin_use'),
+                    group_use: getBudget('reduction')(0)('group_use'),
                     welfare_id: getBudget('reduction')(0)('welfare_id'),
                 }
             })
             .without('reduction')
             .eqJoin('group', r.db('welfare').table('employee')).zip()
-            .pluck('birthdate', 'start_work_date', 'id', 'welfare_id', 'personal_id', 'admin_use', 'budget_cover', 'prefix_name', 'firstname', 'lastname', 'type_employee_name')
+            .pluck('birthdate', 'start_work_date', 'id', 'welfare_id', 'personal_id', 'group_use', 'budget_cover', 'prefix_name', 'firstname', 'lastname', 'type_employee_name')
             .merge((his) => {
                 return {
                     group_id: params.group_id,

@@ -347,7 +347,7 @@ exports.welfaresYear = function (req, res) {
         //                             return {
         //                                 welfare_id: mer_id('id'),
         //                                 year: welfare_conditions('year'),
-        //                                 admin_use: welfare_conditions('admin_use'),
+        //                                 group_use: welfare_conditions('group_use'),
         //                                 onetime: welfare_conditions('onetime'),
         //                                 group_welfare_name: welfare_conditions('group_welfare_name'),
         //                                 start_date: r.ISO8601(welfare_conditions('start_date')).toEpochTime(),
@@ -570,7 +570,7 @@ exports.welfaresEmployee = function (req, res) {
                                     return {
                                         welfare_id: mer_id('id'),
                                         year: welfare_conditions('year'),
-                                        admin_use: welfare_conditions('admin_use'),
+                                        group_use: welfare_conditions('group_use'),
                                         onetime: welfare_conditions('onetime'),
                                         group_welfare_name: welfare_conditions('group_welfare_name')
                                     }

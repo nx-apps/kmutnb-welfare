@@ -69,8 +69,8 @@ export function groupWelfareAction(store) {
         },
         INSERT_WELFARE: function (data) {
             // console.log(data);
-            let { year, start_date, end_date, cal_date, group_welfare_name, admin_use, description, onetime, status_approve } = data;
-            let newData = { year, group_welfare_name, admin_use, description, onetime, status_approve };
+            let { year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime, status_approve, use_per} = data;
+            let newData = { year, group_welfare_name, group_use, description, onetime, status_approve, use_per};
             var tz = "T00:00:00+07:00";
             newData.start_date = data.start_date + tz;
             newData.end_date = data.end_date + tz;
@@ -119,8 +119,8 @@ export function groupWelfareAction(store) {
         },
         EDIT_WELFARE: function (data) {
             // console.log(data);
-            let { id, year, start_date, end_date, cal_date, group_welfare_name, admin_use, description, onetime } = data;
-            let newData = { id, year, group_welfare_name, admin_use, description, onetime };
+            let { id, year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime, use_per} = data;
+            let newData = { id, year, group_welfare_name, group_use, description, onetime, use_per};
             var tz = "T00:00:00+07:00";
             newData.start_date = data.start_date + tz;
             newData.end_date = data.end_date + tz;
@@ -197,6 +197,11 @@ export function groupWelfareAction(store) {
             axios.get('/group/welfare/' + val)
                 .then(function (result) {
                     // console.log(result.data);
+                    if(result.data.use_per === false){
+                        result.data.use_per = 'year'
+                    }else{
+                        result.data.use_per = 'time'
+                    }
                     store.dispatch({ type: 'SELECT_DATA', payload: result.data })
                 })
                 .catch(err => {

@@ -1137,7 +1137,7 @@ exports.report6 = function (req, res, next) {
                 })
                 , { welfare: [] })
         })
-        .without('onetime', 'result', 'history_welfare', 'welfare', 'status', 'status_approve', 'admin_use', 'condition', 'description', 'end_date')
+        .without('onetime', 'result', 'history_welfare', 'welfare', 'status', 'status_approve', 'group_use', 'condition', 'description', 'end_date')
         .merge(function (m) {
             return {
                 sum_month: m('January').add(m('February')).add(m('March')).add(m('April')).add(m('May')).add(m('June')).add(m('July'))

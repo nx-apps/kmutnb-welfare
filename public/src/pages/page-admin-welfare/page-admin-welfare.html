@@ -3,6 +3,7 @@
 <link rel="import" href="./../components/page-style.html">
 <link rel="import" href="./../components/common-logic.html">
 <link rel="import" href="./../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="./../components/validateFormBehaviors.html">
 
 <dom-module id="page-admin-welfare">
     <template>
@@ -65,8 +66,8 @@
                 </div>
                 <div class="flex horizontal end-justified layout">
                     <div>
-                        <paper-button raised style="margin: 20px 10px 20px 20px;" class="gl-btn-info" on-tap="_print">
-                            <iron-icon icon="icons:print"></iron-icon>ออกรายงาน</paper-button>
+                        <!--<paper-button raised style="margin: 20px 10px 20px 20px;" class="gl-btn-info" on-tap="_print">
+                            <iron-icon icon="icons:print"></iron-icon>ออกรายงาน</paper-button>-->
                         <paper-button raised style="margin: 20px 10px 20px 20px;" class="gl-btn-info" on-tap="_openDialog">
                             <iron-icon icon="icons:content-copy"></iron-icon>คัดลอกสวัสดิการ</paper-button>
                         <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
@@ -95,7 +96,7 @@
                                 <template is="dom-repeat" items="{{list}}">
                                     <tr style="cursor:pointer;">
                                         <td style="text-align:center">[[item.year]]</td>
-                                        <td style="text-align:left">[[item.group_welfare_name]] ([[item.admin_use_name]])</td>
+                                        <td style="text-align:left">[[item.group_welfare_name]] ([[item.group_use_name]])</td>
                                         <td style="text-align:center">[[item.emp_budget]]</td>
                                         <td style="text-align:center">[[item.emp_use]]</td>
                                         <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
@@ -174,7 +175,10 @@
                 </div>
                 <div style="font-size:18px; font-style:bold;">คัดลอกเป็นสวัสดิการปี</div>
                 <gl-form-input class="checkValidate" required label="ปี" allowed-pattern="[0-9]" 
-                maxlength="4" value="{{yearClone.year}}" placeholder="กรุณากรอกปี พ.ศ." on-keyup="_insertClone"></gl-form-input>
+                maxlength="4" value="{{yearClone.year}}" placeholder="กรุณากรอกปี พ.ศ."></gl-form-input><!--on-keyup="_insertClone"-->
+                <div class="buttons">
+                    <paper-button autofocus class="gl-btn-primary" on-tap="_insertClone">บันทึก</paper-button>
+                </div>
             </paper-dialog>
         </div>
 
@@ -182,7 +186,7 @@
     <script>
         Polymer({
             is: 'page-admin-welfare',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction, nylonLocalizeBehavior,commonLogic],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction, nylonLocalizeBehavior,commonLogic],
             observers: ['changeYear(selectYear)'],
             properties: {
                 list: {
@@ -239,12 +243,14 @@
                 this.$$('panel-right').close();
             },
             clearData: function () {
+                var getYear = new Date().getFullYear();
                 this.data = {
-                    year: parseInt(new Date().toISOString().split('-')[0]) + 543,
+                    year: getYear + 543,
                     name: '',
-                    start_date: new Date().toISOString().split('-')[0] + '-01-01',
-                    end_date: new Date().toISOString().split('-')[0] + '-12-31',
-                    admin_use: false,
+                    start_date: getYear + '-01-01',
+                    end_date: getYear + '-12-31',
+                    cal_date: new Date().toISOString().split('T')[0],
+                    group_use: false,
                     onetime: false
                 };
             },
@@ -318,12 +324,19 @@
                 
             },
             _insertClone:function(e){
-                if(e.code == 'Enter'){
-                    var obj = {};
+                // if(e.code == 'Enter'){
+                var check = this.validateForm('.checkValidate');
+                if(check == true){
+                var obj = {};
                     obj.year = parseInt(this.yearClone.year)-543;
                     obj.cloneGroupid = this.cloneGroupid;
                     this.dispatchAction('INSERT_CLONE_DATA',obj);
+                }else{
+                    this.fire('toast',{status:'connectError',text:'กรุณากรอกข้อมูลให้ครบ',
+                    callback:function(){
+                    }})
                 }
+                // }
             },
             _closeDialog:function(){
                 this.$.clone_welfare.close();

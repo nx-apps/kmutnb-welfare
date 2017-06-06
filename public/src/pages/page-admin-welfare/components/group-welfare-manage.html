@@ -1,5 +1,7 @@
 <link rel="import" href="../../components/format-number-behavior.html">
 <link rel="import" href="./../../components/validateFormBehaviors.html">
+<link rel="import" href="./../../../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="./../../../../bower_components/paper-radio-button/paper-radio-button.html">
 
 <dom-module id="group-welfare-manage">
     <template>
@@ -89,9 +91,19 @@
             </gl-grid-row>
             <gl-grid-row style="margin-top: 10px">
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                [[checkSelect(data.admin_use)]]
+                [[checkSelect(data.group_use)]]
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.admin_use}}">สวัสดิการแบบกลุ่ม</paper-checkbox>
+                    <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.group_use}}">สวัสดิการแบบกลุ่ม</paper-checkbox>
+                </gl-grid-col>
+            </gl-grid-row>
+            <gl-grid-row style="margin-top: 10px">
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                    <div style="font-weight:bold;color:#737373">รูปแบบการใช้งาน</div>
+                    <paper-radio-group selected="{{data.use_per}}" attr-for-selected="value">
+                        <paper-radio-button value="year" disabled="{{isEnable}}">ใช้แบบต่อปี</paper-radio-button>
+                        <paper-radio-button value="time" disabled="{{isEnable}}">ใช้แบบต่อครั้ง</paper-radio-button>
+                    </paper-radio-group>
                 </gl-grid-col>
             </gl-grid-row>
 
@@ -118,44 +130,55 @@
                 }
             },
             save: function () {
+                
                 var check = this.validateForm('.checkValidate');
                 // console.log(check);
                 if(this.data.description === undefined){
                     this.data.description = '';
                 }
+                if (this.data.onetime != true) {
+                    this.data.onetime = false;
+                }
+                if (this.data.group_use != true) {
+                    this.data.group_use = false;
+                }
                 if(check == true){
-                    if (typeof this.data.id != 'undefined' && this.data.id != '') {
-                        this.fire('toast', {
-                            status: 'openDialog',
-                            text: 'ต้องการแก้ไขสวัสดิการใช่หรือไม่ ?',
-                            confirmed: (result) => {
-                                if (result == true) {
-                                    this.data.year = this.unFormat(this.data.year);
-                                    this.dispatchAction('EDIT_WELFARE', this.data);
-                                    this.isEnable = true;
-                                }
-                            }
-                        })
-                    }
-                    else {
-                        this.data.year = this.unFormat(this.data.year);
-                        this.data.status_approve = false;
-                        if (this.data.onetime != true) {
-                            this.data.onetime = false;
+                    if(this.data.use_per === undefined){
+                        this.fire('toast',{status:'connectError',text:'กรุณาเลือกรูปแบบการใช้งาน',
+                            callback:function(){}
+                        });
+                    }else{
+                        if (this.data.use_per == 'time'){
+                            this.data.use_per = true;
+                        }else{
+                            this.data.use_per = false;
                         }
-                        if (this.data.admin_use != true) {
-                            this.data.admin_use = false;
-                        }
-                        // console.log(this.data);
-                        this.fire('toast', {
-                            status: 'openDialog',
-                            text: 'ต้องการเพิ่มสวัสดิการใช่หรือไม่ ?',
-                            confirmed: (result) => {
-                                if (result == true) {
-                                    this.dispatchAction('INSERT_WELFARE', this.data)
+                        if (typeof this.data.id != 'undefined' && this.data.id != '') {
+                            this.fire('toast', {
+                                status: 'openDialog',
+                                text: 'ต้องการแก้ไขสวัสดิการใช่หรือไม่ ?',
+                                confirmed: (result) => {
+                                    if (result == true) {
+                                        this.data.year = this.unFormat(this.data.year);
+                                        this.dispatchAction('EDIT_WELFARE', this.data);
+                                        this.isEnable = true;
+                                    }
                                 }
-                            }
-                        })
+                            })
+                        }
+                        else {
+                            this.data.year = this.unFormat(this.data.year);
+                            this.data.status_approve = false;
+                            this.fire('toast', {
+                                status: 'openDialog',
+                                text: 'ต้องการเพิ่มสวัสดิการใช่หรือไม่ ?',
+                                confirmed: (result) => {
+                                    if (result == true) {
+                                        this.dispatchAction('INSERT_WELFARE', this.data)
+                                    }
+                                }
+                            })
+                        }
                     }
                 }
                 else{
@@ -203,7 +226,7 @@
                         this.isEnable_onetime = true;
                     }
                     else {
-                        if (this.data.onetime == true && this.data.admin_use == true) {
+                        if (this.data.onetime == true && this.data.group_use == true) {
                             this.set('data.onetime', true);
                             this.isEnable_onetime = true;
                         }
@@ -228,7 +251,7 @@
             },
             _edit: function () {
                 this.isEnable = false;
-                if (this.data.onetime == true && this.data.admin_use == true) {
+                if (this.data.onetime == true && this.data.group_use == true) {
                     this.isEnable_onetime = true;
                 }
             },
