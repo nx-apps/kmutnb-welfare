@@ -39,7 +39,18 @@
                         </div>
                     </div>
                 </template>
+                
                 <gl-grid-row width="{{getWidth}}">
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                        <div style="font-weight:bold;color:#737373">รูปแบบการใช้งาน</div>
+                        <paper-radio-group selected="{{data.round_use}}" attr-for-selected="value">
+                            <paper-radio-button value="{{!type_select}}" disabled="{{isEnable}}">ใช้แบบต่อรอบ</paper-radio-button>
+                            <paper-radio-button value="{{type_select}}" disabled="{{isEnable}}">ใช้แบบต่อครั้ง</paper-radio-button>
+                        </paper-radio-group>
+                    </gl-grid-col>
+                </gl-grid-row>
+                <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                         <gl-form-input class="form" required disabled="{{isEnable}}" label="ชื่อเงื่อนไข" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อเงื่อนไข"></gl-form-input>
@@ -48,7 +59,7 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน (บาท)" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <template is="dom-repeat" items="{{data.condition}}">
@@ -58,8 +69,8 @@
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
                         </gl-grid-col>
-                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <gl-form-dropdown-menu disabled="{{isEnable}}" on-value-changed="clearSelect" style="margin-top: 15px">
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
+                            <gl-form-dropdown-menu disabled="{{isEnable}}" on-value-changed="clearSelect" style="margin-top: 15px; width:100%">
                                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.field}}">
                                     <template is="dom-repeat" items="{{item.itemField}}">
                                         <paper-item value="{{item}}">{{item.label}}</paper-item>
@@ -79,7 +90,6 @@
                             <!--<gl-combo-box id="symbo-[[index]]" items="[[item.itemLogic]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}"></gl-combobox>-->
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
-
                             <template is="dom-if" if="{{!getFiled(item.field,index)}}">
                                 <!--<div id="combobox-[[index]]" hidden>-->
                                 <gl-form-dropdown-menu disabled="{{isEnable}}" style="margin-top:15px;width:100%;">
@@ -184,6 +194,10 @@
                 checkSplice:{
                     type: Boolean,
                     value: false
+                },
+                type_select:{
+                    type: Boolean,
+                    value: false
                 }
             },
             checkMenu: function (data) {
@@ -245,7 +259,21 @@
                 }
             },
             add_condition: function () {
-                var data = this.condition;
+                if(this.date.type_continuous !== undefined){
+                    if(this.date.type_continuous === true){
+                        this.date.type_continuous = 'con';
+                    }else if(this.date.type_continuous === false){
+                        this.date.type_continuous = 'uncon';
+                    }
+                    var condition1 = this.condition.filter((item) => {
+                            return item.type_continuous == this.date.type_continuous
+                    });
+                    var condition2 = this.condition.filter((item) => {
+                            return item.type_continuous == 'all'
+                    });
+                    var condition = condition1.concat(condition2);
+                }
+                var data = condition;
                 var use = this.data.condition.map((item) => {
                     return item.field
                 })
@@ -289,86 +317,94 @@
                 // console.log(check);
                 if(check == false) return '';
                 if(check == true){
-                    var newData = {
-                        group_id: this.date.id,
-                        // status: this.data.status,
-                        welfare_name: this.data.welfare_name,
-                        budget: this.unFormat(this.data.budget),
-                    }
-                    var conditon = this.data.condition.map((item)=>{
-                        if(item.value_showDropdown == ''){
-                            item.value_show = item.value_showInput;
+                    if(this.data.round_use === undefined){
+                        this.fire('toast',{status:'connectError',text:'กรุณาเลือกรูปแบบการใช้งาน',
+                            callback:function(){}
+                        });
+                    }else{
+                        var newData = {
+                            group_id: this.date.id,
+                            // status: this.data.status,
+                            welfare_name: this.data.welfare_name,
+                            budget: this.unFormat(this.data.budget),
+                            round_use: this.data.round_use,
+                            year: this.date.year
                         }
-                        else if(item.value_showInput == ''){
-                            item.value_show = item.value_showDropdown;
-                        }
-                        return item
-                    })
-                    var arr = [];
-                    var tz = "T00:00:00+07:00";
-                        for (var i = 0; i < this.data.condition.length; i++) {
-                            var data = conditon[i];
-                            var search = data.field.field.search('date')
-                            if (search != -1) {
-                                // console.log(data.logic_show);
-                                if (data.logic_show.search(">") >= 0) {
-                                    var d = this.date.cal_date.split("-");
-                                    data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz;
-                                    data.logic = data.logic_show.replace(">", "<");
-                                } else if (data.logic_show.search("<") >= 0) {
-                                    var d = this.date.cal_date.split("-");
-                                    data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz;
-                                    data.logic = data.logic_show.replace("<", ">");
-                                }
+                        var condition = this.data.condition.map((item)=>{
+                            if(item.value_showDropdown == ''){
+                                item.value_show = item.value_showInput;
                             }
-                            else{
-                                data.value = data.value_show;
-                                data.logic = data.logic_show;
+                            else if(item.value_showInput == ''){
+                                item.value_show = item.value_showDropdown;
                             }
-                            arr.push(data);
-                        }
-                    var setCondition = arr.map((item)=>{
-                        let {field, logic, logic_show, value, value_show} = item;
-                        let newitem = { field, logic, logic_show, value, value_show }
-                        newitem.field = field.id;
-                        newitem.field_name = field.field;
-                        return newitem
-                    })
-                    newData.condition = setCondition;    
-                    // console.log(newData);   
-                    if (typeof this.data.id == 'undefined') {
-                        this.fire('toast', {
-                            status: 'openDialog',
-                            text: 'ต้องการเพิ่มเงื่อนไขใช่หรือไม่ ?',
-                            confirmed: (result) => {
-                                if (result == true) {
-                                    newData.status = true;
-                                    //  console.log(newData);
-                                    var year = new Date().getFullYear();
-                                    this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
-                                        // this.fire('refresh_group',year);
-                                        this.fire('back');
-                                    })
-                                }
-                            }
+                            return item
                         })
-                    }
-                    else {
-                        this.fire('toast', {
-                            status: 'openDialog',
-                            text: 'ต้องการแก้ไขเงื่อนไขใช่หรือไม่ ?',
-                            confirmed: (result) => {
-                                if (result == true) {
-                                    newData.status = this.data.status
-                                    newData.id=this.data.id;
-                                    // console.log(newData);
-                                    this.dispatchAction('WELFARE_EDIT', newData).then((val)=>{
-                                        this.isEnable = true;
-                                    })
-                                    // this.fire('back');
+                        var arr = [];
+                        var tz = "T00:00:00+07:00";
+                            for (var i = 0; i < this.data.condition.length; i++) {
+                                var data = condition[i];
+                                var search = data.field.field.search('date')
+                                if (search != -1) {
+                                    // console.log(data.logic_show);
+                                    if (data.logic_show.search(">") >= 0) {
+                                        var d = this.date.cal_date.split("-");
+                                        data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz;
+                                        data.logic = data.logic_show.replace(">", "<");
+                                    } else if (data.logic_show.search("<") >= 0) {
+                                        var d = this.date.cal_date.split("-");
+                                        data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz;
+                                        data.logic = data.logic_show.replace("<", ">");
+                                    }
                                 }
+                                else{
+                                    data.value = data.value_show;
+                                    data.logic = data.logic_show;
+                                }
+                                arr.push(data);
                             }
+                        var setCondition = arr.map((item)=>{
+                            let {field, logic, logic_show, value, value_show} = item;
+                            let newitem = { field, logic, logic_show, value, value_show}
+                            newitem.field = field.id;
+                            newitem.field_name = field.field;
+                            return newitem
                         })
+                        newData.condition = setCondition;    
+                        console.log(newData);
+                        if (typeof this.data.id == 'undefined') {
+                            this.fire('toast', {
+                                status: 'openDialog',
+                                text: 'ต้องการเพิ่มเงื่อนไขใช่หรือไม่ ?',
+                                confirmed: (result) => {
+                                    if (result == true) {
+                                        // newData.status = true;
+                                        //  console.log(newData);
+                                        var year = new Date().getFullYear();
+                                        this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
+                                            // this.fire('refresh_group',year);
+                                            this.fire('back');
+                                        })
+                                    }
+                                }
+                            })
+                        }
+                        else {
+                            this.fire('toast', {
+                                status: 'openDialog',
+                                text: 'ต้องการแก้ไขเงื่อนไขใช่หรือไม่ ?',
+                                confirmed: (result) => {
+                                    if (result == true) {
+                                        // newData.status = this.data.status
+                                        newData.id=this.data.id;
+                                        // console.log(newData);
+                                        this.dispatchAction('WELFARE_EDIT', newData).then((val)=>{
+                                            this.isEnable = true;
+                                        })
+                                        // this.fire('back');
+                                    }
+                                }
+                            })
+                        }
                     }
                 }
             },

@@ -7,12 +7,9 @@
         "start_date": {
             "type": "string"
         },
-        "end_date": {
-            "type": "string"
-        },
         "year": {
             "type": "number"
         }
     },
-    "required": ["group_welfare_name", "start_date", "end_date", "year"]
+    "required": ["group_welfare_name", "start_date", "year"]
 }

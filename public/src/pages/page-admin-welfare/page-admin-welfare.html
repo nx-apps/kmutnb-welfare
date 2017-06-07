@@ -82,7 +82,7 @@
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <th style="text-align:center; width:10%;">ปี</th>
+                                    <!--<th style="text-align:center; width:10%;">ปี</th>-->
                                     <th style="text-align:left; width:20%;">ชื่อสวัสดิการ</th>
                                     <th style="text-align:center">จำนวนผู้มีสิทธิ</th>
                                     <th style="text-align:center">จำนวนผู้ใช้สิทธิ</th>
@@ -95,7 +95,7 @@
                             <tbody class="table-body">
                                 <template is="dom-repeat" items="{{list}}">
                                     <tr style="cursor:pointer;">
-                                        <td style="text-align:center">[[item.year]]</td>
+                                        <!--<td style="text-align:center">[[item.year]]</td>-->
                                         <td style="text-align:left">[[item.group_welfare_name]] ([[item.group_use_name]])</td>
                                         <td style="text-align:center">[[item.emp_budget]]</td>
                                         <td style="text-align:center">[[item.emp_use]]</td>
@@ -246,12 +246,13 @@
                 var getYear = new Date().getFullYear();
                 this.data = {
                     year: getYear + 543,
-                    name: '',
+                    group_welfare_name: '',
                     start_date: getYear + '-01-01',
                     end_date: getYear + '-12-31',
                     cal_date: new Date().toISOString().split('T')[0],
                     group_use: false,
-                    onetime: false
+                    onetime_use: false,
+                    type_continuous: true
                 };
             },
             _insert: function () {
@@ -282,6 +283,7 @@
                 }
                 else{
                     var year = e.detail;
+                    this.selectYear = year+543;
                     this.LIST_WELFARE(year);
                 }
             },

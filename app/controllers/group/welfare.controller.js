@@ -18,23 +18,21 @@ exports.list = function (req, res) {
 
     req.params.year = parseInt(req.params.year);
     r.expr({
-        employees: r.db('welfare').table('employee').filter({ active_name: 'ทำงาน' })
-            /*.eqJoin('active_id', r.db('welfare_common').table('active'))
-            .without({ right: 'id' }).zip().filter({ active_code: 'WORK' })*/
+        employees: r.db('welfare').table('employee')/*.filter({ active_name: 'ทำงาน' })*/
             .without('dob', 'emp_no', 'firstname', 'lastname')
             .coerceTo('array'),
         group: []
     })
         .merge(function (group_merge) {
             return {
-                group: r.db('welfare').table('group_welfare').getAll(req.params.year, { index: 'year' })
+                group: r.db('welfare').table('group_welfare').getAll(req.params.year, 9999, { index: 'year' })
                     .merge(function (m) {
                         return {
-                            status_approve_name: r.branch(m('status_approve').eq(true),'อนุมัติ','ไม่อนุมัติ'),
-                            group_use_name: r.branch(m('group_use').eq(true),'แบบกลุ่ม','แบบเดี่ยว'),
+                            status_approve_name: r.branch(m('status_approve').eq(true), 'ใช้งาน', 'ไม่ใช้งาน'),
+                            group_use_name: r.branch(m('group_use').eq(true), 'แบบกลุ่ม', 'แบบเดี่ยว'),
                             year: m('year').add(543),
                             start_date: m('start_date').toISO8601().split('T')(0),
-                            end_date: m('end_date').toISO8601().split('T')(0),
+                            end_date: r.branch(m('end_date').ne(null), m('end_date').toISO8601().split('T')(0), null),
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
                                 .merge(function (wel_merge) {
                                     return {
@@ -119,7 +117,7 @@ exports.listId = function (req, res) {
 
     var r = req.r
     r.expr({
-        employees: r.db('welfare').table('employee').filter({ active_name: 'ทำงาน' })
+        employees: r.db('welfare').table('employee')/*.filter({ active_name: 'ทำงาน' })*/
             .without('dob', 'emp_no', 'firstname', 'lastname')
             .coerceTo('array'),
         group: []
@@ -131,7 +129,7 @@ exports.listId = function (req, res) {
                         return {
                             year: m('year').add(543),
                             start_date: m('start_date').toISO8601().split('T')(0),
-                            end_date: m('end_date').toISO8601().split('T')(0),
+                            end_date: r.branch(m('end_date').ne(null), m('end_date').toISO8601().split('T')(0), null),
                             cal_date: m('cal_date').toISO8601().split('T')(0),
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array').orderBy('welfare_name')
                                 .merge(function (wel_merge) {
@@ -169,11 +167,11 @@ exports.listId = function (req, res) {
                                     }
                                 })
                                 .merge(function (m) {
-                                                return {
-                                                    emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'welfare_id' })
-                                                    .pluck('emp_id').distinct().count()
-                                                }
-                                            })
+                                    return {
+                                        emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'welfare_id' })
+                                            .pluck('emp_id').distinct().count()
+                                    }
+                                })
                                 .without('employee')
                         }
                     })
@@ -190,11 +188,15 @@ exports.insert = function (req, res) {
     var valid = req.ajv.validate('welfare', req.body);
     var result = { result: false, message: null, id: null };
     if (valid) {
+        if (req.body.end_date === null) {
+            req.body.end_date = null
+        } else {
+            req.body.end_date = r.ISO8601(req.body.end_date).inTimezone('+07')
+        }
         req.body = Object.assign(req.body,
             {
                 year: req.body.year - 543,
                 start_date: r.ISO8601(req.body.start_date).inTimezone('+07'),
-                end_date: r.ISO8601(req.body.end_date).inTimezone('+07'),
                 cal_date: r.ISO8601(req.body.cal_date).inTimezone('+07')
             }
         );
@@ -219,12 +221,15 @@ exports.insert = function (req, res) {
 }
 exports.update = function (req, res) {
     var r = req.r;
-    // console.log(req.body)
+    if (req.body.end_date === null) {
+        req.body.end_date = null
+    } else {
+        req.body.end_date = r.ISO8601(req.body.end_date).inTimezone('+07')
+    }
     req.body = Object.assign(req.body,
         {
             year: req.body.year - 543,
             start_date: r.ISO8601(req.body.start_date).inTimezone('+07'),
-            end_date: r.ISO8601(req.body.end_date).inTimezone('+07'),
             cal_date: r.ISO8601(req.body.cal_date).inTimezone('+07')
         }
     );
@@ -256,6 +261,9 @@ exports.delete = function (req, res) {
 exports.groupYear = function (req, res) {
     var r = req.r;
     r.db('welfare').table('group_welfare')
+        .filter(function (f) {
+            return f('year').ne(9999)
+        })
         .group('year')
         .ungroup()
         .map(function (y_map) {

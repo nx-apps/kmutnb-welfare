@@ -48,8 +48,8 @@
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <th style="width:15%;text-align: center">ปี</th>
-                                    <th>ชื่อเงื่อนไข</th>
+                                    <!--<th style="width:15%;text-align: center">ปี</th>-->
+                                    <th style="text-align:left;">ชื่อเงื่อนไข</th>
                                     <th style="width:15%;">จำนวนเงิน (บาท)</th>
                                     <th style="text-align:center;">จำนวนผู้มีสิทธิ</th>
                                     <th style="text-align:center;">จำนวนผู้ใช้สิทธิ</th>
@@ -59,7 +59,7 @@
                             <tbody class="table-body">
                                 <template is="dom-repeat" items="{{list.welfare}}" as="welfare">
                                     <tr data="[[item]]">
-                                        <td style="text-align:center;">[[list.year]]</td>
+                                        <!--<td style="text-align:center;">[[list.year]]</td>-->
                                         <td style="text-align:left;">[[welfare.welfare_name]]</td>
                                         <td style="text-align:right;">[[formatNumber(welfare.budget)]]</td>
                                         <td style="text-align:center;">[[welfare.emp_budget]]</td>

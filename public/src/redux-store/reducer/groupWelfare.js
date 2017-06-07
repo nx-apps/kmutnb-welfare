@@ -68,13 +68,18 @@ export function groupWelfareAction(store) {
                 })
         },
         INSERT_WELFARE: function (data) {
+            var yearNow = new Date().getFullYear();
             // console.log(data);
-            let { year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime, status_approve, use_per} = data;
-            let newData = { year, group_welfare_name, group_use, description, onetime, status_approve, use_per};
+            let { year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous} = data;
+            let newData = { year, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous};
             var tz = "T00:00:00+07:00";
             newData.start_date = data.start_date + tz;
-            newData.end_date = data.end_date + tz;
             newData.cal_date = data.cal_date + tz;
+            if(data.end_date === null){
+                newData.end_date = data.end_date
+            }else{
+                newData.end_date = data.end_date + tz;
+            }
             // console.log(newData);
             this.fire('toast', { status: 'load' });
             axios.post(`./group/welfare/insert`, newData)
@@ -83,8 +88,8 @@ export function groupWelfareAction(store) {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             // console.log('success');
-                            this.LIST_WELFARE(data.year - 543);
-                            this.selectYear = data.year;
+                            this.LIST_WELFARE(yearNow);
+                            this.selectYear = yearNow;
                             this.clearData();
                             this.GET_YEAR();
                             // this.fire('closePanel');
@@ -118,20 +123,25 @@ export function groupWelfareAction(store) {
                 })
         },
         EDIT_WELFARE: function (data) {
+            var yearNow = new Date().getFullYear();
             // console.log(data);
-            let { id, year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime, use_per} = data;
-            let newData = { id, year, group_welfare_name, group_use, description, onetime, use_per};
+            let { id, year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, type_continuous} = data;
+            let newData = { id, year, group_welfare_name, group_use, description, onetime_use, type_continuous};
             var tz = "T00:00:00+07:00";
             newData.start_date = data.start_date + tz;
-            newData.end_date = data.end_date + tz;
             newData.cal_date = data.cal_date + tz;
+            if(data.end_date === null){
+                newData.end_date = data.end_date
+            }else{
+                newData.end_date = data.end_date + tz;
+            }
             // console.log(newData);
             this.fire('toast', { status: 'load' });
             axios.put(`./group/welfare/update`, newData)
             .then((result) => {
                 this.fire('toast', {
                     status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-                        this.LIST_WELFARE(newData.year - 543);
+                        this.LIST_WELFARE(yearNow);
                         this.LIST_WELFARE_ID(data.id);
                         // console.log('success');
                     }
@@ -197,11 +207,6 @@ export function groupWelfareAction(store) {
             axios.get('/group/welfare/' + val)
                 .then(function (result) {
                     // console.log(result.data);
-                    if(result.data.use_per === false){
-                        result.data.use_per = 'year'
-                    }else{
-                        result.data.use_per = 'time'
-                    }
                     store.dispatch({ type: 'SELECT_DATA', payload: result.data })
                 })
                 .catch(err => {
@@ -218,6 +223,7 @@ export function groupWelfareAction(store) {
                 })
         },
         APPROVE_WELFARE: function (data) {
+            var yearNow = new Date().getFullYear();
             // console.log(data);
             this.fire('toast', { status: 'load' });
             axios.put(`./group/welfare/approve`, data)
@@ -225,7 +231,8 @@ export function groupWelfareAction(store) {
                     this.fire('toast', {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             this.LIST_WELFARE_ID(data.id);
-                            this.SELECT_DATA(data.id)
+                            this.SELECT_DATA(data.id);
+                            this.LIST_WELFARE(yearNow);
                             // console.log('success');
                         }
                     });
