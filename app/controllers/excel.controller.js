@@ -228,3 +228,32 @@ exports.mergeIdDataToEmployee = function (req, res) {
             res.json(data);
         })
 }
+exports.write = function (req, res) {
+    req.r.db('welfare').table('employee')
+        .limit(10)
+        .without('id')
+        .group('faculty_name').ungroup()
+        .run().then(function (data) {
+            // res.json(data);
+            const XLSX = require('xlsx');
+            /* create workbook & set props*/
+            const wb = { SheetNames: [], Sheets: {} };
+            // // wb.Props = {
+            // //     Title: "Stats from app",
+            // //     Author: "John Doe"
+            // // };
+            // /*create sheet data & add to workbook*/
+            for (var prop in data) {
+                var ws = XLSX.utils.json_to_sheet(data[prop]['reduction']);
+                var ws_name = data[prop]['group'].substring(0, 30);
+                XLSX.utils.book_append_sheet(wb, ws, ws_name);
+            }
+            // /* create file 'in memory' */
+            var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+            var filename = "employee.xlsx";
+            res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+            res.type('application/octet-stream');
+            res.send(wbout);
+        })
+
+}
