@@ -12,10 +12,10 @@ const initialState = {
 }
 const clearData = (data,callback)=>{
 
-    let {label,field,data_source}=data;
-    let newData={label,field,data_source};
+    let {label,field,data_source,type_continuous}=data;
+    let newData={label,field,data_source,type_continuous};
     newData.conditions = new Array();
-    console.log(typeof newData.data_source == 'undefined');
+    // console.log(typeof newData.data_source == 'undefined');
     if(typeof newData.data_source == 'undefined')
         newData.data_source = ''
     // for (let prop in newData) {
@@ -92,7 +92,7 @@ export function conditionReadWelfareAction(store){
                 })
             },
             CONDITIONREADWELFARE_INSERT(data){
-                console.log(data);
+                // console.log(data);
                 clearData(data,(newData)=>{
                 this.fire('toast',{status:'load'});
                 axios.post(`./conditions/insert`,newData)
