@@ -2006,7 +2006,7 @@ exports.welfare8 = function (req, res) {
                     .merge(function (mm) {
                         return r.db('welfare').table('welfare').get(mm('welfare_id'))
                     })
-                    // .pluck('budget_use', 'date_approve', 'welfare_name', 'budget')
+                // .pluck('budget_use', 'date_approve', 'welfare_name', 'budget')
             }
         })
         // .merge(function (budget_merge) {
@@ -2146,6 +2146,35 @@ exports.welfare9 = function (req, res) {
             }
             res.ireport("welfare9.jasper", req.query.export || "pdf", result, parameters);
         });
+}
+exports.employee = function (req, res) {
+    req.r.db('welfare').table('employee')
+        .without('id')
+        .pluck('active_name','academic_name','birthdate','department_name','emp_no','faculty_name','firstname','gender_name','lastname','matier_name',
+        'personal_id','position_name','prefix_name','start_work_date','type_employee_name')
+        .group('faculty_name').ungroup()
+        .run().then(function (data) {
+            // res.json(data);
+            const XLSX = require('xlsx');
+            /* create workbook & set props*/
+            const wb = { SheetNames: [], Sheets: {} };
+            // // wb.Props = {
+            // //     Title: "Stats from app",
+            // //     Author: "John Doe"
+            // // };
+            // /*create sheet data & add to workbook*/
+            for (var prop in data) {
+                var ws = XLSX.utils.json_to_sheet(data[prop]['reduction']);
+                var ws_name = data[prop]['group'].substr(0, 30);
+                XLSX.utils.book_append_sheet(wb, ws, ws_name);
+            }
+            // /* create file 'in memory' */
+            var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+            var filename = "employee.xlsx";
+            res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+            res.type('application/octet-stream');
+            res.send(wbout);
+        })
 }
 
 function keysToUpper(param) {
