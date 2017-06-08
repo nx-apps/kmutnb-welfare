@@ -16,6 +16,7 @@ import {fundRvdReducer,fundRvdAction} from './reducer/fundRvd'
 import {dateDbReducer,dateDbAction} from './reducer/dateDb'
 import {chartReducer,chartAction} from './reducer/chart'
 import {systemConfigsReducer,systemConfigsAction} from './reducer/systemConfigs'
+import {retierReducer,retierAction} from './reducer/retier'
 
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
     dateDb: dateDbReducer,
     chart: chartReducer,
     systemConfigs: systemConfigsReducer,
+    retier:retierReducer,
 });
 const storeApp = createStore(
     rootReducer,
@@ -55,3 +57,4 @@ window.fundRvdAction = fundRvdAction(storeApp);
 window.dateDbAction = dateDbAction(storeApp);
 window.chartAction = chartAction(storeApp);
 window.systemConfigsAction = systemConfigsAction(storeApp);
+window.retierAction = retierAction(storeApp);

@@ -172,7 +172,7 @@ exports.emp2wel = function (req, res) {
                     .merge(function (m2) {
                         var countCon = m2('condition').count();
                         var countProp = r.branch(countCon.eq(0),
-                            [{prop:true}],
+                            [{ prop: true }],
                             m2('condition').map(function (con) {
                                 return { prop: checkLogic(con, me) }
                             }).coerceTo('array')
@@ -324,4 +324,90 @@ exports.write = function (req, res) {
             res.send(wbout);
         })
 
+}
+exports.reduce = function (req, res) {
+    req.r.expr({
+        emps: r.db('welfare').table('employee').coerceTo('array'),
+        welfare: []
+    })
+        .merge(function (m) {
+            var emps = m('emps');
+            return {
+                welfare: r.db('welfare').table('welfare')
+                    // .filter(function (f) {
+                    //     return f('condition').count().gt(1)
+                    // })
+                    // .limit(15)
+                    .merge(function (m2) {
+                        var condition = m2('condition');
+                        return {
+                            countCon: condition.count(),
+                            reduce: reduceCondition(emps, condition).count(),
+                            // old: condition.map(function (con_map) {
+                            //     return emps.filter(function (f) {
+                            //         return checkLogic(con_map, f)
+                            //     }).coerceTo('array').pluck('id')
+                            // })
+                            // .reduce(function (left, right) {
+                            //     return left.add(right)
+                            // })
+                            // .group('id').count().ungroup()
+                            // .filter(function (emp_filter) {
+                            //     return r.branch(condition.count().eq(0),
+                            //         emp_filter('reduction').eq(condition.count().add(1)),
+                            //         emp_filter('reduction').eq(condition.count())
+                            //     )
+                            // }).count()
+                        }
+                    })
+                    .coerceTo('array')
+            }
+        })
+        .getField('welfare')
+        .run()
+        .then(function (data) {
+            res.json(data)
+        })
+
+}
+var checkLogic = function (select, row) {
+    return r.branch(
+        select('logic').eq('=='),
+        row(select('field_name')).eq(select('value')),
+        select('logic').eq('>'),
+        row(select('field_name')).gt(select('value')),
+        select('logic').eq('>='),
+        row(select('field_name')).ge(select('value')),
+        select('logic').eq('<'),
+        row(select('field_name')).lt(select('value')),
+        select('logic').eq('<='),
+        row(select('field_name')).le(select('value')),
+        row(select('field_name')).ne(select('value'))
+    )
+};
+var reduceCondition = function (emp, con) {
+    var countCon = con.count();
+    return r.branch(countCon.gt(1),
+        con.reduce(function (left, right) {
+            return r.branch(left.hasFields('data'),
+                {
+                    data: left('data').filter(function (f) {
+                        return checkLogic(right, f)
+                    })
+                },
+                {
+                    data: emp.filter(function (f) {
+                        return checkLogic(left, f)
+                    }).filter(function (f) {
+                        return checkLogic(right, f)
+                    }).coerceTo('array')
+                }
+            )
+        })('data'),
+        countCon.eq(1),
+        emp.filter(function (f) {
+            return checkLogic(con(0), f)
+        }),
+        emp
+    )
 }
