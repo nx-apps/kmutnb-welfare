@@ -1,3 +1,39 @@
+exports.historyEmp = function (req, res) {
+
+    r.db('welfare').table('history_welfare').getAll(req.params.emp_id, { index: 'emp_id' })
+        .filter({ status: true })
+
+        .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'onetime'] }).zip()
+        .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
+        .merge((mer_oneTime) => {
+            return {
+                history_welfare_id: mer_oneTime('id'),
+                date_use: mer_oneTime('date_use').toISO8601().split('T')(0),
+                date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0),
+                // status: mer_oneTime('status').eq(true).branch(' อนุมัติ', ' ยกเลิก'),
+                description: mer_oneTime('group_welfare_name').add(' (').add(mer_oneTime('welfare_name')).add(')'),
+                // check_onetime_thai: mer_oneTime('onetime').eq(true).branch(' (ใช้ครั้งเดียว)', ' (ใช้หลายครั้ง)')
+            }
+        })
+        .merge((files) => {
+            return {
+                file: files('document_ids').map((doc_id) => {
+                    return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
+                        .without('contents','ref_path','timestamp','type')
+                })
+            }
+        })
+        .pluck('history_welfare_id', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'description_detail', 'status', 'file')
+        .coerceTo('array')
+        .orderBy(r.desc('date_approve'))
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
 exports.unapprove = function (req, res) {
     r.db('welfare').table('history_welfare')
         // .filter({status: false})
@@ -76,9 +112,9 @@ exports.requestWelfare = function (req, res) {
 exports.updateApproveWelfare = function (req, res) {
     var r = req.r;
     req.body.map((upStatus) => {
-            upStatus.date_approve = r.ISO8601(date_approve)//.inTimezone('+07'),
-            upStatus.date_create = r.now().inTimezone('+07')
-            upStatus.date_use = r.ISO8601(date_approve)//.inTimezone('+07'),
+        upStatus.date_approve = r.ISO8601(date_approve)//.inTimezone('+07'),
+        upStatus.date_create = r.now().inTimezone('+07')
+        upStatus.date_use = r.ISO8601(date_approve)//.inTimezone('+07'),
     })
     r.expr(req.body).forEach(function (fe) {
         return r.db('welfare').table('history_welfare').get(fe('id'))
