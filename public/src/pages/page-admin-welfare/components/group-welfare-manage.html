@@ -49,7 +49,7 @@
             </template>
             
             <template is="dom-if" if={{_obTypeGroup(data.type_continuous)}}>
-                <gl-grid-row>
+                <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                         <gl-form-input class="checkValidate" required disabled label="ปี" allowed-pattern="[0-9]" maxlength="4" value="{{data.year}}" placeholder="กรุณากรอกปี พ.ศ."></gl-form-input>
@@ -73,14 +73,14 @@
                 </gl-grid-col>
             </gl-grid-row>
             
-            <template is="dom-if" if={{_obTypeGroup(data.type_continuous)}}>
-                <gl-grid-row>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker class="checkValidate" required disabled="{{isEnable}}" label="วันที่ใช้คำนวณ :" value="{{data.cal_date}}"></vaadin-date-picker>
-                    </gl-grid-col>
-                </gl-grid-row>
-            </template>
+            <!--<template is="dom-if" if={{_obTypeGroup(data.type_continuous)}}>-->
+            <gl-grid-row>
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                    <vaadin-date-picker disabled="{{isEnable}}" label="วันที่ใช้คำนวณ :" value="{{data.cal_date}}"></vaadin-date-picker>
+                </gl-grid-col>
+            </gl-grid-row>
+            <!--</template>-->
 
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
@@ -101,13 +101,13 @@
             </gl-grid-row>
             <gl-grid-row style="margin-top: 10px">
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                [[checkSelect(data.group_use)]]
+                [[checkSelect(data.group_use)]] 
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                     <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.group_use}}">สวัสดิการแบบกลุ่ม</paper-checkbox>
                 </gl-grid-col>
             </gl-grid-row>
 
-            <gl-grid-row width="{{getWidth}}" style="margin-top: 10px">
+            <!--<gl-grid-row width="{{getWidth}}" style="margin-top: 10px">
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                     <div style="font-weight:bold;color:#737373">สวัสดิการแบบ</div>
@@ -116,7 +116,7 @@
                         <paper-radio-button value="{{type_select}}" disabled="{{isEnable}}">ไม่ต่อเนื่อง</paper-radio-button>
                     </paper-radio-group>
                 </gl-grid-col>
-            </gl-grid-row>
+            </gl-grid-row>-->
 
             <div class="horizontal end-justified layout btn-bottom">
                 <div hidden="{{isEnable}}">
@@ -152,13 +152,21 @@
                 if (this.data.group_use != true) {
                     this.data.group_use = false;
                 }
-                if(this.data.type_continuous === true){
+                // if(this.data.type_continuous === true){
+                //     this.data.year = 9999+543;
+                //     this.data.cal_date = null;
+                // }
+                if(this.data.end_date !== ''){
+                    this.data.type_continuous = false;
+                    this.data.cal_date = this.data.cal_date;
+                    this.data.year = this.data.year;
+                }else{
+                    this.data.end_date = null;
                     this.data.year = 9999+543;
                     this.data.cal_date = null;
+                    this.data.type_continuous = true;
                 }
-                if(this.data.end_date === ''){
-                    this.data.end_date = null;
-                }
+                console.log(this.data);
                 if(check == true){
                     if(this.data.type_continuous === undefined){
                         this.fire('toast',{status:'connectError',text:'กรุณาเลือกรูปแบบสวัสดิการ',
@@ -237,21 +245,20 @@
                         this.set('data.onetime_use', true);
                         this.isEnable_onetime = true;
                     }
-                    else {
-                        if (this.data.onetime_use === true && this.data.group_use === true) {
-                            this.set('data.onetime_use', true);
-                            this.isEnable_onetime = true;
-                        }
-                        else if (this.data.onetime_use === false) {
-                            this.isEnable_onetime = true;
-                        }
-                        else {
-                            this.set('data.onetime_use', false);
-                            this.isEnable_onetime = false;
-                        }
-                    }
+                    // else {
+                    //     if (this.data.onetime_use === true && this.data.group_use === true) {
+                    //         this.set('data.onetime_use', true);
+                    //         this.isEnable_onetime = true;
+                    //     }
+                    //     else if (this.data.onetime_use === false) {
+                    //         this.isEnable_onetime = true;
+                    //     }
+                    //     else {
+                    //         this.set('data.onetime_use', false);
+                    //         this.isEnable_onetime = false;
+                    //     }
+                    // }
                 }
-
             },
             checkMenu: function (data) {
                 if (typeof data.id == 'undefined') {

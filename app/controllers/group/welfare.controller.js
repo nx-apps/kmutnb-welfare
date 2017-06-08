@@ -130,7 +130,7 @@ exports.listId = function (req, res) {
                             year: m('year').add(543),
                             start_date: m('start_date').toISO8601().split('T')(0),
                             end_date: r.branch(m('end_date').ne(null), m('end_date').toISO8601().split('T')(0), null),
-                            cal_date: m('cal_date').toISO8601().split('T')(0),
+                            cal_date: r.branch(m('cal_date').ne(null), m('cal_date').toISO8601().split('T')(0), null),
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array').orderBy('welfare_name')
                                 .merge(function (wel_merge) {
                                     return {
@@ -193,11 +193,15 @@ exports.insert = function (req, res) {
         } else {
             req.body.end_date = r.ISO8601(req.body.end_date).inTimezone('+07')
         }
+        if (req.body.cal_date === null) {
+            req.body.cal_date = null
+        } else {
+            req.body.cal_date = r.ISO8601(req.body.cal_date).inTimezone('+07')
+        }
         req.body = Object.assign(req.body,
             {
                 year: req.body.year - 543,
-                start_date: r.ISO8601(req.body.start_date).inTimezone('+07'),
-                cal_date: r.ISO8601(req.body.cal_date).inTimezone('+07')
+                start_date: r.ISO8601(req.body.start_date).inTimezone('+07')
             }
         );
         r.db('welfare').table('group_welfare').insert(req.body)
@@ -226,11 +230,15 @@ exports.update = function (req, res) {
     } else {
         req.body.end_date = r.ISO8601(req.body.end_date).inTimezone('+07')
     }
+    if (req.body.cal_date === null) {
+        req.body.cal_date = null
+    } else {
+        req.body.cal_date = r.ISO8601(req.body.cal_date).inTimezone('+07')
+    }
     req.body = Object.assign(req.body,
         {
             year: req.body.year - 543,
-            start_date: r.ISO8601(req.body.start_date).inTimezone('+07'),
-            cal_date: r.ISO8601(req.body.cal_date).inTimezone('+07')
+            start_date: r.ISO8601(req.body.start_date).inTimezone('+07')
         }
     );
     r.db('welfare').table('group_welfare')

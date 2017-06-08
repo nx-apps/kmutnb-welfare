@@ -125,8 +125,9 @@ exports.insert = function (req, res) {
             {
                 condition: req.body.condition.map(function (m) {
                     var change_value = {};
-                    if (m.logic == ">" || m.logic == "<" || m.logic == ">=" || m.logic == "<=") {
-                        change_value = r.ISO8601(m.value).inTimezone('+07');
+                    var search = m.field_name.search('date');
+                    if (search != -1) {
+                        change_value = r.ISO8601(m.value);
                     } else {
                         change_value = m.value;
                     }
@@ -166,7 +167,8 @@ exports.update = function (req, res) {
         {
             condition: req.body.condition.map(function (m) {
                 var change_value = {};
-                if (m.logic == ">" || m.logic == "<" || m.logic == ">=" || m.logic == "<=") {
+                var search = m.field_name.search('date');
+                if (search != -1) {
                     change_value = r.ISO8601(m.value);
                 } else {
                     change_value = m.value;

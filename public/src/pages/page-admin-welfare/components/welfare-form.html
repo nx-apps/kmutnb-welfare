@@ -271,7 +271,7 @@
                     var condition2 = this.condition.filter((item) => {
                             return item.type_continuous == 'all'
                     });
-                    var condition = condition1.concat(condition2);
+                    var condition = condition2.concat(condition1);
                 }
                 var data = condition;
                 var use = this.data.condition.map((item) => {
@@ -292,7 +292,21 @@
             },
             conditionManage: function (val, index) {
                 if (val != "") {
-                    var data = this.condition;
+                    if(this.date.type_continuous !== undefined){
+                        if(this.date.type_continuous === true){
+                            this.date.type_continuous = 'con';
+                        }else if(this.date.type_continuous === false){
+                            this.date.type_continuous = 'uncon';
+                        }
+                        var condition1 = this.condition.filter((item) => {
+                                return item.type_continuous == this.date.type_continuous
+                        });
+                        var condition2 = this.condition.filter((item) => {
+                                return item.type_continuous == 'all'
+                        });
+                        var condition = condition2.concat(condition1);
+                    }
+                    var data = condition;
                     var use = this.data.condition.map((item) => {
                         return item.field
                     })
@@ -343,7 +357,8 @@
                         var tz = "T00:00:00+07:00";
                             for (var i = 0; i < this.data.condition.length; i++) {
                                 var data = condition[i];
-                                var search = data.field.field.search('date')
+                                var search = data.field.field.search('date');
+                                var search_age = data.field.field.search('age');
                                 if (search != -1) {
                                     // console.log(data.logic_show);
                                     if (data.logic_show.search(">") >= 0) {
@@ -354,6 +369,15 @@
                                         var d = this.date.cal_date.split("-");
                                         data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz;
                                         data.logic = data.logic_show.replace("<", ">");
+                                    }
+                                }
+                                else if(search_age != -1){
+                                    if (data.logic_show.search(">") >= 0) {
+                                        data.value = parseInt(data.value_show);
+                                        data.logic = data.logic_show;
+                                    } else if (data.logic_show.search("<") >= 0) {
+                                        data.value = parseInt(data.value_show);
+                                        data.logic = data.logic_show;
                                     }
                                 }
                                 else{
@@ -370,7 +394,7 @@
                             return newitem
                         })
                         newData.condition = setCondition;    
-                        console.log(newData);
+                        // console.log(newData);
                         if (typeof this.data.id == 'undefined') {
                             this.fire('toast', {
                                 status: 'openDialog',

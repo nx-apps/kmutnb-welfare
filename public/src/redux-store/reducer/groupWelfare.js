@@ -74,7 +74,11 @@ export function groupWelfareAction(store) {
             let newData = { year, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous};
             var tz = "T00:00:00+07:00";
             newData.start_date = data.start_date + tz;
-            newData.cal_date = data.cal_date + tz;
+            if(data.cal_date === null){
+                newData.cal_date = data.cal_date;
+            }else{
+                newData.cal_date = data.cal_date + tz;
+            }
             if(data.end_date === null){
                 newData.end_date = data.end_date
             }else{
@@ -89,7 +93,7 @@ export function groupWelfareAction(store) {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             // console.log('success');
                             this.LIST_WELFARE(yearNow);
-                            this.selectYear = yearNow;
+                            this.selectYear = yearNow+543;
                             this.clearData();
                             this.GET_YEAR();
                             // this.fire('closePanel');
@@ -104,7 +108,7 @@ export function groupWelfareAction(store) {
         },
         DELETE_WELFARE: function (data) {
             // console.log(data);
-            // var year = new Date().getFullYear();
+            var year = new Date().getFullYear();
             axios.delete(`./group/welfare/delete/id/` + data.id)
                 .then((result) => {
                     // console.log(result);
@@ -112,8 +116,8 @@ export function groupWelfareAction(store) {
                         status: 'success', text: 'ลบสำเร็จ', callback: () => {
                             // console.log('success');
                             this.$$('panel-right').close();
-                            this.LIST_WELFARE(data.year - 543);
-                            this.selectYear = data.year;
+                            this.LIST_WELFARE(year);
+                            this.selectYear = year;
                             this.GET_YEAR();
                         }
                     });
