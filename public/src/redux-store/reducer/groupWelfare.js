@@ -133,7 +133,11 @@ export function groupWelfareAction(store) {
             let newData = { id, year, group_welfare_name, group_use, description, onetime_use, type_continuous};
             var tz = "T00:00:00+07:00";
             newData.start_date = data.start_date + tz;
-            newData.cal_date = data.cal_date + tz;
+            if(data.cal_date === null){
+                newData.cal_date = data.cal_date;
+            }else{
+                newData.cal_date = data.cal_date + tz;
+            }
             if(data.end_date === null){
                 newData.end_date = data.end_date
             }else{
