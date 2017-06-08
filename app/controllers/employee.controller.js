@@ -272,215 +272,43 @@ exports.welfaresYear = function (req, res) {
                 })
             }
         })
-        // เช็คคงเหลือ
-        // .merge((check_budget) => {
-        //     return {
-        //         group_welfares: check_budget('group_welfares').merge((el) => {
-        //             return {
-        //                 budget_balance: r.branch(el('round_use').eq(false),
-        //                     el('budget'), el('budget').sub(el('budget_use')))
-        //             }
-        //         })
-        //     }
-        // })
-        // .merge((use_his) => {
-        //     return {
-        //         history_welfare: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
-        //             .filter({ status: true })
+        
+        .merge((use_his) => {
+            return {
+                history_welfare: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                    .filter({ status: true })
 
-        //             .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'onetime'] }).zip()
-        //             .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
-        //             .merge((mer_oneTime) => {
-        //                 return {
-        //                     history_welfare_id: mer_oneTime('id'),
-        //                     date_use: mer_oneTime('date_use').toISO8601().split('T')(0),
-        //                     date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0),
-        //                     status: mer_oneTime('status').eq(true).branch(' อนุมัติ', ' ยกเลิก'),
-        //                     description: mer_oneTime('group_welfare_name').add(' (').add(mer_oneTime('welfare_name')).add(')'),
-        //                     check_onetime_thai: mer_oneTime('onetime').eq(true).branch(' (ใช้ครั้งเดียว)', ' (ใช้หลายครั้ง)')
-        //                 }
-        //             })
-        //             .merge((files) => {
-        //                 return {
-        //                     file: files('document_ids').map((doc_id) => {
-        //                         return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
-        //                             .without('contents')
-        //                     })
-        //                 }
-        //             })
-        //             .pluck('history_welfare_id', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'description_detail', 'status', 'file')
-        //             .coerceTo('array')
-        //             .orderBy(r.desc('date_approve'))
-        //     }
-        // })
+                    .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'onetime'] }).zip()
+                    .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
+                    .merge((mer_oneTime) => {
+                        return {
+                            history_welfare_id: mer_oneTime('id'),
+                            date_use: mer_oneTime('date_use').toISO8601().split('T')(0),
+                            date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0),
+                            // status: mer_oneTime('status').eq(true).branch(' อนุมัติ', ' ยกเลิก'),
+                            description: mer_oneTime('group_welfare_name').add(' (').add(mer_oneTime('welfare_name')).add(')'),
+                            // check_onetime_thai: mer_oneTime('onetime').eq(true).branch(' (ใช้ครั้งเดียว)', ' (ใช้หลายครั้ง)')
+                        }
+                    })
+                    .merge((files) => {
+                        return {
+                            file: files('document_ids').map((doc_id) => {
+                                return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
+                                    .without('contents')
+                            })
+                        }
+                    })
+                    .pluck('history_welfare_id', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'description_detail', 'status', 'file')
+                    .coerceTo('array')
+                    .orderBy(r.desc('date_approve'))
+            }
+        })
         // .merge((mer_oneTime) => {
         //     return {
         //         start_work_date: mer_oneTime('start_work_date').toISO8601().split('T')(0),
         //     }
         // })
-        // .merge(function (f) {
-        //     return {
-        //         start_work_date: f('start_work_date'),//.split('T')(0),//.split('T')(0),
-        //         birthdate: f('birthdate').toISO8601().split('T')(0),//f('birthdate').split('T')(0)
-        //         academic_name: r.db('welfare_common').table('academic').get(f('academic_id')).getField('academic_name'),
-        //         active_name: r.db('welfare_common').table('active').get(f('active_id')).getField('active_name'),
-        //         active_code: r.db('welfare_common').table('active').get(f('active_id')).getField('active_code'),
-        //         department_name: r.db('welfare_common').table('department').get(f('department_id')).getField('department_name'),
-        //         faculty_name: r.db('welfare_common').table('faculty').get(f('faculty_id')).getField('faculty_name'),
-        //         gender_name: r.db('welfare_common').table('gender').get(f('gender_id')).getField('gender_name'),
-        //         matier_name: r.db('welfare_common').table('matier').get(f('matier_id')).getField('matier_name'),
-        //         position_name: r.db('welfare_common').table('position').get(f('position_id')).getField('position_name'),
-        //         prefix_name: r.db('welfare_common').table('prefix').get(f('prefix_id')).getField('prefix_name'),
-        //         type_employee_name: r.db('welfare_common').table('type_employee').get(f('type_employee_id')).getField('type_employee_name'),
-        //         employee_edit: r.db('welfare').table('system_config')(0).getField('employee_edit'),
-        //     }
-        // })
-        // .merge((check_welFare)=>{
-        //     return {
-        //         xxxxx:check_welFare('group_welfares')
-        //     }
-        // })
-        // .without('group_welfares')
-        // .eqJoin('academic_id', r.db('welfare_common').table('academic')).pluck('left', { right: ['academic_name'] }).zip()
-        // .eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: ['active_name'] }).zip()
-        // .eqJoin('department_id', r.db('welfare_common').table('department')).pluck('left', { right: ['department_name'] }).zip()
-        // .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck('left', { right: ['faculty_name'] }).zip()
-        // .eqJoin('gender_id', r.db('welfare_common').table('gender')).pluck('left', { right: ['gender_name'] }).zip()
-        // .eqJoin('matier_id', r.db('welfare_common').table('matier')).pluck('left', { right: ['matier_name'] }).zip()
-        // .eqJoin('position_id', r.db('welfare_common').table('position')).pluck('left', { right: ['position_name'] }).zip()
-        // .eqJoin('prefix_id', r.db('welfare_common').table('prefix')).pluck('left', { right: ['prefix_name'] }).zip()
-        // .eqJoin('type_employee_id', r.db('welfare_common').table('type_employee')).pluck('left', { right: ['type_employee_name'] }).zip()
-        // .without('academic_id', 'active_id', 'department_id', 'faculty_id', 'gender_id', 'matier_id', 'position_id', 'type_employee_id', 'prefix_id')
-        // .merge((group_welfare) => {
-        //     return {
-        //         rvd_status: r.branch(group_welfare('type_employee_name').eq('พนักงานมหาวิทยาลัย'), true, false),
-        //         group_welfare: r.db('welfare').table('group_welfare').getAll(year, { index: 'year' })
-        //             .filter({ status_approve: true })
-        //             .merge((welfare_conditions) => {
-        //                 return {
-        //                     conditions: r.db('welfare').table('welfare').getAll(welfare_conditions('id'), { index: 'group_id' })
-        //                         .merge((mer_id) => {
-        //                             return {
-        //                                 welfare_id: mer_id('id'),
-        //                                 year: welfare_conditions('year'),
-        //                                 group_use: welfare_conditions('group_use'),
-        //                                 onetime: welfare_conditions('onetime'),
-        //                                 group_welfare_name: welfare_conditions('group_welfare_name'),
-        //                                 start_date: r.ISO8601(welfare_conditions('start_date')).toEpochTime(),
-        //                                 end_date: r.ISO8601(welfare_conditions('end_date')).toEpochTime(),
-        //                                 now_date: r.now().toEpochTime()
-        //                             }
-        //                         })
-        //                         .without('id')
-        //                         .coerceTo('array')
-        //                 }
-        //             })
-        //             .coerceTo('array')
-        //     }
-        // })
-        // .merge((welfare) => {
-        //     return {
-        //         welfare: welfare('group_welfare').getField('conditions').count()
-        //             .eq(0)
-        //             .branch([], welfare('group_welfare').getField('conditions')
-        //                 // remove array 1 dimintion
-        //                 .reduce(function (left, right) {
-        //                     return left.add(right);
-        //                 })
-        //                 .merge((conditions) => {
-        //                     return {
-        //                         condition: conditions('condition').merge((changeName) => {
-        //                             return {
-        //                                 field: r.db('welfare').table('condition').get(changeName('field')).getField('field')
-        //                             }
-        //                         })
-        //                     }
-        //                 })
-        //                 .merge(function (we_m) {
-        //                     return {
-        //                         count: we_m('condition').count(),
-        //                         countpass: we_m('condition').map(function (con_map) {
-        //                             return {
-        //                                 pass: welfare(con_map('field')).do(function (d) {
-        //                                     return r.branch(con_map('logic').eq(">="),
-        //                                         d.ge(con_map('value')),
-        //                                         r.branch(con_map('logic').eq(">"),
-        //                                             d.gt(con_map('value')),
-        //                                             r.branch(con_map('logic').eq("<="),
-        //                                                 d.le(con_map('value')),
-        //                                                 r.branch(con_map('logic').eq("<"),
-        //                                                     d.lt(con_map('value')),
-        //                                                     r.branch(con_map('logic').eq("=="),
-        //                                                         d.eq(con_map('value')),
-        //                                                         d.ne(con_map('value'))
-        //                                                     )
-        //                                                 )
-        //                                             )
-        //                                         )
-        //                                     )
-        //                                 })
-        //                             }
-        //                         })
-        //                     }
-        //                 })
-        //                 .merge((e) => {
-        //                     return {
-        //                         countpass_total: e('countpass').filter({ "pass": true }).count()
-        //                     }
-        //                 })
-        //                 .merge((status) => {
-        //                     return {
-        //                         count_pass_status: status('countpass_total').eq(status('count')),
-        //                         id: welfare('id')
-        //                     }
-        //                 })
-        //                 .filter({ "count_pass_status": true })
-        //                 .merge((use_his) => {
-        //                     return {
-        //                         budget_use: r.db('welfare').table('history_welfare')
-        //                             .getAll(welfare('id'), { index: 'emp_id' })
-        //                             .filter(
-        //                             {
-        //                                 status: 'approve',
-        //                                 //  emp_id: welfare('id'),
-        //                                 welfare_id: use_his('welfare_id')
-        //                             }
-        //                             )
-        //                             .sum('use_budget'),
-        //                         budget_per_use: r.db('welfare').table('history_welfare')
-        //                             .getAll(welfare('id'), { index: 'emp_id' })
-        //                             .filter((status) => {
-        //                                 return status('status').eq('approve').or(status('status').eq('request'))
-        //                             })
-        //                             .filter(
-        //                             {
-        //                                 welfare_id: use_his('welfare_id')
-        //                             }
-        //                             )
-        //                             .sum('use_budget')
-
-
-
-
-        //                     }
-        //                 })
-        //                 .merge((balance) => {
-        //                     return {
-        //                         budget_balance: balance('budget').sub(balance('budget_use')),
-        //                         budget_balance_check: balance('budget').sub(balance('budget_use')).le(0).branch(true, false)
-        //                     }
-        //                 })
-        //                 .merge((check_onetime) => {
-        //                     return {
-        //                         check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว', 'ใช้ได้หลายครั้ง')
-        //                     }
-        //                 })
-        //                 // เอาสวัสดิการที่ยังมีเงินเหลือออกมาแสดง
-        //                 .filter({ "budget_balance_check": false })
-        //                 .without('condition', 'countpass')
-        //             )
-        //     }
-        // })
+       
 
 
         .run()

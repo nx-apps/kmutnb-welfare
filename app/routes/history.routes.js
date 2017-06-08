@@ -1,5 +1,6 @@
 module.exports = function (app) {
     var controller = require('../controllers/history.controller');
+    app.get('/emp/:emp_id', controller.historyEmp);
     app.get('/unapprove', controller.unapprove);
     app.get('/search', controller.listHistory);
     app.post('/request', controller.requestWelfare); ///request/welfare/
