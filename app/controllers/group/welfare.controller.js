@@ -57,7 +57,7 @@ exports.list = function (req, res) {
                         return {
                             status_approve_name: r.branch(m('status_approve').eq(true), 'ใช้งาน', 'ไม่ใช้งาน'),
                             group_use_name: r.branch(m('group_use').eq(true), 'แบบกลุ่ม', 'แบบเดี่ยว'),
-                            year: m('year').add(543),
+                            // year: m('year').add(543),
                             start_date: m('start_date').toISO8601().split('T')(0),
                             end_date: r.branch(m('end_date').ne(null), m('end_date').toISO8601().split('T')(0), null),
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
@@ -103,22 +103,6 @@ exports.list = function (req, res) {
         })
 }
 exports.listId = function (req, res) {
-    var checkLogic = function (select, row) {
-        return r.branch(
-            select('logic').eq('=='),
-            row(select('field_name')).eq(select('value')),
-            select('logic').eq('>'),
-            row(select('field_name')).gt(select('value')),
-            select('logic').eq('>='),
-            row(select('field_name')).ge(select('value')),
-            select('logic').eq('<'),
-            row(select('field_name')).lt(select('value')),
-            select('logic').eq('<='),
-            row(select('field_name')).le(select('value')),
-            row(select('field_name')).ne(select('value'))
-        )
-    };
-
     var r = req.r
     r.expr({
         employees: r.db('welfare').table('employee')/*.filter({ active_name: 'ทำงาน' })*/
@@ -127,6 +111,7 @@ exports.listId = function (req, res) {
         group: []
     })
         .merge(function (group_merge) {
+            var emps = group_merge('employees');
             return {
                 group: r.db('welfare').table('group_welfare').get(req.params.id)
                     .merge(function (m) {
@@ -137,29 +122,10 @@ exports.listId = function (req, res) {
                             cal_date: r.branch(m('cal_date').ne(null), m('cal_date').toISO8601().split('T')(0), null),
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array').orderBy('welfare_name')
                                 .merge(function (wel_merge) {
-                                    var countCon = wel_merge('condition').count();
-                                    var emp_budget = r.branch(countCon.eq(0),
-                                        [group_merge('employees').pluck('id')],
-                                        wel_merge('condition').map(function (con_map) {
-                                            return group_merge('employees').filter(function (f) {
-                                                return checkLogic(con_map, f)
-                                            })
-                                                .coerceTo('array').pluck('id')
-                                        })
-                                    ).reduce(function (l, r) {
-                                        return l.add(r)
-                                    })
-                                        .group('id').count().ungroup()
-                                        .filter(function (emp_filter) {
-                                            return r.branch(countCon.eq(0),
-                                                emp_filter('reduction').eq(countCon.add(1)),
-                                                emp_filter('reduction').eq(countCon)
-                                            )
-                                        }).count();
+                                    var condition = wel_merge('condition');
                                     return {
-                                        countCon: countCon,
-                                        emp_budget: emp_budget,
-                                        value_budget: r.branch(wel_merge('round_use').eq(true), emp_budget.mul(wel_merge('budget')), 0)
+                                        countCon: condition.count(),
+                                        emp_budget: reduceCondition(emps, condition).count()
                                     }
                                 })
                                 .without('employees')
