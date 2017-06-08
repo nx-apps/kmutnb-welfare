@@ -53,11 +53,12 @@ exports.list = function (req, res) {
                                                 emp_filter('reduction').eq(countCon.add(1)),
                                                 emp_filter('reduction').eq(countCon)
                                             )
-                                        }).count();
+                                        })//.count();
                                     return {
                                         countCon: countCon,
-                                        emp_budget: emp_budget,
-                                        value_budget: r.branch(wel_merge('round_use').eq(true), emp_budget.mul(wel_merge('budget')), 0)
+                                        employee: emp_budget.without('reduction'),
+                                        emp_budget: emp_budget.count(),
+                                        value_budget: r.branch(wel_merge('round_use').eq(true), emp_budget.count().mul(wel_merge('budget')), 0)
                                     }
                                 })
                                 .without('employees')
@@ -67,7 +68,14 @@ exports.list = function (req, res) {
                         return {
                             value_budget: m('welfare').sum('value_budget'),
                             value_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' }).sum('budget_use'),
-                            emp_budget: m('welfare').sum('emp_budget'),
+                            // emp_budget: m('welfare').sum('emp_budget'),
+                            emp_budget: m('welfare').map(function (m2) {
+                                return m2('employee')
+                            }).reduce(function (l, r) {
+                                return l.add(r)
+                            }).group('group')
+                                .ungroup()
+                                .count(),
                             emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' }).pluck('emp_id').distinct().count(),
                             time_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' }).count()
                         }
