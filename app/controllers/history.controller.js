@@ -19,7 +19,7 @@ exports.historyEmp = function (req, res) {
             return {
                 file: files('document_ids').map((doc_id) => {
                     return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
-                        .without('contents','ref_path','timestamp','type')
+                        .without('contents', 'ref_path', 'timestamp', 'type')
                 })
             }
         })
@@ -395,12 +395,16 @@ exports.listHistory = function (req, res) {
     // console.log('sssssssssssssssssssss', params.group_id === undefined)
     let querys = ''
     if (req.query.group_id === undefined) {
-        querys = r.db('welfare').table('employee').getAll('ทำงาน', { index: 'active_name' })
+        querys = r.db('welfare').table('employee')
+            .filter(
+            r.row('firstname').match(params.personal_name)
+            )
             .filter({
                 personal_id: params.personal_id,
                 type_employee_id: params.type_employee_id,
                 department_id: params.department_id,
-                faculty_id: params.faculty_id
+                faculty_id: params.faculty_id,
+                active_id: params.active_id
             })
             .pluck('id', 'birthdate', 'start_work_date', 'personal_id', 'prefix_name', 'firstname', 'lastname', 'type_employee_name')
             .merge((use) => {
@@ -417,14 +421,22 @@ exports.listHistory = function (req, res) {
         var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
         var date_end = req.query.date_end + "T00:00:00+07:00";
         querys = r.expr({
-            employees: r.db('welfare').table('employee').getAll('ทำงาน', { index: 'active_name' })
+            employees: r.db('welfare').table('employee')
                 .without('active_name', 'dob', 'emp_no')
+                .filter(
+                r.row('firstname').match(params.personal_name)
+                )
                 .filter({
                     personal_id: params.personal_id,
                     type_employee_id: params.type_employee_id,
                     department_id: params.department_id,
-                    faculty_id: params.faculty_id
+                    faculty_id: params.faculty_id,
+                    active_id: params.active_id
                 })
+                // .filter(
+                //     r.row('firstname').match(params.personal_name)
+                // )
+
                 .coerceTo('Array'),
             group_welfare: r.db('welfare').table('group_welfare').get(params.group_id)
         })

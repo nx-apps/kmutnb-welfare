@@ -18,20 +18,28 @@
             }
         </style>
         <div class="layout horizontal start-justified">
-            <div class="flex-2" style=" margin-right: 30px">{{getGroupWelfare(data.year)}}
+            <!--<div class="flex-2" style=" margin-right: 30px">{{getGroupWelfare(data.year)}}
                 <gl-combo-box label="ปีสวัสดิการ" placeholder="ปีทั้งหมด" items="{{list_year}}" item-label-path="year" item-value-path="year"
                     value="{{data.year}}">
                     <template>
                         [[item.year]]
                     </template>
                 </gl-combo-box>
-            </div>
+            </div>-->
 
             <div class="flex-2" style=" margin-right: 30px">{{getWelareName(data.group_id)}}
                 <gl-combo-box label="สวัสดิการ" placeholder="สวัสดิการทั้งหมด" items="{{list_welfare}}" item-label-path="label" item-value-path="id"
                     value="{{data.group_id}}">
                     <template>
                         [[item.label]]
+                    </template>
+                </gl-combo-box>
+            </div>
+            <div class="flex" style=" margin-right: 30px">
+                <gl-combo-box label="สวัสดิการ" placeholder="สถานะภาพทั้งหมด" items="{{list_active}}" item-label-path="active_name" item-value-path="id"
+                    value="{{data.active_id}}">
+                    <template>
+                        [[item.active_name]]
                     </template>
                 </gl-combo-box>
             </div>
@@ -53,7 +61,7 @@
                     </template>
                 </gl-combo-box>
             </div>
-            <div class="flex-3">
+            <div class="flex-2">
                 <gl-combo-box label="ภาควิชา" placeholder="ภาควิชาทั้งหมด" items="{{list_department}}" item-label-path="department_name"
                     item-value-path="id" value="{{data.department_id}}">
                     <template>
@@ -72,9 +80,14 @@
                 <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_end}}"></vaadin-date-picker>
             </div>
             <div class="flex-2">-->
-            <gl-form-input always-float-label label="เลขประจำตัวประชาชน" minlength="13" maxlength="13" allowed-pattern="[0-9||,||.]"
-                placeholder="เลขประจำตัวประชาชน" value="{{data.personal_id}}">
-            </gl-form-input>
+            <div class="flex-2" style=" margin-right: 30px">
+                <gl-form-input always-float-label label="เลขประจำตัวประชาชน" placeholder="เลขประจำตัวประชาชน" value="{{data.personal_id}}">
+                </gl-form-input>
+            </div>
+            <div class="flex-2">
+                <gl-form-input always-float-label label="ชื่อ-นามสกุล" placeholder="ชื่อ-นามสกุล" value="{{data.personal_name}}">
+                </gl-form-input>
+            </div>
         </div>
         </div>
         <div class="layout horizontal start-justified">
@@ -91,16 +104,15 @@
             is: 'search-setting',
             behaviors: [ReduxBehavior, nylonBehavior, MonthBehavior],
             properties: {
-                list_year: {
-                    statePath: 'userWelfare.list',
-                    observer: 'setYear'
-                },
                 list_welfare: {
                     statePath: 'userWelfare.list_id',
                     observer: 'setCombo'
                 },
                 list_faculty: {
                     statePath: 'commonData.faculty'
+                },
+                list_active:{
+                    statePath: 'commonData.active'
                 },
                 list_department: {
                     // statePath: 'commonData.department'
@@ -118,15 +130,8 @@
             setCombo(data) {
                 // console.log(data);
                 let newWelFare = data.map((el) => {
-                    // console.log(el.admin_use);
-                    if (el.admin_use === true) {
-                        el.label = el.group_welfare_name + ' (กลุ่ม)'
-                    } else {
-                        el.label = el.group_welfare_name
-                    }
-                    return el
+                    el.label = el.group_welfare_name
                 })
-                // console.log(newWelFare);
                 return newWelFare
             },
             getWelareName(group_id){
@@ -159,14 +164,14 @@
                 }
 
             },
-            getGroupWelfare: function (year) {
-                //    console.log(this.data);
-                // console.log(year);
-                if (year !== undefined) {
-                    this.dispatchAction('WELFARE_LISTS', this.data.year - 543);
-                }
+            // getGroupWelfare: function (year) {
+            //     //    console.log(this.data);
+            //     // console.log(year);
+            //     if (year !== undefined) {
+            //         this.dispatchAction('WELFARE_LISTS');
+            //     }
 
-            },
+            // },
             getdepartment: function (facultyId) {
                 try {
                     this.set('data.department_id', '')

@@ -298,3 +298,28 @@ exports.listId = function (req, res) {
             res.status(500).json(err)
         })
 }
+exports.active = function (req, res) {
+    var r = req.r
+    // console.log(111111111111111111111111);
+    var group_welfare = function () {
+        return r.db('welfare').table('group_welfare')
+            .filter({ status_approve: true })
+            .filter(function (f) {
+                return r.branch(f('type_continuous').eq(true),
+                    r.now().inTimezone('+07').ge(f('start_date')),
+                    r.now().inTimezone('+07').during(f('start_date'), f('end_date'), { rightBound: 'closed' })
+                )
+            })
+            .coerceTo('array')
+    }
+    group_welfare()
+    .pluck("id","group_welfare_name","group_use")
+        .run()
+        .then(function (result) {
+            console.log(111);
+            res.json(result)
+        })
+        .catch(function (err) {
+            res.status(500).json(err)
+        })
+}

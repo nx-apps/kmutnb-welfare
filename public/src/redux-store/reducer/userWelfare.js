@@ -14,24 +14,24 @@ const initialState = {
 const clearData = (data, callback) => {
 
     let { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id,
-        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name, end_work_date,work_age,age } = data;
+        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name, end_work_date, work_age, age } = data;
     let newData = {
         prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id,
-        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name, end_work_date,work_age,age
+        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name, end_work_date, work_age, age
     };
     // newData.period = new Array();
     // data.period.map((tag)=>{
     //     newData.period.push({no:tag.no,quality:tag.quality});
     // });
-    newData.start_work_date = data.start_work_date+'T00:00:00+07:00'
-    newData.birthdate = data.birthdate+'T00:00:00+07:00'
+    newData.start_work_date = data.start_work_date + 'T00:00:00+07:00'
+    newData.birthdate = data.birthdate + 'T00:00:00+07:00'
     callback(newData)
     // callback(data)
 }
 const clearDatawelfare = (data, callback) => {
 
-    let { budget_balance, budget_cover, budget_use, emp_id, group_id, description_detail, status, welfare_id, date_use, date_approve ,personal_id} = data;
-    let newData = { budget_balance, budget_cover, budget_use, emp_id, group_id, description_detail, status, welfare_id, date_use, date_approve ,personal_id};
+    let { budget_balance, budget_cover, budget_use, emp_id, group_id, description_detail, status, welfare_id, date_use, date_approve, personal_id } = data;
+    let newData = { budget_balance, budget_cover, budget_use, emp_id, group_id, description_detail, status, welfare_id, date_use, date_approve, personal_id };
     // console.log(data.date/use_welfare/update_use == '');
 
     newData.document_ids = new Array()
@@ -101,11 +101,17 @@ export function userWelfareAction(store) {
 
                 })
         },
-        WELFARE_LISTS: function (data) {
+        WELFARE_LISTS: function () {
             // console.log(data);
-            axios.get('./group/welfare/groupByYear/year/' + data)
+            axios.get('./welfare/active/')
                 .then(function (result) {
-                    // console.log(result.data);
+                    result.data.map((item) => {
+                        // console.log(item.group_use === true);
+                        if (item.group_use === true) {
+                            item.group_welfare_name = item.group_welfare_name + ' (แบบกลุ่ม)'
+                        }
+
+                    })
                     // console.log(JSON.stringify(result.data));
                     store.dispatch({ type: 'WELFARE_LIST', payload: result.data })
                 })
@@ -199,7 +205,7 @@ export function userWelfareAction(store) {
         },
         EMPLOYEE_GET_WELFARES: function (id) {
             // console.log(year);
-            axios.get('./employee/' + id )
+            axios.get('./employee/' + id)
                 .then(res => {
                     // console.log(2);
                     // console.log(res.data);
@@ -290,21 +296,21 @@ export function userWelfareAction(store) {
                     if (result == true) {
                         clearData(data, (newData) => {
                             console.log(newData);
-                                axios.post('./employee/insert', newData)
-                                    .then(res => {
-                                        this.fire('toast', {
-                                            status: 'success', text: 'บันทึกสำเร็จ',
-                                            callback: () => {
-                                                this.dispatchAction('USERS_LIST_HISTORY_WELFARE', '')
-                                                this.fire('close-panel-right');
-                                                // this.LIST_USER();
-                                                // this.fire('back_page');
-                                            }
-                                        });
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                    })
+                            axios.post('./employee/insert', newData)
+                                .then(res => {
+                                    this.fire('toast', {
+                                        status: 'success', text: 'บันทึกสำเร็จ',
+                                        callback: () => {
+                                            this.dispatchAction('USERS_LIST_HISTORY_WELFARE', '')
+                                            this.fire('close-panel-right');
+                                            // this.LIST_USER();
+                                            // this.fire('back_page');
+                                        }
+                                    });
+                                })
+                                .catch(err => {
+                                    console.log(err);
+                                })
                         })
                     }
                     else {
