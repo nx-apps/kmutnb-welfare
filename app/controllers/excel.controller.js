@@ -91,43 +91,58 @@ function str2CharOnly(string) { //input AB123  => output AB
     return String.fromCharCode.apply(String, t);
 }
 exports.test = function (req, res) {
+    var checkLogic = function (select, row) {
+        return r.branch(
+            select('logic').eq('=='),
+            row(select('field_name')).eq(select('value')),
+            select('logic').eq('>'),
+            row(select('field_name')).gt(select('value')),
+            select('logic').eq('>='),
+            row(select('field_name')).ge(select('value')),
+            select('logic').eq('<'),
+            row(select('field_name')).lt(select('value')),
+            select('logic').eq('<='),
+            row(select('field_name')).le(select('value')),
+            row(select('field_name')).ne(select('value'))
+        )
+    };
 
-    // req.r.db('welfare_common').table('employee')
-    //     .merge(function (m) {
-    //         return r.db('welfare_common').table('department').getAll([m('faculty_name'), m('department_name')], { index: 'facDep' })
-    //             .map(function (mm) {
-    //                 return {
-    //                     faculty_id: mm('faculty_id'),
-    //                     department_id: mm('id')
-    //                 }
-    //             })(0)
-    //     })
-    //     .merge(function (m) {
-    //         return {
-    //             prefix_id: r.db('welfare_common').table('prefix').getAll(m('prefix_name'), { index: 'prefix_name' })(0).getField('id')
-    //         }
-    //     })
-    //     .forEach(function (fe) {
-    //         return r.db('welfare_common').table('employee').get(fe('id')).update(fe)
-    //     })
-    var d = new Date("2017-05-01T00:00:00+07:00").toISOString();
-    req.r.expr([
-        { name: 'a', d1: r.ISO8601(d) },
-        { name: 'b', d1: r.ISO8601("2017-05-01T01:00:00.000Z").inTimezone("+07") },
-        { name: 'c', d1: r.ISO8601("2017-05-01T17:00:00.000Z").inTimezone("+07") }
-    ])
-        /*.filter(function (f) {
-            return f('d1').date().during(
-                r.ISO8601("2017-05-01T00:00:00.000Z").inTimezone("+07").date(),
-                r.ISO8601("2017-05-02T00:00:00.000Z").inTimezone("+07").date(),
-                { rightBound: "closed" }
-            )
-        })*/
+    req.r.expr({
+        employees: r.db('welfare').table('employee').limit(20).coerceTo('array'),
+        welfare: []
+    })
         .merge(function (m) {
             return {
-                d2: m('d1').inTimezone("+07").toISO8601()
+                welfare: r.db('welfare').table('welfare')
+                    .merge(function (m2) {
+                        var countCon = m2('condition').count();
+                        var emp_budget = r.branch(countCon.eq(0),
+                            [m('employees').pluck('id')],
+                            m2('condition').map(function (con_map) {
+                                return m('employees').filter(function (f) {
+                                    return checkLogic(con_map, f)
+                                })
+                                    .coerceTo('array').pluck('id')
+                            })
+                        ).reduce(function (l, r) {
+                            return l.add(r)
+                        })
+                            .group('id').count().ungroup()
+                            .filter(function (emp_filter) {
+                                return r.branch(countCon.eq(0),
+                                    emp_filter('reduction').eq(countCon.add(1)),
+                                    emp_filter('reduction').eq(countCon)
+                                )
+                            }).count();
+                        return {
+                            countCon: countCon,
+                            employee: emp_budget,
+                            value_budget: r.branch(m2('round_use').eq(true), emp_budget.mul(m2('budget')), 0)
+                        }
+                    }).coerceTo('array')
             }
         })
+        .without('employees')
         .run()
         .then(function (data) {
             res.json(data);
@@ -231,8 +246,9 @@ exports.mergeIdDataToEmployee = function (req, res) {
 exports.write = function (req, res) {
     req.r.db('welfare').table('employee')
         .limit(10)
-        .without('id')
-        .group('faculty_name').ungroup()
+        // .without('id')
+        // .merge({ a_1: 'xx' })
+        // .group('faculty_name').ungroup()
         .run().then(function (data) {
             // res.json(data);
             const XLSX = require('xlsx');
@@ -243,12 +259,15 @@ exports.write = function (req, res) {
             // //     Author: "John Doe"
             // // };
             // /*create sheet data & add to workbook*/
-            for (var prop in data) {
-                var ws = XLSX.utils.json_to_sheet(data[prop]['reduction']);
-                var ws_name = data[prop]['group'].substring(0, 30);
-                XLSX.utils.book_append_sheet(wb, ws, ws_name);
-            }
+            // for (var prop in data) {
+            // var ws = XLSX.utils.json_to_sheet(data[prop]['reduction']);
+            // var ws_name = data[prop]['group'].substring(0, 30);
+            // XLSX.utils.book_append_sheet(wb, ws, ws_name);
+            // }
             // /* create file 'in memory' */
+            var ws = XLSX.utils.json_to_sheet(data);
+            res.json(ws);
+            var ws_name = 'test';
             var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
             var filename = "employee.xlsx";
             res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
