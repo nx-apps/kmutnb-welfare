@@ -1,0 +1,40 @@
+<dom-module id="search-setting">
+    <style include="iron-flex iron-flex-factors iron-flex-alignment">
+        * {
+            font-family: 'CSChatThaiUI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        paper-button{
+            margin-top:10px;
+        }
+    </style>
+    <template>
+
+        <gl-grid-row width="{{getWidth}}">
+            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
+                <vaadin-date-picker label="วันที่ใช้คำนวณ :" value="{{cal_date}}"></vaadin-date-picker>
+            </gl-grid-col>
+            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
+                <paper-button raised on-tap="_search">ค้นหา</paper-button>
+            </gl-grid-col>
+        </gl-grid-row>
+        
+    </template>
+    <script>
+        Polymer({
+            is: 'search-setting',
+            properties:{
+                cal_date:{
+                    value: new Date().toISOString().split('T')[0]
+                }
+            },
+            behaviors: [ReduxBehavior],
+            _search:function(){
+                this.dispatchAction('RETIER_SEARCH', this.cal_date);
+                // console.log(this.cal_date);
+            }
+        });
+    </script>
+
+</dom-module>
