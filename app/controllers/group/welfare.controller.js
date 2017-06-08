@@ -1,29 +1,56 @@
+var checkLogic = function (select, row) {
+    return r.branch(
+        select('logic').eq('=='),
+        row(select('field_name')).eq(select('value')),
+        select('logic').eq('>'),
+        row(select('field_name')).gt(select('value')),
+        select('logic').eq('>='),
+        row(select('field_name')).ge(select('value')),
+        select('logic').eq('<'),
+        row(select('field_name')).lt(select('value')),
+        select('logic').eq('<='),
+        row(select('field_name')).le(select('value')),
+        row(select('field_name')).ne(select('value'))
+    )
+};
+var reduceCondition = function (emp, con) {
+    var countCon = con.count();
+    return r.branch(countCon.gt(1),
+        con.reduce(function (left, right) {
+            return r.branch(left.hasFields('data'),
+                {
+                    data: left('data').filter(function (f) {
+                        return checkLogic(right, f)
+                    })
+                },
+                {
+                    data: emp.filter(function (f) {
+                        return checkLogic(left, f)
+                    }).filter(function (f) {
+                        return checkLogic(right, f)
+                    }).coerceTo('array')
+                }
+            )
+        })('data'),
+        countCon.eq(1),
+        emp.filter(function (f) {
+            return checkLogic(con(0), f)
+        }),
+        emp
+    )
+}
 exports.list = function (req, res) {
-    var checkLogic = function (select, row) {
-        return r.branch(
-            select('logic').eq('=='),
-            row(select('field_name')).eq(select('value')),
-            select('logic').eq('>'),
-            row(select('field_name')).gt(select('value')),
-            select('logic').eq('>='),
-            row(select('field_name')).ge(select('value')),
-            select('logic').eq('<'),
-            row(select('field_name')).lt(select('value')),
-            select('logic').eq('<='),
-            row(select('field_name')).le(select('value')),
-            row(select('field_name')).ne(select('value'))
-        )
-    };
     var r = req.r
 
     req.params.year = parseInt(req.params.year);
     r.expr({
-        employees: r.db('welfare').table('employee')/*.filter({ active_name: 'ทำงาน' })*/
+        employees: r.db('welfare').table('employee')
             .without('dob', 'emp_no', 'firstname', 'lastname')
             .coerceTo('array'),
         group: []
     })
         .merge(function (group_merge) {
+            var emps = group_merge('employees');
             return {
                 group: r.db('welfare').table('group_welfare').getAll(req.params.year, 9999, { index: 'year' })
                     .merge(function (m) {
@@ -35,45 +62,29 @@ exports.list = function (req, res) {
                             end_date: r.branch(m('end_date').ne(null), m('end_date').toISO8601().split('T')(0), null),
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
                                 .merge(function (wel_merge) {
-                                    var countCon = wel_merge('condition').count();
-                                    var emp_budget = r.branch(countCon.eq(0),
-                                        [group_merge('employees').pluck('id')],
-                                        wel_merge('condition').map(function (con_map) {
-                                            return group_merge('employees').filter(function (f) {
-                                                return checkLogic(con_map, f)
-                                            })
-                                                .coerceTo('array').pluck('id')
-                                        })
-                                    ).reduce(function (l, r) {
-                                        return l.add(r)
-                                    })
-                                        .group('id').count().ungroup()
-                                        .filter(function (emp_filter) {
-                                            return r.branch(countCon.eq(0),
-                                                emp_filter('reduction').eq(countCon.add(1)),
-                                                emp_filter('reduction').eq(countCon)
-                                            )
-                                        })//.count();
+                                    var condition = wel_merge('condition');
                                     return {
-                                        countCon: countCon,
-                                        employee: emp_budget.without('reduction'),
-                                        emp_budget: emp_budget.count(),
-                                        value_budget: r.branch(wel_merge('round_use').eq(true), emp_budget.count().mul(wel_merge('budget')), 0)
+                                        countCon: condition.count(),
+                                        emp_budget: reduceCondition(emps, condition).pluck('id')
                                     }
                                 })
                                 .without('employees')
+                                .merge(function (m) {
+                                    return {
+                                        value_budget: r.branch(m('round_use').eq(true), m('emp_budget').count().mul(m('budget')), 0)
+                                    }
+                                })
                         }
                     })
                     .merge(function (m) {
                         return {
                             value_budget: m('welfare').sum('value_budget'),
                             value_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' }).sum('budget_use'),
-                            // emp_budget: m('welfare').sum('emp_budget'),
                             emp_budget: m('welfare').map(function (m2) {
-                                return m2('employee')
+                                return m2('emp_budget')
                             }).reduce(function (l, r) {
                                 return l.add(r)
-                            }).group('group')
+                            }).group('id')
                                 .ungroup()
                                 .count(),
                             emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' }).pluck('emp_id').distinct().count(),
