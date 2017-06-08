@@ -22,19 +22,21 @@ exports.report1 = function (req, res, next) {
     };
 
     r.expr({
-        employees: r.db('welfare').table('employee').getAll("ทำงาน", { index: 'active_name' })
-            .without('dob').coerceTo('array'),
+        employees: r.db('welfare').table('employee')
+            .getAll("ทำงาน", { index: 'active_name' })
+            .without('dob')
+            .coerceTo('array'),
         welfare: []
     })
         .merge(function (root_merge) {
             return {
                 welfare: r.db('welfare').table('welfare').getAll(req.params.id, { index: 'id' }).coerceTo('array')
-                    // .merge(function (wel_merge) {
-                    //     return {
-                    //         condition: wel_merge('condition').without('logic_show', 'value_show')
-                    //         // .eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()
-                    //     }
-                    // })
+                    .merge(function (wel_merge) {
+                        return {
+                            condition: wel_merge('condition').without('logic_show', 'value_show')
+                            // .eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()
+                        }
+                    })
                     .merge(function (wel_merge) {
                         return {
                             countCon: wel_merge('condition').count(),
@@ -63,7 +65,7 @@ exports.report1 = function (req, res, next) {
                                     )
                                 })
                                 .eqJoin('group', r.db('welfare').table('employee')).zip()
-                                .pluck(['emp', 'firstname', 'gender_name', 'lastname', 'department_name',
+                                .pluck(['personal_id', 'firstname', 'gender_name', 'lastname', 'department_name',
                                     'faculty_name', 'prefix_name', 'start_work_date', 'type_employee_name'])
                                 .merge(function (add_name) {
                                     return {
@@ -84,7 +86,7 @@ exports.report1 = function (req, res, next) {
         })
         .without('employees')
         .getField('welfare')
-        // .getField('employee')
+        // // .getField('employee')
         .run()
         .then(function (result) {
             // res.json(result);
@@ -2150,9 +2152,31 @@ exports.welfare9 = function (req, res) {
 exports.employee = function (req, res) {
     req.r.db('welfare').table('employee')
         .without('id')
-        .pluck('active_name','academic_name','birthdate','department_name','emp_no','faculty_name','firstname','gender_name','lastname','matier_name',
-        'personal_id','position_name','prefix_name','start_work_date','type_employee_name')
+        .pluck('active_name', 'academic_name', 'birthdate', 'department_name', 'emp_no', 'faculty_name', 'firstname', 'gender_name', 'lastname', 'matier_name',
+        'personal_id', 'position_name', 'prefix_name', 'start_work_date', 'type_employee_name')
         .group('faculty_name').ungroup()
+        .merge(function (m) {
+            return {
+                reduction: m('reduction').map(function (ma) {
+                    return {
+                        NEXTCORP01รหัสพนักงาน: ma('emp_no'),
+                        NEXTCORP02รหัสบัตรประชาชน: ma('personal_id'),
+                        NEXTCORP03ตำแหน่งทางวิชาการ: ma('academic_name'),
+                        NEXTCORP04คำนำหน้า: ma('prefix_name'),
+                        NEXTCORP05ชื่อ: ma('firstname'),
+                        NEXTCORP06นามสกุล: ma('lastname'),
+                        NEXTCORP07เพศ: ma('gender_name'),
+                        NEXTCORP08วันเกิด: ma('birthdate'),
+                        NEXTCORP09วันที่เริ่มงาน: ma('start_work_date'),
+                        NEXTCORP10ภาควิชา: ma('department_name'),
+                        NEXTCORP11สายงาน: ma('matier_name'),
+                        NEXTCORP12ตำแหน่งงาน: ma('position_name'),
+                        NEXTCORP13ประเภทพนักงาน: ma('type_employee_name'),
+                        NEXTCORP14สถานะการทำงาน: ma('active_name')
+                    }
+                })
+            }
+        })
         .run().then(function (data) {
             // res.json(data);
             const XLSX = require('xlsx');
