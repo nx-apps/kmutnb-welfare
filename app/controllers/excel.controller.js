@@ -172,7 +172,7 @@ exports.emp2wel = function (req, res) {
                     .merge(function (m2) {
                         var countCon = m2('condition').count();
                         var countProp = r.branch(countCon.eq(0),
-                            [true],
+                            [{prop:true}],
                             m2('condition').map(function (con) {
                                 return { prop: checkLogic(con, me) }
                             }).coerceTo('array')
