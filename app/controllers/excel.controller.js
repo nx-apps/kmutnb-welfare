@@ -90,7 +90,7 @@ function str2CharOnly(string) { //input AB123  => output AB
     }
     return String.fromCharCode.apply(String, t);
 }
-exports.test = function (req, res) {
+exports.wel2emp = function (req, res) {
     var checkLogic = function (select, row) {
         return r.branch(
             select('logic').eq('=='),
@@ -143,6 +143,55 @@ exports.test = function (req, res) {
             }
         })
         .without('employees')
+        .run()
+        .then(function (data) {
+            res.json(data);
+        })
+}
+exports.emp2wel = function (req, res) {
+    var checkLogic = function (con, me) {
+        return r.branch(
+            con('logic').eq('=='),
+            me(con('field_name')).eq(con('value')),
+            con('logic').eq('>'),
+            me(con('field_name')).gt(con('value')),
+            con('logic').eq('>='),
+            me(con('field_name')).ge(con('value')),
+            con('logic').eq('<'),
+            me(con('field_name')).lt(con('value')),
+            con('logic').eq('<='),
+            me(con('field_name')).le(con('value')),
+            me(con('field_name')).ne(con('value'))
+        )
+    };
+    req.r.db('welfare').table('employee').get('000183c1-23db-4af2-937f-3e359400e33c')
+        .merge(function (me) {
+            return {
+                group: r.db('welfare').table('welfare')
+                    .getAll(2017, 9999, { index: 'year' })
+                    .merge(function (m2) {
+                        var countCon = m2('condition').count();
+                        var countProp = r.branch(countCon.eq(0),
+                            [true],
+                            m2('condition').map(function (con) {
+                                return { prop: checkLogic(con, me) }
+                            }).coerceTo('array')
+                        ).filter({ prop: true }).count()
+                        return {
+                            countCon: countCon,
+                            countProp: countProp
+                        }
+                    })
+                    .filter(function (f) {
+                        return f('countCon').eq(f('countProp'))
+                    })
+                    .group('group_id').ungroup()
+                    .without('reduction')
+                    .eqJoin('group', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
+                    .coerceTo('array')
+            }
+        })
+        .pluck('id', 'firstname', 'group')
         .run()
         .then(function (data) {
             res.json(data);
