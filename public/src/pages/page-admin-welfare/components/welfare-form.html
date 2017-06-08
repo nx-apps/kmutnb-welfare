@@ -342,8 +342,9 @@
                             welfare_name: this.data.welfare_name,
                             budget: this.unFormat(this.data.budget),
                             round_use: this.data.round_use,
-                            year: this.date.year
+                            year: this.date.year-543
                         }
+                        // console.log(newData);
                         var condition = this.data.condition.map((item)=>{
                             if(item.value_showDropdown == ''){
                                 item.value_show = item.value_showInput;

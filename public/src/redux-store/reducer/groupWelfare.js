@@ -117,7 +117,7 @@ export function groupWelfareAction(store) {
                             // console.log('success');
                             this.$$('panel-right').close();
                             this.LIST_WELFARE(year);
-                            this.selectYear = year;
+                            this.selectYear = year+543;
                             this.GET_YEAR();
                         }
                     });
@@ -168,6 +168,7 @@ export function groupWelfareAction(store) {
                             var data2 = condition[j];
                             // console.log(data2);
                             var search = data2.field_name.search('date')
+                            var search_age = data2.field.field.search('age');
                             if (search != -1) {
                                 if (data2.logic_show.search(">") >= 0) {
                                     var d = newData.cal_date.split("-");
@@ -177,6 +178,15 @@ export function groupWelfareAction(store) {
                                     var d = newData.cal_date.split("-");
                                     data2.value = (parseInt(d[0]) - parseInt(data2.value_show)) + "-" + d[1] + "-" + d[2].split("T")[0] + tz;
                                     data2.logic = data2.logic_show.replace("<", ">");
+                                }
+                            }
+                            else if(search_age != -1){
+                                if (data2.logic_show.search(">") >= 0) {
+                                    data2.value = parseInt(data2.value_show);
+                                    data2.logic = data2.logic_show;
+                                } else if (data.logic_show.search("<") >= 0) {
+                                    data2.value = parseInt(data2.value_show);
+                                    data2.logic = data2.logic_show;
                                 }
                             }
                             else{

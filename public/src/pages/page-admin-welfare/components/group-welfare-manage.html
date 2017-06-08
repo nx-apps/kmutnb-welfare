@@ -133,12 +133,16 @@
             behaviors: [ReduxBehavior, FormatNumberBehavior, ValidateFormBehavior],
             properties: {
                 data: {
-                    statePath: 'groupWelfare.select'
+                    statePath: 'groupWelfare.select',
+                    observer: '_cloneData'
                 },
                 type_select: {
                     type: Boolean,
                     value: false
                 }
+            },
+            _cloneData: function(val){
+                this.clone_data = JSON.parse(JSON.stringify(val));
             },
             save: function () {
                 var check = this.validateForm('.checkValidate');
@@ -159,14 +163,14 @@
                 if(this.data.end_date !== ''){
                     this.data.type_continuous = false;
                     this.data.cal_date = this.data.cal_date;
-                    this.data.year = this.data.year;
+                    this.data.year = this.clone_data.year;
                 }else{
                     this.data.end_date = null;
                     this.data.year = 9999+543;
                     this.data.cal_date = null;
                     this.data.type_continuous = true;
                 }
-                console.log(this.data);
+                // console.log(this.data);
                 if(check == true){
                     if(this.data.type_continuous === undefined){
                         this.fire('toast',{status:'connectError',text:'กรุณาเลือกรูปแบบสวัสดิการ',
