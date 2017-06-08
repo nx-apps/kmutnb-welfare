@@ -2200,6 +2200,80 @@ exports.employee = function (req, res) {
             res.send(wbout);
         })
 }
+exports.emp_welfare = function (req, res) {
+    var param = req.query;
+    param.year = Number(param.year) + 543;
+    var checkLogic = function (con, me) {
+        return r.branch(
+            con('logic').eq('=='),
+            me(con('field_name')).eq(con('value')),
+            con('logic').eq('>'),
+            me(con('field_name')).gt(con('value')),
+            con('logic').eq('>='),
+            me(con('field_name')).ge(con('value')),
+            con('logic').eq('<'),
+            me(con('field_name')).lt(con('value')),
+            con('logic').eq('<='),
+            me(con('field_name')).le(con('value')),
+            me(con('field_name')).ne(con('value'))
+        )
+    };
+    req.r.db('welfare').table('employee')//.get('000183c1-23db-4af2-937f-3e359400e33c')
+        .filter({ 'personal_id': param.personal_id })
+        .merge(function (name_merge) {
+            return {
+                employee_name: name_merge('prefix_name').add(name_merge('firstname')).add('  ', name_merge('lastname'))
+            }
+        })
+        .merge(function (me) {
+            return {
+                group: r.db('welfare').table('welfare')
+                    .getAll(2017, 9999, { index: 'year' })
+                    .merge(function (m2) {
+                        var countCon = m2('condition').count();
+                        var countProp = r.branch(countCon.eq(0),
+                            [{ prop: true }],
+                            m2('condition').map(function (con) {
+                                return { prop: checkLogic(con, me) }
+                            }).coerceTo('array')
+                        ).filter({ prop: true }).count()
+                        return {
+                            countCon: countCon,
+                            countProp: countProp
+                        }
+                    })
+                    .filter(function (f) {
+                        return f('countCon').eq(f('countProp'))
+                    })
+                    .group('group_id').ungroup()
+                    .merge(function(m2){
+                        return {
+                            reduction:m2('reduction').pluck('welfare_name')
+                        }
+                    })
+                    // .pluck('reduction')
+                    // .merge(function(m){
+                    //     return
+                    // })
+                    // .without('reduction')
+                    .eqJoin('group', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
+                    .coerceTo('array')
+            }
+        })
+        .pluck('id', 'group', 'employee_name', 'type_employee_name', 'faculty_name', 'department_name')
+
+        .run()
+        .then(function (result) {
+            // res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
+            param = keysToUpper(param);
+            CURRENT_DATE = new Date().toISOString().slice(0, 10)
+            param.CURRENT_DATE = CURRENT_DATE
+            res.ireport("emp_welfare.jasper", req.query.export || "pdf", result,param);
+        });
+}
 
 function keysToUpper(param) {
     var keyname = Object.keys(param);

@@ -25,5 +25,6 @@ module.exports = function (app) {
     app.get('/welfare8',controller.welfare8);
     app.get('/welfare9',controller.welfare9);
     app.get('/employee',controller.employee);
+    app.get('/emp_welfare',controller.emp_welfare);
 }
 
