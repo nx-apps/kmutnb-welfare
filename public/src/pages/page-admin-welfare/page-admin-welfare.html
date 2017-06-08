@@ -96,7 +96,11 @@
                                 <template is="dom-repeat" items="{{list}}">
                                     <tr style="cursor:pointer;">
                                         <!--<td style="text-align:center">[[item.year]]</td>-->
-                                        <td style="text-align:left">[[item.group_welfare_name]] ([[item.group_use_name]])</td>
+                                        <td style="text-align:left">[[item.group_welfare_name]] 
+                                            <template is="dom-if" if={{item.group_use}}>
+                                                ([[item.group_use_name]])
+                                            </template> 
+                                        </td>
                                         <td style="text-align:center">[[item.emp_budget]]</td>
                                         <td style="text-align:center">[[item.emp_use]]</td>
                                         <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
