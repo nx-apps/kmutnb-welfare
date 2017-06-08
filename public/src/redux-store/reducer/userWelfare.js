@@ -14,10 +14,10 @@ const initialState = {
 const clearData = (data, callback) => {
 
     let { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id,
-        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name } = data;
+        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name, end_work_date,work_age,age } = data;
     let newData = {
         prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id,
-        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name
+        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name, end_work_date,work_age,age
     };
     // newData.period = new Array();
     // data.period.map((tag)=>{
@@ -30,8 +30,8 @@ const clearData = (data, callback) => {
 }
 const clearDatawelfare = (data, callback) => {
 
-    let { budget_balance, budget_cover, budget_use, emp_id, group_id, history_detail, status, welfare_id, date_use, date_approve ,personal_id} = data;
-    let newData = { budget_balance, budget_cover, budget_use, emp_id, group_id, history_detail, status, welfare_id, date_use, date_approve ,personal_id};
+    let { budget_balance, budget_cover, budget_use, emp_id, group_id, description_detail, status, welfare_id, date_use, date_approve ,personal_id} = data;
+    let newData = { budget_balance, budget_cover, budget_use, emp_id, group_id, description_detail, status, welfare_id, date_use, date_approve ,personal_id};
     // console.log(data.date/use_welfare/update_use == '');
 
     newData.document_ids = new Array()
@@ -184,7 +184,7 @@ export function userWelfareAction(store) {
         },
         LIST_EMPLOYEES_WELFARE: function (data) {
             // console.log(data);
-            axios.get('./employee/' + data.id + '/' + data.year)
+            axios.get('./employee/' + data)
                 .then(function (result) {
                     // console.log(result.data);
                     // changeTime(result.date,+7,(data)=>{
@@ -197,9 +197,9 @@ export function userWelfareAction(store) {
 
                 })
         },
-        EMPLOYEE_GET_WELFARES: function (id, year = new Date().getFullYear()) {
+        EMPLOYEE_GET_WELFARES: function (id) {
             // console.log(year);
-            axios.get('./employee/' + id + '/' + year)
+            axios.get('./employee/' + id )
                 .then(res => {
                     // console.log(2);
                     // console.log(res.data);
@@ -222,7 +222,7 @@ export function userWelfareAction(store) {
         EMPLOYEE_USE_WELFARE(data) {
             // console.log(data);
             clearDatawelfare(data, (newData) => {
-                // console.log(newData);
+                console.log(newData);
                 this.fire('toast', { status: 'load' });
                 axios.post(`./history/approve`, newData)
                     .then(res => {
@@ -289,7 +289,7 @@ export function userWelfareAction(store) {
                 confirmed: (result) => {
                     if (result == true) {
                         clearData(data, (newData) => {
-                            // console.log(newData);
+                            console.log(newData);
                                 axios.post('./employee/insert', newData)
                                     .then(res => {
                                         this.fire('toast', {

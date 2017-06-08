@@ -284,11 +284,7 @@
             },
             checkData(year, id) {
                 if (year != '') {
-                    var datas = {
-                        id: id,
-                        year: year - 543
-                    }
-                    this.dispatchAction('LIST_EMPLOYEES_WELFARE', datas);
+                    this.dispatchAction('LIST_EMPLOYEES_WELFARE', id);
                 }
             },
             setYear(year) {
@@ -337,22 +333,23 @@
             },
             usewelfare(e) {
                 let data = new Object();
-                // console.log(this.data.id);
-                data.title = e.model.item.description
+                let item = e.model.item
+                console.log(e.model.item);
+                data.title = item.group_welfare_name+" "+item.welfare_name
                 data.emp_id = this.data.id
                 data.personal_id = this.data.personal_id
-                data.welfare_id = e.model.item.welfare_id
-                data.budget = e.model.item.budget
-                data.budget_cover = e.model.item.budget_balance
-                data.budget_use = e.model.item.budget_balance
+                data.welfare_id = item.welfare_id
+                data.budget = item.budget
+                data.budget_cover = item.budget_balance
+                data.budget_use = item.budget_balance
                 data.status = true
-                data.onetime = e.model.item.onetime
+                data.onetime = item.onetime_use
                 // data.year = new Date().getFullYear()
-                data.group_id = e.model.item.group_id
-                this.set('disabled', e.model.item.onetime)
+                data.group_id = item.group_id
+                this.set('disabled', item.onetime)
                 this.$$('#welfare_budget').open()
                 // console.log(e.model.item.budget_balance);
-                // console.log(data);
+                console.log(data);
                 this.dataDialog = data;
                 // console.log(this.dataDialog);
                 // console.log(data);
@@ -372,6 +369,7 @@
                         text: 'กรุณายืนยันการทำรายการ ?',
                         confirmed: (result) => {
                             if (result == true) {
+                                console.log(newData);
                                 this.$$('#welfare_budget').close()
                                 // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
                                     this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);

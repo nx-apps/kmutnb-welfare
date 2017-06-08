@@ -158,112 +158,128 @@ exports.update = function (req, res) {
 exports.welfaresYear = function (req, res) {
     var r = req.r;
     //แก้ด้วย
-    let year = Number(req.params.year)
+    // let year = Number(req.params.year)
     let now_Date = { now_date: + new Date() }
     var checkLogic = function (select, row) {
         return r.branch(
             select('logic').eq('=='),
-            row(select('field')).eq(select('value')),
+            row(select('field_name')).eq(select('value')),
             select('logic').eq('>'),
-            row(select('field')).gt(select('value')),
+            row(select('field_name')).gt(select('value')),
             select('logic').eq('>='),
-            row(select('field')).ge(select('value')),
+            row(select('field_name')).ge(select('value')),
             select('logic').eq('<'),
-            row(select('field')).lt(select('value')),
+            row(select('field_name')).lt(select('value')),
             select('logic').eq('<='),
-            row(select('field')).le(select('value')),
-            row(select('field')).eq(select('value'))
+            row(select('field_name')).le(select('value')),
+            row(select('field_name')).eq(select('value'))
         )
     };
+    // var group_welfare = function () {
+    //     return r.db('welfare').table('group_welfare')
+    //         .filter({ status_approve: true })
+    //         .filter(function (f) {
+    //             return r.branch(f('type_continuous').eq(true),
+    //                 r.now().inTimezone('+07').ge(f('start_date')),
+    //                 r.now().inTimezone('+07').during(f('start_date'), f('end_date'), { rightBound: 'closed' })
+    //             )
+    //         })
+    //         .coerceTo('array')
+    // }
     // https://localhost:3000/api/employee/welfares/year/2017/id/411e54dd-b808-4d4d-9984-201b68c70dff
     r.db('welfare').table('employee').get(req.params.id)
-        // .merge(function (emp) {
-        //     return {
-        //         xxxx: 1111
-        //     }
-        // })
-
         .merge((group_welfare) => {
             return {
-                group_welfares: r.db('welfare').table('group_welfare').getAll(true, { index: 'status_approve' })
-                    .pluck(['id', 'group_welfare_name', 'onetime','use_per'])
-                    // .merge((welfare_conditions) => {
-                    //     return {
-                    //         welfare_conditions: r.db('welfare').table('welfare').getAll(welfare_conditions('id'), { index: 'group_id' }).coerceTo('array')
-                    //             .merge((conditions) => {
-                    //                 return {
-                    //                     condition: conditions('condition').merge((changeName) => {
-                    //                         return {
-                    //                             field: r.db('welfare').table('condition').get(changeName('field')).getField('field')
-                    //                         }
-                    //                     })
-                    //                 }
-                    //             })
-                    //             .merge(function (we_m) {
-                    //                 return {
-                    //                     count: we_m('condition').count(),
-                    //                     countpass: we_m('condition').map(function (con_map) {
-                    //                         return {
-                    //                             pass: checkLogic(r.expr(con_map), group_welfare)
-                    //                         }
-                    //                     })
-                    //                 }
-                    //             })
-                    //             .merge((e) => {
-                    //                 return {
-                    //                     countpass_total: e('countpass').filter({ "pass": true }).count()
-                    //                 }
-                    //             })
-                    //             .merge((status) => {
-                    //                 return {
-                    //                     count_pass_status: status('countpass_total').eq(status('count')),
-                    //                     // id: group_welfare('id')
-                    //                 }
-                    //             })
-                    //             .filter({ "count_pass_status": true })
-                    //             .pluck(['budget', 'welfare_name', 'group_id', 'id'])
-
-                    //     }
-                    // })
-                    // .merge((e) => {
-                    //     return {
-                    //         count_group: e('welfare_conditions').count().eq(0)
-                    //     }
-                    // })
-                    // .filter({ "count_group": false })
-                    // .merge((names) => {
-                    //     return {
-                    //         welfare_conditions: names('welfare_conditions').merge((el) => {
-                    //             return {
-                    //                 group_welfare_name: names('group_welfare_name'),
-                    //                 onetime: names('onetime'),
-                    //                 budget_use: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
-                    //                      .filter({ welfare_id:el('id'), status: true })
-                    //                      .orderBy(r.desc('date_create'))
-                    //                      .coerceTo('array')
-                    //                      .sum('budget_use')
-                    //             }
-                    //         })
-                    //     }
-                    // })
-                    // เช็คคงเหลือ
-                    // .merge((check_budget) => {
-                    //     return {
-                    //         welfare_conditions: check_budget('welfare_conditions').merge((el) => {
-                    //             return {
-                    //                 budget_balance: el('budget').sub(el('budget_use')),
-                    //                 welfare_id: el('id')
-                    //             }
-                    //         })
-                    //     }
-                    // })
+                group_welfares: r.db('welfare').table('group_welfare')
+                    .filter({ status_approve: true })
+                    .filter(function (f) {
+                        return r.branch(f('type_continuous').eq(true),
+                            r.now().inTimezone('+07').ge(f('start_date')),
+                            r.now().inTimezone('+07').during(f('start_date'), f('end_date'), { rightBound: 'closed' })
+                        )
+                    })
                     .coerceTo('array')
+                    .merge((welfare_conditions) => {
+                        return {
+                            welfare_conditions: r.db('welfare').table('welfare').getAll(welfare_conditions('id'), { index: 'group_id' }).coerceTo('array')
+                                .merge(function (we_m) {
+                                    return {
+                                        count: we_m('condition').count(),
+                                        countpass: we_m('condition').map(function (con_map) {
+                                            return {
+                                                pass: checkLogic(r.expr(con_map), group_welfare)
+                                            }
+                                        })
+                                    }
+                                })
+                                .merge((e) => {
+                                    return {
+                                        countpass_total: e('countpass').filter({ "pass": true }).count()
+                                    }
+                                })
+                                .merge((status) => {
+                                    return {
+                                        count_pass_status: status('countpass_total').eq(status('count')),
+                                        welfare_id: status('id'),
+                                        group_welfare_name: welfare_conditions('group_welfare_name'),
+                                        onetime_use: welfare_conditions('onetime_use'),
+                                        group_use: welfare_conditions('group_use'),
+                                        type_continuous: welfare_conditions('type_continuous'),
+                                    }
+                                })
+                                .filter({ "count_pass_status": true })
+                                .pluck(['budget', 'welfare_name', 'group_id', 'welfare_id', 'group_welfare_name'
+                                    , 'onetime_use', 'group_use', 'type_continuous', 'round_use'])
+                        }
+                    })
+                    .merge((e) => {
+                        return {
+                            count_group: e('welfare_conditions').count().eq(0)
+                        }
+                    })
+                    .filter({ "count_group": false })
+                    .merge((names) => {
+                        return {
+                            welfare_conditions: names('welfare_conditions').merge((el) => {
+                                return {
+                                    budget_use: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                                        .filter({ welfare_id: el('welfare_id'), status: true })
+                                        .orderBy(r.desc('date_create'))
+                                        .coerceTo('array')
+                                        .sum('budget_use')
+                                }
+                            })
+                        }
+                    })
+                    // เช็คคงเหลือ
+                    .merge((check_budget) => {
+                        return {
+                            welfare_conditions: check_budget('welfare_conditions').merge((el) => {
+                                return {
+                                    budget_balance: r.branch(el('round_use').eq(false),
+                                        el('budget'), el('budget').sub(el('budget_use')))
+                                        // false, true)
+                                }
+                            })
+                        }
+                    })
             }
         })
-        // .merge((item)=>{
+        .merge((item) => {
+            return {
+                group_welfares: item('group_welfares').getField('welfare_conditions').reduce((l, r) => {
+                    return l.add(r)
+                })
+            }
+        })
+        // เช็คคงเหลือ
+        // .merge((check_budget) => {
         //     return {
-        //         group_welfares:item('group_welfares').getField('welfare_conditions').reduce((l,r)=>{
-        //             return l.add(r)
+        //         group_welfares: check_budget('group_welfares').merge((el) => {
+        //             return {
+        //                 budget_balance: r.branch(el('round_use').eq(false),
+        //                     el('budget'), el('budget').sub(el('budget_use')))
+        //             }
         //         })
         //     }
         // })
@@ -292,7 +308,7 @@ exports.welfaresYear = function (req, res) {
         //                     })
         //                 }
         //             })
-        //             .pluck('history_welfare_id', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'history_detail', 'status', 'file')
+        //             .pluck('history_welfare_id', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'description_detail', 'status', 'file')
         //             .coerceTo('array')
         //             .orderBy(r.desc('date_approve'))
         //     }
@@ -466,62 +482,6 @@ exports.welfaresYear = function (req, res) {
         //     }
         // })
 
-        // .merge((use_his) => {
-        //     return {
-
-        //         history_welfare: r.db('welfare').table('history_welfare')
-        //             // .filter({ emp_id: use_his('id'), year: year })
-
-        //             .getAll(use_his('id'), { index: 'emp_id' })
-
-        //             .filter({ year: year })
-        //             .orderBy(r.desc('date_use'))
-        //             .merge((name_welfare) => {
-        //                 return {
-        //                     date_use: name_welfare('date_use').split('T')(0),
-        //                     date_approve: name_welfare.hasFields('date_approve').branch(name_welfare('date_approve').split('T')(0), false),//,
-        //                     name: r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('group_welfare_name'),
-        //                     history_welfare_id: name_welfare('id'),
-        //                     onetime: r.db('welfare').table('group_welfare').get(r.db('welfare').table('welfare').get(name_welfare('welfare_id')).getField('group_id')).getField('onetime'),
-        //                 }
-        //             })
-        //             .merge((files) => {
-        //                 return {
-        //                     file: files('document_ids').map((doc_id) => {
-        //                         return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
-        //                             .without('contents')
-        //                     })
-        //                 }
-        //             })
-        //             .merge((check_onetime) => {
-        //                 return {
-        //                     check_onetime_thai: check_onetime('onetime').branch('ใช้ได้ครั้งเดียว', 'ใช้ได้หลายครั้ง')
-        //                 }
-        //             })
-        //             .without('id')
-        //             .orderBy(r.desc('date_use'))
-        //             .coerceTo('array')
-        //     }
-        // })
-        // .merge((checkTrue) => {
-        //     return {
-        //         welfare: checkTrue('welfare').merge((e) => {
-        //             return {
-        //                 emp_work: checkTrue('active_code').eq('WORK'),//"active_code": "WORK",,
-        //                 status_approve: checkTrue('history_welfare').filter({ status: 'request', welfare_id: e('welfare_id') }).count().gt(0),//e('welfare_id'),
-        //                 welfare_old: e('start_date').ge(e('now_date')).branch(true,
-        //                     e('end_date').ge(e('now_date')).branch(false, true))
-        //             }
-        //         })
-        //         // 
-        //     }
-        // })
-        // .merge((withOutHistorty) => {
-        //     return {
-        //         history_welfare: withOutHistorty('history_welfare').filter({ status: true })
-        //     }
-        // })
-        // .without('group_welfare')
 
         .run()
         .then(function (result) {

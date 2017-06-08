@@ -283,11 +283,14 @@
                     this.data.department_name = getName(this.department, this.data.department_id).department_name
                     this.data.type_employee_name = getName(this.type_employee, this.data.type_employee_id).type_employee_name
                     this.data.faculty_name = getName(this.faculty, this.data.faculty_id).faculty_name
+                    this.data.end_work_date = null
+                    this.data.work_age = 0
+                    this.data.age = 0
                     // console.log(this.data);
                     this.dispatchAction('EMPLOYEE_INSERT', this.data);
                     // this.dispatchAction('USERS_LIST_HISTORY_WELFARE','')
                     // this.fire('close-panel-right');
-                    this.set('data','')
+                    // this.set('data','')
                 }
                 else {
                     this.fire('toast', {

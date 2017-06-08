@@ -328,7 +328,7 @@
                     onetime: newArray.admin_use,
                     date_use: date,
                     date_approve: date,
-                    history_detail: ''
+                    description_detail: ''
                 }
 
                 this.$$('#welfare_budget').open()
@@ -355,7 +355,7 @@
                     item.personal_id = item.personal_id
                     item.document_ids = new Array()
                     item.status = true
-                    item.history_detail = dataDialog.history_detail
+                    item.description_detail = dataDialog.description_detail
                 })
                 // console.log(newArray);
                 this.$$('#welfare_budget').close()
