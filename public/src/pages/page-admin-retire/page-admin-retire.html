@@ -1,5 +1,6 @@
 <link rel="import" href="./../components/page-style.html">
 <link rel="import" href="components/search-setting.html">
+<link rel="import" href="components/list-employees.html">
 
 <dom-module id="page-admin-retire">
     <style include="page-style">
@@ -15,10 +16,17 @@
         }
     </style>
     <template>
-        <paper-material elevation="1">
-            <div class="title">ค้นหาผู้เกษียณ</div>
-            <search-setting></search-setting>
-        </paper-material>
+        <div class="xcontainer">
+            <paper-material elevation="1">
+                <div class="title">ค้นหาผู้เกษียณ</div>
+                <search-setting></search-setting>
+            </paper-material>
+
+            <paper-material elevation="1" style="margin-top:20px; padding:15px;;">
+                <list-employees></list-employees>
+            </paper-material>    
+        </div>    
+            
     </template>
     <script>
         Polymer({

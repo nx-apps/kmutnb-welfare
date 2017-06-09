@@ -28,7 +28,7 @@ var reduceCondition = function (emp, con) {
                         return checkLogic(left, f)
                     }).filter(function (f) {
                         return checkLogic(right, f)
-                    }).coerceTo('array')
+                    })//.coerceTo('array')
                 }
             )
         })('data'),
