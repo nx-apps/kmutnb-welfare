@@ -149,7 +149,8 @@ exports.wel2emp = function (req, res) {
         })
 }
 exports.emp2wel = function (req, res) {
-    var me = r.db('welfare').table('employee').getAll('000183c1-23db-4af2-937f-3e359400e33c', { index: 'id' }).coerceTo('array');
+    var me = r.db('welfare').table('employee')
+        .getAll('000183c1-23db-4af2-937f-3e359400e33c', { index: 'id' }).coerceTo('array');
     r.db('welfare').table('welfare')
         .merge(function (m) {
             return { pass: reduceCondition(me, m('condition')).ne([]) }
