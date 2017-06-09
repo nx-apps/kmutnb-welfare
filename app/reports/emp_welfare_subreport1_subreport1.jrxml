@@ -10,7 +10,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="200" height="20" uuid="cdd6480e-64bc-40dc-946a-704a3f18017b"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="290" height="20" uuid="cdd6480e-64bc-40dc-946a-704a3f18017b"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>

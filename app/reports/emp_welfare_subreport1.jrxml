@@ -15,7 +15,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="200" height="20" uuid="05297ce2-9e98-4896-ab16-48f15d1c9e60"/>
+				<reportElement stretchType="RelativeToBandHeight" x="65" y="0" width="200" height="20" uuid="05297ce2-9e98-4896-ab16-48f15d1c9e60"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -29,10 +29,24 @@
 				<textFieldExpression><![CDATA[$F{group_welfare_name}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="200" y="0" width="270" height="20" uuid="b80d8e3c-0675-45a8-babf-634125982a0c"/>
+				<reportElement x="265" y="0" width="290" height="20" uuid="b80d8e3c-0675-45a8-babf-634125982a0c"/>
 				<dataSourceExpression><![CDATA[new iJsonDS($F{reduction})]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "emp_welfare_subreport1_subreport1.jasper"]]></subreportExpression>
 			</subreport>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="65" height="20" uuid="4b55d1ca-f371-4057-bd5f-29858e691179"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="TH SarabunPSK" size="14" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>
