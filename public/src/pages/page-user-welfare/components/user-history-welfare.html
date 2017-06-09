@@ -1,0 +1,83 @@
+<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="./../../components/format-number-behavior.html">
+<link rel="import" href="./../../components/common-logic.html">
+<dom-module id="user-history-welfare">
+    <template>
+        <style include="page-style gl-styles">
+             :host {
+                display: block;
+            }
+
+            vaadin-grid {
+                height: 480px;
+            }
+        </style>
+        <vaadin-grid aria-label="Basic Binding Example" items="{{data}}">
+
+            <vaadin-grid-column width="50px" flex-grow="0">
+                <template class="header">ลำดับ</template>
+                <template>[[_Obindex(index)]]</template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="450px" flex-grow="0">
+                <template class="header">สวัสดิการที่ใช้</template>
+                <template>[[item.description]]</template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column>
+                <template class="header">จำนวนเงินที่ใช้</template>
+                <template>[[formatNumber(item.budget_use)]]</template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column>
+                <template class="header">วันที่ใช้สิทธิ</template>
+                <template>[[toThaiDate(item.date_use)]]</template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column>
+                <template class="header">วันที่อนุมัติ</template>
+                <template>[[toThaiDate(item.date_approve)]]</template>
+            </vaadin-grid-column>
+
+            <!--<vaadin-grid-column>
+                <template class="header">สถานะ</template>
+                <template>[[item.status]]</template>
+            </vaadin-grid-column>-->
+
+            <vaadin-grid-column  width="350px" flex-grow="0">
+                <template class="header">เอกสารแนบ</template>
+                <template>
+                    <template is="dom-if" if={{item.file}}>
+                        <template is="dom-repeat" items={{item.file}}>
+                            <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                        </template>
+                    </template>
+                    <template is="dom-if" if={{_ObIsHave(item.file)}}>
+                        <div style="text-align: center;">-</div>
+                    </template>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">ดำเนินการ</template>
+                <template>
+                    <paper-button raised class="gl-btn-danger" on-tap="btnCancel" data="[[item]]">ยกเลิก</paper-button>
+                </template>
+            </vaadin-grid-column>
+
+        </vaadin-grid>
+    </template>
+    <script>
+        Polymer({
+            is: 'user-history-welfare',
+            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
+                commonLogic, uploadAction, commonDataAction,
+                MonthBehavior, ValidateFormBehavior],
+            downloadFile(e) {
+                // console.log(e.currentTarget.data);
+                window.open('/api/file/download/' + e.currentTarget.data.id);
+                // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
+            },
+        });
+    </script>
+</dom-module>

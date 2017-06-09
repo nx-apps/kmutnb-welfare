@@ -230,7 +230,7 @@ exports.adminApprove = function (req, res) {
             date_use: r.ISO8601(date_approve),//.inTimezone('+07'),
         }
     );
-
+// console.log( req.body);
     r.db('welfare').table('history_welfare').insert(req.body)('generated_keys')(0)
         .do((history_id) => {
             return r.db('welfare').table('history_welfare').get(history_id).getField('document_ids').forEach((doc_update) => {

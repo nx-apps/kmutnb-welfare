@@ -16,14 +16,29 @@ const initialState = {
 }
 const clearData = (data, callback) => {
 
-    let { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, relation_id, emp_no, personal_id } = data;
-    let newData = { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, relation_id, emp_no, personal_id };
-    // newData.period = new Array();
+    let { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id,
+        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name, end_work_date, work_age, age } = data;
+    let newData = {
+        prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id,
+        academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name, end_work_date, work_age, age
+    };// newData.period = new Array();
     // data.period.map((tag)=>{
     //     newData.period.push({no:tag.no,quality:tag.quality});
     // });
-    newData.start_work_date = new Date(data.start_work_date).toISOString();
-    newData.birthdate = new Date(data.birthdate).toISOString();
+    if (data.start_work_date !== undefined && data.start_work_date !== '') {
+        newData.start_work_date = data.start_work_date + 'T00:00:00.000+07:00'
+        // 2017-06-09T04:44:06.162+00:00
+    } else {
+        newData.start_work_date = data.start_work_date
+    }
+    if (data.end_work_date !== null && data.end_work_date !== '') {
+        // log
+        newData.end_work_date = data.end_work_date+'T00:00:00.000+07:00'
+    } else {
+        newData.end_work_date = data.end_work_date
+    }
+    // console.log();
+    newData.birthdate = data.birthdate+'T00:00:00.000+07:00'
     callback(newData)
     // callback(data)
 }
@@ -143,9 +158,10 @@ export function usersAction(store) {
                         clearData(data, (newData) => {
                             this.fire('toast', { status: 'load' });
                             newData.id = data.id
+                            console.log(newData);
                             axios.put(`/employee/update`, newData)
                                 .then(res => {
-                                    this.USERS_LIST();
+                                    // this.USERS_LIST();
                                     this.fire('toast', {
                                         status: 'success', text: 'บันทึกสำเร็จ',
                                         callback: () => {
@@ -193,14 +209,14 @@ export function usersAction(store) {
             // console.log(data)
             store.dispatch({ type: 'USER_INSERT_VIEW', payload: data })
         },
-        USER_GET_WELFARES(id, otherFunction = false, year = new Date().getFullYear()) {
+        USER_GET_WELFARES(id, otherFunction = false) {
             // console.log('otherFunctioncdddd', year)
             // console.log(typeof id );
             // console.log('id>',id,typeof id != undefined);
             // console.log('id>',id,id != 'undefined');
             if (typeof id !== 'undefined' && id !== 'undefined' && id !== '') {
                 this.fire('toast', { status: 'load' });
-                axios.get(`./employee/${id}/${year}`)
+                axios.get(`./employee/${id}`)
                     .then(res => {
                         // console.log(res)
                         this.fire('toast', {

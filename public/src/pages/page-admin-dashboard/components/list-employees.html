@@ -44,8 +44,9 @@
             </div>
 
         </template>
+        <!--{{setCheck}}-->
         <template is="dom-if" if={{!isEnabled}}>
-
+            <!--{{setCheck}}////-->
             <vaadin-grid id="material" items='{{list_employees}}'>
 
                 <vaadin-grid-column width="100px" flex-grow="0" hidden="{{setCheck}}">
@@ -233,12 +234,14 @@
                     if (checkNull(this.dataCheck.group_id)
                         && checkNull(this.dataCheck.faculty_id)
                         && checkNull(this.dataCheck.department_id)) {
-                        // console.log(1111);
+                        console.log(1111);
+                        // this.setLoad(this.list_employees)
                         this.set('setCheck', false)
                         // console.log(this.setCheck);
                     } else {
+                        // this.setLoad(this.list_employees)
                         this.set('setCheck', true)
-                        // console.log(2222);
+                        console.log(2222);
                         // console.log(this.setCheck);
                     }
                 } catch (e) {
@@ -247,32 +250,58 @@
 
             },
             setLoad(data) {
-                // console.log(111);
-                this.fire('toast', {
-                    status: 'success', text: 'โหลดสำเร็จ',
-                    callback: () => {
+                try {
+                    // console.log(111);
+                    this.fire('toast', {
+                        status: 'success', text: 'โหลดสำเร็จ',
+                        callback: () => {
+                        }
+                    });
+                    // console.log(data);
+                    let xx = data.find((set, index) => set.group_use === true)
+                    const checkNull = (data) => data !== '' && data !== undefined
+
+                    // console.log(xx);
+                    if (xx === undefined) {
+                        this.set('setCheck', true)
+                        // console.log(1);
+                        // if (checkNull(this.dataCheck.group_id)
+                        //     && checkNull(this.dataCheck.faculty_id)
+                        //     && checkNull(this.dataCheck.department_id)) {
+                        //     this.set('setCheck', false)
+                        // } else {
+                        //     this.set('setCheck', false)
+                        // }
+                        // this.checkDepart(this.dataCheck)
+
+
+
+                    } else {
+                        // console.log(this.dataCheck.type_employee_id);
+                        if (checkNull(this.dataCheck.group_id)
+                            && checkNull(this.dataCheck.faculty_id)
+                            && checkNull(this.dataCheck.department_id)
+                            && checkNull(this.dataCheck.type_employee_id)) {
+                            this.set('setCheck', false)
+                            // console.log(1);
+                        } else {
+                            this.set('setCheck', true)
+                            // console.log(2);
+                        }
+
+                        // this.checkDepart(this.dataCheck)
                     }
-                });
-                let xx = data.find((set, index) => set.admin_use === true)
-                // console.log(xx);
-                if (xx === undefined) {
-                    // console.log(1);
-                    this.checkDepart(this.dataCheck)
-                    this.set('setCheck', true)
 
+                    this.set('paperFab', true)
+                    if (data.length) {
+                        this.set('isEnabled', false)
+                    } else {
+                        this.set('isEnabled', true)
+                    }
+                } catch (e) {
 
-                } else {
-                    // console.log(2);
-                    this.set('setCheck', false)
-                    this.checkDepart(this.dataCheck)
                 }
 
-                this.set('paperFab', true)
-                if (data.length) {
-                    this.set('isEnabled', false)
-                } else {
-                    this.set('isEnabled', true)
-                }
 
             },
             chagePageDetail(e) {
@@ -344,7 +373,7 @@
                 let newData = this.usewelfareProp
                 let dataDialog = JSON.parse(JSON.stringify(dia))
                 let newArray = JSON.parse(JSON.stringify(this.list_employees.filter((set, index) => set.check === true)))
-                
+
                 newArray.map((item) => {
                     item.budget_balance = 0
                     item.budget_cover = dataDialog.budget_cover

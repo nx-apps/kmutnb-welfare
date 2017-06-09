@@ -81,13 +81,14 @@
                     statePath:'users.disabled'
                 },
             },
-            insertata(){
-                // console.log(this.$$('#user-manage').validateForm('.required'));
-                if(this.$$('#user-manage').validateForm('.required'))
-                   this.dispatchAction('USER_INSERT',this.data);
-            },
+            // insertata(){
+            //     // console.log(this.$$('#user-manage').validateForm('.required'));
+            //     if(this.$$('#user-manage').validateForm('.required'))
+            //        this.dispatchAction('USER_INSERT',this.data);
+            // },
             saveData(){
                 if(this.$$('#user-manage').validateForm('.required'))
+                console.log(this.data);
                     this.dispatchAction('USER_EDIT',this.data);
             },
             deleteData(){

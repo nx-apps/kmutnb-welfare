@@ -23,8 +23,20 @@ const clearData = (data, callback) => {
     // data.period.map((tag)=>{
     //     newData.period.push({no:tag.no,quality:tag.quality});
     // });
-    newData.start_work_date = data.start_work_date + 'T00:00:00+07:00'
-    newData.birthdate = data.birthdate + 'T00:00:00+07:00'
+    if (data.start_work_date !== undefined && data.start_work_date !== '') {
+        // 2017-06-09T11:52:18.157+07:00
+        newData.start_work_date = data.start_work_date + 'T00:00:00.000+07:00'
+    } else {
+        newData.start_work_date = data.start_work_date
+    }
+    if (data.end_work_date !== null && data.end_work_date !== '') {
+        // log
+        newData.end_work_date = data.end_work_date+ 'T00:00:00.000+07:00'
+    } else {
+        newData.end_work_date = data.end_work_date
+    }
+    // console.log();
+    newData.birthdate = data.birthdate+ 'T00:00:00.000+07:00'
     callback(newData)
     // callback(data)
 }
@@ -94,7 +106,7 @@ export function userWelfareAction(store) {
         WELFARE_LIST_YEAR: function () {
             axios.get('./group/welfare/year')
                 .then(function (result) {
-                    // console.log(result.data);
+                    console.log(result.data);
                     store.dispatch({ type: 'WELFARE_LIST_YEAR', payload: result.data })
                 })
                 .catch(err => {
@@ -265,8 +277,10 @@ export function userWelfareAction(store) {
                         // this.disabled = true;
                         this.fire('toast', { status: 'load' })
                         clearData(data, (newData) => {
-                            this.fire('toast', { status: 'load' });
+                            // console.log(newData);
+                            // this.fire('toast', { status: 'load' });
                             newData.id = data.id
+                            console.log(newData);
                             axios.put(`/employee/update`, newData)
                                 .then(res => {
                                     this.fire('toast', {

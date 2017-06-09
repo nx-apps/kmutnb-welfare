@@ -141,7 +141,7 @@
                 <list-employees data-check="{{data}}"></list-employees>
             </paper-material>
         </div>
-        <paper-dialog id="report">
+        <paper-dialog id="report" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
                     <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_start}}"></vaadin-date-picker>
@@ -152,7 +152,7 @@
                 </div>
             </div>
             <div class="flex horizontal end-justified layout buttons">
-                <!--<paper-button raised class="gl-btn-defalse">ปิด</paper-button>-->
+                <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
                 <paper-button raised class="gl-btn-primary" on-tap="printReport" dialog-confirm autofocus>ออกรายงาน</paper-button>
             </div>
         </paper-dialog>
@@ -226,7 +226,7 @@
                 },
                 report_type_seleted: {
                     type: Object,
-                    value: 'PDF'
+                    value: 'pdf'
                 },
                 list_welfare: {
                     statePath: 'userWelfare.list_id'
@@ -240,7 +240,7 @@
             },
             nylonPageActive: function () {
                 // this.TESTS();
-                this.WELFARE_LIST_YEAR();
+                this.WELFARE_LISTS();
                 // WELFARE_LIST
                 // this.dispatchAction('WELFARE_LIST');
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
@@ -271,7 +271,7 @@
                     const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
                     const checkUndefined = (value) => value !== undefined && value !== ''
                     const data = JSON.parse(JSON.stringify(this.data))
-                    data.year = data.year - 543
+                    // data.year = data.year - 543
                     if (checkUndefined(this.data.group_id))
                         data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
                     if (checkUndefined(this.data.faculty_id))
@@ -284,9 +284,11 @@
                     if (checkUndefined(this.data.type_employee_id))
                         data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
                     // console.log(data.type_employee_name);
+                    // console.log(data);
                     // console.log(data.department_id);
                     // console.log(this.genUrl(data));
-                    window.open('/api/report/welfare' + idReport + '?' + this.genUrl(data) + '&type=' + this.report_type);
+                    console.log(this.report_type_seleted);
+                    window.open('/api/report/welfare' + idReport + '?' + this.genUrl(data) + '&type=' + this.report_type_seleted);
                     // https://localhost:3000/api/report/welfare1?
                 } catch (error) {
 

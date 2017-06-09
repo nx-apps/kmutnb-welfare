@@ -1,3 +1,6 @@
+
+<link rel="import" href="./../../../../bower_components/iron-input/iron-input.html">
+
 <dom-module id="search-setting">
     <template>
         <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -19,12 +22,7 @@
         </style>
         <div class="layout horizontal start-justified">
             <!--<div class="flex-2" style=" margin-right: 30px">{{getGroupWelfare(data.year)}}
-                <gl-combo-box label="ปีสวัสดิการ" placeholder="ปีทั้งหมด" items="{{list_year}}" item-label-path="year" item-value-path="year"
-                    value="{{data.year}}">
-                    <template>
-                        [[item.year]]
-                    </template>
-                </gl-combo-box>
+                <iron-input><input placeholder="type=date" type="date" value="{{data.datetest::input}}"></iron-input>
             </div>-->
 
             <div class="flex-2" style=" margin-right: 30px">{{getWelareName(data.group_id)}}
@@ -36,7 +34,7 @@
                 </gl-combo-box>
             </div>
             <div class="flex" style=" margin-right: 30px">
-                <gl-combo-box label="สวัสดิการ" placeholder="สถานะภาพทั้งหมด" items="{{list_active}}" item-label-path="active_name" item-value-path="id"
+                <gl-combo-box label="สถานะภาพ" placeholder="สถานะภาพทั้งหมด" items="{{list_active}}" item-label-path="active_name" item-value-path="id"
                     value="{{data.active_id}}">
                     <template>
                         [[item.active_name]]
@@ -183,6 +181,7 @@
 
             },
             search: function () {
+                // console.log(this.data);
                 // console.log(this.genUrl(this.data));
                 try {
                     this.fire('toast', { status: 'load' })

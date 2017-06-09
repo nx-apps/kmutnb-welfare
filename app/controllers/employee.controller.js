@@ -137,12 +137,48 @@ exports.update = function (req, res) {
     var r = req.r;
     // console.log(req.body)
     // req.body = Object.assign(req.body, { year: req.body.year - 543 });
-    for (let prop in req.body) {
-        req.body[prop] = req.body[prop].replace(/ /g, '').trim()
+    // for (let prop in req.body) {
+    //     req.body[prop] = req.body[prop].replace(/ /g, '').trim()
 
+    // }
+    function getAge(end_work_date, birthday) {
+        var end_work_date = new Date(end_work_date)
+        var birthDate = new Date(birthday)
+        // console.log(end_work_date, birthDate);
+        var age = end_work_date.getFullYear() - birthDate.getFullYear();
+        var m = end_work_date.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && end_work_date.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
     }
-    req.body.start_work_date = r.ISO8601(req.body.start_work_date).inTimezone('+07:00')
-    req.body.birthdate = r.ISO8601(req.body.birthdate).inTimezone('+07:00')
+    // 2017-06-01T00:00:00.000+07:00
+    let start_work_date = req.body.start_work_date,
+        end_work_date = req.body.end_work_date,
+        birthdate = req.body.birthdate
+    if (end_work_date !== null && end_work_date !== undefined && end_work_date !== '') {
+
+        
+        req.body.age = getAge(end_work_date.split('T')[0], birthdate.split('T')[0])
+        req.body.work_age = getAge(end_work_date.split('T')[0], start_work_date.split('T')[0])
+        req.body.end_work_date = r.ISO8601(req.body.end_work_date)
+    } else {
+        req.body.age = 0
+        req.body.work_age = 0
+        req.body.end_work_date = null
+    }
+    // console.log();
+    // console.log(getAge());
+
+    req.body.start_work_date = r.ISO8601(req.body.start_work_date)
+    req.body.birthdate = r.ISO8601(req.body.birthdate)
+
+    // console.log(111111111111111111);
+    console.log(req.body);
+    // console.log(req.body.start_work_date);
+    // console.log(req.body.end_work_date);
+    // req.body.start_work_date = r.ISO8601(req.body.start_work_date)
+    // req.body.birthdate = r.ISO8601(req.body.birthdate)
     // console.log(req.body);
     r.db('welfare').table('employee')
         .get(req.body.id)
@@ -258,7 +294,7 @@ exports.welfaresYear = function (req, res) {
                                 return {
                                     budget_balance: r.branch(el('round_use').eq(false),
                                         el('budget'), el('budget').sub(el('budget_use')))
-                                        // false, true)
+                                    // false, true)
                                 }
                             })
                         }
@@ -269,14 +305,31 @@ exports.welfaresYear = function (req, res) {
             return {
                 group_welfares: item('group_welfares').getField('welfare_conditions').reduce((l, r) => {
                     return l.add(r)
-                })
+                }),
+                birthdate: r.branch(item('birthdate').eq(''),
+                    item('birthdate'), item('birthdate').toISO8601().split('T')(0))
+                ,
+                start_work_date: r.branch(item('start_work_date').eq(''),
+                    item('start_work_date'), item('start_work_date').toISO8601().split('T')(0))
+                ,
+                // r.balance(item('start_work_date').eq(""),
+                //         item('start_work_date'),
+                //     r.balance(item('start_work_date').eq(null), item('start_work_date'),
+                //         item('start_work_date').toISO8601().split('T')(0)
+                //     ), item('start_work_date').toISO8601().split('T')(0)),
+                // item('start_work_date').toISO8601().split('T')(0),
+                end_work_date: r.branch(item('end_work_date').eq(null),
+                    item('end_work_date'), item('end_work_date').toISO8601().split('T')(0))
+                ,
+                // เข้าไปเช็คว่าเปิดให้พนักงานแก้ไขข้อมูลหรือไม่
+                employee_edit: r.db('welfare').table('system_config')(0)('employee_edit')
             }
         })
-        
+
         .merge((use_his) => {
             return {
                 history_welfare: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
-                    .filter({ status: true })
+                    // .filter({ status: true })
 
                     .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'onetime'] }).zip()
                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
@@ -308,7 +361,7 @@ exports.welfaresYear = function (req, res) {
         //         start_work_date: mer_oneTime('start_work_date').toISO8601().split('T')(0),
         //     }
         // })
-       
+
 
 
         .run()

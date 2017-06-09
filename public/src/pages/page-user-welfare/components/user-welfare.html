@@ -5,6 +5,8 @@
 
 <link rel="import" href="./../../components/validateFormBehaviors.html">
 
+<link rel="import" href="./user-history-welfare.html">
+
 <link rel="import" href="./dialog-use-welfare.html">
 
 <dom-module id="user-welfare">
@@ -45,56 +47,131 @@
         fieldset {
             margin: 15px;
         }
+
+        main {
+            /*min-width: 320px;*/
+            /*max-width: 1000px;*/
+            padding: 5px;
+            margin: 0 auto;
+        }
+
+        section {
+            display: none;
+            /*padding: 20px 0 0;*/
+            border-top: 1px solid #ddd;
+        }
+
+        input {
+            display: none;
+        }
+
+        label {
+            display: inline-block;
+            margin: 0 0 -1px;
+            padding: 15px 25px;
+            font-weight: 600;
+            text-align: center;
+            color: #bbb;
+            border: 1px solid transparent;
+            background: #D5D8DC;
+        }
+
+        label:before {
+            font-family: fontawesome;
+            font-weight: normal;
+            margin-right: 10px;
+        }
+        /*label[for*='1']:before { content: '\f1cb'; }
+            label[for*='2']:before { content: '\f17d'; }*/
+
+        label:hover {
+            color: #888;
+            cursor: pointer;
+        }
+
+        input:checked+label {
+            color: #555;
+            border: 1px solid #ddd;
+            border-top: 3px solid orange;
+            border-bottom: 1px solid #fff;
+            background: #fff;
+        }
+
+        #tab1:checked~#content1,
+        #tab2:checked~#content2 {
+            display: block;
+        }
+
+        user-history-welfare {
+            /*margin-top: 15px;*/
+            width: 98%;
+            margin: 10px;
+        }
     </style>
     <template>
 
+        <main>
+            <input id="tab1" type="radio" name="tabs" checked>
+            <label for="tab1">สวัสดิการที่ได้รับสิทธิ</label>
 
-        <gl-form-panel-body label="" set-padding="10px" set-border="1px">
-            <div class="head-text">
-                สวัสดิการที่ได้รับสิทธิ
-            </div>
-            <div class="content horizontal center-justified layout">
-                <table class="gl-table-default">
-                    <thead class="table-head">
-                        <tr>
-                            <th style="width: 5%" rowspan="2">ลำดับ</th>
-                            <th style="width: 40%; text-align: left;" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
-                            <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
-                            <!--<th style="width: 15%">จำนวนเงินที่ใช้สิทธิ (บาท)</th>
+            <input id="tab2" type="radio" name="tabs" >
+            <label for="tab2">รายการสวัสดิการที่ขอใช้สิทธิ</label>
+
+            <section id="content1">
+                <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+                    <!--<div class="head-text">
+                        สวัสดิการที่ได้รับสิทธิ
+                    </div>-->
+                    <div class="content horizontal center-justified layout">
+                        <table class="gl-table-default">
+                            <thead class="table-head">
+                                <tr>
+                                    <th style="width: 5%" rowspan="2">ลำดับ</th>
+                                    <th style="width: 40%; text-align: left;" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
+                                    <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
+                                    <!--<th style="width: 15%">จำนวนเงินที่ใช้สิทธิ (บาท)</th>
                                 <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>-->
-                            <!--<th style="width: 15%" rowspan="2">ดำเนินการ</th>-->
-                        </tr>
-                        <tr>
-                            <!--<th style="width: 5%">ลำดับ</th>-->
-                            <!--<th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>-->
-                            <th style="width: 15%; text-align: right;" class="right">มีสิทธิ </th>
-                            <th style="width: 15%; text-align: right;" class="right">ใช้สิทธิ </th>
-                            <th style="width: 15%; text-align: right;" class="right">คงเหลือ </th>
-                            <!--<th style="width: 15%">ขอใช้ (บาท)</th>-->
-                        </tr>
-                    </thead>
-                    <tbody class="table-body">
+                                    <!--<th style="width: 15%" rowspan="2">ดำเนินการ</th>-->
+                                </tr>
+                                <tr>
+                                    <!--<th style="width: 5%">ลำดับ</th>-->
+                                    <!--<th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>-->
+                                    <th style="width: 15%; text-align: right;" class="right">มีสิทธิ </th>
+                                    <th style="width: 15%; text-align: right;" class="right">ใช้สิทธิ </th>
+                                    <th style="width: 15%; text-align: right;" class="right">คงเหลือ </th>
+                                    <!--<th style="width: 15%">ขอใช้ (บาท)</th>-->
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
 
-                        <template is="dom-repeat" items={{data.group_welfares}}>
-                            <tr>
-                                <td>[[_Obindex(index)]]</td>
-                                <td style="text-align: left;">[[item.description]] [[item.check_onetime_thai]]</td>
-                                <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
-                                <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
-                                <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
-                            </tr>
-                        </template>
-                        <template is="dom-if" if={{_ObIsHave(data.group_welfares)}}>
-                            <tr>
-                                <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
-                            </tr>
-                        </template>
+                                <template is="dom-repeat" items={{data.group_welfares}}>
+                                    <tr>
+                                        <td>[[_Obindex(index)]]</td>
+                                        <td style="text-align: left;">[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime)]]</td>
+                                        <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
+                                        <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
+                                        <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
+                                    </tr>
+                                </template>
+                                <template is="dom-if" if={{_ObIsHave(data.group_welfares)}}>
+                                    <tr>
+                                        <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
+                                    </tr>
+                                </template>
 
-                    </tbody>
-                </table>
-            </div>
-        </gl-form-panel-body>
-        <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+                            </tbody>
+                        </table>
+                    </div>
+                </gl-form-panel-body>
+            </section>
+
+            <section id="content2">
+                <div class="content horizontal center-justified layout">
+                    <user-history-welfare data={{data.history_welfare}}></user-history-welfare>
+                </div>
+            </section>
+        </main>
+        <!--<gl-form-panel-body label="" set-padding="10px" set-border="1px">
             <div class="head-text">
                 รายการสวัสดิการที่ขอใช้สิทธิ
             </div>
@@ -151,20 +228,20 @@
                         </template>
                     </tbody>
                 </table>
-            </div>
+            </div>-->
 
-        </gl-form-panel-body>
+        <!--</gl-form-panel-body>-->
         <!--<gl-form-panel-footer label="Footer" set-padding="10px">
                 
                 </gl-form-panel-footer>-->
         <!--</gl-form-panel>-->
         <!--</paper-material>-->
-        <paper-dialog id="welfare_budget">
+        <!--<paper-dialog id="welfare_budget">
             <dialog-use-welfare id="dialog-use-welfare" data="{{usewelfareProp}}" disabled="[[disabled]]"></dialog-use-welfare>
             <div class="flex horizontal end-justified layout">
                 <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ขอใช้</paper-button>
             </div>
-        </paper-dialog>
+        </paper-dialog>-->
         [[check(data)]]
     </template>
     <script>
