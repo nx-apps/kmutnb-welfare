@@ -383,25 +383,25 @@
                 if (data.budget_balance <= 0)
                     return true
             },
-            btnCancel(e) {
-                // console.log(e.currentTarget.data);
-                let newData = [{ id: e.currentTarget.data.history_welfare_id }]
-                // console.log(newData);
-                this.fire('toast', {
-                    status: 'openDialog',
-                    text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
-                    confirmed: (result) => {
-                        if (result == true) {
-                            this.dispatchAction('USER_REJECT_USE_WELFARE', newData)
-                                .then((el) => {
-                                    let id = window.location.pathname.split('/')[2];
-                                    this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
-                                    // console.log(222);
-                                })
-                        }
-                    }
-                })
-            },
+            // btnCancel(e) {
+            //     // console.log(e.currentTarget.data);
+            //     let newData = [{ id: e.currentTarget.data.history_welfare_id }]
+            //     // console.log(newData);
+            //     this.fire('toast', {
+            //         status: 'openDialog',
+            //         text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
+            //         confirmed: (result) => {
+            //             if (result == true) {
+            //                 this.dispatchAction('USER_REJECT_USE_WELFARE', newData)
+            //                     .then((el) => {
+            //                         let id = window.location.pathname.split('/')[2];
+            //                         this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
+            //                         // console.log(222);
+            //                     })
+            //             }
+            //         }
+            //     })
+            // },
             gerYearWelfare(e) {
                 if (typeof this.data != 'undefined') {
                     // console.log(this.data);

@@ -230,7 +230,7 @@ exports.adminApprove = function (req, res) {
             date_use: r.ISO8601(date_approve),//.inTimezone('+07'),
         }
     );
-// console.log( req.body);
+    // console.log( req.body);
     r.db('welfare').table('history_welfare').insert(req.body)('generated_keys')(0)
         .do((history_id) => {
             return r.db('welfare').table('history_welfare').get(history_id).getField('document_ids').forEach((doc_update) => {
@@ -537,7 +537,16 @@ exports.listHistory = function (req, res) {
                         // })
                         .filter({ group_id: params.group_id, status: true })
                         .coerceTo('array')
-                        .sum('budget_use')
+                    // .sum('budget_use')
+                }
+            })
+            .merge((use) => {
+                return {
+                    history_welfare_id: r.branch(use('budget_use').eq([]),'',
+                    use('budget_use')(0)('id')),//.reduce(function (l, r) {
+                    //     return l.add(r)
+                    // }),//[0],//('id'),
+                    budget_use: use('budget_use').sum('budget_use'),
                 }
             })
             .merge((use) => {

@@ -32,31 +32,59 @@
                 --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
             }
 
+            paper-fab.fabCancel {
+                position: fixed;
+                right: 25px;
+                bottom: 25px;
+                color: #fff;
+                --paper-fab-background: var(--paper-red-500);
+                --paper-fab-keyboard-focus-background: var(--paper-light-red-900);
+            }
+
             .title {
                 text-align: center;
                 font-size: 30px;
             }
         </style>
         <!--{{dataCheck.group_name}}-->
+        <template is="dom-if" if={{!setCheck}}>
+            <gl-form-dropdown-menu always-float-label label="รูปแบบการดู" placeholder="รูปแบบการดู" style="margin-top:15px;width:100%;">
+                <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{type_seleted}}">
+                    <paper-item value="">ทั้่งหมด</paper-item>
+                    <paper-item value="use">คนที่ใช้สวัสดิการไปแล้ว</paper-item>
+                    <paper-item value="notuse">คนที่ยังไม่ได้ใช้สวัสดิการ</paper-item>
+
+                </paper-menu>
+            </gl-form-dropdown-menu>
+
+        </template>
+        <!--{{type_seleted}}//{{setCheck}}-->
         <template is="dom-if" if={{isEnabled}}>
             <div class="title">
                 ไม่มีข้อมูล
             </div>
-
         </template>
         <!--{{setCheck}}-->
         <template is="dom-if" if={{!isEnabled}}>
-            <!--{{setCheck}}////-->
+
             <vaadin-grid id="material" items='{{list_employees}}'>
 
                 <vaadin-grid-column width="100px" flex-grow="0" hidden="{{setCheck}}">
                     <template class="header ">
                         <div class="text-center">
-                            <paper-checkbox checked="{{statusCheck}}" on-tap="selectAll"></paper-checkbox>#</div>
+                            <paper-checkbox checked="{{statusCheck}}" on-tap="selectAll" hidden="{{checkType(type_seleted)}}"></paper-checkbox>
+                            <template is="dom-if" if={{checkType(type_seleted)}}>
+                                <paper-checkbox checked="{{statusNot}}" on-tap="selectAllCalcel"></paper-checkbox>
+                            </template>
+                            #
+                        </div>
                     </template>
                     <template>
                         <div class="text-center">
-                            <paper-checkbox checked="{{item.check}}" on-tap="useWelfare" disabled="{{checkboxUse(item.admin_use,item.budget_balance)}}"></paper-checkbox>
+                            <paper-checkbox checked="{{item.check}}" on-tap="useWelfare" hidden="{{checkboxUse(item.group_use,item.budget_balance)}}"></paper-checkbox>
+                            <template is="dom-if" if={{checkType(type_seleted)}}>
+                                <paper-checkbox checked="{{item.checkForNotUse}}" on-tap="notuseWelfare"></paper-checkbox>
+                            </template>
                         </div>
                     </template>
                     <template class="footer">
@@ -193,6 +221,9 @@
             <div hidden="{{paperFab}}">
                 <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
             </div>
+            <div hidden="{{paperFabCancel}}">
+                <paper-fab class="fabCancel" icon="send" on-tap="confirmCancel"></paper-fab>
+            </div>
             <paper-dialog id="welfare_budget" modal>
                 <admin-dialog-use-all-welfare id="admin-dialog-use-all-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-all-welfare>
                 <div class="flex horizontal end-justified layout buttons">
@@ -211,6 +242,9 @@
                     statePath: 'users.lisyUserhistoryWelfare',
                     observer: 'setLoad'
                 },
+                list_employees_old: {
+                    statePath: 'users.lisyUserhistoryWelfare',
+                },
                 dataCheck: {
                     type: Object,
                     // observer:'checkDepart'
@@ -222,26 +256,66 @@
                 paperFab: {
                     type: Boolean,
                     value: true
+                },
+                paperFabCancel: {
+                    type: Boolean,
+                    value: true
+                },
+                oldData: {
+                    type: Array,
+                    val: []
                 }
             },
-            // observers: [
-            //     'checkDepart(dataCheck.*)',
-            // ],
+            observers: [
+                'getSelectType(type_seleted)',
+            ],
+            getSelectType(type_seleted) {
+                // all
+                // use
+                // notuse
+                let newEmp = []
+                let data = JSON.parse(JSON.stringify(this.list_employees_old))
+                switch (type_seleted) {
+                    case 'notuse':
+                        newEmp = data.filter((emp) => {
+                            return emp.budget_balance !== 0
+                        })
+                        this.set('list_employees', newEmp)
+                        // this.set('setCheck', false)
+                        this.set('paperFab', true)
+                        break;
+                    case 'use':
+                        newEmp = data.filter((emp) => {
+                            return emp.budget_balance === 0
+                        })
+                        this.set('list_employees', newEmp)
+                        // this.set('setCheck', false)
+                        this.set('paperFabCancel', true)
+                        break;
+                    default:
+                        // this.set('setCheck', false)
+                        this.set('list_employees', this.list_employees_old)
+                        this.set('paperFabCancel', true)
+                        break;
+                }
+                this.set('setCheck', false)
+            },
             checkDepart(data) {
                 // console.log(this.dataCheck);
                 try {
+
                     const checkNull = (data) => data !== ''
                     if (checkNull(this.dataCheck.group_id)
                         && checkNull(this.dataCheck.faculty_id)
                         && checkNull(this.dataCheck.department_id)) {
-                        console.log(1111);
+                        // console.log(1111);
                         // this.setLoad(this.list_employees)
                         this.set('setCheck', false)
                         // console.log(this.setCheck);
                     } else {
                         // this.setLoad(this.list_employees)
                         this.set('setCheck', true)
-                        console.log(2222);
+                        // console.log(2222);
                         // console.log(this.setCheck);
                     }
                 } catch (e) {
@@ -260,22 +334,9 @@
                     // console.log(data);
                     let xx = data.find((set, index) => set.group_use === true)
                     const checkNull = (data) => data !== '' && data !== undefined
-
-                    // console.log(xx);
+                    // this.oldData = JSON.parse(JSON.stringify(data));
                     if (xx === undefined) {
                         this.set('setCheck', true)
-                        // console.log(1);
-                        // if (checkNull(this.dataCheck.group_id)
-                        //     && checkNull(this.dataCheck.faculty_id)
-                        //     && checkNull(this.dataCheck.department_id)) {
-                        //     this.set('setCheck', false)
-                        // } else {
-                        //     this.set('setCheck', false)
-                        // }
-                        // this.checkDepart(this.dataCheck)
-
-
-
                     } else {
                         // console.log(this.dataCheck.type_employee_id);
                         if (checkNull(this.dataCheck.group_id)
@@ -283,26 +344,23 @@
                             && checkNull(this.dataCheck.department_id)
                             && checkNull(this.dataCheck.type_employee_id)) {
                             this.set('setCheck', false)
-                            // console.log(1);
+                            console.log(1);
                         } else {
                             this.set('setCheck', true)
-                            // console.log(2);
+                            console.log(2);
                         }
-
                         // this.checkDepart(this.dataCheck)
                     }
-
-                    this.set('paperFab', true)
+                    // this.set('paperFab', true)
                     if (data.length) {
                         this.set('isEnabled', false)
                     } else {
                         this.set('isEnabled', true)
                     }
+                    // this.getSelectType(this.type_seleted) 
                 } catch (e) {
 
                 }
-
-
             },
             chagePageDetail(e) {
                 var item = e.currentTarget.data;
@@ -330,6 +388,18 @@
                 // console.log(this.paperFab);
                 this.fire('toast', { status: 'load' })
             },
+            selectAllCalcel(e) {
+                this.fire('toast', { status: 'load' })
+                this.list_employees.map((set, index) => {
+                    // console.log(this.list_employees[index].budget_balance);
+                    if (this.list_employees[index].budget_balance === 0)
+                        this.set('list_employees.' + index + '.checkForNotUse', this.statusNot)
+                    // console.log(this.list_employees[index].budget_balance);
+                })
+                this.set('paperFabCancel', !this.statusNot)
+                // console.log(this.paperFab);
+                this.fire('toast', { status: 'load' })
+            },
             useWelfare(e) {
                 let newArray = this.list_employees.find((set, index) => set.check === true)
                 // console.log(111);
@@ -339,7 +409,44 @@
                 } else {
                     this.set('paperFab', true)
                 }
+            },
+            notuseWelfare(e) {
+                let newArray = this.list_employees.find((set, index) => set.checkForNotUse === true)
+                // console.log(newArray);
+                if (newArray !== undefined) {
+                    this.set('paperFabCancel', false)
+                } else {
+                    this.set('paperFabCancel', true)
+                }
+            },
+            checkType(type_seleted) {
+                if (type_seleted === 'use')
+                    return true
+                return false
 
+            },
+            confirmCancel() {
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'กรุณายืนยันการยกเลิกการทำรายการ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            let newArray = this.list_employees.filter((set, index) => set.checkForNotUse === true)
+                            let newArray2 = []
+                            newArray.map((item) => {
+                                // console.log(item.history_welfare_id);
+                                newArray2.push({ id: item.history_welfare_id })
+                            })
+                            // console.log(newArray2);
+                            this.dispatchAction('USER_REJECT_USE_WELFARE', newArray2)
+                                .then((res) => {
+                                    this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
+                                    this.type_seleted = 'all'
+                                    this.set('paperFabCancel', false)
+                                })
+                        }
+                    }
+                })
 
             },
             confirmSend(e) {
@@ -347,7 +454,7 @@
                 let date = new Date().toISOString().split('T')[0]
                 let newArray = this.list_employees.find((set, index) => set.check === true)
                 newArray = JSON.parse(JSON.stringify(newArray))
-                console.log(date);
+                // console.log(date);
                 data = {
                     title: this.dataCheck.group_name,
                     budget: newArray.budget_cover,
@@ -387,16 +494,27 @@
                     item.description_detail = dataDialog.description_detail
                 })
                 // console.log(newArray);
-                this.$$('#welfare_budget').close()
+
                 // console.log(this.$$('#admin-dialog-use-all-welfare').validateForm('.required'));
                 if (this.$$('#admin-dialog-use-all-welfare').validateForm('.required')) {
-                    newArray.map((data) => {
-                        // console.log(data);
-                        this.dispatchAction('EMPLOYEE_USE_WELFARE', data);
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'กรุณายืนยันการทำรายการ ?',
+                        confirmed: (result) => {
+                            if (result == true) {
+                                this.$$('#welfare_budget').close()
+                                newArray.map((data) => {
+                                    // console.log(data);
+                                    this.dispatchAction('EMPLOYEE_USE_WELFARE', data);
+                                })
+                                // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);
+                                this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
+                                this.set('paperFab', true)
+                                this.type_seleted = 'all'
+                            }
+                        }
                     })
-                    // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);
-                    this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
-                    this.set('paperFab', true)
+
                 }
             },
 
