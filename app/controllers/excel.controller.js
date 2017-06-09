@@ -153,7 +153,7 @@ exports.emp2wel = function (req, res) {
         .getAll('000183c1-23db-4af2-937f-3e359400e33c', { index: 'id' }).coerceTo('array');
     r.db('welfare').table('welfare')
         .merge(function (m) {
-            return { pass: reduceCondition(me, m('condition')).ne([]) }
+            return { pass: getEmployee(me, m('condition')).ne([]) }
         })
         .filter({ pass: true })
         .run()
@@ -334,7 +334,7 @@ exports.reduce = function (req, res) {
                         var condition = m2('condition');
                         return {
                             countCon: condition.count(),
-                            reduce: reduceCondition(emps, condition)//.count(),
+                            reduce: getEmployee(emps, condition)//.count(),
                             // old: condition.map(function (con_map) {
                             //     return emps.filter(function (f) {
                             //         return checkLogic(con_map, f)
@@ -377,7 +377,7 @@ var checkLogic = function (select, row) {
         row(select('field_name')).ne(select('value'))
     )
 };
-var reduceCondition = function (emp, con) {
+var getEmployee = function (emp, con) {
     var countCon = con.count();
     return r.branch(countCon.gt(1),
         con.reduce(function (left, right) {
