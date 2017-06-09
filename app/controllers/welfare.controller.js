@@ -184,6 +184,7 @@ exports.update = function (req, res) {
             })
         }
     );
+    console.log(req.body)
     r.db('welfare').table('welfare').get(req.body.id)
         .update(req.body)
         .run()

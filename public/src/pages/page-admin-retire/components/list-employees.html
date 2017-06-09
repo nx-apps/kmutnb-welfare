@@ -1,0 +1,152 @@
+<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
+
+<dom-module id="list-employees">
+
+    <template>
+        <style include="page-style flex-style">
+            * {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+            vaadin-grid {
+                height: 560px;
+            }
+            paper-fab {
+                position: fixed;
+                right: 25px;
+                bottom: 25px;
+                color: #fff;
+                --paper-fab-background: var(--paper-light-blue-500);
+                --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
+            }
+            .title {
+                text-align: center;
+                font-size: 30px;
+            }
+        </style>
+        <vaadin-grid id="material" items='{{list_employees}}'>
+
+            <vaadin-grid-column width="100px" flex-grow="0">
+                <template class="header">
+                    <div class="text-center">
+                        <paper-checkbox checked="{{statusCheck}}" on-tap="selectAll"></paper-checkbox>#</div>
+                </template>
+                <template>
+                    <div class="text-center">
+                        <paper-checkbox checked="{{item.check}}" on-tap="checkRretier"></paper-checkbox>
+                    </div>
+                </template>
+            </vaadin-grid-column>
+
+
+            <vaadin-grid-column width="80px" flex-grow="0">
+                <template class="header ">
+                    <div class="text-center">ลำดับ</div>
+                </template>
+                <template>
+                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[_Obindex(index)]]</div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">
+                    <div class="text-center">เลขประจำตัวประชาชน</div>
+                </template>
+                <template>
+                    <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[item.personal_id]]
+                    </div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="350px">
+                <template class="header">
+                    <div class="text-left">ชื่อ - นามสกุล
+                    </div>
+                </template>
+                <template>
+                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">[[item.prefix_name]] [[item.firstname]] [[item.lastname]]
+                    </div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="150px">
+                <template class="header">
+                    <div class="text-left">ประเภทพนักงาน
+                    </div>
+                </template>
+                <template>
+                    <div class=" cursor" on-tap="chagePageDetail" data="[[item]]">
+                        <p style="white-space: nowrap">[[item.type_employee_name]]</p>
+                    </div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="60px">
+                <template class="header">
+                    <div class="text-center">อายุ (ปี)
+                    </div>
+                </template>
+                <template>
+                    <div class=" cursor text-right" on-tap="chagePageDetail" data="[[item]]">[[item.birthdate_cal]]
+                    </div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="60px">
+                <template class="header">
+                    <div class="text-right" style="margin-right:10px;">อายุงาน (ปี)
+                    </div>
+                </template>
+                <template>
+                    <div class="cursor text-right" style="margin-right:10px;" on-tap="chagePageDetail" data="[[item]]">[[item.start_work_date_cal]]
+                    </div>
+                </template>
+            </vaadin-grid-column>
+        </vaadin-grid>
+        <div hidden="{{paperFab}}">
+            <paper-fab icon="send" on-tap="_confirmRetier"></paper-fab>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'list-employees',
+            behaviors: [ReduxBehavior],
+            properties:{
+                list_employees :{
+                    statePath : 'retier.list'
+                },
+                dataCheck: {
+                    type: Object,
+                    // observer:'checkDepart'
+                },
+                setCheck: {
+                    type: Boolean,
+                    value: false
+                },
+                paperFab: {
+                    type: Boolean,
+                    value: true
+                }
+            },
+            _Obindex:function(index){
+                return index+1
+            },
+            checkRretier:function(){
+                let newArray = this.list_employees.find((set, index) => set.check === true)
+                if (newArray !== undefined) {
+                    this.set('paperFab', false)
+                } else {
+                    this.set('paperFab', true)
+                }
+            },
+            selectAll:function(){
+                this.list_employees.map((set, index) => {
+                    this.set('list_employees.' + index + '.check', this.statusCheck)
+                })
+                this.set('paperFab', !this.statusCheck)
+            },
+            _confirmRetier:function(){
+                let newArray = this.list_employees.filter((set, index) => set.check === true)
+                newArray = JSON.parse(JSON.stringify(newArray));
+                console.log(newArray);
+            }
+        });
+    </script>
+
+</dom-module>
