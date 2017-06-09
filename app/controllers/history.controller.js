@@ -388,6 +388,7 @@ exports.listHistory = function (req, res) {
     //         })
     //     })
     let params = req.query
+    params.personal_name = params.personal_name || ''
     // department_id
     // faculty_id
     // type_employee_id

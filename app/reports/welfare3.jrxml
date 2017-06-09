@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare3" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="81da0a84-f091-4996-8a00-eee2ccda3f2c">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="124"/>
+	<property name="ireport.y" value="172"/>
 	<import value="nylon.report.*"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -36,7 +36,7 @@
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
 	</variable>
-	<group name="GP" isStartNewColumn="true" isStartNewPage="true" minHeightToStartNewPage="100">
+	<group name="GP" minHeightToStartNewPage="100">
 		<groupExpression><![CDATA[$F{group_welfare_name}]]></groupExpression>
 		<groupFooter>
 			<band height="20">
@@ -120,7 +120,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["คณะ/วิทยาลัย/สำนัก/ศูนย์     "+($P{FACULTY_NAME}== null ?"ทั้งหมด":$P{FACULTY_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["คณะ/ วิทยาลัย/สำนัก/ ศูนย์     "+($P{FACULTY_NAME}== null ?"ทั้งหมด":$P{FACULTY_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="145" width="240" height="20" uuid="677585d6-4d35-4612-abaf-5abb889381b0"/>
@@ -162,7 +162,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ภาควิชา/กอง/ฝ่าย    "+($P{DEPARTMENT_NAME}== null ?"ทั้งหมด":$P{DEPARTMENT_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ภาควิชา/ กอง/ ฝ่าย    "+($P{DEPARTMENT_NAME}== null ?"ทั้งหมด":$P{DEPARTMENT_NAME})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="95" width="802" height="20" uuid="e0c8cae9-5e7a-4d69-81f9-767abdb036dc"/>
@@ -508,7 +508,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ภาควิชา/กอง/ฝ่าย    "+($P{DEPARTMENT_NAME}== null ?"ทั้งหมด":$P{DEPARTMENT_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ภาควิชา/ กอง/ ฝ่าย    "+($P{DEPARTMENT_NAME}== null ?"ทั้งหมด":$P{DEPARTMENT_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="170" width="645" height="20" uuid="e3f44ce2-f16f-468e-ad9d-4c11003abbb6"/>
@@ -522,7 +522,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["คณะ/วิทยาลัย/สำนัก/ศูนย์     "+($P{FACULTY_NAME}== null ?"ทั้งหมด":$P{FACULTY_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["คณะ/ วิทยาลัย/ สำนัก/ ศูนย์     "+($P{FACULTY_NAME}== null ?"ทั้งหมด":$P{FACULTY_NAME})]]></textFieldExpression>
 			</textField>
 		</band>
 	</noData>

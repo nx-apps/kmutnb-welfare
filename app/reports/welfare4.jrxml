@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare4" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bba718c9-3e2c-426e-89cf-deb749d2268f">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="432"/>
+	<property name="ireport.y" value="606"/>
 	<import value="nylon.report.*"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -133,7 +133,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ภาควิชา/กอง/ฝ่าย    "+($F{department_name}== null ?"ทั้งหมด":$F{department_name})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ภาควิชา/ กอง/ ฝ่าย    "+($F{department_name}== null ?"ทั้งหมด":$F{department_name})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="12" y="200" width="466" height="20" uuid="966d6e65-cd24-403a-b7c3-c2971b55918f"/>
@@ -147,7 +147,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["คณะ/วิทยาลัย/สำนัก/ศูนย์     "+($F{faculty_name}== null ?"ทั้งหมด":$F{faculty_name})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["คณะ/ วิทยาลัย/ สำนัก/ ศูนย์     "+($F{faculty_name}== null ?"ทั้งหมด":$F{faculty_name})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="12" y="143" width="180" height="20" uuid="8b21e661-6b4e-40a5-a187-c0acbbc8c110"/>
@@ -416,7 +416,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["คณะ/วิทยาลัย/สำนัก/ศูนย์     "+($F{faculty_name}== null ?"ทั้งหมด":$F{faculty_name})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["คณะ/ วิทยาลัย/ สำนัก/ ศูนย์     "+($F{faculty_name}== null ?"ทั้งหมด":$F{faculty_name})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="10" y="254" width="532" height="20" uuid="b04cb25c-bf5f-4f3c-af6c-6ab7c45e0cb0"/>

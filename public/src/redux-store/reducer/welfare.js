@@ -93,16 +93,8 @@ export function welfareAction(store) {
         WELFARE_EDIT: function (data) {
             // console.log(data);
             var year = new Date().getFullYear();
-            var datas = {
-                budget: data.budget,
-                group_id: data.group_id,
-                welfare_name: data.welfare_name,
-                condition: data.condition,
-                id: data.id
-            }
-            // console.log(datas);
             this.fire('toast', { status: 'load' });
-            axios.put(`./welfare/update`, datas)
+            axios.put(`./welfare/update`, data)
                 .then((result) => {
                     // console.log(result);
                     this.fire('toast', {
