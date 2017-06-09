@@ -109,12 +109,15 @@
         }
     </style>
     <template>
+        <div class="content horizontal end-justified layout">
+            <paper-button raised on-tap="getWelfare">ดูสวัสดิการที่มีสิทธิ์</paper-button>
+        </div>
 
         <main>
             <input id="tab1" type="radio" name="tabs" checked>
             <label for="tab1">สวัสดิการที่ได้รับสิทธิ</label>
 
-            <input id="tab2" type="radio" name="tabs" >
+            <input id="tab2" type="radio" name="tabs">
             <label for="tab2">รายการสวัสดิการที่ขอใช้สิทธิ</label>
 
             <section id="content1">
@@ -163,6 +166,9 @@
                         </table>
                     </div>
                 </gl-form-panel-body>
+
+
+
             </section>
 
             <section id="content2">
@@ -373,6 +379,10 @@
             downloadFile(e) {
                 // console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id)
+            },
+            getWelfare() {
+                // /api/report/emp_welfare?id=000183c1-23db-4af2-937f-3e359400e33c
+                window.open('/api/report/emp_welfare?id=' + this.data.id);
             }
         });
     </script>
