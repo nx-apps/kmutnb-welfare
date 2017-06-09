@@ -149,55 +149,46 @@ exports.wel2emp = function (req, res) {
         })
 }
 exports.emp2wel = function (req, res) {
-    var checkLogic = function (con, me) {
-        return r.branch(
-            con('logic').eq('=='),
-            me(con('field_name')).eq(con('value')),
-            con('logic').eq('>'),
-            me(con('field_name')).gt(con('value')),
-            con('logic').eq('>='),
-            me(con('field_name')).ge(con('value')),
-            con('logic').eq('<'),
-            me(con('field_name')).lt(con('value')),
-            con('logic').eq('<='),
-            me(con('field_name')).le(con('value')),
-            me(con('field_name')).ne(con('value'))
-        )
-    };
-    req.r.db('welfare').table('employee').get('000183c1-23db-4af2-937f-3e359400e33c')
-        .merge(function (me) {
-            return {
-                group: r.db('welfare').table('welfare')
-                    .getAll(2017, 9999, { index: 'year' })
-                    .merge(function (m2) {
-                        var countCon = m2('condition').count();
-                        var countProp = r.branch(countCon.eq(0),
-                            [{ prop: true }],
-                            m2('condition').map(function (con) {
-                                return { prop: checkLogic(con, me) }
-                            }).coerceTo('array')
-                        ).filter({ prop: true }).count()
-                        return {
-                            countCon: countCon,
-                            countProp: countProp
-                        }
-                    })
-                    .filter(function (f) {
-                        return f('countCon').eq(f('countProp'))
-                    })
-                    .group('group_id').ungroup()
-                    .without('reduction')
-                    .eqJoin('group', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
-                    .coerceTo('array')
-            }
+    var me = r.db('welfare').table('employee').getAll('000183c1-23db-4af2-937f-3e359400e33c', { index: 'id' }).coerceTo('array');
+    r.db('welfare').table('welfare')
+        .merge(function (m) {
+            return { pass: reduceCondition(me, m('condition')).ne([]) }
         })
-        .pluck('id', 'firstname', 'group')
+        .filter({ pass: true })
         .run()
         .then(function (data) {
             res.json(data);
         })
-}
+    // req.r.db('welfare').table('employee').get('000183c1-23db-4af2-937f-3e359400e33c')
+    //     .merge(function (me) {
+    //         return {
+    //             group: r.db('welfare').table('welfare')
+    //                 .getAll(2017, 9999, { index: 'year' })
+    //                 .merge(function (m2) {
+    //                     var countCon = m2('condition').count();
+    //                     var countProp = r.branch(countCon.eq(0),
+    //                         [{ prop: true }],
+    //                         m2('condition').map(function (con) {
+    //                             return { prop: checkLogic(con, me) }
+    //                         }).coerceTo('array')
+    //                     ).filter({ prop: true }).count()
+    //                     return {
+    //                         countCon: countCon,
+    //                         countProp: countProp
+    //                     }
+    //                 })
+    //                 .filter(function (f) {
+    //                     return f('countCon').eq(f('countProp'))
+    //                 })
+    //                 .group('group_id').ungroup()
+    //                 .without('reduction')
+    //                 .eqJoin('group', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
+    //                 .coerceTo('array')
+    //         }
+    //     })
+    //     .pluck('id', 'firstname', 'group')
 
+}
 exports.getFieldCommonDataFromEmployee = function (req, res) {
     var r = req.r;
     r.db('welfare_data_emp').tableList()
@@ -327,7 +318,7 @@ exports.write = function (req, res) {
 }
 exports.reduce = function (req, res) {
     req.r.expr({
-        emps: r.db('welfare').table('employee').coerceTo('array'),
+        emps: r.db('welfare').table('employee').limit(10).coerceTo('array'),
         welfare: []
     })
         .merge(function (m) {
@@ -342,7 +333,7 @@ exports.reduce = function (req, res) {
                         var condition = m2('condition');
                         return {
                             countCon: condition.count(),
-                            reduce: reduceCondition(emps, condition).count(),
+                            reduce: reduceCondition(emps, condition)//.count(),
                             // old: condition.map(function (con_map) {
                             //     return emps.filter(function (f) {
                             //         return checkLogic(con_map, f)
@@ -396,11 +387,13 @@ var reduceCondition = function (emp, con) {
                     })
                 },
                 {
-                    data: emp.filter(function (f) {
-                        return checkLogic(left, f)
-                    }).filter(function (f) {
-                        return checkLogic(right, f)
-                    }).coerceTo('array')
+                    data: emp
+                        .filter(function (f) {
+                            return checkLogic(left, f)
+                        })
+                        .filter(function (f) {
+                            return checkLogic(right, f)
+                        })
                 }
             )
         })('data'),
