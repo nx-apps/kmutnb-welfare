@@ -47,7 +47,7 @@
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-right">วันที่ใช้งาน                    </div>
+                    <div class="text-right">วันที่ใช้งาน </div>
                 </template>
                 <template>
                     <div class="text-center">[[toThaiDate(item.date_use)]]
@@ -70,7 +70,15 @@
                 <template>[[item.status]]</template>
             </vaadin-grid-column>-->
 
-            <vaadin-grid-column width="350px" flex-grow="0">
+            <vaadin-grid-column width="350px" flex-grow="0" resizable>
+                <template class="header">รายละเอียด
+                </template>
+                <template>
+                    [[item.description_detail]]
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="350px" flex-grow="0" resizable>
                 <template class="header">
                     <div class="text-center">เอกสารแนบ</div>
                 </template>
