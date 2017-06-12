@@ -1,6 +1,6 @@
 <link rel="import" href="./../components/page-style.html">
-<link rel="import" href="components/search-setting.html">
-<link rel="import" href="components/list-employees.html">
+<link rel="import" href="components/search-setting-retire.html">
+<link rel="import" href="components/list-employees-retire.html">
 
 <dom-module id="page-admin-retire">
     <style include="page-style">
@@ -19,11 +19,11 @@
         <div class="xcontainer">
             <paper-material elevation="1">
                 <div class="title">ค้นหาผู้เกษียณ</div>
-                <search-setting></search-setting>
+                <search-setting-retire cal-date="{{calDate}}"></search-setting-retire>
             </paper-material>
 
             <paper-material elevation="1" style="margin-top:20px; padding:15px;;">
-                <list-employees></list-employees>
+                <list-employees-retire cal-date="{{calDate}}"></list-employees-retire>
             </paper-material>    
         </div>    
             
@@ -31,7 +31,16 @@
     <script>
         Polymer({
             is: 'page-admin-retire',
-            behaviors: [ReduxBehavior, nylonBehavior, retierAction]
+            behaviors: [ReduxBehavior, nylonBehavior, retierAction,commonDataAction,userWelfareAction],
+            properties:{
+                calDate:{
+                    notify:true
+                }
+            },
+            nylonPageActive: function () {
+                // this.TESTS();
+                this.dispatchAction('COMMONDATA_DATA_ACTIVE');
+            },
         });
     </script>
 

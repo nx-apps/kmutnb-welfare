@@ -158,7 +158,7 @@ exports.update = function (req, res) {
         birthdate = req.body.birthdate
     if (end_work_date !== null && end_work_date !== undefined && end_work_date !== '') {
 
-        
+
         req.body.age = getAge(end_work_date.split('T')[0], birthdate.split('T')[0])
         req.body.work_age = getAge(end_work_date.split('T')[0], start_work_date.split('T')[0])
         req.body.end_work_date = r.ISO8601(req.body.end_work_date)
@@ -303,9 +303,9 @@ exports.welfaresYear = function (req, res) {
         })
         .merge((item) => {
             return {
-                group_welfares: item('group_welfares').getField('welfare_conditions').reduce((l, r) => {
+                group_welfares: item('group_welfares').count().gt(0).branch(item('group_welfares').getField('welfare_conditions').reduce((l, r) => {
                     return l.add(r)
-                }),
+                }),[]),
                 birthdate: r.branch(item('birthdate').eq(''),
                     item('birthdate'), item('birthdate').toISO8601().split('T')(0))
                 ,
@@ -329,7 +329,7 @@ exports.welfaresYear = function (req, res) {
         .merge((use_his) => {
             return {
                 history_welfare: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
-                    // .filter({ status: true })
+                    .filter({ status: true })
 
                     .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'onetime'] }).zip()
                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()

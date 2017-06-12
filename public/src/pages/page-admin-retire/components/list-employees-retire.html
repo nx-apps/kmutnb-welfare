@@ -1,6 +1,6 @@
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
 
-<dom-module id="list-employees">
+<dom-module id="list-employees-retire">
 
     <template>
         <style include="page-style flex-style">
@@ -8,9 +8,11 @@
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
             }
+
             vaadin-grid {
                 height: 560px;
             }
+
             paper-fab {
                 position: fixed;
                 right: 25px;
@@ -19,6 +21,7 @@
                 --paper-fab-background: var(--paper-light-blue-500);
                 --paper-fab-keyboard-focus-background: var(--paper-light-blue-900);
             }
+
             .title {
                 text-align: center;
                 font-size: 30px;
@@ -105,11 +108,14 @@
     </template>
     <script>
         Polymer({
-            is: 'list-employees',
+            is: 'list-employees-retire',
             behaviors: [ReduxBehavior],
-            properties:{
-                list_employees :{
-                    statePath : 'retier.list'
+            properties: {
+                list_employees: {
+                    statePath: 'retier.list'
+                },
+                list_active:{
+                    statePath: 'commonData.active'
                 },
                 dataCheck: {
                     type: Object,
@@ -124,10 +130,10 @@
                     value: true
                 }
             },
-            _Obindex:function(index){
-                return index+1
+            _Obindex: function (index) {
+                return index + 1
             },
-            checkRretier:function(){
+            checkRretier: function () {
                 let newArray = this.list_employees.find((set, index) => set.check === true)
                 if (newArray !== undefined) {
                     this.set('paperFab', false)
@@ -135,16 +141,39 @@
                     this.set('paperFab', true)
                 }
             },
-            selectAll:function(){
+            selectAll: function () {
                 this.list_employees.map((set, index) => {
                     this.set('list_employees.' + index + '.check', this.statusCheck)
                 })
                 this.set('paperFab', !this.statusCheck)
             },
-            _confirmRetier:function(){
+            _confirmRetier: function () {
                 let newArray = this.list_employees.filter((set, index) => set.check === true)
                 newArray = JSON.parse(JSON.stringify(newArray));
-                console.log(newArray);
+                let list_active = JSON.parse(JSON.stringify(this.list_active));
+                let RETIREMENT = list_active.find((item)=>item.active_code ==='RETIREMENT')
+                newArray.map((item)=>{
+                     item.active_id = RETIREMENT.id
+                     item.active_name = RETIREMENT.active_name
+                     item.end_work_date = this.calDate
+                     return item
+                })
+                // console.log(RETIREMENT);
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'กรุณายืนยันการเกษียณใช่รึไม่ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            console.log(newArray);
+                            newArray.map((data) => {
+                                    console.log(data);
+                                    this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
+                                })
+                            // console.log(newArray);
+                        }
+                    }
+                })
+
             }
         });
     </script>

@@ -31,12 +31,12 @@ const clearData = (data, callback) => {
     }
     if (data.end_work_date !== null && data.end_work_date !== '') {
         // log
-        newData.end_work_date = data.end_work_date+ 'T00:00:00.000+07:00'
+        newData.end_work_date = data.end_work_date + 'T00:00:00.000+07:00'
     } else {
         newData.end_work_date = data.end_work_date
     }
     // console.log();
-    newData.birthdate = data.birthdate+ 'T00:00:00.000+07:00'
+    newData.birthdate = data.birthdate + 'T00:00:00.000+07:00'
     callback(newData)
     // callback(data)
 }
@@ -300,6 +300,27 @@ export function userWelfareAction(store) {
                         })
                     }
                 }
+            })
+        },
+        EMPLOYEE_UPDATE_RETIREMENT(data) {
+            this.fire('toast', { status: 'load' })
+            clearData(data, (newData) => {
+                // console.log(newData);
+                // this.fire('toast', { status: 'load' });
+                newData.id = data.id
+                console.log(newData);
+                axios.put(`/employee/update`, newData)
+                    .then(res => {
+                        this.fire('toast', {
+                            status: 'success', text: 'บันทึกสำเร็จ',
+                            callback: () => {
+                                console.log(111);
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             })
         },
         EMPLOYEE_INSERT(data) {

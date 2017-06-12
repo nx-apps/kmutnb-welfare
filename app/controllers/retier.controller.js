@@ -12,10 +12,12 @@ exports.list = function (req, res) {
         .merge(function (use) {
             return {
                 birthdate_cal: calculateAge(use('birthdate')),
-                start_work_date_cal: calculateAge(use('start_work_date'))
+                start_work_date_cal: calculateAge(use('start_work_date')),
+                birthdate: use('birthdate').toISO8601().split('T')(0),
+                start_work_date: use('start_work_date').toISO8601().split('T')(0),
             }
         })
-        .filter(function(f){
+        .filter(function (f) {
             return f('birthdate_cal').gt(60)
         })
         .run()
