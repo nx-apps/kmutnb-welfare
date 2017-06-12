@@ -1830,7 +1830,7 @@ exports.welfare7 = function (req, res) {
     // var emonth = new Date(req.query.date_end);
     // var diffmonth = monthDiff(emonth, smonth);
     // res.json(diffmonth);
-    var year = parseInt(req.query.year);
+    var year = parseInt(req.query.date_start.split("-")[0]);
     var data = [];
     var countMonth = 1;
     for (var i = smonth; i <= 12; i++) {
