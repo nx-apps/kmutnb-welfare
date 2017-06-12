@@ -1874,11 +1874,11 @@ exports.welfare7 = function (req, res) {
                         )
                     })     
                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['round_use', 'budget'] }).zip()
-                    .merge(function (m) {
-                        return {
-                            budget: r.branch(m('round_use').eq(false), 0, m('budget'))
-                        }
-                    })
+                    // .merge(function (m) {
+                    //     return {
+                    //         budget: r.branch(m('round_use').eq(false), 0, m('budget'))
+                    //     }
+                    // })
             }
         })
         .merge(function (sum_merge) {
