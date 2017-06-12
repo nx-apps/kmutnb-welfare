@@ -8,15 +8,25 @@
                 display: block;
             }
 
+            * {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+
             vaadin-grid {
                 height: 480px;
             }
         </style>
-        <vaadin-grid aria-label="Basic Binding Example" items="{{data}}">
+        <vaadin-grid id="material" items="{{data}}">
 
             <vaadin-grid-column width="50px" flex-grow="0">
-                <template class="header">ลำดับ</template>
-                <template>[[_Obindex(index)]]</template>
+                <template class="header ">
+                    <div class="text-center">ลำดับ</div>
+                </template>
+                <template>
+                    <div class="text-center">[[_Obindex(index)]]
+                    </div>
+                </template>
             </vaadin-grid-column>
 
             <vaadin-grid-column width="450px" flex-grow="0">
@@ -25,18 +35,34 @@
             </vaadin-grid-column>
 
             <vaadin-grid-column>
-                <template class="header">จำนวนเงินที่ใช้</template>
-                <template>[[formatNumber(item.budget_use)]]</template>
+                <template class="header">
+                    <div class="text-right">จำนวนเงินที่ใช้
+                    </div>
+                </template>
+                <template>
+                    <div class="text-right">[[formatNumber(item.budget_use)]]
+                    </div>
+                </template>
             </vaadin-grid-column>
 
             <vaadin-grid-column>
-                <template class="header">วันที่ใช้สิทธิ</template>
-                <template>[[toThaiDate(item.date_use)]]</template>
+                <template class="header">
+                    <div class="text-right">วันที่ใช้งาน                    </div>
+                </template>
+                <template>
+                    <div class="text-center">[[toThaiDate(item.date_use)]]
+                    </div>
+                </template>
             </vaadin-grid-column>
 
             <vaadin-grid-column>
-                <template class="header">วันที่อนุมัติ</template>
-                <template>[[toThaiDate(item.date_approve)]]</template>
+                <template class="header">
+                    <div class="text-center">วันที่อนุมัติ</div>
+                </template>
+                <template>
+                    <div class="text-center">[[toThaiDate(item.date_approve)]]
+                    </div>
+                </template>
             </vaadin-grid-column>
 
             <!--<vaadin-grid-column>
@@ -45,23 +71,31 @@
             </vaadin-grid-column>-->
 
             <vaadin-grid-column width="350px" flex-grow="0">
-                <template class="header">เอกสารแนบ</template>
+                <template class="header">
+                    <div class="text-center">เอกสารแนบ</div>
+                </template>
                 <template>
-                    <template is="dom-if" if={{item.file}}>
-                        <template is="dom-repeat" items={{item.file}}>
-                            <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                    <div class="text-center">
+                        <template is="dom-if" if={{item.file}}>
+                            <template is="dom-repeat" items={{item.file}}>
+                                <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                            </template>
                         </template>
-                    </template>
-                    <template is="dom-if" if={{_ObIsHave(item.file)}}>
-                        <div style="text-align: center;">-</div>
-                    </template>
+                        <template is="dom-if" if={{_ObIsHave(item.file)}}>
+                            <div style="text-align: center;">-</div>
+                        </template>
+                    </div>
                 </template>
             </vaadin-grid-column>
 
             <vaadin-grid-column width="150px" flex-grow="0">
-                <template class="header">ดำเนินการ</template>
+                <template class="header">
+                    <div class="text-center">ดำเนินการ</div>
+                </template>
                 <template>
-                    <paper-button raised class="gl-btn-danger" on-tap="btnCancel" data="[[item]]">ยกเลิก</paper-button>
+                    <div class="text-center">
+                        <paper-button raised class="gl-btn-danger gl-small" on-tap="btnCancel" data="[[item]]">ยกเลิก</paper-button>
+                    </div>
                 </template>
             </vaadin-grid-column>
 
@@ -89,8 +123,8 @@
                         if (result == true) {
                             this.dispatchAction('USER_REJECT_USE_WELFARE', newData)
                                 .then((el) => {
-                                    // let id = window.location.pathname.split('/')[2];
-                                    // this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
+                                    let id = window.location.pathname.split('/')[2];
+                                    this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
                                     // console.log(222);
                                 })
                         }

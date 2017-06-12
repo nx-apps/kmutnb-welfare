@@ -16,6 +16,7 @@ export function retierAction(store) {
     {
         RETIER_SEARCH: function (data) {
             var tz = "T00:00:00+07:00";
+            this.fire('toast',{status:'load'});
             axios.get('/retier/list/date/' + data+tz)
                 .then((result) => {
                     // console.log(result.data);

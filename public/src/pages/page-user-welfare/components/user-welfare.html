@@ -8,7 +8,9 @@
 <link rel="import" href="./user-history-welfare.html">
 
 <link rel="import" href="./dialog-use-welfare.html">
+<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
 
+<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
 <dom-module id="user-welfare">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
          :host {
@@ -102,7 +104,8 @@
             display: block;
         }
 
-        user-history-welfare {
+        user-history-welfare,
+        vaadin-grid {
             /*margin-top: 15px;*/
             width: 98%;
             margin: 10px;
@@ -126,23 +129,69 @@
                         สวัสดิการที่ได้รับสิทธิ
                     </div>-->
                     <div class="content horizontal center-justified layout">
-                        <table class="gl-table-default">
+                        <vaadin-grid id="material" aria-label="Column Grouping Example" items={{data.group_welfares}}>
+                            <vaadin-grid-column width="50px" flex-grow="0">
+                                <template class="header ">
+                                    <div class="text-center">ลำดับ</div>
+                                </template>
+                                <template>
+                                    <div class="text-center">[[_Obindex(index)]]
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+
+                            <vaadin-grid-column width="450px" flex-grow="0">
+                                <template class="header ">สวัสดิการที่สามารถใช้ได้
+                                </template>
+                                <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime)]]
+
+                                </template>
+                            </vaadin-grid-column>
+
+                            <vaadin-grid-column-group>
+                                <template class="header">
+                                    <div class="text-center">จำนวนเงิน (บาท)</div>
+                                </template>
+
+                                <vaadin-grid-column width="calc(10% - 20px)">
+                                    <template class="header">
+                                        <div class="text-right">มีสิทธิ</div>
+                                    </template>
+                                    <template>
+                                        <div class="text-right">[[formatNumber(item.budget)]]</div>
+                                    </template>
+                                </vaadin-grid-column>
+
+                                <vaadin-grid-column width="calc(10% - 20px)">
+                                    <template class="header">
+                                        <div class="text-right">ใช้สิทธิ</div>
+                                    </template>
+                                    <template>
+                                        <div class="text-right">[[formatNumber(item.budget_use)]]</div>
+                                    </template>
+                                </vaadin-grid-column>
+                                <vaadin-grid-column width="calc(10% - 20px)">
+                                    <template class="header">
+                                        <div class="text-right">คงเหลือ</div>
+                                    </template>
+                                    <template>
+                                        <div class="text-right">[[formatNumber(item.budget_balance)]]</div>
+                                    </template>
+                                </vaadin-grid-column>
+                            </vaadin-grid-column-group>
+
+                        </vaadin-grid>
+                        <!--<table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
                                     <th style="width: 5%" rowspan="2">ลำดับ</th>
                                     <th style="width: 40%; text-align: left;" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
                                     <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
-                                    <!--<th style="width: 15%">จำนวนเงินที่ใช้สิทธิ (บาท)</th>
-                                <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>-->
-                                    <!--<th style="width: 15%" rowspan="2">ดำเนินการ</th>-->
                                 </tr>
                                 <tr>
-                                    <!--<th style="width: 5%">ลำดับ</th>-->
-                                    <!--<th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>-->
                                     <th style="width: 15%; text-align: right;" class="right">มีสิทธิ </th>
                                     <th style="width: 15%; text-align: right;" class="right">ใช้สิทธิ </th>
                                     <th style="width: 15%; text-align: right;" class="right">คงเหลือ </th>
-                                    <!--<th style="width: 15%">ขอใช้ (บาท)</th>-->
                                 </tr>
                             </thead>
                             <tbody class="table-body">
@@ -163,7 +212,7 @@
                                 </template>
 
                             </tbody>
-                        </table>
+                        </table>-->
                     </div>
                 </gl-form-panel-body>
 

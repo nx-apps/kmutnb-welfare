@@ -9,6 +9,9 @@
 <link rel="import" href="./../components/page-style.html">
 
 <link rel="import" href="./components/history-welfare.html">
+<link rel="import" href="./../../../bower_components/vaadin-grid/vaadin-grid.html">
+
+<link rel="import" href="./../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
 
 <dom-module id="page-admin-manage">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
@@ -113,7 +116,9 @@
             display: block;
         }
 
-        history-welfare {
+
+        history-welfare,
+        vaadin-grid {
             /*margin-top: 15px;*/
             width: 98%;
             margin: 10px;
@@ -162,32 +167,91 @@
                         <paper-button raised on-tap="getWelfareHave">ดูสวัสดิการที่มีสิทธิ์</paper-button>
                     </div>
                     <main>
-                        <input id="tab1" type="radio" name="tabs">
+                        <input id="tab1" type="radio" name="tabs" checked>
                         <label for="tab1">สวัสดิการที่ได้รับสิทธิ</label>
 
-                        <input id="tab2" type="radio" name="tabs" checked>
+                        <input id="tab2" type="radio" name="tabs">
                         <label for="tab2">รายการสวัสดิการที่ขอใช้สิทธิ</label>
 
                         <section id="content1">
                             <!--<paper-material elevation="1">-->
-                            <div class="content horizontal center-justified layout">
-                                <table class="gl-table-default">
+                            <div class="contenttable">
+                                <div class="content horizontal center-justified layout">
+                                    <vaadin-grid id="material" aria-label="Column Grouping Example" items={{data.group_welfares}}>
+                                        <vaadin-grid-column width="50px" flex-grow="0">
+                                            <template class="header ">
+                                                <div class="text-center">ลำดับ</div>
+                                            </template>
+                                            <template>
+                                                <div class="text-center">[[_Obindex(index)]]
+                                                </div>
+                                            </template>
+                                        </vaadin-grid-column>
+
+                                        <vaadin-grid-column width="450px" flex-grow="0">
+                                            <template class="header ">สวัสดิการที่สามารถใช้ได้
+                                            </template>
+                                            <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime)]]
+
+                                            </template>
+                                        </vaadin-grid-column>
+
+                                        <vaadin-grid-column-group>
+                                            <template class="header">
+                                                <div class="text-center">จำนวนเงิน (บาท)</div>
+                                            </template>
+
+                                            <vaadin-grid-column width="calc(10% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">มีสิทธิ</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">[[formatNumber(item.budget)]]</div>
+                                                </template>
+                                            </vaadin-grid-column>
+
+                                            <vaadin-grid-column width="calc(10% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">ใช้สิทธิ</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">[[formatNumber(item.budget_use)]]</div>
+                                                </template>
+                                            </vaadin-grid-column>
+                                            <vaadin-grid-column width="calc(10% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">คงเหลือ</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">[[formatNumber(item.budget_balance)]]</div>
+                                                </template>
+                                            </vaadin-grid-column>
+                                        </vaadin-grid-column-group>
+
+                                        <vaadin-grid-column width="150px" flex-grow="0">
+                                            <template class="header ">
+                                                <div class="text-center">ดำเนินการ</div>
+                                            </template>
+                                            <template>
+                                                <div class="text-center">
+                                                    <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" disabled="[[checkWelfareFull(item)]]">ใช้สิทธิ</paper-button>
+                                                </div>
+                                            </template>
+                                        </vaadin-grid-column>
+
+                                    </vaadin-grid>
+                                    <!--<table class="gl-table-default">
                                     <thead class="table-head">
                                         <tr>
                                             <th style="width: 5%" rowspan="2">ลำดับ</th>
                                             <th style="width: 40%; text-align: left;" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
                                             <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
-                                            <!--<th style="width: 15%">จำนวนเงินที่ใช้สิทธิ (บาท)</th>
-                                <th style="width: 15%">จำนวนเงินที่คงเหลือ (บาท)</th>-->
                                             <th style="width: 15%" rowspan="2">ดำเนินการ</th>
                                         </tr>
                                         <tr>
-                                            <!--<th style="width: 5%">ลำดับ</th>-->
-                                            <!--<th style="width: 40%">สวัสดิการที่สามารถใช้ได้</th>-->
                                             <th style="width: 15%; text-align: right;" class="right">มีสิทธิ </th>
                                             <th style="width: 15%; text-align: right;" class="right">ใช้สิทธิ </th>
                                             <th style="width: 15%; text-align: right;" class="right">คงเหลือ </th>
-                                            <!--<th style="width: 15%">ขอใช้ (บาท)</th>-->
                                         </tr>
                                     </thead>
                                     <tbody class="table-body">
@@ -211,7 +275,8 @@
                                         </template>
 
                                     </tbody>
-                                </table>
+                                </table>-->
+                                </div>
                             </div>
                             <!--</paper-material>-->
                         </section>
@@ -220,75 +285,12 @@
                             <!--<paper-material elevation="1">-->
                             <div class="content horizontal center-justified layout">
                                 <history-welfare data={{data.history_welfare}}></history-welfare>
-                                <!--<table class="gl-table-default">
-                                    <thead class="table-head">
-                                        <tr>
-                                            <th style="width: 10%">ลำดับ</th>
-                                            <th style="width: 25%;text-align: left;">สวัสดิการที่ใช้</th>
-                                            <th style="width: 18%;text-align: right;">จำนวนเงินที่ใช้</th>
-                                            <th style="width: 10%">วันที่ใช้สิทธิ</th>
-                                            <th style="width: 10%">วันที่อนุมัติ</th>
-                                            <th style="width: 10%">สถานะ</th>
-                                            <th style="width: 25%">เอกสารแนบ</th>
-                                            <th style="width: 25%">จัดการ</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-body">
-                                        <template is="dom-repeat" items={{data.history_welfare}}>
-                                            <tr>
-                                                <td>[[_Obindex(index)]]</td>
-                                                <td style="text-align: left;">[[item.description]] </td>
-                                                <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
-                                                <td>
-                                                    [[toThaiDate(item.date_use)]]
-                                                </td>
-                                                <td>
-                                                    <div style="text-align: center">
-                                                        <template is="dom-if" if={{!item.date_approve}}>
-                                                            รอการอนุมัติ
-                                                        </template>
-                                                        <template is="dom-if" if={{item.date_approve}}>
-                                                            [[toThaiDate(item.date_approve)]]
-                                                        </template>
-                                                    </div>
-                                                </td>
-                                                <td>[[item.status]]</td>
-                                                <td style="text-align: left;">
-                                                    <template is="dom-if" if={{item.file}}>
-                                                        <template is="dom-repeat" items={{item.file}}>
-                                                            <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
-                                                        </template>
-                                                    </template>
-                                                    <template is="dom-if" if={{_ObIsHave(item.file)}}>
-                                                        <div style="text-align: center;">-</div>
-                                                    </template>
-                                                </td>
-                                                <td style="text-align: left;">
-
-                                                    <paper-button raised class="gl-btn-danger" on-tap="btnCancel" data="[[item]]">ยกเลิก</paper-button>
-
-                                                </td>
-                                            </tr>
-                                        </template>
-                                        <template is="dom-if" if={{_ObIsHave(data.history_welfare)}}>
-                                            <tr>
-                                                <td colspan="8" style="text-align: center">ไม่มีข้อมูล</td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </table>-->
                             </div>
                             <!--</paper-material>-->
                         </section>
                     </main>
-                    <!--<div class="head-text">
-                        สวัสดิการที่ได้รับสิทธิ
-                    </div>-->
 
                 </gl-form-panel-body>
-                <!--<gl-form-panel-footer label="Footer" set-padding="10px">
-                
-                </gl-form-panel-footer>-->
             </gl-form-panel>
             <paper-dialog id="welfare_budget" modal>
                 <admin-dialog-use-welfare id="admin-dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-welfare>
@@ -380,8 +382,14 @@
                 return status == 'request'
             },
             checkWelfareFull(data) {
-                if (data.budget_balance <= 0)
-                    return true
+                try {
+                    // console.log(data);
+                    if (data.budget_balance <= 0)
+                        return true
+                } catch (e) {
+                    // console.log(e);
+                }
+
             },
             // btnCancel(e) {
             //     // console.log(e.currentTarget.data);
@@ -416,7 +424,7 @@
             usewelfare(e) {
                 let data = new Object();
                 let item = e.model.item
-                console.log(e.model.item);
+                // console.log(e.model.item);
                 data.title = item.group_welfare_name + " " + item.welfare_name
                 data.emp_id = this.data.id
                 data.personal_id = this.data.personal_id
