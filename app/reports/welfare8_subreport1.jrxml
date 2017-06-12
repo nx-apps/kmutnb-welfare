@@ -6,6 +6,7 @@
 	<field name="date_approve" class="java.lang.String"/>
 	<field name="welfare_name" class="java.lang.String"/>
 	<field name="budget_use" class="java.lang.Double"/>
+	<field name="description_detail" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -51,7 +52,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{welfare_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{description_detail}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="128" height="20" uuid="b425efaa-9cb2-4546-96cc-d6483765923f"/>
