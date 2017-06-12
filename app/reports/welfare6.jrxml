@@ -20,7 +20,8 @@
 	<field name="name" class="java.lang.String"/>
 	<field name="date_use" class="java.lang.String"/>
 	<field name="budget_use" class="java.lang.Double"/>
-	<field name="budget" class="java.lang.Double"/>
+	<field name="budget_cover" class="java.lang.Double"/>
+	<field name="budget_balance" class="java.lang.Double"/>
 	<variable name="CURRENT_PAGE" class="java.lang.Integer" resetType="None" calculation="DistinctCount">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
@@ -29,13 +30,10 @@
 		<variableExpression><![CDATA[$F{budget_use}]]></variableExpression>
 	</variable>
 	<variable name="SUM_BUDGET" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$F{budget}]]></variableExpression>
-	</variable>
-	<variable name="SUB_BUDGET" class="java.lang.Double">
-		<variableExpression><![CDATA[$F{budget}-$F{budget_use}]]></variableExpression>
+		<variableExpression><![CDATA[$F{budget_cover}]]></variableExpression>
 	</variable>
 	<variable name="SUM_SUB_BUDGET" class="java.lang.Double" calculation="Sum">
-		<variableExpression><![CDATA[$V{SUB_BUDGET}]]></variableExpression>
+		<variableExpression><![CDATA[$F{budget_balance}]]></variableExpression>
 	</variable>
 	<group name="GP">
 		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
@@ -339,7 +337,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{budget}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{budget_cover}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="365" y="0" width="95" height="20" uuid="791bd38e-f6d4-4ec0-8c89-784a95cee988"/>
@@ -367,7 +365,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUB_BUDGET}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{budget_balance}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="49" height="20" uuid="2176eb88-3f88-48c5-84bf-d7dcb6def9e8"/>
