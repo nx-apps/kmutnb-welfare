@@ -349,56 +349,19 @@ exports.listHistory = function (req, res) {
         //  return Math.abs(ageDate.year() - 1970);
         return ageDate.year().sub(1970)
     }
-    // r.expr({
-    //     employee: r.db('welfare').table('employee').getAll('ทำงาน', { index: 'active_name' })
-    //         .without('active_name', 'dob', 'emp_no')
-    //         .coerceTo('Array'),//s.filter({id:'d78ec1f4-19fc-4908-ac02-efb003733b82'}),
-    //     group_welfare: r.db('welfare').table('group_welfare').getAll(2017, { index: 'year' })
-    //         .filter({ status_approve: true })
-    //         .merge((welfares) => {
-    //             return {
-    //                 welfare: r.db('welfare').table('welfare').getAll(welfares('id'), { index: 'group_id' }).coerceTo('Array')
-    //                     .merge(function (wel_merge) {
-    //                         return {
-    //                             condition: wel_merge('condition')
-    //                                 .eqJoin('field', r.db('welfare').table('condition')).pluck("left", { right: "field" }).zip()
-    //                                 .coerceTo('array')
-    //                         }
-    //                     })
-    //             }
-    //         })
-    //         .coerceTo('Array'),
-    // })
-    //     .merge((count) => {
-    //         return count('group_welfare').merge((countCon) => {
-    //             return countCon('welfare').forEach((wel_merge) => {
-    //                 return {
-    //                     countCon: wel_merge('condition').count(),
-    //                     // employee: count('employee')
-    //                     employee: r.branch(wel_merge('condition').count().eq(0),
-    //                         [count('employee').pluck("id")],
-    //                         wel_merge('condition').map(function (con_map) {
-    //                             return count('employee').filter(function (f) {
-    //                                 return checkLogic(con_map, f)
-    //                             }).coerceTo('array').pluck('id')
-    //                         })
-    //                     )
-    //                 }
-    //             })
-    //         })
-    //     })
     let params = req.query
     params.personal_name = params.personal_name || ''
-    // department_id
-    // faculty_id
-    // type_employee_id
-    // personal_id
     // console.log('sssssssssssssssssssss', params.group_id === undefined)
     let querys = ''
     if (req.query.group_id === undefined) {
         querys = r.db('welfare').table('employee')
+            .merge((name) => {
+                return {
+                    full_name: name('firstname').add("").add(name('lastname'))
+                }
+            })
             .filter(
-            r.row('firstname').match(params.personal_name)
+            r.row('full_name').match(params.personal_name)
             )
             .filter({
                 personal_id: params.personal_id,
@@ -424,8 +387,13 @@ exports.listHistory = function (req, res) {
         querys = r.expr({
             employees: r.db('welfare').table('employee')
                 .without('active_name', 'dob', 'emp_no')
+                .merge((name) => {
+                    return {
+                        full_name: name('firstname').add("").add(name('lastname'))
+                    }
+                })
                 .filter(
-                r.row('firstname').match(params.personal_name)
+                r.row('full_name').match(params.personal_name)
                 )
                 .filter({
                     personal_id: params.personal_id,
@@ -434,9 +402,6 @@ exports.listHistory = function (req, res) {
                     faculty_id: params.faculty_id,
                     active_id: params.active_id
                 })
-                // .filter(
-                //     r.row('firstname').match(params.personal_name)
-                // )
 
                 .coerceTo('Array'),
             group_welfare: r.db('welfare').table('group_welfare').get(params.group_id)
@@ -463,7 +428,8 @@ exports.listHistory = function (req, res) {
                                     })
                                 )
                             }
-                        }).coerceTo('array')
+                        })
+                        .coerceTo('array')
                         .merge(function (wel_merge) {
                             return {
                                 employee: wel_merge('employee').reduce(function (l, r) {
@@ -542,8 +508,8 @@ exports.listHistory = function (req, res) {
             })
             .merge((use) => {
                 return {
-                    history_welfare_id: r.branch(use('budget_use').eq([]),'',
-                    use('budget_use')(0)('id')),//.reduce(function (l, r) {
+                    history_welfare_id: r.branch(use('budget_use').eq([]), '',
+                        use('budget_use')(0)('id')),//.reduce(function (l, r) {
                     //     return l.add(r)
                     // }),//[0],//('id'),
                     budget_use: use('budget_use').sum('budget_use'),
