@@ -24,7 +24,7 @@
             <!--<div class="flex-2" style=" margin-right: 30px">{{getGroupWelfare(data.year)}}
                 <iron-input><input placeholder="type=date" type="date" value="{{data.datetest::input}}"></iron-input>
             </div>-->
-
+{{data.group_id}}///
             <div class="flex-2" style=" margin-right: 30px">{{getWelareName(data.group_id)}}
                 <gl-combo-box label="สวัสดิการ" placeholder="สวัสดิการทั้งหมด" items="{{list_welfare}}" item-label-path="label" item-value-path="id"
                     value="{{data.group_id}}">
