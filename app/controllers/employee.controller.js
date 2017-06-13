@@ -182,7 +182,7 @@ exports.update = function (req, res) {
     // console.log(req.body);
     r.db('welfare').table('employee')
         .get(req.body.id)
-        // .update(req.body)
+        .update(req.body)
         .run()
         .then(function (result) {
             res.json(result);
