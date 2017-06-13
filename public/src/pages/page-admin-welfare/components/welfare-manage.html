@@ -86,10 +86,10 @@
                 <div class="horizontal end-justified layout">
                     <template is="dom-if" if={{!_ObIsHave(list.welfare)}}>
                         <template is="dom-if" if={{!list.status_approve}}>
-                            <paper-button raised style="margin:20px;" class="gl-btn-success" on-tap="welfare_approve">อนุมัติใช้งาน</paper-button>
+                            <paper-button raised style="margin:20px;" class="gl-btn-success" on-tap="welfare_approve">เปิดการใช้งาน</paper-button>
                         </template>
                         <template is="dom-if" if={{list.status_approve}}>
-                            <paper-button raised style="margin:20px;" class="gl-btn-danger" on-tap="welfare_unapprove">ยกเลิกการใช้งาน</paper-button>
+                            <paper-button raised style="margin:20px;" class="gl-btn-danger" on-tap="welfare_unapprove">ปิดการใช้งาน</paper-button>
                         </template>
                     </template>
                 </div>
