@@ -26,7 +26,7 @@
             <div class="flex-2">
                 [[changeString2Num(data.*,'budget_use')]] [[checkBudget(data.*)]]
                 <gl-form-input id="budget_use" no-label-float allowed-pattern="[0-9||,||.]" format-number="on" value="{{data.budget_use}}"
-                    disabled="[[disabled]]" class="required" required>
+                    disabled="[[disabled]]" class="required" required on-blur="checkmoney">
                     <div suffix>บาท</div>
                 </gl-form-input>
             </div>
@@ -84,11 +84,20 @@
                 })
 
             },
+            checkmoney(e) {
+                if (this.data.budget_use > this.data.budget_cover)
+                    this.set('data.budget_use', this.data.budget_cover)
+                if (this.data.onetime) {
+                    this.set('data.budget_use', this.data.budget_cover)
+                    // //console.log(111);
+                }
+            },
             checkBudget(e) {
                 try {
                     //  //console.log(this.$$('#budget_use').validateForm('.required'));
                     // //console.log(this.data.budget_use);
-                    // //console.log(this.data.budget_cover);
+                    // console.log(this.data.budget_cover);
+                    // this.set('data.budget_use', this.data.budget_cover)
                     if (this.data.budget_use > this.data.budget_cover)
                         this.set('data.budget_use', this.data.budget_cover)
                     if (this.data.onetime) {
