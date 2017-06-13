@@ -116,7 +116,7 @@ exports.listId = function (req, res) {
                 group: r.db('welfare').table('group_welfare').get(req.params.id)
                     .merge(function (m) {
                         return {
-                            year: m('year').add(543),
+                            year: m('year'),
                             start_date: m('start_date').toISO8601().split('T')(0),
                             end_date: r.branch(m('end_date').ne(null), m('end_date').toISO8601().split('T')(0), null),
                             cal_date: r.branch(m('cal_date').ne(null), m('cal_date').toISO8601().split('T')(0), null),
@@ -162,7 +162,6 @@ exports.insert = function (req, res) {
         }
         req.body = Object.assign(req.body,
             {
-                year: req.body.year - 543,
                 start_date: r.ISO8601(req.body.start_date).inTimezone('+07')
             }
         );
@@ -199,7 +198,6 @@ exports.update = function (req, res) {
     }
     req.body = Object.assign(req.body,
         {
-            year: req.body.year - 543,
             start_date: r.ISO8601(req.body.start_date).inTimezone('+07')
         }
     );
@@ -238,7 +236,7 @@ exports.groupYear = function (req, res) {
         .ungroup()
         .map(function (y_map) {
             return {
-                year: y_map('group').add(543)
+                year: y_map('group')
             }
         })
         .run()
@@ -272,24 +270,24 @@ exports.groupByYear = function (req, res) {
         })
 }
 exports.adminEmployee = function (req, res) {
-    var checkLogic = function (select, row) {
-        return r.branch(
-            select('logic').eq('=='),
-            row(select('field_name')).eq(select('value')),
-            select('logic').eq('>'),
-            row(select('field_name')).gt(select('value')),
-            select('logic').eq('>='),
-            row(select('field_name')).ge(select('value')),
-            select('logic').eq('<'),
-            row(select('field_name')).lt(select('value')),
-            select('logic').eq('<='),
-            row(select('field_name')).le(select('value')),
-            row(select('field_name')).ne(select('value'))
-        )
-    };
+    // var checkLogic = function (select, row) {
+    //     return r.branch(
+    //         select('logic').eq('=='),
+    //         row(select('field_name')).eq(select('value')),
+    //         select('logic').eq('>'),
+    //         row(select('field_name')).gt(select('value')),
+    //         select('logic').eq('>='),
+    //         row(select('field_name')).ge(select('value')),
+    //         select('logic').eq('<'),
+    //         row(select('field_name')).lt(select('value')),
+    //         select('logic').eq('<='),
+    //         row(select('field_name')).le(select('value')),
+    //         row(select('field_name')).ne(select('value'))
+    //     )
+    // };
     var r = req.r;
     r.expr({
-        employees: r.db('welfare').table('employee').filter({ active_name: 'ทำงาน' })
+        employees: r.db('welfare').table('employee')//.filter({ active_name: 'ทำงาน' })
             /*.eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: 'active_code' }).zip()
             .filter({ active_code: 'WORK' })*/
             .coerceTo('array')
