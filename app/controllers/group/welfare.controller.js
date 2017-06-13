@@ -135,6 +135,7 @@ exports.listId = function (req, res) {
                                             .pluck('emp_id').distinct().count()
                                     }
                                 })
+                                .orderBy('condition')
                         }
                     })
             }
