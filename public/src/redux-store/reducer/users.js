@@ -33,12 +33,12 @@ const clearData = (data, callback) => {
     }
     if (data.end_work_date !== null && data.end_work_date !== '') {
         // log
-        newData.end_work_date = data.end_work_date+'T00:00:00.000+07:00'
+        newData.end_work_date = data.end_work_date + 'T00:00:00.000+07:00'
     } else {
         newData.end_work_date = data.end_work_date
     }
     // console.log();
-    newData.birthdate = data.birthdate+'T00:00:00.000+07:00'
+    newData.birthdate = data.birthdate + 'T00:00:00.000+07:00'
     callback(newData)
     // callback(data)
 }
@@ -149,32 +149,24 @@ export function usersAction(store) {
         },
         USER_EDIT: function (data) {
             // console.log(data)
-            this.fire('toast', {
-                status: 'openDialog',
-                text: 'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
-                confirmed: (result) => {
-                    if (result == true) {
-                        this.fire('toast', { status: 'load' })
-                        clearData(data, (newData) => {
-                            this.fire('toast', { status: 'load' });
-                            newData.id = data.id
-                            // console.log(newData);
-                            axios.put(`/employee/update`, newData)
-                                .then(res => {
-                                    this.USER_GET_WELFARES(newData.id,true);
-                                    this.fire('toast', {
-                                        status: 'success', text: 'บันทึกสำเร็จ',
-                                        callback: () => {
-                                            this.$$('panel-right').close();
-                                        }
-                                    });
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                })
-                        })
-                    }
-                }
+            this.fire('toast', { status: 'load' })
+            clearData(data, (newData) => {
+                this.fire('toast', { status: 'load' });
+                newData.id = data.id
+                // console.log(newData);
+                axios.put(`/employee/update`, newData)
+                    .then(res => {
+                        this.USER_GET_WELFARES(newData.id, true);
+                        this.fire('toast', {
+                            status: 'success', text: 'บันทึกสำเร็จ',
+                            callback: () => {
+                                this.$$('panel-right').close();
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             })
 
 

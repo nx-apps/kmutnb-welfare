@@ -38,8 +38,7 @@
                                 <label for="personal_id">เลขประจำตัวประชาชน :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]" class="required" required
-                                    ></gl-form-input>
+                                <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]" class="required" required></gl-form-input>
                             </div>
 
                         </div>
@@ -222,7 +221,7 @@
                 <gl-form-panel-footer label="" set-padding="0px 10px 20px 0px">
                     <div class="horizontal end-justified layout">
                         <div hidden="[[disabled]]">
-                            <paper-button raised  on-tap="cancle">ยกเลิก</paper-button>
+                            <paper-button raised on-tap="cancle">ยกเลิก</paper-button>
                             <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
                         </div>
                     </div>
@@ -293,7 +292,19 @@
                     this.data.type_employee_name = getName(this.type_employee, this.data.type_employee_id).type_employee_name
                     this.data.faculty_name = getName(this.faculty, this.data.faculty_id).faculty_name
 
-                    this.dispatchAction('EMPLOYEE_UPDATE', this.data);
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
+                        confirmed: (result) => {
+                            if (result == true) {
+                                this.dispatchAction('EMPLOYEE_UPDATE', this.data).then((item)=>{
+                                   this.disabled = true; 
+                                })
+                            }
+                        }
+                    })
+
+                    // this.disabled = true;
                 } else {
                     this.fire('toast', {
                         status: 'error', text: 'กรุณากรอกข้อมูลให้ครบ',

@@ -269,37 +269,28 @@ export function userWelfareAction(store) {
         },
         EMPLOYEE_UPDATE(data) {
             // console.log(data);
-            this.fire('toast', {
-                status: 'openDialog',
-                text: 'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
-                confirmed: (result) => {
-                    if (result == true) {
-                        // this.disabled = true;
-                        this.fire('toast', { status: 'load' })
-                        clearData(data, (newData) => {
-                            // console.log(newData);
-                            // this.fire('toast', { status: 'load' });
-                            newData.id = data.id
-                            console.log(newData);
-                            axios.put(`/employee/update`, newData)
-                                .then(res => {
-                                    this.fire('toast', {
-                                        status: 'success', text: 'บันทึกสำเร็จ',
-                                        callback: () => {
-                                            this.fire('back-page');
-                                            this.EMPLOYEE_GET_WELFARES(newData.id);
-                                            // this.LIST_EMPLOYEE_WELFARE(newData.id);
-                                            this.EMPLOYEE_USE_SELETE_WELFARE();
-                                            // this.LIST_USER();
-                                        }
-                                    });
-                                })
-                                .catch(err => {
-                                    console.log(err);
-                                })
-                        })
-                    }
-                }
+            this.fire('toast', { status: 'load' })
+           return  clearData(data, (newData) => {
+                // console.log(newData);
+                // this.fire('toast', { status: 'load' });
+                newData.id = data.id
+                // console.log(newData);
+                axios.put(`/employee/update`, newData)
+                    .then(res => {
+                        this.fire('toast', {
+                            status: 'success', text: 'บันทึกสำเร็จ',
+                            callback: () => {
+                                this.fire('back-page');
+                                this.EMPLOYEE_GET_WELFARES(newData.id);
+                                // this.LIST_EMPLOYEE_WELFARE(newData.id);
+                                this.EMPLOYEE_USE_SELETE_WELFARE();
+                                // this.LIST_USER();
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
             })
         },
         EMPLOYEE_UPDATE_RETIREMENT(data) {
