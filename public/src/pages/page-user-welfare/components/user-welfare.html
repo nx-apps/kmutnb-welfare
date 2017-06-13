@@ -118,7 +118,7 @@
         </div>
 
         <main>
-            <input id="tab1" type="radio" name="tabs" checked>
+            <input id="tab1" type="radio" name="tabs" checked on-click="setVaadin">
             <label for="tab1">สวัสดิการที่ได้รับสิทธิ</label>
 
             <input id="tab2" type="radio" name="tabs">
@@ -224,6 +224,12 @@
                     statePath: 'userWelfare.list',
                     type: Number,
                 },
+            },
+            setVaadin() {
+                // this.async(() => {
+                // //console.log(this.$$('#material'));
+                this.$$('#material').notifyResize()
+                // }, 500);
             },
             checkOnce(status) {
                 // //console.log(status);
