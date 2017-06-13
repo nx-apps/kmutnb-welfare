@@ -93,7 +93,7 @@ export function groupWelfareAction(store) {
                         status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                             // console.log('success');
                             this.LIST_WELFARE(yearNow);
-                            this.selectYear = yearNow+543;
+                            this.selectYear = yearNow;
                             this.clearData();
                             this.GET_YEAR();
                             // this.fire('closePanel');
@@ -117,7 +117,7 @@ export function groupWelfareAction(store) {
                             // console.log('success');
                             this.$$('panel-right').close();
                             this.LIST_WELFARE(year);
-                            this.selectYear = year+543;
+                            this.selectYear = year;
                             this.GET_YEAR();
                         }
                     });
@@ -292,7 +292,7 @@ export function groupWelfareAction(store) {
                             // console.log('success');
                             this._closeDialog();
                             this.LIST_WELFARE(data.year);
-                            this.selectYear = data.year+543;
+                            this.selectYear = data.year;
                             this.GET_YEAR();
                         }
                     });

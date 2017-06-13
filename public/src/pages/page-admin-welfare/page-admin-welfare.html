@@ -227,8 +227,8 @@
             },
             nylonPageActive: function () {
                 let year = new Date().getFullYear();
-                var newYear = year + 543;
-                this.selectYear = newYear;
+                // var newYear = year + 543;
+                this.selectYear = year;
                 // this.WELFARE_LIST();
                 this.GET_YEAR();
             },
@@ -249,7 +249,7 @@
             clearData: function () {
                 var getYear = new Date().getFullYear();
                 this.data = {
-                    year: getYear + 543,
+                    year: getYear,
                     group_welfare_name: '',
                     start_date: getYear + '-01-01',
                     end_date: getYear + '-12-31',
@@ -282,12 +282,12 @@
             },
             changeYear: function (e) {
                 if(typeof e.detail == 'undefined'){
-                    var year = e - 543;
+                    var year = e;
                     this.LIST_WELFARE(year);
                 }
                 else{
                     var year = e.detail;
-                    this.selectYear = year+543;
+                    this.selectYear = year;
                     this.LIST_WELFARE(year);
                 }
             },
@@ -295,7 +295,7 @@
                 this.select_year = year;
             },
             _print: function () {
-                var year = this.select_year-543;
+                var year = this.select_year;
                 window.open('./api/report/welfare9?year='+year);
             },
             _openDialog:function(){
@@ -334,7 +334,7 @@
                 var check = this.validateForm('.checkValidate');
                 if(check == true){
                 var obj = {};
-                    obj.year = parseInt(this.yearClone.year)-543;
+                    obj.year = parseInt(this.yearClone.year);
                     obj.cloneGroupid = this.cloneGroupid;
                     this.dispatchAction('INSERT_CLONE_DATA',obj);
                 }else{
