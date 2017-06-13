@@ -147,16 +147,16 @@
                     statePath: 'users.select_welefares',
                     observer:'_set'
                 },
-                // year: {
-                //     statePath: 'userWelfare.list',
-                //     type: Number,
-                // },
+                year: {
+                    statePath: 'userWelfare.list',
+                    type: Number,
+                },
             },
             listeners: {
                 '_getReloadData': 'gerYearWelfare'
             },
             _set(data){
-                // console.log(data);
+                console.log(data);
             },  
             setYear(years) {
                 try {
@@ -168,8 +168,8 @@
             },
             _obRvpFund(data) {
                 // console.log(data);
-                this.dispatchAction('USER_RVP_FUND', data.personal_id)
-                this.dispatchAction('FUND_RVD_GET_LIST', true)
+                // this.dispatchAction('USER_RVP_FUND', data.personal_id)
+                // this.dispatchAction('FUND_RVD_GET_LIST', true)
             },
             editData() {
                 this.fire('_get-user-edit', this.data)
