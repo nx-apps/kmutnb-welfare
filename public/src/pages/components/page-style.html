@@ -69,13 +69,32 @@
                 content: ":";
             }
 
+            vaadin-date-picker {
+                /*--primary-color: var(--paper-indigo-700);*/
+                /*--dark-theme-background-color: #fff;*/
+                /*--dark-theme-secondary-color: #737373;*/
+                /*--primary-text-color: #abc;*/
+                /*--secondary-text-color: #bcbcbc;*/
+                /*--light-primary-color: var(--paper-indigo-500);*/
+            }
+
+            vaadin-date-picker[disabled] {
+                --primary-color: var(--paper-indigo-700);
+                /*--dark-theme-background-color: #fff;*/
+                /*--dark-theme-secondary-color: #737373;*/
+                /*--primary-text-color: #abc;*/
+                /*--secondary-text-color: #bcbcbc;*/
+                /*--light-primary-color: var(--paper-indigo-500);*/
+            }
+
             vaadin-grid#material {
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
                 --divider-color: rgba(0, 0, 0, var(--dark-divider-opacity));
                 --vaadin-grid-cell: {
                     padding: 0;
-                };
+                }
+                ;
                 --vaadin-grid-header-cell: {
                     height: 64px;
                     color: rgba(0, 0, 0, var(--dark-secondary-opacity));
@@ -83,21 +102,25 @@
                     font-weight: bold;
                     background-color: #F1F1F1;
                     /*border: 0.5px solid rgba(0, 0, 0, var(--dark-secondary-opacity));*/
-                };
+                }
+                ;
                 --vaadin-grid-body-cell: {
                     height: 48px;
                     color: rgba(0, 0, 0, var(--dark-primary-opacity));
                     word-warp font-size: 17px;
-                };
+                }
+                ;
                 --vaadin-grid-footer-cell: {
                     height: 64px;
                     color: rgba(0, 0, 0, var(--dark-secondary-opacity));
                     font-size: 16px;
                     font-weight: bold;
-                };
+                }
+                ;
                 --vaadin-grid-body-row-hover-cell: {
                     background-color: var(--paper-grey-200);
-                };
+                }
+                ;
                 --vaadin-grid-body-row-selected-cell: {
                     background-color: var(--paper-grey-100);
                 }
