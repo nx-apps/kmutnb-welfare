@@ -106,7 +106,7 @@
                     </div>
                     <div class="flex-2">
                         <div class="horizontal end-justified layout">
-                            <div class="flex-2">
+                            <div class="flex-3">
                                 <gl-form-dropdown-menu always-float-label label="ประเภทรายงาน" placeholder="ประเภทรายงาน" style="margin-top:15px;width:100%;">
                                     <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_id}}">
                                         <template is="dom-repeat" items={{typeReport}}>
@@ -115,7 +115,7 @@
                                     </paper-menu>
                                 </gl-form-dropdown-menu>
                             </div>
-                            <div class="flex-2" style="margin-left:5px;">
+                            <div class="flex" style="margin-left:5px;">
                                 <gl-form-dropdown-menu always-float-label label="รูปแบบรายงาน" placeholder="รูปแบบรายงาน" style="margin-top:15px;width:100%;">
                                     <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_type_seleted}}">
                                         <template is="dom-repeat" items={{report_type}}>
