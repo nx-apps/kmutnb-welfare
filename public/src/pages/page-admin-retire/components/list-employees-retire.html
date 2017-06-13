@@ -180,7 +180,7 @@
                                 console.log(data);
                                 this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
                             })
-                            // this.dispatchAction('RETIER_SEARCH', this.calDate);
+                            this.dispatchAction('RETIER_SEARCH', this.calDate);
                             window.open('./api/report/retire?date=' + this.calDate);
                             // //console.log(newArray);
                         }

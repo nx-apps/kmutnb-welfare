@@ -299,7 +299,7 @@ export function userWelfareAction(store) {
                 // console.log(newData);
                 // this.fire('toast', { status: 'load' });
                 newData.id = data.id
-                console.log(newData);
+                // console.log(newData);
                 axios.put(`/employee/update`, newData)
                     .then(res => {
                         this.fire('toast', {

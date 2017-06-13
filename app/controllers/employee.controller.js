@@ -173,8 +173,8 @@ exports.update = function (req, res) {
     req.body.start_work_date = r.ISO8601(req.body.start_work_date)
     req.body.birthdate = r.ISO8601(req.body.birthdate)
 
-    console.log(111111111111111111);
-    console.log(req.body);
+    // console.log(111111111111111111);
+    // console.log(req.body);
     // console.log(req.body.start_work_date);
     // console.log(req.body.end_work_date);
     // req.body.start_work_date = r.ISO8601(req.body.start_work_date)
