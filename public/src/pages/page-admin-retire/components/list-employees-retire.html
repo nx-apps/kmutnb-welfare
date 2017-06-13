@@ -103,7 +103,9 @@
             </vaadin-grid-column>
         </vaadin-grid>
         <div hidden="{{paperFab}}">
-            <paper-fab icon="send" on-tap="_confirmRetier"></paper-fab>
+            <paper-fab id="_confirmRetier" icon="send" on-tap="_confirmRetier"></paper-fab>
+            <paper-tooltip position="left" class="custom" for="_confirmRetier">เกษียณ</paper-tooltip>
+
         </div>
     </template>
     <script>
@@ -179,7 +181,7 @@
                                 this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
                             })
                             // this.dispatchAction('RETIER_SEARCH', this.calDate);
-                             window.open('./api/report/retire?date=' + this.calDate);
+                            window.open('./api/report/retire?date=' + this.calDate);
                             // //console.log(newArray);
                         }
                     }
