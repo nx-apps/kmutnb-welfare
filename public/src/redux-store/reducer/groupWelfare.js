@@ -268,7 +268,6 @@ export function groupWelfareAction(store) {
             store.dispatch({ type: 'CLEAR_WELFARE_ID', payload: [] })
         },
         CLONE_DATA:function (year){
-            // console.log(year);
             axios.get('/group/welfare/year/' + year)
             .then((result) => {
                 // console.log(result.data);
@@ -276,7 +275,7 @@ export function groupWelfareAction(store) {
                     return val.check = false
                 })
                 var data = result.data.filter((item) => {
-                    return item.status_approve == true
+                    return item.status_approve == true && item.year !== 9999
                 })
                 store.dispatch({ type: 'CLONE_DATA', payload: data })
             })
