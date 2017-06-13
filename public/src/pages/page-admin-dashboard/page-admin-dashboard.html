@@ -142,11 +142,11 @@
         <paper-dialog id="report" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
-                    <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_start}}"></vaadin-date-picker>
+                    <vaadin-date-picker always-float-label label="วันที่" value="{{date.date_start}}"></vaadin-date-picker>
                 </div>
                 <div style="margin: 31px 10px;">ถึง</div>
                 <div class="flex" style=" margin-right: 30px">
-                    <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_end}}"></vaadin-date-picker>
+                    <vaadin-date-picker always-float-label label="วันที่" value="{{date.date_end}}"></vaadin-date-picker>
                 </div>
             </div>
             <div class="flex horizontal end-justified layout buttons">
@@ -170,6 +170,9 @@
             },
             properties: {
                 data: {
+                    type: Object,
+                },
+                date: {
                     type: Object,
                     value: { date_start: '', date_end: '' }
                 },
@@ -242,8 +245,9 @@
                 let date = new Date()
                 let today = date.toISOString().split('T')[0]
                 let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
-                this.set('data.date_start', today)
-                this.set('data.date_end', tomorrow)
+                this.set('data','')
+                this.set('data.date', today)
+                this.set('data.date', tomorrow)
                 // console.log(this.data.date_start);
 
                 //     data.date_end

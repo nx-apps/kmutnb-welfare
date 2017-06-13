@@ -120,9 +120,10 @@ export function userWelfareAction(store) {
                     result.data.map((item) => {
                         // console.log(item.group_use === true);
                         if (item.group_use === true) {
-                            item.group_welfare_name = item.group_welfare_name + ' (แบบกลุ่ม)'
+                            item.label = item.group_welfare_name + ' (แบบกลุ่ม)'
+                        }else {
+                            item.label = item.group_welfare_name
                         }
-
                     })
                     // console.log(JSON.stringify(result.data));
                     store.dispatch({ type: 'WELFARE_LIST', payload: result.data })

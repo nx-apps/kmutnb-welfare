@@ -104,7 +104,7 @@
             properties: {
                 list_welfare: {
                     statePath: 'userWelfare.list_id',
-                    observer: 'setCombo'
+                    // observer: 'setCombo'
                 },
                 list_faculty: {
                     statePath: 'commonData.faculty'
@@ -124,13 +124,6 @@
                     value: {},
                     notify: true
                 }
-            },
-            setCombo(data) {
-                // //console.log(data);
-                let newWelFare = data.map((el) => {
-                    el.label = el.group_welfare_name
-                })
-                return newWelFare
             },
             getWelareName(group_id){
                 
