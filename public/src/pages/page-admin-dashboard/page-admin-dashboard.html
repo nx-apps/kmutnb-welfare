@@ -56,7 +56,8 @@
             vaadin-date-picker {
                 margin-top: 0.5px;
             }
-            .print{
+
+            .print {
                 margin-top: 15px;
             }
         </style>
@@ -170,7 +171,7 @@
             properties: {
                 data: {
                     type: Object,
-
+                    value: { date_start: '', date_end: '' }
                 },
                 typeReport: {
                     type: Array,
@@ -238,6 +239,14 @@
             nylonPageActive: function () {
                 // this.TESTS();
                 this.WELFARE_LISTS();
+                let date = new Date()
+                let today = date.toISOString().split('T')[0]
+                let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
+                this.set('data.date_start', today)
+                this.set('data.date_end', tomorrow)
+                // console.log(this.data.date_start);
+
+                //     data.date_end
                 // WELFARE_LIST
                 // this.dispatchAction('WELFARE_LIST');
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
