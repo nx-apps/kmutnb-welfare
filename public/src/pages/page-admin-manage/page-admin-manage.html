@@ -488,7 +488,9 @@
             },
             getWelfareHave() {
                 // /api/report/emp_welfare?id=000183c1-23db-4af2-937f-3e359400e33c
-                window.open('/api/report/emp_welfare?id=' + this.data.id);
+                let year = this.year[this.year.length - 1]
+                console.log(year);
+                window.open('/api/report/emp_welfare?id=' + this.data.id+'&year='+year.year);
             }
         });
     </script>

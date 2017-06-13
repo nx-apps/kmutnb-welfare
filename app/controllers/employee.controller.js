@@ -312,12 +312,6 @@ exports.welfaresYear = function (req, res) {
                 start_work_date: r.branch(item('start_work_date').eq(''),
                     item('start_work_date'), item('start_work_date').toISO8601().split('T')(0))
                 ,
-                // r.balance(item('start_work_date').eq(""),
-                //         item('start_work_date'),
-                //     r.balance(item('start_work_date').eq(null), item('start_work_date'),
-                //         item('start_work_date').toISO8601().split('T')(0)
-                //     ), item('start_work_date').toISO8601().split('T')(0)),
-                // item('start_work_date').toISO8601().split('T')(0),
                 end_work_date: r.branch(item('end_work_date').eq(null),
                     item('end_work_date'), item('end_work_date').toISO8601().split('T')(0))
                 ,

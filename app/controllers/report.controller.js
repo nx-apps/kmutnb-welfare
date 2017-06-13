@@ -2169,14 +2169,14 @@ exports.employee = function (req, res) {
 }
 exports.emp_welfare = function (req, res) {
     var param = req.query;
-    param.year = Number(param.year) + 543;
+    param.year = Number(param.year);
 
     var me = r.db('welfare').table('employee').getAll(param.id, { index: 'id' }).coerceTo('array')
     me
         .merge(function (wel_merge) {
             return {
                 employee_name: wel_merge('prefix_name').add(wel_merge('firstname')).add('  ', wel_merge('lastname')),
-                group: r.db('welfare').table('welfare').getAll('year', 9999, { index: 'year' }).coerceTo('array')
+                group: r.db('welfare').table('welfare').getAll(param.year, 9999, { index: 'year' }).coerceTo('array')
                     .merge(function (m) {
                         return {
                             pass: getEmployee(me, m('condition')).ne([])

@@ -205,9 +205,12 @@
                     // statePath: 'users.select',
                     // observer:'checkdd',
                     notify: true,
-                    
-                },
 
+                },
+                // year: {
+                //     statePath: 'userWelfare.list',
+                //     type: Number,
+                // },
                 // academic:{
                 //     statePath:'commonData.academic'
                 // },
@@ -246,9 +249,9 @@
                 'setGender(data.gender_id)',
                 'setPrefixname(data.prefix_id)',
             ],
-            checkdd(data){
+            checkdd(data) {
                 console.log(data);
-            },  
+            },
             setGender(gender_id) {
                 try {
                     console.log(gender_id);

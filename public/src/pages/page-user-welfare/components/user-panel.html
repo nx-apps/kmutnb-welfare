@@ -92,6 +92,7 @@
             //        this.dispatchAction('USER_INSERT',this.data);
             // },
             saveData() {
+                // console.log(this.$$('#user-manage').validateForm('.required'));
                 if (this.$$('#user-manage').validateForm('.required'))
                     this.dispatchAction('USER_EDIT', this.data);
                 // console.log(this.data);

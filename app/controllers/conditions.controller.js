@@ -93,7 +93,7 @@ exports.conditions = function (req, res) {
                     r.db('welfare_common').table(con_merge('data_source')).merge(function (com_map) {
                         return {
                             id: com_map('id'),
-                            name: com_map(con_merge('data_source').add('_name'))
+                            name: com_map(con_merge('data_source').add('_name')),
                         }
                     }).coerceTo('array')
                         // .merge(function (data_merge) {

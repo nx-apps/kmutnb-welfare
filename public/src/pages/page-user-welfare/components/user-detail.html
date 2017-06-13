@@ -147,21 +147,21 @@
                     statePath: 'users.select_welefares',
                     observer:'_set'
                 },
-                year: {
-                    statePath: 'userWelfare.list',
-                    type: Number,
-                },
+                // year: {
+                //     statePath: 'userWelfare.list',
+                //     type: Number,
+                // },
             },
             listeners: {
                 '_getReloadData': 'gerYearWelfare'
             },
             _set(data){
-                console.log(data);
+                // console.log(data);
             },  
             setYear(years) {
                 try {
                    this.dispatchAction('USER_GET_WELFARES', window.location.pathname.split('/')[2], true);
-                   console.log(111);
+                   console.log(year);
                 } catch (error) {
 
                 }
@@ -176,7 +176,7 @@
                 // this.dispatchAction('USER_SELECT',e.detail);
             },
             backPage(){
-                console.log(1111)
+                // console.log(1111)
                 this.fire('_changePage')
             }
         });
