@@ -176,7 +176,7 @@
                         </paper-button>
                     </div>
                     <main>
-                        <input id="tab1" type="radio" name="tabs" checked>
+                        <input id="tab1" type="radio" name="tabs" checked on-click="setVaadin">
                         <label for="tab1">สวัสดิการที่ได้รับสิทธิ</label>
 
                         <input id="tab2" type="radio" name="tabs">
@@ -329,10 +329,10 @@
                 // //console.log(this.changeTime(data, +7));
             },
             setVaadin() {
-                this.async(() => {
+                // this.async(() => {
                     // //console.log(this.$$('#material'));
                     this.$$('#material').notifyResize()
-                }, 1000);
+                // }, 500);
             },
             changeTime: function (data, timeZone) {
                 let time
