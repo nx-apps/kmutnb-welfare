@@ -173,12 +173,13 @@
                     text: 'กรุณายืนยันการเกษียณใช่รึไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
-                            console.log(newArray);
+                            // console.log(newArray);
                             newArray.map((data) => {
-                                console.log(data);
+                                // console.log(data);
                                 // this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
                             })
-                            this.dispatchAction('RETIER_SEARCH', this.calDate);
+                            // this.dispatchAction('RETIER_SEARCH', this.calDate);
+                             window.open('./api/report/retire?date=' + this.calDate);
                             // console.log(newArray);
                         }
                     }

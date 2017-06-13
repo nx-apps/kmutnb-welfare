@@ -11,6 +11,8 @@
 <link rel="import" href="./components/history-welfare.html">
 <link rel="import" href="./../../../bower_components/vaadin-grid/vaadin-grid.html">
 
+<link rel="import" href="./../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
 <link rel="import" href="./../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
 
 <dom-module id="page-admin-manage">
@@ -240,7 +242,7 @@
                                         </vaadin-grid-column>
 
                                     </vaadin-grid>
-                                    
+
                                 </div>
                             </div>
                             <!--</paper-material>-->
@@ -258,9 +260,12 @@
                 </gl-form-panel-body>
             </gl-form-panel>
             <paper-dialog id="welfare_budget" modal>
-                <admin-dialog-use-welfare id="admin-dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-welfare>
+                <paper-dialog-scrollable>
+                    <admin-dialog-use-welfare id="admin-dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-welfare>
+
+                </paper-dialog-scrollable>
                 <div class="flex horizontal end-justified layout">
-                    <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
+                    <paper-button raised class="gl-btn-default" dialog-dismiss=fasle>ปิด</paper-button>
                     <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้สิทธิ</paper-button>
                 </div>
             </paper-dialog>

@@ -15,9 +15,9 @@ export function retierAction(store) {
     return [commonAction(),
     {
         RETIER_SEARCH: function (data) {
-            var tz = "T00:00:00+07:00";
+            // var tz = "T00:00:00+07:00";
             this.fire('toast', { status: 'load' });
-            axios.get('/retier/list/date/' + data + tz)
+            axios.get('/retier/list?date=' + data)
                 .then((result) => {
                     // console.log(result.data);
                     result.data.map((item) => {

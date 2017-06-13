@@ -66,13 +66,19 @@
         </template>
         <!--{{setCheck}}-->
         <template is="dom-if" if={{!isEnabled}}>
-
+<!--{{checkNoUse}}//-->
             <vaadin-grid id="material" items='{{list_employees}}'>
 
                 <vaadin-grid-column width="100px" flex-grow="0" hidden="{{setCheck}}">
                     <template class="header ">
                         <div class="text-center">
-                            <paper-checkbox checked="{{statusCheck}}" on-tap="selectAll" hidden="{{checkType(type_seleted)}}"></paper-checkbox>
+                            
+                            <template is="dom-if" if={{checkNoUse}}>
+                                <paper-checkbox checked="{{statusCheck}}" on-tap="selectAll" hidden="{{checkType(type_seleted)}}"></paper-checkbox>
+                            
+                            </template>
+                            
+                            
                             <template is="dom-if" if={{checkType(type_seleted)}}>
                                 <paper-checkbox checked="{{statusNot}}" on-tap="selectAllCalcel"></paper-checkbox>
                             </template>
@@ -325,7 +331,7 @@
             },
             setLoad(data) {
                 try {
-                    // console.log(111);
+                    console.log(data);
                     this.fire('toast', {
                         status: 'success', text: 'โหลดสำเร็จ',
                         callback: () => {
@@ -333,6 +339,7 @@
                     });
                     // console.log(data);
                     let xx = data.find((set, index) => set.group_use === true)
+                    
                     const checkNull = (data) => data !== '' && data !== undefined
                     // this.oldData = JSON.parse(JSON.stringify(data));
                     if (xx === undefined) {
@@ -344,10 +351,10 @@
                             && checkNull(this.dataCheck.department_id)
                             && checkNull(this.dataCheck.type_employee_id)) {
                             this.set('setCheck', false)
-                            console.log(1);
+                            // console.log(1);
                         } else {
                             this.set('setCheck', true)
-                            console.log(2);
+                            // console.log(2);
                         }
                         // this.checkDepart(this.dataCheck)
                     }
@@ -356,6 +363,13 @@
                         this.set('isEnabled', false)
                     } else {
                         this.set('isEnabled', true)
+                    }
+                    let sum = data.find((set, index) => set.budget_balance > 0)
+                    // console.log(sum);
+                    if(checkNull(sum)) {
+                        this.set('checkNoUse', true)
+                    } else {
+                        this.set('checkNoUse', false)
                     }
                     // this.getSelectType(this.type_seleted) 
                 } catch (e) {
@@ -442,7 +456,7 @@
                                 .then((res) => {
                                     this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
                                     this.type_seleted = 'all'
-                                    this.set('paperFabCancel', false)
+                                    this.set('paperFabCancel', true)
                                 })
                         }
                     }
