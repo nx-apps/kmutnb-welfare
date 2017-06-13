@@ -269,7 +269,7 @@ export function groupWelfareAction(store) {
         },
         CLONE_DATA:function (year){
             // console.log(year);
-            axios.get('/group/welfare/year/' + (year-543))
+            axios.get('/group/welfare/year/' + year)
             .then((result) => {
                 // console.log(result.data);
                 result.data.map((val) => {
