@@ -1872,13 +1872,13 @@ exports.welfare7 = function (req, res) {
                             r.ISO8601(data_merge('date_end')),
                             { rightBound: 'closed' }
                         )
-                    })     
+                    })
                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['round_use', 'budget'] }).zip()
-                    // .merge(function (m) {
-                    //     return {
-                    //         budget: r.branch(m('round_use').eq(false), 0, m('budget'))
-                    //     }
-                    // })
+                // .merge(function (m) {
+                //     return {
+                //         budget: r.branch(m('round_use').eq(false), 0, m('budget'))
+                //     }
+                // })
             }
         })
         .merge(function (sum_merge) {
@@ -1890,7 +1890,7 @@ exports.welfare7 = function (req, res) {
                 balance: budget.sub(budget_use)
             }
         })
-        .without('date_start', 'date_end','history')
+        .without('date_start', 'date_end', 'history')
 
         .run()
         .then(function (result) {
@@ -1967,14 +1967,14 @@ exports.welfare8 = function (req, res) {
                 reduction: m('reduction')
                     .merge(function (mm) {
                         return r.db('welfare').table('welfare').get(mm('welfare_id'))
-                        .merge(function (m) {
-                         return {
-                             budget: r.branch(m('round_use').eq(false), 0, m('budget'))
-                          
-                         }
-                     })
+                            .merge(function (m) {
+                                return {
+                                    budget: r.branch(m('round_use').eq(false), 0, m('budget'))
+
+                                }
+                            })
                     })
-                .pluck('budget_use', 'date_approve', 'welfare_name', 'budget','description_detail')
+                    .pluck('budget_use', 'date_approve', 'welfare_name', 'budget', 'description_detail')
             }
         })
         .merge(function (budget_merge) {
@@ -2172,22 +2172,25 @@ exports.emp_welfare = function (req, res) {
     param.year = Number(param.year) + 543;
 
     var me = r.db('welfare').table('employee').getAll(param.id, { index: 'id' }).coerceTo('array')
-    me.merge(function (wel_merge) {
-        return {
-            employee_name: wel_merge('prefix_name').add(wel_merge('firstname')).add(wel_merge('lastname')),
-            group: r.db('welfare').table('welfare').getAll('year', 9999, { index: 'year' }).coerceTo('array')
-                .merge(function (m) {
-                    return {
-                        pass: getEmployee(me, m('condition')).ne([])
-                    }
-                })
-                .filter({ pass: true })
-                .pluck('welfare_name', 'group_id')
-                .group('group_id').ungroup()
-                .eqJoin('group', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
-                .without('group')
-        }
-    })
+    me
+        .merge(function (wel_merge) {
+            return {
+                employee_name: wel_merge('prefix_name').add(wel_merge('firstname')).add('  ', wel_merge('lastname')),
+                group: r.db('welfare').table('welfare').getAll('year', 9999, { index: 'year' }).coerceTo('array')
+                    .merge(function (m) {
+                        return {
+                            pass: getEmployee(me, m('condition')).ne([])
+                        }
+                    })
+                    .filter({ pass: true })
+                    .pluck('welfare_name', 'group_id')
+                    .group('group_id').ungroup()
+                    .eqJoin('group', r.db('welfare').table('group_welfare'))
+                    .pluck("left", { right: ['group_welfare_name', 'status_approve'] }).zip()
+                    .filter({ status_approve: true })
+                    .without('group')
+            }
+        })
         .pluck('employee_name', 'type_employee_name', 'faculty_name', 'department_name', 'group')
 
         .run()
@@ -2201,6 +2204,48 @@ exports.emp_welfare = function (req, res) {
             param.CURRENT_DATE = CURRENT_DATE
             res.ireport("emp_welfare.jasper", req.query.export || "pdf", result, param);
         });
+}
+exports.retire = function (req, res) {
+
+    var param = {
+        CURRENT_DATE: new Date().toISOString().slice(0, 10),
+    };
+    var r = req.r;
+    var time = r.ISO8601(req.params.date);
+    var calculateAge = function (birthday) { // birthday is a date
+        // var ageDifMs = r.now().toEpochTime().sub(birthday.toEpochTime())
+        var ageDifMs = time.toEpochTime().sub(birthday.toEpochTime())
+        var ageDate = r.epochTime(ageDifMs); // miliseconds from epoch
+        //  return Math.abs(ageDate.year() - 1970);
+        return ageDate.year().sub(1970)
+    }
+    console.log(req.query.date)
+    r.db('welfare').table('employee').getAll('ทำงาน', { index: 'active_name' })
+        .merge(function (use) {
+            return {
+                birthdate_cal: calculateAge(use('birthdate')),
+                age: calculateAge(use('birthdate')),
+                work_age: calculateAge(use('start_work_date')),
+                start_work_date_cal: calculateAge(use('start_work_date')),
+                birthdate: use('birthdate').toISO8601().split('T')(0),
+                start_work_date: use('start_work_date').toISO8601().split('T')(0),
+                employee_name: use('prefix_name').add(use('firstname')).add('  ', use('lastname'))
+            }
+        })
+        .filter(function (f) {
+            return f('birthdate_cal').gt(60)
+        })
+
+
+        .run()
+        .then(function (result) {
+            // res.json(result);
+            res.ireport("retire.jasper", req.query.export || "pdf", result, param);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+
 }
 
 function keysToUpper(param) {
