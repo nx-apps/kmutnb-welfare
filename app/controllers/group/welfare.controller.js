@@ -502,9 +502,14 @@ exports.cloneData = function (req, res) {
     var cloneGroupid = req.body.cloneGroupid;
     r.expr(cloneGroupid).forEach(function (fe) {
         return r.db('welfare').table('group_welfare').insert(
-            r.db('welfare').table('group_welfare').get(fe('id')).merge({
-                year: newyear,
-                status_approve: false
+            r.db('welfare').table('group_welfare').get(fe('id')).merge(function (m) {
+                return {
+                    year: newyear,
+                    status_approve: false,
+                    start_date: r.time(m('start_date').year().add(1),m('start_date').month(),m('start_date').day(),"+07:00"),
+                    end_date: r.time(m('end_date').year().add(1),m('end_date').month(),m('end_date').day(),"+07:00"),
+                    cal_date: r.time(m('cal_date').year().add(1),m('cal_date').month(),m('cal_date').day(),"+07:00")
+                }
             }).without('id')
         )
             .do(function (d) {
