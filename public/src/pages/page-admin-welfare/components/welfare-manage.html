@@ -169,7 +169,7 @@
             welfare_approve: function () {
                 this.fire('toast', {
                     status: 'openDialog',
-                    text: 'คุณต้องการที่อนุมัติใช่หรือไม่ ?',
+                    text: 'คุณต้องการเปิดการใช้งาน ?',
                     confirmed: this._toastApprove.bind(this),
                     datas: {
                         id: this.list.id,
@@ -185,7 +185,7 @@
             welfare_unapprove: function () {
                 this.fire('toast', {
                     status: 'openDialog',
-                    text: 'คุณต้องการที่ยกเลิกใช้ใช่หรือไม่ ?',
+                    text: 'คุณต้องการปิดการใช้งาน?',
                     confirmed: this._toastUnapprove.bind(this),
                     datas: {
                         id: this.list.id,
