@@ -191,7 +191,7 @@
                                         <vaadin-grid-column width="450px" flex-grow="0">
                                             <template class="header ">สวัสดิการที่สามารถใช้ได้
                                             </template>
-                                            <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime)]]
+                                            <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime_use)]]
 
                                             </template>
                                         </vaadin-grid-column>
@@ -240,42 +240,7 @@
                                         </vaadin-grid-column>
 
                                     </vaadin-grid>
-                                    <!--<table class="gl-table-default">
-                                    <thead class="table-head">
-                                        <tr>
-                                            <th style="width: 5%" rowspan="2">ลำดับ</th>
-                                            <th style="width: 40%; text-align: left;" rowspan="2">สวัสดิการที่สามารถใช้ได้</th>
-                                            <th style="width: 45%" colspan="3">จำนวนเงิน (บาท)</th>
-                                            <th style="width: 15%" rowspan="2">ดำเนินการ</th>
-                                        </tr>
-                                        <tr>
-                                            <th style="width: 15%; text-align: right;" class="right">มีสิทธิ </th>
-                                            <th style="width: 15%; text-align: right;" class="right">ใช้สิทธิ </th>
-                                            <th style="width: 15%; text-align: right;" class="right">คงเหลือ </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-body">
-
-                                        <template is="dom-repeat" items={{data.group_welfares}}>
-                                            <tr>
-                                                <td>[[_Obindex(index)]]</td>
-                                                <td style="text-align: left;">[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime)]]</td>
-                                                <td style="text-align: right;">[[formatNumber(item.budget)]]</td>
-                                                <td style="text-align: right;">[[formatNumber(item.budget_use)]]</td>
-                                                <td style="text-align: right;">[[formatNumber(item.budget_balance)]]</td>
-                                                <td>
-                                                    <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" disabled="[[checkWelfareFull(item)]]">ใช้สิทธิ</paper-button>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                        <template is="dom-if" if={{_ObIsHave(data.group_welfares)}}>
-                                            <tr>
-                                                <td colspan="6" style="text-align: center">ไม่มีข้อมูล</td>
-                                            </tr>
-                                        </template>
-
-                                    </tbody>
-                                </table>-->
+                                    
                                 </div>
                             </div>
                             <!--</paper-material>-->

@@ -29,7 +29,7 @@
         </style>
         <vaadin-grid id="material" items='{{list_employees}}'>
 
-            <vaadin-grid-column width="100px" flex-grow="0">
+            <!--<vaadin-grid-column width="100px" flex-grow="0">
                 <template class="header">
                     <div class="text-center">
                         <paper-checkbox checked="{{statusCheck}}" on-tap="selectAll"></paper-checkbox>#</div>
@@ -39,7 +39,7 @@
                         <paper-checkbox checked="{{item.check}}" on-tap="checkRretier"></paper-checkbox>
                     </div>
                 </template>
-            </vaadin-grid-column>
+            </vaadin-grid-column>-->
 
 
             <vaadin-grid-column width="80px" flex-grow="0">
@@ -112,9 +112,10 @@
             behaviors: [ReduxBehavior],
             properties: {
                 list_employees: {
-                    statePath: 'retier.list'
+                    statePath: 'retier.list',
+                    observer: 'setTrue'
                 },
-                list_active:{
+                list_active: {
                     statePath: 'commonData.active'
                 },
                 dataCheck: {
@@ -132,6 +133,14 @@
             },
             _Obindex: function (index) {
                 return index + 1
+            },
+            setTrue: function (data) {
+                // console.log(data.length > 0);
+                if (data.length > 0) {
+                    this.set('paperFab', false)
+                } else {
+                    this.set('paperFab', true)
+                }
             },
             checkRretier: function () {
                 let newArray = this.list_employees.find((set, index) => set.check === true)
@@ -151,12 +160,12 @@
                 let newArray = this.list_employees.filter((set, index) => set.check === true)
                 newArray = JSON.parse(JSON.stringify(newArray));
                 let list_active = JSON.parse(JSON.stringify(this.list_active));
-                let RETIREMENT = list_active.find((item)=>item.active_code ==='RETIREMENT')
-                newArray.map((item)=>{
-                     item.active_id = RETIREMENT.id
-                     item.active_name = RETIREMENT.active_name
-                     item.end_work_date = this.calDate
-                     return item
+                let RETIREMENT = list_active.find((item) => item.active_code === 'RETIREMENT')
+                newArray.map((item) => {
+                    item.active_id = RETIREMENT.id
+                    item.active_name = RETIREMENT.active_name
+                    item.end_work_date = this.calDate
+                    return item
                 })
                 // console.log(RETIREMENT);
                 this.fire('toast', {
@@ -166,10 +175,10 @@
                         if (result == true) {
                             console.log(newArray);
                             newArray.map((data) => {
-                                    console.log(data);
-                                    this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
-                                })
-                                this.dispatchAction('RETIER_SEARCH', this.calDate);
+                                console.log(data);
+                                // this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
+                            })
+                            this.dispatchAction('RETIER_SEARCH', this.calDate);
                             // console.log(newArray);
                         }
                     }

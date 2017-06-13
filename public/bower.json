@@ -36,7 +36,6 @@
     "gl-grid": "glon-gl-grid#^0.1.2",
     "gl-form": "glon-gl-form#0.4.0",
     "axios": "^0.15.2",
-    "vaadin-date-picker": "glon-gl-date-picker#^0.0.4",
     "byutv-jsonp": "^1.2.0",
     "gl-search-input": "9lon-gl-search-input#^0.0.12",
     "paper-scroll-header-panel": "PolymerElements/paper-scroll-header-panel#^1.0.16",
@@ -55,6 +54,7 @@
     "vaadin-grid": "^2.0.2",
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0",
     "paper-radio-group": "PolymerElements/paper-radio-group#^2.0.0",
-    "paper-radio-button": "PolymerElements/paper-radio-button#^2.0.0"
+    "paper-radio-button": "PolymerElements/paper-radio-button#^2.0.0",
+    "vaadin-date-picker": "^1.2.3"
   }
 }

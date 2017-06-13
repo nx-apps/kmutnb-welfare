@@ -16,10 +16,13 @@ export function retierAction(store) {
     {
         RETIER_SEARCH: function (data) {
             var tz = "T00:00:00+07:00";
-            this.fire('toast',{status:'load'});
-            axios.get('/retier/list/date/' + data+tz)
+            this.fire('toast', { status: 'load' });
+            axios.get('/retier/list/date/' + data + tz)
                 .then((result) => {
                     // console.log(result.data);
+                    result.data.map((item) => {
+                        return item.check = true
+                    })
                     this.fire('toast', {
                         status: 'success', text: 'โหลดข้อมูลสำเร็จ', callback: () => {
                             store.dispatch({ type: 'RETIER_SEARCH', payload: result.data })
