@@ -2211,7 +2211,7 @@ exports.retire = function (req, res) {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
     };
     var r = req.r;
-    var time = r.ISO8601(req.params.date);
+    var time = r.ISO8601(req.query.date+'T00:00:00+07:00');
     var calculateAge = function (birthday) { // birthday is a date
         // var ageDifMs = r.now().toEpochTime().sub(birthday.toEpochTime())
         var ageDifMs = time.toEpochTime().sub(birthday.toEpochTime())

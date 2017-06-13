@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare5" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="146554ea-58fe-427f-adfa-c5023cb02424">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="528"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
 	<parameter name="TYPE_EMPLOYEE_NAME" class="java.lang.String"/>
@@ -125,7 +125,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ประเภทบุคคล     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ประเภทบุคลากร     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="1" y="115" width="555" height="20" uuid="39d97fb3-cc6f-4ab0-9d47-320b9fd95ba3"/>
@@ -157,7 +157,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[คณะ]]></text>
+				<text><![CDATA[ส่วนงาน]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="220" y="0" width="110" height="20" uuid="c55d78a3-c909-41f1-b6a6-d09e3b5ba38b"/>
@@ -199,7 +199,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[เหลือ]]></text>
+				<text><![CDATA[คงเหลือ]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -387,7 +387,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[เหลือ]]></text>
+				<text><![CDATA[คงเหลือ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="220" y="253" width="110" height="20" uuid="7511be59-4bc5-45c1-93be-27cf2dce1628"/>
@@ -429,7 +429,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[คณะ]]></text>
+				<text><![CDATA[ส่วนงาน]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="273" width="555" height="50" uuid="636d9eb5-d238-4c23-98a7-51f1f1b53dc5"/>
@@ -484,7 +484,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ประเภทบุคคล     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ประเภทบุคลากร     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="164" width="489" height="20" uuid="197d353f-2750-4bb5-9682-964926f7f417"/>

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare1" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="788d30cf-e68f-42dc-aa98-0e2f375fcaf5">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="570"/>
 	<import value="nylon.report.*"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -117,7 +117,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ประเภทบุคคล     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ประเภทบุคลากร     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="23" y="175" width="488" height="20" uuid="b9cada8f-9105-47d6-af5f-c271573a66b4"/>
@@ -202,7 +202,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ประเภทบุคคล]]></text>
+				<text><![CDATA[ประเภทบุคลากร]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="385" y="0" width="147" height="20" uuid="139058de-f778-4437-9cae-28cf5b9bf927"/>
@@ -336,7 +336,7 @@
 		</band>
 	</summary>
 	<noData>
-		<band height="332">
+		<band height="328">
 			<staticText>
 				<reportElement x="23" y="278" width="509" height="50" uuid="ffbd3647-da83-4bc4-8425-c88b5b3a0129"/>
 				<box>
@@ -376,7 +376,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ประเภทบุคคล]]></text>
+				<text><![CDATA[ประเภทบุคลากร]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="385" y="258" width="147" height="20" uuid="d7f8d3e7-b668-4c40-8e6b-f71ce7108504"/>
@@ -418,7 +418,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["ประเภทบุคคล     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["ประเภทบุคลากร     "+($P{TYPE_EMPLOYEE_NAME}== null ?"ทั้งหมด":$P{TYPE_EMPLOYEE_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="23" y="140" width="180" height="20" uuid="652f3e2f-d51f-40d0-a3b5-ad78b20161b0"/>
