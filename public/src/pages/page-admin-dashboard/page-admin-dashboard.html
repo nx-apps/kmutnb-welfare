@@ -61,19 +61,13 @@
             }
         </style>
         <div class="xcontainer">
-            <div class="flex-equal-justified">
-
-                <div>
-                    <div class="header-page container">สิทธิสวัสดิการ</div>
+            <div class="horizontal justified layout">
+                <div class="header-page container">สิทธิสวัสดิการ</div>
+                <div style="margin-top:20px;">
+                    <paper-button raised class="gl-btn-primary" on-tap="_insertEmployee">
+                        <iron-icon icon="add"></iron-icon>เพิ่มพนักงาน
+                    </paper-button>
                 </div>
-            </div>
-            <div class="horizontal end-justified layout">
-                <!--<paper-button raised class="gl-btn-info" on-tap="_print">
-                            <iron-icon icon="print"></iron-icon> ออกรายงาน
-                        </paper-button>-->
-                <paper-button raised class="gl-btn-primary" on-tap="_insertEmployee">
-                    <iron-icon icon="add"></iron-icon>เพิ่มพนักงาน
-                </paper-button>
             </div>
             <paper-material elevation="1">
                 <div class="title">ค้นหา</div>
