@@ -330,8 +330,8 @@
             },
             setVaadin() {
                 // this.async(() => {
-                    // //console.log(this.$$('#material'));
-                    this.$$('#material').notifyResize()
+                // //console.log(this.$$('#material'));
+                this.$$('#material').notifyResize()
                 // }, 500);
             },
             changeTime: function (data, timeZone) {
@@ -408,7 +408,13 @@
             usewelfare(e) {
                 let data = new Object();
                 let item = e.model.item
-                // //console.log(e.model.item);
+                let date = new Date()
+                let today = date.toISOString().split('T')[0]
+                // let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
+                // this.set('data.date_start', today)
+                // this.set('data.date_end', tomorrow)
+                data.date_use = today
+                data.date_approve = today
                 data.title = item.group_welfare_name + " " + item.welfare_name
                 data.emp_id = this.data.id
                 data.personal_id = this.data.personal_id
@@ -418,7 +424,6 @@
                 data.budget_use = item.budget_balance
                 data.status = true
                 data.onetime = item.onetime_use
-                // data.year = new Date().getFullYear()
                 data.group_id = item.group_id
                 this.set('disabled', item.onetime)
                 this.$$('#welfare_budget').open()
