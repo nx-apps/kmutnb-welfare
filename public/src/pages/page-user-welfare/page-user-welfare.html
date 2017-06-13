@@ -110,6 +110,7 @@
                 this.dispatchAction('COMMONDATA_DATA_GENDER');
                 this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
                 this.dispatchAction('WELFARE_LIST_YEAR');
+                // console.log(222222);
             },
             _changePage_(e) {
                 this.set('page', 0)
@@ -127,6 +128,7 @@
             // },
             _getUserEdit(e) {
                 // this.set('page',0)
+                console.log(111);
                 this.dispatchAction('USER_SELECT', e.detail);
                 this.dispatchAction('USER_BTN', true);
                 this.dispatchAction('USER_INSERT_VIEW', false);

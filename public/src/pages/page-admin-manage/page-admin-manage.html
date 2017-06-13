@@ -318,7 +318,7 @@
             },
             setDate(data) {
                 // console.log(data);
-                console.log(this.changeTime(data, +7));
+                // console.log(this.changeTime(data, +7));
             },
             changeTime: function (data, timeZone) {
                 let time
@@ -386,7 +386,7 @@
                     if (e.detail.value)
                         var id = this.data.id;
                     if (typeof id != 'undefined') {
-                        this.dispatchAction('EMPLOYEE_GET_WELFARES', id, e.detail.value - 543);
+                        this.dispatchAction('EMPLOYEE_GET_WELFARES', id, e.detail.value);
                         // console.log(66666);
                     }
                 }
