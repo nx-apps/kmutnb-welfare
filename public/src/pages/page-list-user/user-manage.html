@@ -253,14 +253,14 @@
                 }
             },
             _checkFaculty(dataSelete){
-                console.log(dataSelete)
+                //console.log(dataSelete)
                 if(dataSelete){
                 let departmentID = this.department.find((departmentID)=>departmentID.id == dataSelete);
-                // console.log(departmentID)
+                // //console.log(departmentID)
                   let faculty_code = this.faculty.find((facultyID)=>facultyID.faculty_code == departmentID.faculty);
-                //  console.log(faculty_code)
+                //  //console.log(faculty_code)
                   this.set('data.faculty_id',faculty_code.id)
-                //   console.log(this.data.faculty_id)
+                //   //console.log(this.data.faculty_id)
                 } 
             },
             

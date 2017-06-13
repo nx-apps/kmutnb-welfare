@@ -233,7 +233,7 @@
                 this.GET_YEAR();
             },
             select_welfare: function (e) {
-                // console.log(e.currentTarget.data);
+                // //console.log(e.currentTarget.data);
                 this.$$('panel-right').open();
                 this.$$('welfare-detail').setPage(0);
                 // this.pageDetail = '0';
@@ -270,7 +270,7 @@
                 this.set('title', this.title = "เพิ่มสวัสดิการ");
             },
             _edit: function (e) {
-                // console.log(e.currentTarget.data);
+                // //console.log(e.currentTarget.data);
                 var id = e.currentTarget.data.id;
                 this.SELECT_DATA(id);
                 this.LIST_WELFARE_ID(id);

@@ -125,6 +125,11 @@
             width: 98%;
             margin: 10px;
         }
+
+        vaadin-grid {
+            /*margin-top: 15px;*/
+            height: 480px;
+        }
     </style>
     <template>
         <div class="xcontainer">
@@ -166,7 +171,9 @@
 
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <div class="content horizontal end-justified layout">
-                        <paper-button raised on-tap="getWelfareHave">ดูสวัสดิการที่ได้รับสิทธิ</paper-button>
+                        <paper-button raised on-tap="getWelfareHave">
+                            <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> สวัสดิการที่ได้รับสิทธิ
+                        </paper-button>
                     </div>
                     <main>
                         <input id="tab1" type="radio" name="tabs" checked>
@@ -174,7 +181,7 @@
 
                         <input id="tab2" type="radio" name="tabs">
                         <label for="tab2">รายการสวัสดิการที่ขอใช้สิทธิ</label>
-
+                        <!--<button type="" on-click="setVaadin">dd</button>-->
                         <section id="content1">
                             <!--<paper-material elevation="1">-->
                             <div class="contenttable">
@@ -294,6 +301,7 @@
             properties: {
                 data: {
                     statePath: 'userWelfare.welfare_employee',
+                    observer: 'setVaadin'
                 },
                 year: {
                     statePath: 'userWelfare.list',
@@ -313,12 +321,18 @@
             },
             nylonPageActive: function () {
                 this.id = window.location.pathname.split('/')[2];
-                // console.log(this.id);
+                // //console.log(this.id);
                 this.WELFARE_LIST_YEAR();
             },
             setDate(data) {
-                // console.log(data);
-                // console.log(this.changeTime(data, +7));
+                // //console.log(data);
+                // //console.log(this.changeTime(data, +7));
+            },
+            setVaadin() {
+                this.async(() => {
+                    // //console.log(this.$$('#material'));
+                    this.$$('#material').notifyResize()
+                }, 1000);
             },
             changeTime: function (data, timeZone) {
                 let time
@@ -326,9 +340,9 @@
                     for (var prop in item) {
                         if (prop.indexOf('date') >= 0 && prop !== 'updater') {
                             time = new Date(item[prop])
-                            // console.log(data[index][prop]);
+                            // //console.log(data[index][prop]);
                             data[index][prop] = new Date(time.setHours(time.getHours() + timeZone)).toISOString()
-                            // console.log(new Date(data[index][prop]).toISOString());
+                            // //console.log(new Date(data[index][prop]).toISOString());
                         }
                         if (typeof item[prop] === 'object')
                             this.changeTime(item[prop], timeZone)
@@ -353,18 +367,18 @@
             },
             checkWelfareFull(data) {
                 try {
-                    // console.log(data);
+                    // //console.log(data);
                     if (data.budget_balance <= 0)
                         return true
                 } catch (e) {
-                    // console.log(e);
+                    // //console.log(e);
                 }
 
             },
             // btnCancel(e) {
-            //     // console.log(e.currentTarget.data);
+            //     // //console.log(e.currentTarget.data);
             //     let newData = [{ id: e.currentTarget.data.history_welfare_id }]
-            //     // console.log(newData);
+            //     // //console.log(newData);
             //     this.fire('toast', {
             //         status: 'openDialog',
             //         text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
@@ -374,7 +388,7 @@
             //                     .then((el) => {
             //                         let id = window.location.pathname.split('/')[2];
             //                         this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
-            //                         // console.log(222);
+            //                         // //console.log(222);
             //                     })
             //             }
             //         }
@@ -382,19 +396,19 @@
             // },
             gerYearWelfare(e) {
                 if (typeof this.data != 'undefined') {
-                    // console.log(this.data);
+                    // //console.log(this.data);
                     if (e.detail.value)
                         var id = this.data.id;
                     if (typeof id != 'undefined') {
                         this.dispatchAction('EMPLOYEE_GET_WELFARES', id, e.detail.value);
-                        // console.log(66666);
+                        // //console.log(66666);
                     }
                 }
             },
             usewelfare(e) {
                 let data = new Object();
                 let item = e.model.item
-                // console.log(e.model.item);
+                // //console.log(e.model.item);
                 data.title = item.group_welfare_name + " " + item.welfare_name
                 data.emp_id = this.data.id
                 data.personal_id = this.data.personal_id
@@ -408,11 +422,11 @@
                 data.group_id = item.group_id
                 this.set('disabled', item.onetime)
                 this.$$('#welfare_budget').open()
-                // console.log(e.model.item.budget_balance);
-                console.log(data);
+                // //console.log(e.model.item.budget_balance);
+                //console.log(data);
                 this.dataDialog = data;
-                // console.log(this.dataDialog);
-                // console.log(data);
+                // //console.log(this.dataDialog);
+                // //console.log(data);
                 this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', this.dataDialog);
             },
             getwelfare() {
@@ -422,14 +436,14 @@
                 newData.budget_balance = newData.budget_cover - newData.budget_use
                 newData.date_approve = newData.date_approve + 'T00:00:00.000+07:00'
                 newData.date_use = newData.date_use + 'T00:00:00.000+07:00'
-                // console.log("newData",newData);
+                // //console.log("newData",newData);
                 if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
                     this.fire('toast', {
                         status: 'openDialog',
                         text: 'กรุณายืนยันการทำรายการ ?',
                         confirmed: (result) => {
                             if (result == true) {
-                                console.log(newData);
+                                //console.log(newData);
                                 this.$$('#welfare_budget').close()
                                 // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
                                 this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
@@ -468,7 +482,7 @@
                 // }
             },
             // downloadFile(e) {
-            //     // console.log(e.currentTarget.data);
+            //     // //console.log(e.currentTarget.data);
             //     window.open('/api/file/download/' + e.currentTarget.data.id);
             //     // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
             // },
@@ -489,8 +503,8 @@
             getWelfareHave() {
                 // /api/report/emp_welfare?id=000183c1-23db-4af2-937f-3e359400e33c
                 let year = this.year[this.year.length - 1]
-                console.log(year);
-                window.open('/api/report/emp_welfare?id=' + this.data.id+'&year='+year.year);
+                //console.log(year);
+                window.open('/api/report/emp_welfare?id=' + this.data.id + '&year=' + year.year);
             }
         });
     </script>

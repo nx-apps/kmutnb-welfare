@@ -116,7 +116,7 @@
                 }
             },
             setYear: function (year) {
-                // console.log(year);
+                // //console.log(year);
                 try {
                     this.set('data.year', year[0].year)
                 } catch (error) {
@@ -125,7 +125,7 @@
 
             },
             getGroupWelfare: function (year) {
-                //    console.log(this.data);
+                //    //console.log(this.data);
                 this.dispatchAction('WELFARE_LIST', this.data.year - 543);
             },
             print: function () {
@@ -140,10 +140,10 @@
                     data.faculty_name = getName(this.list_faculty,this.data.faculty_id).faculty_name
                 if(checkUndefined(this.data.type_employee_id))
                     data.type_employee_name  = getName(this.list_type_employee,this.data.type_employee_id).type_employee_name
-                // console.log(data.type_employee_name);
-                console.log(this.genUrl(data));
+                // //console.log(data.type_employee_name);
+                //console.log(this.genUrl(data));
                 } catch (e) {
-                        console.log(e);
+                        //console.log(e);
                 } 
                 
             }

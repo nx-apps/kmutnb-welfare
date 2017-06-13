@@ -98,7 +98,7 @@
                 commonLogic, uploadAction, commonDataAction,
                 MonthBehavior, ValidateFormBehavior],
             downloadFile(e) {
-                // console.log(e.currentTarget.data);
+                // //console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id);
                 // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
             },

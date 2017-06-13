@@ -7,6 +7,8 @@
 
 <link rel="import" href="./admin-dialog-use-all-welfare.html">
 
+<link rel="import" href="./../../../../bower_components/paper-tooltip/paper-tooltip.html">
+
 <dom-module id="list-employees">
     <template>
         <style include="page-style flex-style">
@@ -45,6 +47,10 @@
                 text-align: center;
                 font-size: 30px;
             }
+
+            .custom {
+                width: 70px;
+            }
         </style>
         <!--{{dataCheck.group_name}}-->
         <template is="dom-if" if={{!setCheck}}>
@@ -66,19 +72,19 @@
         </template>
         <!--{{setCheck}}-->
         <template is="dom-if" if={{!isEnabled}}>
-<!--{{checkNoUse}}//-->
+            <!--{{checkNoUse}}//-->
             <vaadin-grid id="material" items='{{list_employees}}'>
 
                 <vaadin-grid-column width="100px" flex-grow="0" hidden="{{setCheck}}">
                     <template class="header ">
                         <div class="text-center">
-                            
+
                             <template is="dom-if" if={{checkNoUse}}>
                                 <paper-checkbox checked="{{statusCheck}}" on-tap="selectAll" hidden="{{checkType(type_seleted)}}"></paper-checkbox>
-                            
+
                             </template>
-                            
-                            
+
+
                             <template is="dom-if" if={{checkType(type_seleted)}}>
                                 <paper-checkbox checked="{{statusNot}}" on-tap="selectAllCalcel"></paper-checkbox>
                             </template>
@@ -225,10 +231,12 @@
                 </vaadin-grid-column>
             </vaadin-grid>
             <div hidden="{{paperFab}}">
-                <paper-fab icon="send" on-tap="confirmSend"></paper-fab>
+                <paper-fab id="confirmSend" icon="send" on-tap="confirmSend"></paper-fab>
+                <paper-tooltip position="left" class="custom" for="confirmSend">ใช้สวัสดิการ</paper-tooltip>
             </div>
             <div hidden="{{paperFabCancel}}">
-                <paper-fab class="fabCancel" icon="send" on-tap="confirmCancel"></paper-fab>
+                <paper-fab id="confirmCancel" class="fabCancel" icon="send" on-tap="confirmCancel"></paper-fab>
+                <paper-tooltip position="left" class="custom" for="confirmCancel">ยกเลิกสวัสดิการ</paper-tooltip>
             </div>
             <paper-dialog id="welfare_budget" modal>
                 <admin-dialog-use-all-welfare id="admin-dialog-use-all-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-all-welfare>
@@ -307,22 +315,22 @@
                 this.set('setCheck', false)
             },
             checkDepart(data) {
-                // console.log(this.dataCheck);
+                // //console.log(this.dataCheck);
                 try {
 
                     const checkNull = (data) => data !== ''
                     if (checkNull(this.dataCheck.group_id)
                         && checkNull(this.dataCheck.faculty_id)
                         && checkNull(this.dataCheck.department_id)) {
-                        // console.log(1111);
+                        // //console.log(1111);
                         // this.setLoad(this.list_employees)
                         this.set('setCheck', false)
-                        // console.log(this.setCheck);
+                        // //console.log(this.setCheck);
                     } else {
                         // this.setLoad(this.list_employees)
                         this.set('setCheck', true)
-                        // console.log(2222);
-                        // console.log(this.setCheck);
+                        // //console.log(2222);
+                        // //console.log(this.setCheck);
                     }
                 } catch (e) {
 
@@ -331,30 +339,33 @@
             },
             setLoad(data) {
                 try {
-                    console.log(data);
+                    //console.log(11111111111111111111);
+                    //console.log(this.$$('#material'));
+                    // this.$$('#material').notifyResize()
+                    // this.$$.material.notifyResize()
                     this.fire('toast', {
                         status: 'success', text: 'โหลดสำเร็จ',
                         callback: () => {
                         }
                     });
-                    // console.log(data);
+                    // //console.log(data);
                     let xx = data.find((set, index) => set.group_use === true)
-                    
+
                     const checkNull = (data) => data !== '' && data !== undefined
                     // this.oldData = JSON.parse(JSON.stringify(data));
                     if (xx === undefined) {
                         this.set('setCheck', true)
                     } else {
-                        // console.log(this.dataCheck.type_employee_id);
+                        // //console.log(this.dataCheck.type_employee_id);
                         if (checkNull(this.dataCheck.group_id)
                             && checkNull(this.dataCheck.faculty_id)
                             && checkNull(this.dataCheck.department_id)
                             && checkNull(this.dataCheck.type_employee_id)) {
                             this.set('setCheck', false)
-                            // console.log(1);
+                            // //console.log(1);
                         } else {
                             this.set('setCheck', true)
-                            // console.log(2);
+                            // //console.log(2);
                         }
                         // this.checkDepart(this.dataCheck)
                     }
@@ -365,8 +376,8 @@
                         this.set('isEnabled', true)
                     }
                     let sum = data.find((set, index) => set.budget_balance > 0)
-                    // console.log(sum);
-                    if(checkNull(sum)) {
+                    // //console.log(sum);
+                    if (checkNull(sum)) {
                         this.set('checkNoUse', true)
                     } else {
                         this.set('checkNoUse', false)
@@ -379,7 +390,7 @@
             chagePageDetail(e) {
                 var item = e.currentTarget.data;
                 var id = item.id;
-                // console.log(item);
+                // //console.log(item);
                 window.open('/admin-manage/' + id);
             },
             checkboxUse(adminUse, budget_balance) {
@@ -390,34 +401,34 @@
 
             },
             selectAll(e) {
-                // console.log(this.statusCheck);
+                // //console.log(this.statusCheck);
                 this.fire('toast', { status: 'load' })
                 this.list_employees.map((set, index) => {
-                    // console.log(this.list_employees[index].budget_balance);
+                    // //console.log(this.list_employees[index].budget_balance);
                     if (this.list_employees[index].budget_balance !== 0)
                         this.set('list_employees.' + index + '.check', this.statusCheck)
-                    // console.log(this.list_employees[index].budget_balance);
+                    // //console.log(this.list_employees[index].budget_balance);
                 })
                 this.set('paperFab', !this.statusCheck)
-                // console.log(this.paperFab);
+                // //console.log(this.paperFab);
                 this.fire('toast', { status: 'load' })
             },
             selectAllCalcel(e) {
                 this.fire('toast', { status: 'load' })
                 this.list_employees.map((set, index) => {
-                    // console.log(this.list_employees[index].budget_balance);
+                    // //console.log(this.list_employees[index].budget_balance);
                     if (this.list_employees[index].budget_balance === 0)
                         this.set('list_employees.' + index + '.checkForNotUse', this.statusNot)
-                    // console.log(this.list_employees[index].budget_balance);
+                    // //console.log(this.list_employees[index].budget_balance);
                 })
                 this.set('paperFabCancel', !this.statusNot)
-                // console.log(this.paperFab);
+                // //console.log(this.paperFab);
                 this.fire('toast', { status: 'load' })
             },
             useWelfare(e) {
                 let newArray = this.list_employees.find((set, index) => set.check === true)
-                // console.log(111);
-                // console.log(newArray);
+                // //console.log(111);
+                // //console.log(newArray);
                 if (newArray !== undefined) {
                     this.set('paperFab', false)
                 } else {
@@ -426,7 +437,7 @@
             },
             notuseWelfare(e) {
                 let newArray = this.list_employees.find((set, index) => set.checkForNotUse === true)
-                // console.log(newArray);
+                // //console.log(newArray);
                 if (newArray !== undefined) {
                     this.set('paperFabCancel', false)
                 } else {
@@ -448,10 +459,10 @@
                             let newArray = this.list_employees.filter((set, index) => set.checkForNotUse === true)
                             let newArray2 = []
                             newArray.map((item) => {
-                                // console.log(item.history_welfare_id);
+                                // //console.log(item.history_welfare_id);
                                 newArray2.push({ id: item.history_welfare_id })
                             })
-                            // console.log(newArray2);
+                            // //console.log(newArray2);
                             this.dispatchAction('USER_REJECT_USE_WELFARE', newArray2)
                                 .then((res) => {
                                     this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
@@ -468,7 +479,7 @@
                 let date = new Date().toISOString().split('T')[0]
                 let newArray = this.list_employees.find((set, index) => set.check === true)
                 newArray = JSON.parse(JSON.stringify(newArray))
-                // console.log(date);
+                // //console.log(date);
                 data = {
                     title: this.dataCheck.group_name,
                     budget: newArray.budget_cover,
@@ -482,12 +493,12 @@
                 }
 
                 this.$$('#welfare_budget').open()
-                // console.log(data);
+                // //console.log(data);
                 this.set('dataDialog', data)
             },
             getwelfare() {
                 // this.usewelfareProp.document_ids = this.$$('admin-dialog-use-all-welfare').keepFile()
-                // console.log();
+                // //console.log();
                 let dia = this.$$('admin-dialog-use-all-welfare').dataSend()
                 let newData = this.usewelfareProp
                 let dataDialog = JSON.parse(JSON.stringify(dia))
@@ -505,9 +516,9 @@
                     item.status = true
                     item.description_detail = dataDialog.description_detail
                 })
-                // console.log(newArray);
+                // //console.log(newArray);
 
-                // console.log(this.$$('#admin-dialog-use-all-welfare').validateForm('.required'));
+                // //console.log(this.$$('#admin-dialog-use-all-welfare').validateForm('.required'));
                 if (this.$$('#admin-dialog-use-all-welfare').validateForm('.required')) {
                     this.fire('toast', {
                         status: 'openDialog',
@@ -516,7 +527,7 @@
                             if (result == true) {
                                 this.$$('#welfare_budget').close()
                                 newArray.map((data) => {
-                                    // console.log(data);
+                                    // //console.log(data);
                                     this.dispatchAction('EMPLOYEE_USE_WELFARE', data);
                                 })
                                 // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);

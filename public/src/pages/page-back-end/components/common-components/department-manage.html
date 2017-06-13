@@ -145,7 +145,7 @@
                 return index + 1;
             },
             // getData(data){
-            //   console.log(data);  
+            //   //console.log(data);  
             // },
             // update table function 
             edit: function (e) {
@@ -169,7 +169,7 @@
                 // })
             },
             getForm: function () {
-                // console.log(this.data)
+                // //console.log(this.data)
                 this.dispatchAction('COMMONDATA_DATA_DEPARTMENT_INSERT', this.data);
             },
             update: function (e) {
@@ -192,7 +192,7 @@
             },
             _deleteData: function (check, id) {
                 if (check == true) {
-                    // console.log(id.data);
+                    // //console.log(id.data);
                     var id = id.data;
                     this.dispatchAction('COMMONDATA_DATA_DEPARTMENT_DELETE', id);
                 }

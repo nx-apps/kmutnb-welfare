@@ -198,10 +198,10 @@
                 '_setBtn(listUserFalse.*)'
             ],
             setYear(year) {
-                //  console.log(year);
+                //  //console.log(year);
                 try {
                     if (year.length != 0) {
-                        // console.log(year);
+                        // //console.log(year);
                         this.set('dataSearch.year', year[year.length - 1].year)
                         this.dispatchAction('WELFARE_LIST', this.dataSearch.year - 543)
                         this.dispatchAction('USERS_FALSE_LIST', '')
@@ -213,11 +213,11 @@
                 }
             },
             _setCheckBox(setData) {
-                // console.log(setData);
+                // //console.log(setData);
                 return setData.map((CheckBox) => CheckBox.statusCheckBox = false)
             },
             checkBoxAll(e) {
-                // console.log(e.currentTarget.checked);
+                // //console.log(e.currentTarget.checked);
                 this.listUserFalse.map((m, index) => {
                     // this.set('listUserFalse'+index+'statusCheckBox',true)
                     m.statusCheckBox = e.currentTarget.checked
@@ -225,7 +225,7 @@
                 })
             },
             userwelfare(e) {
-                // console.log(e.currentTarget.data);
+                // //console.log(e.currentTarget.data);
                 this.set('usewelfareProp', e.currentTarget.data)
                 this.$$('#welfare_budget').open()
                 // this.dispatchAction('USER_USE_SELETE_WELFARE',data);
@@ -240,7 +240,7 @@
                             let newData = []
                             sd.map((newDa) => newData.push({ id: newDa.id }))
 
-                            // console.log(sd)
+                            // //console.log(sd)
                             this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
                             this.dispatchAction('USERS_FALSE_LIST', '');
                             this.dispatchAction('USERS_LIST_HISTORY_WELFARE', '');
@@ -260,30 +260,30 @@
                             let newData = []
                             sd.map((newDa) => newData.push({ id: newDa.id }))
 
-                            // console.log(sd)
+                            // //console.log(sd)
                             this.dispatchAction('USER_USE_WELFARE_APPROVE', newData);
                             this.dispatchAction('USERS_FALSE_LIST', '');
                             this.dispatchAction('USERS_LIST_HISTORY_WELFARE', '');
                         }
                     }
                 })
-                // console.log(this.usewelfareProp.id);
+                // //console.log(this.usewelfareProp.id);
 
                 // this.$$('#welfare_budget').close()
             },
             downloadFile(e) {
-                console.log(e.currentTarget.data);
+                //console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id)
             },
             _setBtn(e) {
                 let status = this.listUserFalse.filter((fil) => fil.statusCheckBox == true).length < 1
-                // console.log(status)
+                // //console.log(status)
                 this.set('btnStatus', status)
             },
             checkBox() {
                 // let dataR2r = this.listUserFalse
                 let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
-                // console.log(sd)
+                // //console.log(sd)
             }
         });
     </script>

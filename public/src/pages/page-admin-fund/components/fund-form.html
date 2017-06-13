@@ -157,14 +157,14 @@
             },
             getForm: function () {
                 var validate = this.validateForm('#form');
-                // console.log(validate);
+                // //console.log(validate);
                 if(validate == true){
                     var data = this.data;
                     data.count_emp = parseInt(this.data.count_emp);
                     data.unit_value = parseFloat(this.data.unit_value);
                     data.reward = parseFloat(this.data.reward);
                     data.property_value = parseFloat(this.data.property_value);
-                    // console.log(data);
+                    // //console.log(data);
                     if (typeof data.id != 'undefined') {
                         this.dispatchAction('FUND_RVD_UPDATE', data);
                     }

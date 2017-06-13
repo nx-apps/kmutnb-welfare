@@ -129,7 +129,7 @@
             },
             save: function () {
                 var check = this.validateForm('.checkValidate');
-                // console.log(check);
+                // //console.log(check);
                 if(this.data.description === undefined){
                     this.data.description = '';
                 }
@@ -191,7 +191,7 @@
                 }
             },
             delete_condition: function (e) {
-                // console.log(e.target.index);
+                // //console.log(e.target.index);
                 this.splice('data.condition', e.target.index, 1);
             },
             cancle: function () {

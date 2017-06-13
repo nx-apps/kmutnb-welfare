@@ -236,7 +236,7 @@
                 this.selected = 0;
                 this.$$('panel-right').open();
                 this.set('title', 'เพิ่มฟิลด์')
-                // console.log(111);
+                // //console.log(111);
                 this.dispatchAction('CONDITIONREADWELFARE_SET');
                 this.dispatchAction('CONDITIONREADWELFARE_BTN', false);
                 this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW', true);
@@ -244,7 +244,7 @@
             _editDataCondition(e) {
                 this.selected = 0;
                 this.set('title', 'แก้ไขฟิลด์')
-                // console.log(2222);
+                // //console.log(2222);
                 this.dispatchAction('CONDITIONREADWELFARE_BTN', true);
                 this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW', false);
                 this.dispatchAction('CONDITIONREADWELFARE_SELECT', e.detail);
@@ -256,7 +256,7 @@
                 switch (item) {
                     case 'academic':
                         this.selected = 1;
-                        // console.log(this.selected);
+                        // //console.log(this.selected);
                         // this.COMMONDATA_DATA_ACADEMIC();
                         this.$$('panel-right').open();
                         break;

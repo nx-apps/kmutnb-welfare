@@ -156,18 +156,18 @@
                 '_getReloadData': 'gerYearWelfare'
             },
             _set(data){
-                console.log(data);
+                //console.log(data);
             },  
             setYear(years) {
                 try {
                    this.dispatchAction('USER_GET_WELFARES', window.location.pathname.split('/')[2], true);
-                //    console.log(year);
+                //    //console.log(year);
                 } catch (error) {
 
                 }
             },
             _obRvpFund(data) {
-                // console.log(data);
+                // //console.log(data);
                 // this.dispatchAction('USER_RVP_FUND', data.personal_id)
                 // this.dispatchAction('FUND_RVD_GET_LIST', true)
             },
@@ -176,7 +176,7 @@
                 // this.dispatchAction('USER_SELECT',e.detail);
             },
             backPage(){
-                // console.log(1111)
+                // //console.log(1111)
                 this.fire('_changePage')
             }
         });

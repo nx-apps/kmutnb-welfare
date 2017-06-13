@@ -137,11 +137,11 @@
 
                         this.set('dataSearch.year', year[year.length - 1].year)
 
-                        // console.log(this.dataSearch);
+                        // //console.log(this.dataSearch);
                     }
 
                 } catch (error) {
-                    console.log(error);
+                    //console.log(error);
                 }
             },
             setDay(day) {
@@ -165,11 +165,11 @@
                         }
                     }
                 } catch (error) {
-                    console.log(error);
+                    //console.log(error);
                 }
             },
             setSearch(e) {
-                // console.log(e.detail.value);
+                // //console.log(e.detail.value);
                 switch (e.detail.value) {
                     case 'day':
                         this.set('componentsSearch', 0)
@@ -196,7 +196,7 @@
 
                     } else {
                         label = chart.map((ed) => this.toThaiDate(ed.id))
-                        // console.log(label[0].search('undefined'));
+                        // //console.log(label[0].search('undefined'));
                         if (label[0].search('undefined') >= 0) {
                             label = chart.map((ed) => ed.id)
                         }
@@ -232,7 +232,7 @@
                     //         },
                     //     ]
                     // };
-                    // console.log(chart.map((ed) => ed.emp_pass))
+                    // //console.log(chart.map((ed) => ed.emp_pass))
                     // this.people = {
                     //     labels: label,
                     //     datasets: [
@@ -258,7 +258,7 @@
 
             },
             serchWelfare() {
-                console.log(this.dataSearch);
+                //console.log(this.dataSearch);
                 let newData = {}
                 switch (this.dataSearch.showBy) {
                     case 'day':
@@ -333,13 +333,13 @@
                         break;
                     default:
                 }
-                // console.log(newData);
+                // //console.log(newData);
             },
             checkUndefined(data) {
                 return (typeof data !== 'undefined' && data !== 'undefined' && data !== '')
             },
             printReport() {
-                console.log(1111);
+                //console.log(1111);
                 switch (this.dataSearch.showBy) {
                     case 'day':
                         if (this.checkUndefined(this.dataSearch.group_id)) {
@@ -395,7 +395,7 @@
                             if (newData.month < 10)
                                 newData.month = '0' + newData.month
 
-                            // console.log(newData);
+                            // //console.log(newData);
                             window.open('./api/report/report3?' + this.genUrlYearToThai(newData));
                         }
                         break;

@@ -124,7 +124,7 @@
                 },
             },
             regFund(e) {
-                console.log(this.personalId);
+                //console.log(this.personalId);
                 let personalId = this.personalId
                 let obj = {
                     personal_id: this.personalId,
@@ -177,7 +177,7 @@
                     text: 'ต้องการออกจากกองทุนใช่หรือไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
-                            console.log(e.currentTarget.data.id);
+                            //console.log(e.currentTarget.data.id);
                             let obj = {
                                 id: e.currentTarget.data.id
                             }

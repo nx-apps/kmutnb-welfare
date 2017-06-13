@@ -290,10 +290,10 @@
             },
             getDepartment: function (id, item) {
                 if (typeof id != 'undefined' && item[0].faculty != "") {
-                    // console.log('*',item); 
-                    // console.log('id',id);
+                    // //console.log('*',item); 
+                    // //console.log('id',id);
                     var faculty = item.filter((val) => val.id == id)[0]
-                    // console.log(faculty);
+                    // //console.log(faculty);
                     this.department = faculty.department;
                 }
             }

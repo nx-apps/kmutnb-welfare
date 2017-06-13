@@ -79,7 +79,7 @@
                 this.$$('panel-right').open();
             },
             openNewPage:function(){
-                console.log(this.testId);
+                //console.log(this.testId);
                 this.fire('nylon-change-page',{path:'/test/'+this.testId});
             },           
             closePanelRight:function(e){
@@ -123,12 +123,12 @@
                     response.data.obj_tag = obj;
 
                     this.data = response.data;
-                    console.log(response.data);
+                    //console.log(response.data);
                     
                     this.$$('panel-right').open();
                  })
                 .catch((error)=>{
-                    console.log(error);
+                    //console.log(error);
                 });
             },
             randomData:function(e){
@@ -147,7 +147,7 @@
                     this.set('data.question',res.data);
                 })
                 .catch(function(err){
-                    console.log(err);
+                    //console.log(err);
                 })
             },
             updateData:function(e){
@@ -173,7 +173,7 @@
                 data.obj = obj;
 
 
-                //console.log(data);
+                ////console.log(data);
 
                 this.fire('toast',{status:'load'});
                 this.EXAMINATION_UPDATE(data)

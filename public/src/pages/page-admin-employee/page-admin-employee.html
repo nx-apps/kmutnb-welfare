@@ -207,7 +207,7 @@
                     dataFilter.map((item) => {
                         getStatus = item.admin_use;
                     })
-                    // console.log(getStatus);
+                    // //console.log(getStatus);
                     this.$$('admin-list-user').checkBox = getStatus;
                     // if(id != ""){
                     this.$$('admin-list-user').selectTable(false)
@@ -216,22 +216,22 @@
             },
             select_faculty: function (id) {
                 if (id != '' || typeof id == 'undefined') {
-                    console.log('id',id);
+                    //console.log('id',id);
                     this.selectDepartment = "";
                     var newItem = this.listFaculty.filter((item) => {
                         return id == item.id
                     })
-                    console.log(newItem);
+                    //console.log(newItem);
                     this.departmentList = []
                     newItem.map((item) => {
                         this.departmentList = item.department;
                     })
                     this.$$('admin-list-user').searchTableByFilterFaculty(id);
-                    // console.log(this.departmentList);
+                    // //console.log(this.departmentList);
                 }
             },
             select_department: function (id) {
-                // console.log('*', id);
+                // //console.log('*', id);
                 this.$$('admin-list-user').searchTableByFilterDepartment(id);
             },
             back_page: function (e) {
@@ -252,7 +252,7 @@
                     this.$$('admin-list-user').insertData();
             },
             changePage: function (page) {
-                // console.log(page.detail.data);
+                // //console.log(page.detail.data);
                 if (page.detail != 0) {
                     this.selected = page.detail;
                     this.$$('welfare-employee').pages = 0;
@@ -269,7 +269,7 @@
             },
             checkWelfare:function(val){
                 if(val != '' && typeof val != 'undefined'){
-                    console.log(val);
+                    //console.log(val);
                 }
             },
             _getcommon: function () {

@@ -116,14 +116,14 @@
                 commonLogic, uploadAction, commonDataAction,
                 MonthBehavior, ValidateFormBehavior],
             downloadFile(e) {
-                // console.log(e.currentTarget.data);
+                // //console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id);
                 // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
             },
             btnCancel(e) {
-                // console.log(e.currentTarget.data);
+                // //console.log(e.currentTarget.data);
                 let newData = [{ id: e.currentTarget.data.history_welfare_id }]
-                // console.log(newData);
+                // //console.log(newData);
                 this.fire('toast', {
                     status: 'openDialog',
                     text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
@@ -133,7 +133,7 @@
                                 .then((el) => {
                                     let id = window.location.pathname.split('/')[2];
                                     this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
-                                    // console.log(222);
+                                    // //console.log(222);
                                 })
                         }
                     }

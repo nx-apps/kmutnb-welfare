@@ -132,10 +132,10 @@
                             a.push(diff[i]);
                         }
                         a.push(this.data.condition[x].field); //a
-                        // console.log('this.data.condition[', x, ']', this.data.condition[x]);
+                        // //console.log('this.data.condition[', x, ']', this.data.condition[x]);
                         this.set('data.condition.' + x + '.itemField', a);
-                        // console.log(this.data.condition[x].itemField);
-                        // console.log('x', x, this.data.condition[x]);
+                        // //console.log(this.data.condition[x].itemField);
+                        // //console.log('x', x, this.data.condition[x]);
                     }
                 }
             },
@@ -176,12 +176,12 @@
             },
             save: function () {
                 for (var i = 0; i < this.data.condition.length; i++) {
-                    // console.log(this.data.condition[i].field);
+                    // //console.log(this.data.condition[i].field);
                     var id = this.data.condition[i].field.id;
                     var item = this.condition.filter((val) => val.id == id)[0]
                     var field = item.field;
-                    // console.log(field);
-                    // console.log(this.data.condition[i].logic.search("<"))
+                    // //console.log(field);
+                    // //console.log(this.data.condition[i].logic.search("<"))
                     if (field == 'start_work_date') {
                         if (this.data.condition[i].logic_show.search(">") >= 0) {
                             var d = this.datas.start_date.split("-");
@@ -197,7 +197,7 @@
                         if (this.data.condition[i].logic_show.search(">") >= 0) {
                             var date = new Date().toISOString().split("T")(0);
                             var d = date.split('-');
-                            // console.log(d);
+                            // //console.log(d);
                             this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
                             this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
                         } else if (this.data.condition[i].logic_show.search("<") >= 0) {
@@ -213,7 +213,7 @@
                 }
                 this.data.budget = this.unFormat(this.data.budget);
                 this.set('data.group_id', this.datas.id);
-                // console.log('before',this.data);
+                // //console.log('before',this.data);
                 for (var i in this.data.condition) {
                     this.data.condition[i].field = this.data.condition[i].field.id;
                     delete this.data.condition[i].itemField;
@@ -222,7 +222,7 @@
                 this.dispatchAction('WELFARE_INSERT', this.data);
             },
             delete_condition: function (e) {
-                // console.log(e.target.index);
+                // //console.log(e.target.index);
                 this.splice('data.condition', e.target.index, 1);
                 this.conditionManage();
             },

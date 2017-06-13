@@ -36,7 +36,7 @@
       day = date.split("-")[2];
       mouth = date.split("-")[1];
       year = Number(date.split("-")[0]) + 543;
-      // console.log(day+'-'+mouth+'-'+String(year));
+      // //console.log(day+'-'+mouth+'-'+String(year));
       return day + '/' + mouth + '/' + String(year);
     },
     _cloneData: function (data) {
@@ -50,10 +50,10 @@
     },
     _isNan: function (num) {
       if (isNaN(num)) {
-        // console.log(num);
+        // //console.log(num);
         return 0;
       } else {
-        // console.log(num);
+        // //console.log(num);
         return num;
       }
     },
@@ -66,7 +66,7 @@
       }
     },
     test: function () {
-      console.log('ถึงแล้วววว');
+      //console.log('ถึงแล้วววว');
     },
     editInput: function () {
       this.isInputDisabled = !this.isInputDisabled;
@@ -76,15 +76,15 @@
     },
     //approve function
     approve: function (data) {
-      // console.log(data);
+      // //console.log(data);
       return data = !data;
     },
     //เช็คว่ามีข้อมูลในอาเรย์ไหม
     _isHave: function (data) {
-      // console.log(typeof data == 'object');
+      // //console.log(typeof data == 'object');
       if ((typeof data == 'object') && (data !== null)) {
 
-        console.log('fffff',data);
+        //console.log('fffff',data);
         if (data.length < 1) {
           return true;
         } else {
@@ -92,7 +92,7 @@
         }
 
       } else {
-        // console.log('aaaaa',data);
+        // //console.log('aaaaa',data);
         return true
       }
       // if (typeof data !== 'undefined' && data !== 'undefined') {
@@ -110,27 +110,27 @@
       }
     },
     _isHaveMany: function (data, count) {
-      // console.log(data.length);
+      // //console.log(data.length);
       if (data.length < count) {
         return true;
       }
     },
     _isHaveForUse: function (arr1, arr2) {
       // [[!_isHaveForUse(data.incoterms,dataForSelect.incoterms,data.incoterms.*)]]
-      // console.log(arr1.length,arr2.length);
+      // //console.log(arr1.length,arr2.length);
       if (arr1.length < arr2.length) {
         // this.btnCheckDis=true;
-        // console.log('true');
+        // //console.log('true');
         return true;
       } else {
-        // console.log('false');
+        // //console.log('false');
         // this.btnCheckDis=false;
         return false;
       }
     },
     _isHaveForDelete: function (arr1) {
       // [[_isHaveForDelete(data.incoterms,data.incoterms.*)]]
-      // console.log(arr1.length,arr2.length);
+      // //console.log(arr1.length,arr2.length);
       if (arr1.length < 2) {
         return true;
       }
@@ -151,9 +151,9 @@
     getDateg2g: function (date, callback) {
       // ex
       // this.getDateg2g(dateUn,(date)=>{
-      //   //   console.log('date',date);
+      //   //   //console.log('date',date);
       // });
-      // console.log('gggg=',date);
+      // //console.log('gggg=',date);
       if (date == undefined || date == 'undefined') {
         let date = new Date;
         let dateNow = date.toISOString().split("T");
@@ -201,24 +201,24 @@
         //   this.data.contract_type_rice.map((riceCode,index)=>{
         //     this.notifyPath('data.'+index+'.type_rice_id');
         //   });
-        //  console.log('this.oldData=>',this.oldData);
+        //  //console.log('this.oldData=>',this.oldData);
         // let el = Polymer.dom(this.root).querySelectorAll('.required');
         // el.map((el)=> {el.reset(); el.value=''});
         //  this.fire('refresh-contract',{detail:'refresh-contract'});
-        //  console.log(detail.data.contract_id);
+        //  //console.log(detail.data.contract_id);
         //  this.fire('get-contract-detail',{contractId:detail.data.contract_id});
         //
       }
     },
     changeString2Num: function (ob, param) {
-      //console.log(typeof ob.value);
+      ////console.log(typeof ob.value);
       // if(typeof ob.value == "string"){
-      //   console.log(numeral().unformat(ob.value));
+      //   //console.log(numeral().unformat(ob.value));
       //   var pathChange = ob.path.split(".");
       //   if(pathChange.length == 2){
       //       if(pathChange[1]==param){
       //         ob.base[param]=parseFloat(ob.value);
-      //         // console.log(typeof ob.value);
+      //         // //console.log(typeof ob.value);
       //       }
       //   }
       // }
@@ -228,7 +228,7 @@
         if (pathChange.length == 2) {
           if (pathChange[1] == param) {
             ob.base[param] = numeral().unformat(ob.value);
-            // console.log(ob.base[param]);
+            // //console.log(ob.base[param]);
           }
         }
       }

@@ -113,7 +113,8 @@
     </style>
     <template>
         <div class="content horizontal end-justified layout">
-            <paper-button raised on-tap="getWelfare">ดูสวัสดิการที่ได้รับสิทธิ</paper-button>
+            <paper-button raised on-tap="getWelfare" style="margin-top: 10px;">
+                <iron-icon icon="print" style="margin-right: 10px;"></iron-icon>สวัสดิการที่ได้รับสิทธิ</paper-button>
         </div>
 
         <main>
@@ -225,7 +226,7 @@
                 },
             },
             checkOnce(status) {
-                // console.log(status);
+                // //console.log(status);
                 switch (status) {
                     case true:
                         return 'ครั้งเดียว'
@@ -241,14 +242,14 @@
                 return index + 1
             },
             downloadFile(e) {
-                // console.log(e.currentTarget.data);
+                // //console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id)
             },
             getWelfare() {
                 // /api/report/emp_welfare?id=000183c1-23db-4af2-937f-3e359400e33c
                 let year = this.year[this.year.length - 1]
-                console.log(year);
-                window.open('/api/report/emp_welfare?id=' + this.data.id+'&year='+year.year);
+                //console.log(year);
+                window.open('/api/report/emp_welfare?id=' + this.data.id + '&year=' + year.year);
             }
         });
     </script>

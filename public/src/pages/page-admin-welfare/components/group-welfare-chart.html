@@ -27,7 +27,7 @@
             },
             setData: function (datas) {
                 if (datas != '') {
-                    console.log(datas);
+                    //console.log(datas);
                     var label = [];
                     label = datas.map((val) => val.group_welfare_name +' (คน)');
                     this.employee = {
@@ -74,7 +74,7 @@
                     }
 
                 } catch (error) {
-                    console.log(error);
+                    //console.log(error);
                 }
             },
             setChart(chart) {
@@ -86,7 +86,7 @@
 
                     } else {
                         label = chart.map((ed) => this.toThaiDate(ed.id))
-                        // console.log(label[0].search('undefined'));
+                        // //console.log(label[0].search('undefined'));
                         if (label[0].search('undefined') >= 0) {
                             label = chart.map((ed) => ed.id)
                         }

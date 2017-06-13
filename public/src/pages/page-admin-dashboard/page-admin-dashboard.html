@@ -280,11 +280,11 @@
 
                     if (checkUndefined(this.data.type_employee_id))
                         data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
-                    // console.log(data.type_employee_name);
-                    // console.log(data);
-                    // console.log(data.department_id);
-                    // console.log(this.genUrl(data));
-                    console.log(this.report_type_seleted);
+                    // //console.log(data.type_employee_name);
+                    // //console.log(data);
+                    // //console.log(data.department_id);
+                    // //console.log(this.genUrl(data));
+                    //console.log(this.report_type_seleted);
                     window.open('/api/report/welfare' + idReport + '?' + this.genUrl(data) + '&type=' + this.report_type_seleted);
                     // https://localhost:3000/api/report/welfare1?
                 } catch (error) {

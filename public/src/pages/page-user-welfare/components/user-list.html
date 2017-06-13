@@ -79,17 +79,17 @@
             },
             userClick(e) {
                 this.fire('_get-user', +e.currentTarget.data.id)
-                // console.log(1111111111);
+                // //console.log(1111111111);
                 this.fire('nylon-change-page', { path: '/user-welfare/' + e.currentTarget.data.id })
                 // this.dispatchAction('USER_GET_WELFARES',e.currentTarget.data.id);
 
-                // console.log(e.currentTarget.data.id)
+                // //console.log(e.currentTarget.data.id)
             },
             _Obindex(index) {
                 return index + 1
             },
             nylonPageActive() {
-                // console.log(12152);
+                // //console.log(12152);
             }
         });
     </script>

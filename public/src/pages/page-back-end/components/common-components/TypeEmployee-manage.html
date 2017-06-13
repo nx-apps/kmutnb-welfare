@@ -125,7 +125,7 @@
                 // })
             },
             getForm:function(){
-                // console.log(this.data);
+                // //console.log(this.data);
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE_INSERT',this.data);
             },
             update:function(e){
@@ -147,7 +147,7 @@
             },
             _deleteData:function(check,id){
                 if(check == true){
-                    // console.log(id.data);
+                    // //console.log(id.data);
                     var id = id.data;
                     this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE_DELETE',id);
                 }

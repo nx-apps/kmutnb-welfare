@@ -73,13 +73,13 @@
                 }
             },
             print: function () {
-                // console.log(this.select);
+                // //console.log(this.select);
                 if (this.select.welfare_id == undefined || this.select.welfare_id == '') {
                     window.open('./api/report/report5?' + this.genUrl(this.select));
-                    // console.log(this.genUrl(this.select));
+                    // //console.log(this.genUrl(this.select));
                 } else {
                     window.open('./api/report/report5_1?' + this.genUrl(this.select));
-                    // console.log(this.genUrl(this.select));
+                    // //console.log(this.genUrl(this.select));
                 }
             }
         });

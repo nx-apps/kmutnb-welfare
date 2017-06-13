@@ -88,14 +88,14 @@
             },
             checkBudget(e) {
                 try {
-                    //  console.log(this.$$('#budget_use').validateForm('.required'));
-                    // console.log(this.data.budget_use);
-                    // console.log(this.data.budget_cover);
+                    //  //console.log(this.$$('#budget_use').validateForm('.required'));
+                    // //console.log(this.data.budget_use);
+                    // //console.log(this.data.budget_cover);
                     if (this.data.budget_use > this.data.budget_cover)
                         this.set('data.budget_use', this.data.budget_cover)
                     if (this.data.onetime) {
                         this.set('data.budget_use', this.data.budget_cover)
-                        // console.log(111);
+                        // //console.log(111);
                     }
 
                 }

@@ -201,7 +201,7 @@
                 }
             },
             checkMenu: function (data) {
-                // console.log('data',data);
+                // //console.log('data',data);
                 if (typeof data.id == 'undefined') {
                     return false;
                 }
@@ -210,12 +210,12 @@
                 }
             },
             clearSelect:function(e){
-                // console.log(this.data);
+                // //console.log(this.data);
                 if(this.isEnable == false && this.checkSplice !== true){
-                    // console.log(this.data.condition[e.model.index]);
+                    // //console.log(this.data.condition[e.model.index]);
                     // var pre = JSON.parse(JSON.stringify(this.data.condition));
                     // if(pre[e.model.index] !== undefined){
-                    //     // console.log(pre[e.model.index].field.conditions);
+                    //     // //console.log(pre[e.model.index].field.conditions);
                     //     pre[e.model.index]k.field.conditions = {};
                     //     this.data.condition = pre;
                     // }
@@ -230,7 +230,7 @@
                 }
             },
             setItemShow: function (data) {
-                // console.log(data);
+                // //console.log(data);
                 this.data.condition.map((item) => {
                     if (typeof item.field.data == 'string') {
                         item.value_showInput = item.value_show;
@@ -319,16 +319,16 @@
                             a.push(diff[i]);
                         }
                         a.push(this.data.condition[x].field); //a
-                        // console.log('this.data.condition[', x, ']', this.data.condition[x]);
+                        // //console.log('this.data.condition[', x, ']', this.data.condition[x]);
                         this.set('data.condition.' + x + '.itemField', a);
-                        // console.log(this.data.condition[x].itemField);
-                        // console.log('x', x, this.data.condition[x]);
+                        // //console.log(this.data.condition[x].itemField);
+                        // //console.log('x', x, this.data.condition[x]);
                     }
                 }
             },
             save: function () {
                 var check = this.validateForm('.form');
-                // console.log(check);
+                // //console.log(check);
                 if(check == false) return '';
                 if(check == true){
                     if(this.data.round_use === undefined){
@@ -344,7 +344,7 @@
                             round_use: this.data.round_use,
                             year: this.date.year
                         }
-                        // console.log(newData);
+                        // //console.log(newData);
                         var condition = this.data.condition.map((item)=>{
                             if(item.value_showDropdown == ''){
                                 item.value_show = item.value_showInput;
@@ -361,7 +361,7 @@
                                 var search = data.field.field.search('date');
                                 var search_age = data.field.field.search('age');
                                 if (search != -1) {
-                                    // console.log(data.logic_show);
+                                    // //console.log(data.logic_show);
                                     if (data.logic_show.search(">") >= 0) {
                                         var d = this.date.cal_date.split("-");
                                         data.value = (parseInt(d[0]) - parseInt(data.value_show)) + "-" + d[1] + "-" + d[2] + tz;
@@ -395,7 +395,7 @@
                             return newitem
                         })
                         newData.condition = setCondition;    
-                        // console.log(newData);
+                        // //console.log(newData);
                         if (typeof this.data.id == 'undefined') {
                             this.fire('toast', {
                                 status: 'openDialog',
@@ -403,7 +403,7 @@
                                 confirmed: (result) => {
                                     if (result == true) {
                                         // newData.status = true;
-                                        //  console.log(newData);
+                                        //  //console.log(newData);
                                         var year = new Date().getFullYear();
                                         this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
                                             // this.fire('refresh_group',year);
@@ -421,7 +421,7 @@
                                     if (result == true) {
                                         // newData.status = this.data.status
                                         newData.id=this.data.id;
-                                        // console.log(newData);
+                                        // //console.log(newData);
                                         this.dispatchAction('WELFARE_EDIT', newData).then((val)=>{
                                             this.isEnable = true;
                                         })

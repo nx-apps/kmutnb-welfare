@@ -222,8 +222,8 @@
                         a.push(this.data.condition[i].field);
                         this.set('data.condition.' + i + '.itemField', a);
                     }
-                    console.log(this.data.condition);
-                    console.log(this.isEnabled)
+                    //console.log(this.data.condition);
+                    //console.log(this.isEnabled)
                     this.isEnabled = true
                 }, 1);
             },
@@ -264,12 +264,12 @@
             },
             save: function () {
                 for (var i = 0; i < this.data.condition.length; i++) {
-                    // console.log(this.data.condition[i].field);
+                    // //console.log(this.data.condition[i].field);
                     var id = this.data.condition[i].field.id;
                     var item = this.condition.filter((val) => val.id == id)[0]
                     var field = item.field;
-                    // console.log(field);
-                    // console.log(this.data.condition[i].logic.search("<"))
+                    // //console.log(field);
+                    // //console.log(this.data.condition[i].logic.search("<"))
                     if (field == 'start_work_date') {
                         if (this.data.condition[i].logic_show.search(">") >= 0) {
                             var d = this.datas.start_date.split("-");
@@ -285,7 +285,7 @@
                         if (this.data.condition[i].logic_show.search(">") >= 0) {
                             var date = new Date().toISOString().split("T")(0);
                             var d = date.split('-');
-                            // console.log(d);
+                            // //console.log(d);
                             this.data.condition[i].value = (parseInt(d[0]) - parseInt(this.data.condition[i].value_show)) + "-" + d[1] + "-" + d[2];
                             this.data.condition[i].logic = this.data.condition[i].logic_show.replace(">", "<");
                         } else if (this.data.condition[i].logic_show.search("<") >= 0) {
@@ -305,12 +305,12 @@
                     this.data.condition[i].field = this.data.condition[i].field.id;
                     delete this.data.condition[i].itemField;
                 }
-                // console.log(this.data);
+                // //console.log(this.data);
                 this.dispatchAction('WELFARE_EDIT', this.data)
                 this.set('disabled', this.active = true);
             },
             delete_condition: function (e) {
-                // console.log(e.target.index);
+                // //console.log(e.target.index);
                 this.splice('data.condition', e.target.index, 1);
             },
             back: function () {

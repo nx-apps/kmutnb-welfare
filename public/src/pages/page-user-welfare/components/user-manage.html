@@ -250,11 +250,11 @@
                 'setPrefixname(data.prefix_id)',
             ],
             checkdd(data) {
-                console.log(data);
+                //console.log(data);
             },
             setGender(gender_id) {
                 try {
-                    console.log(gender_id);
+                    //console.log(gender_id);
                     const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
                     this.data.gender_name = getName(this.gender, this.data.gender_id).gender_name
                 } catch (e) {
@@ -281,14 +281,14 @@
             //     this.data.position_name = getName(this.position, this.data.position_id).position_name
             //     this.data.prefix_name = getName(this.prefixname, this.data.prefix_id).prefix_name
             // _checkFaculty(dataSelete){
-            //     // console.log(dataSelete)
+            //     // //console.log(dataSelete)
             //     if(dataSelete){
             //     let departmentID = this.department.find((departmentID)=>departmentID.id == dataSelete);
-            //     // console.log(departmentID)
+            //     // //console.log(departmentID)
             //       let faculty_code = this.faculty.find((facultyID)=>facultyID.faculty_code == departmentID.faculty);
-            //     //  console.log(faculty_code)
+            //     //  //console.log(faculty_code)
             //       this.set('data.faculty_id',faculty_code.id)
-            //     //   console.log(this.data.faculty_id)
+            //     //   //console.log(this.data.faculty_id)
             //     } 
             // },
 

@@ -222,15 +222,15 @@
             setYear(year) {
                 try {
                     this.set('seleterYear', year[year.length - 1].year)
-                    // console.log(year[year.length-1].year);
-                    // console.log(this.seleterYear);
+                    // //console.log(year[year.length-1].year);
+                    // //console.log(this.seleterYear);
                 } catch (error) {
 
                 }
             },
             gerYearWelfare(e) {
                 if (typeof this.data != 'undefined') {
-                    // console.log(this.data);
+                    // //console.log(this.data);
                     if (e.detail.value)
                         var id = this.data.id;
                     if (typeof id != 'undefined') {
@@ -239,12 +239,12 @@
                 }
             },
             back: function () {
-                // console.log(55);
+                // //console.log(55);
                 this.fire('select-page', 0)
             },
             usewelfare(e) {
                 let data = new Object();
-                // console.log(this.data.id);
+                // //console.log(this.data.id);
                 data.title = e.currentTarget.data.name
                 data.emp_id = this.data.id
                 data.welfare_id = e.currentTarget.data.welfare_id
@@ -255,12 +255,12 @@
                 data.group_id = e.currentTarget.data.group_id
                 this.set('disabled', e.currentTarget.data.onetime)
                 this.$$('#welfare_budget').open()
-                // console.log(data);
+                // //console.log(data);
                 this.dataDialog = data;
                 this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', data);
             },
             getwelfare() {
-                // console.log(this.usewelfareProp);
+                // //console.log(this.usewelfareProp);
                 this.$$('#welfare_budget').close()
                 this.usewelfareProp.document_ids = this.$$('admin-emp-dialog-use-welfare').keepFile()
                 if (this.$$('#admin-emp-dialog-use-welfare').validateForm('.required')) {
@@ -294,7 +294,7 @@
                 }
             },
             downloadFile(e) {
-                console.log(e.currentTarget.data);
+                //console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id);
                 // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
 

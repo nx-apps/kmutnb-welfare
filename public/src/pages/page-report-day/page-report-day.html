@@ -79,20 +79,20 @@
                 if (date != '') {
                     var changeDate = new Date(date);
                     changeDate.setDate(changeDate.getDate() + 1);
-                    // console.log(changeDate);
+                    // //console.log(changeDate);
                     var date_start = date;
                     var date_end = changeDate.toISOString().split("T")[0];
-                    // console.log(date_start, date_end);
+                    // //console.log(date_start, date_end);
                     this.select = { date_start, date_end };
                 }
             },
             print: function () {
                 if (this.select.group_id == undefined || this.select.group_id == '') {
                     window.open('./api/report/report2?' + this.genUrl(this.select));
-                    // console.log(this.genUrl(this.select));
+                    // //console.log(this.genUrl(this.select));
                 } else {
                     window.open('./api/report/report2_1?' + this.genUrl(this.select));
-                    // console.log(this.genUrl(this.select));
+                    // //console.log(this.genUrl(this.select));
                 }
             }
         });

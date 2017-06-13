@@ -91,7 +91,7 @@
                 }
             },
             getData: function (data) {
-                // console.log('11111', data);
+                // //console.log('11111', data);
                 this.dispatchAction('CONDITION_LIST')
             },
             _insert: function () {
@@ -102,7 +102,7 @@
                 this.pages = '0';
             },
             _edit: function (e) {
-                // console.log(e.currentTarget.data);
+                // //console.log(e.currentTarget.data);
                 this.fire('toast',{status:'load',text:'กำลังค้นหาข้อมูล...'})
                 var id = e.currentTarget.data.id;
                 this.dispatchAction('WELFARE_DATA_SELECT', id)
@@ -110,10 +110,10 @@
                 
                 this.fire('toast',{status:'success',text:'ค้นหาสำเร็จ',callback(){
                     
-                    console.log(0)
-                    console.log(this.pages)
+                    //console.log(0)
+                    //console.log(this.pages)
                 }});
-                console.log(this.$$('welfare-edit').changeisEnabled())
+                //console.log(this.$$('welfare-edit').changeisEnabled())
                 this.pages = '2';
             },
             _delete: function (e) {

@@ -266,7 +266,7 @@
                 }
             },
             searchByPId: function (){
-                // console.log(this.data.personal_id);
+                // //console.log(this.data.personal_id);
                 this.dispatchAction('USER_SEARCH_PERSONAL_ID',this.data.personal_id)
             },
             save: function () {
@@ -286,7 +286,7 @@
                     this.data.end_work_date = null
                     this.data.work_age = 0
                     this.data.age = 0
-                    // console.log(this.data);
+                    // //console.log(this.data);
                     this.dispatchAction('EMPLOYEE_INSERT', this.data);
                     // this.dispatchAction('USERS_LIST_HISTORY_WELFARE','')
                     // this.fire('close-panel-right');
@@ -313,10 +313,10 @@
             },
             getDepartment: function (id, item) {
                 if (typeof id != 'undefined' && item[0].faculty != "") {
-                    // console.log('*',item); 
-                    // console.log('id',id);
+                    // //console.log('*',item); 
+                    // //console.log('id',id);
                     var faculty = item.filter((val) => val.id == id)[0]
-                    // console.log(faculty);
+                    // //console.log(faculty);
                     this.department = faculty.department;
                 }
             }

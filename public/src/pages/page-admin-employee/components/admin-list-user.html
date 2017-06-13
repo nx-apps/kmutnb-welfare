@@ -290,7 +290,7 @@
                     else {
                         return false;
                     }
-                    // console.log(data.length);
+                    // //console.log(data.length);
                 }
             },
             resetData: function () {
@@ -304,11 +304,11 @@
                 }
             },
             showBtn: function (show) {
-                console.log(show);
+                //console.log(show);
                 var check = show.base.filter((item) => {
                     return item.check == true
                 })
-                console.log(check);
+                //console.log(check);
                 if (check.length != 0) {
                     this.paperFab = false;
                 }
@@ -320,7 +320,7 @@
                 var check = e.target.checked;
                 if (check == true) {
                     this.newListSearch.map((item, index) => {
-                        // console.log(item);
+                        // //console.log(item);
                         if (item.admin_use == true) {
                             this.set('newListSearch.' + index + '.check', true);
                         } else {
@@ -366,14 +366,14 @@
                         };
                         return newItem;
                     })
-                    // console.log(JSON.stringify(saveData));
-                    console.log(saveData);
+                    // //console.log(JSON.stringify(saveData));
+                    //console.log(saveData);
                     // this.dispatchAction('USER_INSERT', saveData)
                 }
 
             },
             selectTable: function (id) {
-                // console.log(id);
+                // //console.log(id);
                 if (id == true) {
                     this.isSearch = true;
                 }
@@ -388,13 +388,13 @@
                     year: item.year
                 }
                 window.open('https://localhost:3000/admin-manage/' + datas.id);
-                // console.log(datas);
+                // //console.log(datas);
                 // this.dispatchAction('LIST_EMPLOYEES_WELFARE', datas);
                 // var check = e.target.is;
                 // if (check != 'paper-checkbox') {
                 //     this.fire('select-page', 1)
                 // }
-                // console.log(e.target.is);
+                // //console.log(e.target.is);
             },
             chagePageDetail: function (e) {
                 var item = e.currentTarget.data;
@@ -409,7 +409,7 @@
                 // }
             },
             getList: function (list) {
-                // console.log(list);
+                // //console.log(list);
                 
                 this.newList = list;
             },
@@ -437,7 +437,7 @@
                                 break;
                             }
                             else {
-                                // console.log('error');
+                                // //console.log('error');
                                 // arr = [];
                             }
                         }
@@ -445,13 +445,13 @@
                     this.newList = arr
                 }
                 else {
-                    console.log('error');
+                    //console.log('error');
                     this.newList = storeData;
                 }
             },
             searchTableListSearch: function (e) {
                 let arr = [];
-                // console.log(this.listFilterSearch);
+                // //console.log(this.listFilterSearch);
                 var storeData;
                 if (this.listFilterSearch.length == 0) {
                     storeData = this.listSearch
@@ -471,7 +471,7 @@
                                 break;
                             }
                             else {
-                                // console.log('error');
+                                // //console.log('error');
                                 // arr = [];
                             }
                         }
@@ -479,7 +479,7 @@
                     this.newListSearch = arr
                 }
                 else {
-                    console.log('error');
+                    //console.log('error');
                     this.newListSearch = storeData;
                 }
             },
@@ -501,7 +501,7 @@
                         return item.department_id == id
                     })
                     this.listFilterSearch = this.newListSearch
-                    // console.log(this.newListSearch);
+                    // //console.log(this.newListSearch);
                 }
             },
             searchTableByFilterFaculty: function (id) {
@@ -509,11 +509,11 @@
                     var storeData = this.list;
                     this.newList = storeData;
                     var getList = this.newList;
-                    console.log(getList);
+                    //console.log(getList);
                     this.newList = getList.filter((item) => {
                         return item.faculty_id == id
                     })
-                    console.log(this.newList);
+                    //console.log(this.newList);
                     this.listFilter = this.newList;
                 }
                 else {

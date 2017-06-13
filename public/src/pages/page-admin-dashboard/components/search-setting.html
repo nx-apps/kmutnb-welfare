@@ -126,7 +126,7 @@
                 }
             },
             setCombo(data) {
-                // console.log(data);
+                // //console.log(data);
                 let newWelFare = data.map((el) => {
                     el.label = el.group_welfare_name
                 })
@@ -140,10 +140,10 @@
                 if (checkUndefined(group_id)) 
                      name = getName(this.list_welfare,group_id).label
                this.set('data.group_name',name)
-                // console.log(name);
+                // //console.log(name);
             },
             setYear: function (year) {
-                // console.log(year);
+                // //console.log(year);
                 try {
                     if (year !== '') {
                         let time = new Date()
@@ -152,7 +152,7 @@
                         this.set('data.date_start', new Date(time.setHours(time.getHours() - 168)).toISOString().split('T')[0])
                         this.set('data.date_end', today.toISOString().split('T')[0])
                         // this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.data))
-                        // console.log(1111); console.log(2222);
+                        // //console.log(1111); //console.log(2222);
                     }
 
                     // req.query.date_start || 
@@ -163,8 +163,8 @@
 
             },
             // getGroupWelfare: function (year) {
-            //     //    console.log(this.data);
-            //     // console.log(year);
+            //     //    //console.log(this.data);
+            //     // //console.log(year);
             //     if (year !== undefined) {
             //         this.dispatchAction('WELFARE_LISTS');
             //     }
@@ -181,8 +181,8 @@
 
             },
             search: function () {
-                // console.log(this.data);
-                // console.log(this.genUrl(this.data));
+                // //console.log(this.data);
+                // //console.log(this.genUrl(this.data));
                 try {
                     this.fire('toast', { status: 'load' })
 

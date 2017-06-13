@@ -217,7 +217,7 @@
                 '_setBtn(listUserFalse.*)'
             ],
             checkBoxAll(e) {
-                console.log(e.currentTarget.checked);
+                //console.log(e.currentTarget.checked);
                 this.listUserFalse.map((m, index) => {
                     // this.set('listUserFalse'+index+'statusCheckBox',true)
                     m.statusCheckBox = e.currentTarget.checked
@@ -246,7 +246,7 @@
                 return reject != 'reject'
             },
             _setCheckBox(setData) {
-                // console.log(setData);
+                // //console.log(setData);
                 return setData.map((CheckBox) => CheckBox.statusCheckBox = false)
             },
             searchWelfare() {
@@ -259,7 +259,7 @@
                 });
             },
             searchBtn() {
-                // console.log(this.dataSearch.status == 'undefined' || this.dataSearch.status == '');
+                // //console.log(this.dataSearch.status == 'undefined' || this.dataSearch.status == '');
                 if (this.dataSearch.status == 'undefined' || this.dataSearch.status == '') {
                     this.set('dataSearch.status', 'approve')
                 }
@@ -278,7 +278,7 @@
                             let newData = []
                             sd.map((newDa) => newData.push({ id: newDa.id }))
 
-                            // console.log(sd)
+                            // //console.log(sd)
                             this.dispatchAction('USER_USE_WELFARE_APPROVE', newData, () => {
                                 this.searchBtn()
                                 this.$$('#masterCheck').checked = false
@@ -311,18 +311,18 @@
                 })
             },
             downloadFile(e) {
-                // console.log(e.currentTarget.data);
+                // //console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id)
             },
             _setBtn(e) {
                 let status = this.listUserFalse.filter((fil) => fil.statusCheckBox == true).length < 1
-                // console.log(status)
+                // //console.log(status)
                 this.set('btnStatus', status)
             },
             checkBox() {
                 // let dataR2r = this.listUserFalse
                 let sd = this.listUserFalse.filter((fil) => fil.statusCheckBox == true)
-                // console.log(sd)
+                // //console.log(sd)
             }
         });
     </script>

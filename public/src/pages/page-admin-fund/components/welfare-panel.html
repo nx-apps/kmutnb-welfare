@@ -104,11 +104,11 @@
                 if(this.data.admin_use != true){
                     this.data.admin_use = false;
                 }
-                // console.log(this.data);
+                // //console.log(this.data);
                 this.dispatchAction('INSERT_WELFARE', this.data)
             },
             delete_condition: function (e) {
-                // console.log(e.target.index);
+                // //console.log(e.target.index);
                 this.splice('data.condition', e.target.index, 1);
             },
             close: function(){

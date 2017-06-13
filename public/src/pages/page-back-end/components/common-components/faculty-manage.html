@@ -149,7 +149,7 @@
                 // })
             },
             getForm:function(){
-                // console.log(this.data)
+                // //console.log(this.data)
                 this.dispatchAction('COMMONDATA_DATA_FACULTY_INSERT',this.data);
             },
             update:function(e){
@@ -159,7 +159,7 @@
                     faculty_code: getForm.faculty_code,
                     faculty_name:getForm.faculty_name
                 }
-                // console.log(newItem);
+                // //console.log(newItem);
                 this.dispatchAction('COMMONDATA_DATA_FACULTY_UPDATE',newItem);
             },
             confirmDelete:function(e){
@@ -173,7 +173,7 @@
             },
             _deleteData:function(check,id){
                 if(check == true){
-                    // console.log(id.data);
+                    // //console.log(id.data);
                     var id = id.data;
                     this.dispatchAction('COMMONDATA_DATA_FACULTY_DELETE',id);
                 }
