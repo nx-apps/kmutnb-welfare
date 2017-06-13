@@ -202,9 +202,10 @@
             behaviors: [ReduxBehavior, ValidateFormBehavior],
             properties: {
                 data: {
-                    type: Object,
-                    value: {},
-                    notify: true
+                    // statePath: 'users.select',
+                    // observer:'checkdd',
+                    notify: true,
+                    
                 },
 
                 // academic:{
@@ -245,8 +246,12 @@
                 'setGender(data.gender_id)',
                 'setPrefixname(data.prefix_id)',
             ],
+            checkdd(data){
+                console.log(data);
+            },  
             setGender(gender_id) {
                 try {
+                    console.log(gender_id);
                     const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
                     this.data.gender_name = getName(this.gender, this.data.gender_id).gender_name
                 } catch (e) {

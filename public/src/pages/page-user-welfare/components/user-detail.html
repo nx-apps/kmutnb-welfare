@@ -145,7 +145,7 @@
             properties: {
                 data: {
                     statePath: 'users.select_welefares',
-                    observe:'_set'
+                    observer:'_set'
                 },
                 year: {
                     statePath: 'userWelfare.list',
@@ -155,12 +155,13 @@
             listeners: {
                 '_getReloadData': 'gerYearWelfare'
             },
-            // _set(data){
-            //     console.log(data);
-            // },  
+            _set(data){
+                console.log(data);
+            },  
             setYear(years) {
                 try {
                    this.dispatchAction('USER_GET_WELFARES', window.location.pathname.split('/')[2], true);
+                   console.log(111);
                 } catch (error) {
 
                 }

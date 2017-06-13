@@ -212,8 +212,6 @@ export function usersAction(store) {
         USER_GET_WELFARES(id, otherFunction = false) {
             // console.log('otherFunctioncdddd', year)
             // console.log(typeof id );
-            // console.log('id>',id,typeof id != undefined);
-            // console.log('id>',id,id != 'undefined');
             if (typeof id !== 'undefined' && id !== 'undefined' && id !== '') {
                 this.fire('toast', { status: 'load' });
                 axios.get(`./employee/${id}`)

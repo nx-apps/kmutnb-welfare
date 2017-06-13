@@ -39,7 +39,7 @@
                             </div>
                             <div class="flex-2">
                                 <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]" class="required" required
-                                    allowed-pattern="[0-9]" maxlength="13"></gl-form-input>
+                                    ></gl-form-input>
                             </div>
 
                         </div>
@@ -222,7 +222,7 @@
                 <gl-form-panel-footer label="" set-padding="0px 10px 20px 0px">
                     <div class="horizontal end-justified layout">
                         <div hidden="[[disabled]]">
-                            <paper-button raised class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
+                            <paper-button raised  on-tap="cancle">ยกเลิก</paper-button>
                             <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
                         </div>
                     </div>
@@ -309,7 +309,7 @@
                     text: 'คุณต้องการยกเลิกการแก้ไขใช่หรือไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
-                            // this.dispatchAction('EMPLOYEE_GET_WELFARES', this.data.id);
+                            this.dispatchAction('EMPLOYEE_GET_WELFARES', this.data.id);
                             // this.dispatchAction('LIST_EMPLOYEE_WELFARE', this.data.id);
                             this.fire('close-panel-right');
                             this.disabled = true;

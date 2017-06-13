@@ -308,7 +308,7 @@ exports.active = function (req, res) {
             .filter(function (f) {
                 return r.branch(f('type_continuous').eq(true),
                     r.now().inTimezone('+07').ge(f('start_date')),
-                    r.now().inTimezone('+07').during(f('start_date'), f('end_date'), { rightBound: 'closed' })
+                    r.now().inTimezone('+07').during(f('start_date').date(), f('end_date').date(), { rightBound: 'closed' })
                 )
             })
             .coerceTo('array')
