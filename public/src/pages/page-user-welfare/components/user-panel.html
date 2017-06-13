@@ -73,7 +73,7 @@
             behaviors: [ReduxBehavior, commonLogic],
             properties: {
                 data: {
-                    statePath: 'users.select_welefares',
+                    // statePath: 'users.select_welefares',
                     // observer:'ser'
                 },
                 insertView: {
@@ -83,7 +83,7 @@
                     statePath: 'users.disabled'
                 },
             },
-            ser(data){
+            ser(data) {
                 console.log(data);
             },
             // insertata(){
@@ -92,10 +92,14 @@
             //        this.dispatchAction('USER_INSERT',this.data);
             // },
             saveData() {
-                // console.log(this.$$('#user-manage').validateForm('.required'));
-                if (this.$$('#user-manage').validateForm('.required'))
-                    this.dispatchAction('USER_EDIT', this.data);
                 // console.log(this.data);
+                if (this.$$('#user-manage').validateForm('.required')) {
+                    this.dispatchAction('USER_EDIT', this.data);
+                    // this.dispatchAction('USER_GET_WELFARES', this.data.id, true);
+                }
+
+                // console.log(this.data);
+
 
             },
             cancle: function () {
@@ -104,7 +108,7 @@
                     text: 'คุณต้องการยกเลิกการแก้ไขใช่หรือไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
-                            this.dispatchAction('USER_GET_WELFARES', this.data.id,true);
+                            this.dispatchAction('USER_GET_WELFARES', this.data.id, true);
                             // this.dispatchAction('LIST_EMPLOYEE_WELFARE', this.data.id);
                             this.fire('close-panel-right');
                             this.dispatchAction('USER_BTN', true);

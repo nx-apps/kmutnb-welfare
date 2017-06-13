@@ -58,7 +58,7 @@
                             <label for="name">ชื่อ :</label>
                         </div>
                         <div class="flex-2">
-                            <gl-form-input id="emp_id" no-label-float value=" {{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
+                            <gl-form-input id="emp_id" no-label-float value="{{data.firstname}}" disabled="[[disabled]]" class="required" required></gl-form-input>
 
                         </div>
                     </div>
@@ -202,7 +202,7 @@
             behaviors: [ReduxBehavior, ValidateFormBehavior],
             properties: {
                 data: {
-                    // statePath: 'users.select',
+                    statePath: 'users.select_welefares',
                     // observer:'checkdd',
                     notify: true,
 
