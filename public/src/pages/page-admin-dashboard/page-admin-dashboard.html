@@ -154,6 +154,18 @@
                 <paper-button raised class="gl-btn-primary" on-tap="printReport" dialog-confirm autofocus>ออกรายงาน</paper-button>
             </div>
         </paper-dialog>
+        
+        <paper-dialog id="RETIREMENT" modal>
+            <div class="layout horizontal start-justified">
+                <div class="flex" style=" margin-right: 30px">
+                    <vaadin-date-picker always-float-label label="วันที่" value="{{data.date}}"></vaadin-date-picker>
+                </div>
+            </div>
+            <div class="flex horizontal end-justified layout buttons">
+                <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
+                <paper-button raised class="gl-btn-primary" on-tap="printReport" dialog-confirm autofocus>ออกรายงาน</paper-button>
+            </div>
+        </paper-dialog>
         <panel-right id="test" title="{{title}}">
 
             <employee-manage-add></employee-manage-add>
@@ -214,6 +226,10 @@
                         {
                             report_id: 7,
                             report_name: 'รายงาน 8 รายงานการเบิกสวัสดิการตามปีงบประมาณรายบุคคล'
+                        },
+                        {
+                            report_id: 8,
+                            report_name: 'รายงาน 9 ผู้เกษียณ'
                         },
                     ]
                 },
@@ -276,8 +292,13 @@
             closePanelRight: function () {
                 this.$$('panel-right').close();
             },
-            _print: function () {
-                this.$$('#report').open()
+            _print: function (e) {
+                if(this.report_id  !== 8){
+                    this.$$('#report').open()
+                } else {
+                    this.$$('#RETIREMENT').open()
+                }
+                
 
             },
             printReport: function () {
