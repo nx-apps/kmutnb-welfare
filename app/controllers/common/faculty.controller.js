@@ -5,8 +5,9 @@ exports.faculty = function (req, res) {
             return {
                 department: r.db('welfare_common').table('department').getAll(m('id'), { index: 'faculty_id' })
                     .coerceTo('array')
+                    .orderBy('department_name')
             }
-        })
+        }).orderBy('faculty_name')
         .run()
         .then(function (result) {
             res.json(result);

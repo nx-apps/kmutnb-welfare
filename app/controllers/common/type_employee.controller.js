@@ -1,6 +1,7 @@
 exports.type_employee = function(req,res){
   var r = req.r;
     r.db('welfare_common').table('type_employee')
+        .orderBy('type_employee_name')
         .run()
         .then(function (result) {
             res.json(result);
