@@ -34,13 +34,24 @@
                 <template>[[item.description]]</template>
             </vaadin-grid-column>
 
-            <vaadin-grid-column>
+            <vaadin-grid-column width="200px" flex-grow="0">
                 <template class="header">
-                    <div class="text-right">จำนวนเงินที่ใช้
+                    <div class="text-right">จำนวนเงินที่ใช้ (มหาวิทยาลัย)
                     </div>
                 </template>
                 <template>
                     <div class="text-right">[[formatNumber(item.budget_use)]]
+                    </div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="200px" flex-grow="0">
+                <template class="header">
+                    <div class="text-right">จำนวนเงินที่ใช้ (ตัวเอง)
+                    </div>
+                </template>
+                <template>
+                    <div class="text-right">[[formatNumber(item.budget_emp)]]
                     </div>
                 </template>
             </vaadin-grid-column>

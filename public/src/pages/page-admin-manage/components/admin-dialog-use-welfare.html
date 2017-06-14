@@ -31,6 +31,41 @@
                 </gl-form-input>
             </div>
         </div>
+        <template is="dom-if" if={{data.voluntary_status}}>
+            <div class="flex horizontal start-justified layout">
+                <div class="flex-2 label">
+                    <label for="total_budget">จำนวนเงินคงเหลือ(พนักงาน) :</label>
+                </div>
+                <div class="flex-2">
+                    <gl-form-input id="total_budget" no-label-float disabled format-number="on" value="[[data.budget_emp_cover]]">
+                        <div suffix>บาท</div>
+                    </gl-form-input>
+                </div>
+                <div class="flex label">
+                    <label for="budget_emp">ใช้จำนวน :</label>
+                </div>
+                <div class="flex-2">
+                    [[changeString2Num(data.*,'budget_emp')]]
+                    <gl-form-input id="budget_emp" no-label-float allowed-pattern="[0-9||,||.]" format-number="on" value="{{data.budget_emp}}"
+                        disabled="[[disabled]]" class="required" required on-blur="checkmoneyEmp">
+                        <div suffix>บาท</div>
+                    </gl-form-input>
+                </div>
+                <!--<div class="flex-4 label">
+                </div>
+                <div class="flex label">
+                    <label for="budget_emp">เงินที่พนักงานออก :</label>
+                </div>
+                <div class="flex-2">
+                    [[changeString2Num(data.*,'budget_emp')]] [[checkBudget(data.*)]]
+                    <gl-form-input id="budget_emp" no-label-float allowed-pattern="[0-9||,||.]" format-number="on" value="{{data.budget_emp}}"
+                        disabled>
+                        <div suffix>บาท</div>
+                    </gl-form-input>
+                </div>-->
+            </div>
+        </template>
+
         <div class="flex horizontal start-justified layout">
             <div class="flex horizontal start-justified layout">
                 <div class="flex label">
@@ -48,8 +83,6 @@
                     <vaadin-date-picker class="required" required always-float-label label="" value="{{data.date_approve}}"></vaadin-date-picker>
                 </div>
             </div>
-
-
         </div>
         <div>
             <gl-form-textarea rows="2" label="รายละเอียดเพิ่มเติม" placeholder="รายละเอียดเพิ่มเติม" value="{{data.description_detail}}"
@@ -87,10 +120,18 @@
             checkmoney(e) {
                 if (this.data.budget_use > this.data.budget_cover)
                     this.set('data.budget_use', this.data.budget_cover)
-                if (this.data.onetime) {
-                    this.set('data.budget_use', this.data.budget_cover)
+                // if (this.data.onetime) {
+                //     this.set('data.budget_use', this.data.budget_cover)
                     // //console.log(111);
-                }
+                // }
+            },
+            checkmoneyEmp(e) {
+                //                 budget_emp_cover
+                // budget_emp
+                if (this.data.budget_emp > this.data.budget_emp_cover)
+                    this.set('data.budget_emp', this.data.budget_emp_cover)
+                // //console.log(111);
+
             },
             checkBudget(e) {
                 try {
@@ -100,10 +141,10 @@
                     // this.set('data.budget_use', this.data.budget_cover)
                     if (this.data.budget_use > this.data.budget_cover)
                         this.set('data.budget_use', this.data.budget_cover)
-                    if (this.data.onetime) {
-                        this.set('data.budget_use', this.data.budget_cover)
-                        // //console.log(111);
-                    }
+                    // if (this.data.onetime) {
+                    //     this.set('data.budget_use', this.data.budget_cover)
+                    //     // //console.log(111);
+                    // }
 
                 }
                 catch (err) {

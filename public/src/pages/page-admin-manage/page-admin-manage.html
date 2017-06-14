@@ -200,7 +200,7 @@
                                         <vaadin-grid-column width="450px" flex-grow="0">
                                             <template class="header ">สวัสดิการที่สามารถใช้ได้
                                             </template>
-                                            <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime_use)]]
+                                            <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime_use)]] [[checkGroup(item.group_use)]]
 
                                             </template>
                                         </vaadin-grid-column>
@@ -367,13 +367,22 @@
             },
             checkWelfareFull(data) {
                 try {
-                    // //console.log(data);
-                    if (data.budget_balance <= 0)
+                    if ((data.onetime_use && data.budget_use !== 0)
+                        || data.budget_balance <= 0) 
                         return true
                 } catch (e) {
                     // //console.log(e);
                 }
 
+            },
+            checkGroup(group){
+                try {
+                    if (group)
+                    return ' ( กลุ่ม )'
+                // return 'เดี่ยว'
+                } catch (e) {
+                    
+                }
             },
             // btnCancel(e) {
             //     // //console.log(e.currentTarget.data);
@@ -422,13 +431,15 @@
                 data.budget = item.budget
                 data.budget_cover = item.budget_balance
                 data.budget_use = item.budget_balance
+                data.voluntary_status = item.voluntary_status
+                data.budget_emp_cover = item.budget_emp
+                data.budget_emp = item.budget_emp
                 data.status = true
                 data.onetime = item.onetime_use
                 data.group_id = item.group_id
                 this.set('disabled', item.onetime)
                 this.$$('#welfare_budget').open()
                 // //console.log(e.model.item.budget_balance);
-                //console.log(data);
                 this.dataDialog = data;
                 // //console.log(this.dataDialog);
                 // //console.log(data);
@@ -448,11 +459,11 @@
                         text: 'กรุณายืนยันการทำรายการ ?',
                         confirmed: (result) => {
                             if (result == true) {
-                                //console.log(newData);
+                                // console.log(newData);
                                 this.$$('#welfare_budget').close()
-                                // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
-                                this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
-                                // }
+                                if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
+                                    this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
+                                }
                             }
                         }
                     })
@@ -461,16 +472,10 @@
 
             },
             checkOnce(status) {
-                switch (status) {
-                    case true:
-                        return 'ครั้งเดียว'
-                        break;
-                    case false:
-                        return 'หลายครั้ง'
-                        break;
-                    default:
+                if (status)
+                    return 'ครั้งเดียว'
+                return 'หลายครั้ง'
 
-                }
             },
             editData() {
                 this.set('title', 'แก้ไขข้อมูลส่วนตัว')

@@ -261,11 +261,13 @@ exports.welfaresYear = function (req, res) {
                                         onetime_use: welfare_conditions('onetime_use'),
                                         group_use: welfare_conditions('group_use'),
                                         type_continuous: welfare_conditions('type_continuous'),
+                                        // voluntary_status: welfare_conditions('voluntary_status'),
+                                        voluntary_status: welfare_conditions('voluntary_status'),
                                     }
                                 })
                                 .filter({ "count_pass_status": true })
-                                .pluck(['budget', 'welfare_name', 'group_id', 'welfare_id', 'group_welfare_name'
-                                    , 'onetime_use', 'group_use', 'type_continuous', 'round_use'])
+                                .pluck(['budget','budget_emp', 'welfare_name', 'group_id', 'welfare_id', 'group_welfare_name'
+                                    , 'onetime_use', 'group_use', 'type_continuous','voluntary_status', 'round_use'])
                         }
                     })
                     .merge((e) => {
@@ -345,7 +347,7 @@ exports.welfaresYear = function (req, res) {
                             })
                         }
                     })
-                    .pluck('history_welfare_id', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'description_detail', 'status', 'file')
+                    .pluck('history_welfare_id','budget_emp', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'description_detail', 'status', 'file')
                     .coerceTo('array')
                     .orderBy(r.desc('date_approve'))
             }
