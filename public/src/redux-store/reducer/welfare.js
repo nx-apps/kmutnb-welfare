@@ -91,7 +91,7 @@ export function welfareAction(store) {
                 })
         },
         WELFARE_EDIT: function (data) {
-            console.log(data);
+            // console.log(data);
             var year = new Date().getFullYear();
             this.fire('toast', { status: 'load' });
             axios.put(`./welfare/update`, data)

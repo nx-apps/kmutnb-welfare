@@ -62,6 +62,16 @@
                         <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน (บาท)" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
+                
+                <template is="dom-if" if={{date.voluntary_status}}>
+                    <gl-grid-row>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                            <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="จำนวนเงินพนักงาน (บาท)" format-number="on" value="{{data.budget_emp}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        </gl-grid-col>
+                    </gl-grid-row>
+                </template>
+                
                 <template is="dom-repeat" items="{{data.condition}}">
                     [[conditionManage(item.field,index)]]
                     <gl-grid-row>
@@ -139,7 +149,7 @@
                 </template>
             </paper-material>
 
-            <template is="dom-if" if="{{tableStatus}}">
+            <!--<template is="dom-if" if="{{tableStatus}}">
                 <div class="horizontal end-justified layout">
                     <div style="margin:30px 30px 10px 0px;font-weight: bold;font-size: 20px;">จำนวนผู้ได้รับสิทธิ [[employees.count_employee]] คน</div>
                 </div>
@@ -169,7 +179,7 @@
                         </table>
                     </paper-material>
                 </div>
-            </template>
+            </template>-->
         </div>
     </template>
     <script>
@@ -327,7 +337,11 @@
                 }
             },
             save: function () {
+                if(this.budget_emp === undefined){
+                    this.budget_emp = 0;
+                }
                 var check = this.validateForm('.form');
+                var checkBudEmp = this.validateForm('.checkBudgetEmp');
                 // //console.log(check);
                 if(check == false) return '';
                 if(check == true){
@@ -338,11 +352,11 @@
                     }else{
                         var newData = {
                             group_id: this.date.id,
-                            // status: this.data.status,
                             welfare_name: this.data.welfare_name,
                             budget: this.unFormat(this.data.budget),
                             round_use: this.data.round_use,
-                            year: this.date.year
+                            year: this.date.year,
+                            budget_emp : this.unFormat(this.data.budget_emp)
                         }
                         // //console.log(newData);
                         var condition = this.data.condition.map((item)=>{
@@ -402,13 +416,24 @@
                                 text: 'ต้องการเพิ่มเงื่อนไขใช่หรือไม่ ?',
                                 confirmed: (result) => {
                                     if (result == true) {
-                                        // newData.status = true;
-                                        //  //console.log(newData);
                                         var year = new Date().getFullYear();
-                                        this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
-                                            // this.fire('refresh_group',year);
-                                            this.fire('back');
-                                        })
+                                        if(this.date.voluntary_status === true){
+                                            if(checkBudEmp === true){
+                                                this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
+                                                    this.fire('back');
+                                                })
+                                            }else{
+                                                this.fire('toast',{status:'connectError',text:'กรุณาใส่ข้อมูลให้ครบ',
+                                                    callback:function(){}
+                                                });
+                                            }
+                                        }else{
+                                            if(checkBudEmp === false){
+                                                this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
+                                                    this.fire('back');
+                                                })
+                                            }
+                                        }
                                     }
                                 }
                             })
@@ -419,13 +444,24 @@
                                 text: 'ต้องการแก้ไขเงื่อนไขใช่หรือไม่ ?',
                                 confirmed: (result) => {
                                     if (result == true) {
-                                        // newData.status = this.data.status
                                         newData.id=this.data.id;
-                                        // //console.log(newData);
-                                        this.dispatchAction('WELFARE_EDIT', newData).then((val)=>{
-                                            this.isEnable = true;
-                                        })
-                                        // this.fire('back');
+                                        if(this.date.voluntary_status === true){
+                                            if(checkBudEmp === true){
+                                                this.dispatchAction('WELFARE_EDIT', newData).then((val)=>{
+                                                    this.isEnable = true;
+                                                })
+                                            }else{
+                                                this.fire('toast',{status:'connectError',text:'กรุณาใส่ข้อมูลให้ครบ',
+                                                    callback:function(){}
+                                                });
+                                            }
+                                        }else{
+                                            if(checkBudEmp === false){
+                                                this.dispatchAction('WELFARE_EDIT', newData).then((val)=>{
+                                                    this.isEnable = true;
+                                                })
+                                            }
+                                        }
                                     }
                                 }
                             })
@@ -451,15 +487,6 @@
                 this.fire('back');
                 this.tableStatus = false;
             },
-            // list_users: function () {
-            //     var id = this.data.id;
-            //     this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
-            //     this.tableStatus = true;
-            // },
-            // print: function () {
-            //     var id = this.data.id;
-            //     window.open('api/report/report1/' + id);
-            // },
             _delete: function () {
                 this.fire('toast', {
                     status: 'openDialog',
@@ -477,11 +504,20 @@
                     this.fire('back');
                 }
             },
-            _selectUser: function (e) {
-                var id = e.target.data.id;
-                window.open('https://localhost:3000/admin-manage/' + id);
-                // this.fire('nylon-change-page',{path:'/admin-employee/'+id})
-            }
+            // _selectUser: function (e) {
+            //     var id = e.target.data.id;
+            //     window.open('https://localhost:3000/admin-manage/' + id);
+            //     // this.fire('nylon-change-page',{path:'/admin-employee/'+id})
+            // },
+            // list_users: function () {
+            //     var id = this.data.id;
+            //     this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
+            //     this.tableStatus = true;
+            // },
+            // print: function () {
+            //     var id = this.data.id;
+            //     window.open('api/report/report1/' + id);
+            // },
         });
     </script>
 </dom-module>

@@ -70,8 +70,8 @@ export function groupWelfareAction(store) {
         INSERT_WELFARE: function (data) {
             var yearNow = new Date().getFullYear();
             // console.log(data);
-            let { year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous} = data;
-            let newData = { year, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous};
+            let { year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous, voluntary_status} = data;
+            let newData = { year, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous, voluntary_status};
             var tz = "T00:00:00+07:00";
             newData.start_date = data.start_date + tz;
             if(data.cal_date === null){
@@ -129,8 +129,8 @@ export function groupWelfareAction(store) {
         EDIT_WELFARE: function (data) {
             var yearNow = new Date().getFullYear();
             // console.log(data);
-            let { id, year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, type_continuous} = data;
-            let newData = { id, year, group_welfare_name, group_use, description, onetime_use, type_continuous};
+            let { id, year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, type_continuous, voluntary_status} = data;
+            let newData = { id, year, group_welfare_name, group_use, description, onetime_use, type_continuous, voluntary_status};
             var tz = "T00:00:00+07:00";
             newData.start_date = data.start_date + tz;
             if(data.cal_date === null){

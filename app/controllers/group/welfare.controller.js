@@ -57,7 +57,6 @@ exports.list = function (req, res) {
                         return {
                             status_approve_name: r.branch(m('status_approve').eq(true), 'ใช้งาน', 'ไม่ใช้งาน'),
                             group_use_name: r.branch(m('group_use').eq(true), 'แบบกลุ่ม', 'แบบเดี่ยว'),
-                            // year: m('year').add(543),
                             start_date: m('start_date').toISO8601().split('T')(0),
                             end_date: r.branch(m('end_date').ne(null), m('end_date').toISO8601().split('T')(0), null),
                             welfare: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array')
@@ -80,18 +79,18 @@ exports.list = function (req, res) {
                         return {
                             value_budget: m('welfare').sum('value_budget'),
                             value_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' }).sum('budget_use'),
-                            emp_budget: m('welfare').map(function (m2) {
+                            emp_budget: r.branch(m('welfare').ne([]),m('welfare').map(function (m2) {
                                 return m2('emp_budget')
                             }).reduce(function (l, r) {
                                 return l.add(r)
                             }).group('id')
                                 .ungroup()
-                                .count(),
+                                .count(),0),
                             emp_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' }).pluck('emp_id').distinct().count(),
                             time_use: r.db('welfare').table('history_welfare').getAll(m('id'), { index: 'group_id' }).count()
                         }
                     })
-                    .without('welfare')
+                    // .without('welfare')
                     .coerceTo('array')
             }
         })
