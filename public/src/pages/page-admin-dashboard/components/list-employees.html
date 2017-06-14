@@ -498,21 +498,32 @@
             },
             getwelfare() {
                 // this.usewelfareProp.document_ids = this.$$('admin-dialog-use-all-welfare').keepFile()
-                // //console.log();
                 let dia = this.$$('admin-dialog-use-all-welfare').dataSend()
                 let newData = this.usewelfareProp
                 let dataDialog = JSON.parse(JSON.stringify(dia))
-                this.list_employees.map((set, index) => {
-                   if (set.check === true) {
-                       
-                   } 
-                })
-                let newEmp = []
 
-                console.log(newArray);
-                console.log(dataDialog);
+                let newEmprom = new Promise((resolve, reject) => {
+                    let newEmp = []
+                    this.list_employees.map((set, index) => {
+                        if (set.check === true) {
+                            newEmp.push({
+                                id: set.id,
+                                group_id: set.group_id
+                            })
+                        }
+                    })
+                    resolve(newEmp)
+                });
 
-                console.log(newData);
+                newEmprom.then((successMessage) => {
+                    console.log(successMessage);
+                    this.dispatchAction('EMPLOYEE_USE_WELFARE_GROUP', successMessage);
+                });
+
+                // console.log(newArray);
+                // console.log(dataDialog);
+
+                // console.log(newEmp);
                 // newArray.map((item) => {
                 //     item.budget_balance = 0
                 //     item.budget_cover = dataDialog.budget_cover
@@ -537,7 +548,7 @@
                 //                 this.$$('#welfare_budget').close()
                 //                 newArray.map((data) => {
                 //                     // //console.log(data);
-                //                     this.dispatchAction('EMPLOYEE_USE_WELFARE', data);
+                //                     this.dispatchAction('EMPLOYEE_USE_WELFARE_GROUP', data);
                 //                 })
                 //                 // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);
                 //                 this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))

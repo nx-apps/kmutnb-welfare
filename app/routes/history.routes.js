@@ -9,4 +9,6 @@ module.exports = function (app) {
     app.put('/update/cancel', controller.updateCancelWelfare);
     app.get('/file/:id', controller.listUploadHistory); ///list/upload/history/:id
     app.post('/approve', controller.adminApprove);
+    app.post('/usegroup', controller.usegroup);
+    
 }

@@ -261,6 +261,24 @@ export function userWelfareAction(store) {
                     })
             })
         },
+        EMPLOYEE_USE_WELFARE_GROUP(data) {
+            // console.log(data);
+                this.fire('toast', { status: 'load' });
+                axios.post(`./history/usegroup`, data)
+                    .then(res => {
+                        // this.EMPLOYEE_GET_WELFARES(newData.emp_id);
+                        this.fire('toast', {
+                            status: 'success', text: 'บันทึกสำเร็จ',
+                            callback: () => {
+                                // this.$$('panel-right').close();
+                                // this.$$('#welfare_budget').close()
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+        },
         FACULTY_LIST() {
             axios.get('./common/faculty')
                 .then((response) => {

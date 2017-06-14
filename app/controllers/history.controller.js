@@ -246,6 +246,65 @@ exports.adminApprove = function (req, res) {
             res.status(500).json(err);
         })
 }
+exports.usegroup = function (req, res) {
+    var r = req.r;
+    let body = req.body
+    let group_id = req.body[0].group_id || ''
+    r.db('welfare').table('history_welfare')
+    r.expr({
+        emps: body,
+        group_welfare: r.db('welfare').table('welfare').getAll(group_id, { index: 'group_id' }).coerceTo('array')
+    })
+        .merge((emp) => {
+            return {
+                emps: emp('emps').merge((em) => {
+                    return r.db('welfare').table('employee').get(em('id'))
+                        .without('academic_name', 'active_name', 'date_create', 'date_update', 'department_name', 'dob', 'end_work_date', 'emp_no', 'faculty_name', 'firstname', 'gender_name'
+                        , 'lastname', 'matier_name', 'position_name', 'prefix_name', 'type_employee_name')
+                })
+            }
+        })
+        .merge((welfare) => {
+            var emps = welfare('emps')
+            return {
+                welfare: welfare('group_welfare').merge((em) => {
+                    var condition = em('condition');
+                    return {
+                        countCon: condition.count(),
+                        reduce: getEmployee(emps, condition).merge((budget)=>{
+                            return {
+                                budget_balance:0,
+                                budget_cover:em('budget'),
+                                budget_use:em('budget'),
+                                budget_emp: 0 ,
+                                date_approve: r.now().inTimezone('+07'),
+                                date_create: r.now().inTimezone('+07'),
+                                date_update: r.now().inTimezone('+07'),
+                                date_use: r.now().inTimezone('+07'),
+                                document_ids: [ ],
+                                group_id:  group_id ,
+                                status: true,
+                                welfare_id : em('id'),
+                                emp_id : budget('id')
+                            }
+                        }).pluck('budget_balance','budget_cover','budget_use','budget_emp','date_approve','date_create',
+                        'date_use','date_update','document_ids','emp_id','group_id','status','welfare_id','emp_id','personal_id')
+                    }
+                }),
+                x:1
+            }
+        })
+        .pluck('welfare')
+        .run()
+        .then(function (result) {
+            res.json(result);
+            // res.json([]);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+
 exports.listHistory = function (req, res) {
     var r = req.r;
     // console.log(req.query.year != undefined);
@@ -532,4 +591,48 @@ exports.listHistory = function (req, res) {
         .catch(function (err) {
             res.status(500).json(err);
         })
+}
+
+var checkLogic = function (select, row) {
+    return r.branch(
+        select('logic').eq('=='),
+        row(select('field_name')).eq(select('value')),
+        select('logic').eq('>'),
+        row(select('field_name')).gt(select('value')),
+        select('logic').eq('>='),
+        row(select('field_name')).ge(select('value')),
+        select('logic').eq('<'),
+        row(select('field_name')).lt(select('value')),
+        select('logic').eq('<='),
+        row(select('field_name')).le(select('value')),
+        row(select('field_name')).ne(select('value'))
+    )
+};
+var getEmployee = function (emp, con) {
+    var countCon = con.count();
+    return r.branch(countCon.gt(1),
+        con.reduce(function (left, right) {
+            return r.branch(left.hasFields('data'),
+                {
+                    data: left('data').filter(function (f) {
+                        return checkLogic(right, f)
+                    })
+                },
+                {
+                    data: emp
+                        .filter(function (f) {
+                            return checkLogic(left, f)
+                        })
+                        .filter(function (f) {
+                            return checkLogic(right, f)
+                        })
+                }
+            )
+        })('data'),
+        countCon.eq(1),
+        emp.filter(function (f) {
+            return checkLogic(con(0), f)
+        }),
+        emp
+    )
 }
