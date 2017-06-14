@@ -5,6 +5,7 @@
 /public/css/main.css
 
 /loggers/*
+/.vscode
 !/loggers/file.log
 npm-debug*
 .DS_Store

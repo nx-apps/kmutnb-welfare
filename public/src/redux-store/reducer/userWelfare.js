@@ -241,7 +241,7 @@ export function userWelfareAction(store) {
         EMPLOYEE_USE_WELFARE(data) {
             // console.log(data);
             clearDatawelfare(data, (newData) => {
-                console.log(newData);
+                // console.log(newData);
                 this.fire('toast', { status: 'load' });
                 axios.post(`./history/approve`, newData)
                     .then(res => {

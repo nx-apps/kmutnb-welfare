@@ -135,18 +135,18 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <list-employees data-check="{{data}}"></list-employees>
+                </div>"
+                <list-employees data-check="{{data}}" ></list-employees>
             </paper-material>
         </div>
         <paper-dialog id="report" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
-                    <vaadin-date-picker always-float-label label="วันที่" value="{{date.date_start}}"></vaadin-date-picker>
+                    <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_start}}"></vaadin-date-picker>
                 </div>
                 <div style="margin: 31px 10px;">ถึง</div>
                 <div class="flex" style=" margin-right: 30px">
-                    <vaadin-date-picker always-float-label label="วันที่" value="{{date.date_end}}"></vaadin-date-picker>
+                    <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_end}}"></vaadin-date-picker>
                 </div>
             </div>
             <div class="flex horizontal end-justified layout buttons">
@@ -172,10 +172,10 @@
                 data: {
                     type: Object,
                 },
-                date: {
-                    type: Object,
-                    value: { date_start: '', date_end: '' }
-                },
+                // date: {
+                //     type: Object,
+                //     value: { date_start: '', date_end: '' }
+                // },
                 typeReport: {
                     type: Array,
                     value: [
@@ -246,8 +246,8 @@
                 let today = date.toISOString().split('T')[0]
                 let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
                 // this.set('data','')
-                this.set('date.date', today)
-                this.set('date.date', tomorrow)
+                this.set('data.date', today)
+                this.set('data.date', tomorrow)
                 // console.log(this.data.date_start);
 
                 //     data.date_end
@@ -281,6 +281,7 @@
                     const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
                     const checkUndefined = (value) => value !== undefined && value !== ''
                     const data = JSON.parse(JSON.stringify(this.data))
+                    // console.log(data);
                     // data.year = data.year - 543
                     if (checkUndefined(this.data.group_id))
                         data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
