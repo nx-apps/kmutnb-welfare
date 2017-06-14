@@ -120,6 +120,9 @@
                 list_active: {
                     statePath: 'commonData.active'
                 },
+                list_type_employee: {
+                    statePath: 'commonData.type_employee'
+                },
                 dataCheck: {
                     type: Object,
                     // observer:'checkDepart'
@@ -162,25 +165,31 @@
                 let newArray = this.list_employees.filter((set, index) => set.check === true)
                 newArray = JSON.parse(JSON.stringify(newArray));
                 let list_active = JSON.parse(JSON.stringify(this.list_active));
+                let list_type_employee = JSON.parse(JSON.stringify(this.list_type_employee));
                 let RETIREMENT = list_active.find((item) => item.active_code === 'RETIREMENT')
+                let type_employee = list_type_employee.find((item) => item.type_employee_name === 'ผู้เกษียณ')
+                // console.log(newArray);
                 newArray.map((item) => {
                     item.active_id = RETIREMENT.id
                     item.active_name = RETIREMENT.active_name
                     item.end_work_date = this.calDate
+                    item.type_employee_id = type_employee.id
+                    item.type_employee_name = type_employee.type_employee_name
                     return item
                 })
-                // //console.log(RETIREMENT);
+                // console.log(type_employee);
                 this.fire('toast', {
                     status: 'openDialog',
                     text: 'กรุณายืนยันการเกษียณใช่รึไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
                             // //console.log(newArray);
+                            // console.log(newArray);
                             newArray.map((data) => {
                                 // console.log(data);
                                 this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
                             })
-                            this.dispatchAction('RETIER_SEARCH', this.calDate);
+                            // this.dispatchAction('RETIER_SEARCH', this.calDate);
                             window.open('./api/report/retire?date=' + this.calDate);
                             // //console.log(newArray);
                         }
