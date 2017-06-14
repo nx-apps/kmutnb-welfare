@@ -284,7 +284,12 @@ exports.welfaresYear = function (req, res) {
                                         .filter({ welfare_id: el('welfare_id'), status: true })
                                         .orderBy(r.desc('date_create'))
                                         .coerceTo('array')
-                                        .sum('budget_use')
+                                        .sum('budget_use'),
+                                    budget_emp_use:r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                                        .filter({ welfare_id: el('welfare_id'), status: true })
+                                        .orderBy(r.desc('date_create'))
+                                        .coerceTo('array')
+                                        .sum('budget_emp')
                                 }
                             })
                         }

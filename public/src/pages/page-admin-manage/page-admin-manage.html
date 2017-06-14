@@ -200,7 +200,8 @@
                                         <vaadin-grid-column width="450px" flex-grow="0">
                                             <template class="header ">สวัสดิการที่สามารถใช้ได้
                                             </template>
-                                            <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime_use)]] [[checkGroup(item.group_use)]]
+                                            <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime_use)]]
+                                                [[checkVoluntary(item.voluntary_status)]] [[checkGroup(item.group_use)]]
 
                                             </template>
                                         </vaadin-grid-column>
@@ -225,6 +226,16 @@
                                                 </template>
                                                 <template>
                                                     <div class="text-right">[[formatNumber(item.budget_use)]]</div>
+                                                </template>
+                                            </vaadin-grid-column>
+                                            <vaadin-grid-column width="calc(10% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">จ่ายเอง</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">
+                                                        [[checkZero(item.budget_emp_use)]]
+                                                    </div>
                                                 </template>
                                             </vaadin-grid-column>
                                             <vaadin-grid-column width="calc(10% - 20px)">
@@ -368,41 +379,35 @@
             checkWelfareFull(data) {
                 try {
                     if ((data.onetime_use && data.budget_use !== 0)
-                        || data.budget_balance <= 0) 
+                        || data.budget_balance <= 0)
                         return true
                 } catch (e) {
                     // //console.log(e);
                 }
 
             },
-            checkGroup(group){
+            checkGroup(group) {
                 try {
                     if (group)
-                    return ' ( กลุ่ม )'
-                // return 'เดี่ยว'
+                        return ' ( กลุ่ม )'
+                    // return 'เดี่ยว'
                 } catch (e) {
-                    
+
                 }
             },
-            // btnCancel(e) {
-            //     // //console.log(e.currentTarget.data);
-            //     let newData = [{ id: e.currentTarget.data.history_welfare_id }]
-            //     // //console.log(newData);
-            //     this.fire('toast', {
-            //         status: 'openDialog',
-            //         text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
-            //         confirmed: (result) => {
-            //             if (result == true) {
-            //                 this.dispatchAction('USER_REJECT_USE_WELFARE', newData)
-            //                     .then((el) => {
-            //                         let id = window.location.pathname.split('/')[2];
-            //                         this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
-            //                         // //console.log(222);
-            //                     })
-            //             }
-            //         }
-            //     })
-            // },
+            checkZero(budget_emp_use) {
+                if (budget_emp_use <= 0)
+                    return '-'
+                return this.formatNumber(budget_emp_use)
+            },
+            checkVoluntary(voluntary) {
+                try {
+                    if (voluntary)
+                        return 'แบบสมัครใจ'
+                } catch (e) {
+
+                }
+            },
             gerYearWelfare(e) {
                 if (typeof this.data != 'undefined') {
                     // //console.log(this.data);

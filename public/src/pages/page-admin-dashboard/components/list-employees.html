@@ -360,7 +360,7 @@
                         if (checkNull(this.dataCheck.group_id)
                             && checkNull(this.dataCheck.faculty_id)
                             && checkNull(this.dataCheck.department_id)
-                            ) {
+                        ) {
                             this.set('setCheck', false)
                             // //console.log(1);
                         } else {
@@ -502,43 +502,52 @@
                 let dia = this.$$('admin-dialog-use-all-welfare').dataSend()
                 let newData = this.usewelfareProp
                 let dataDialog = JSON.parse(JSON.stringify(dia))
-                let newArray = JSON.parse(JSON.stringify(this.list_employees.filter((set, index) => set.check === true)))
-
-                newArray.map((item) => {
-                    item.budget_balance = 0
-                    item.budget_cover = dataDialog.budget_cover
-                    item.budget_use = dataDialog.budget_cover
-                    item.date_approve = dataDialog.date_approve + 'T00:00:00+07:00'
-                    item.date_use = dataDialog.date_use + 'T00:00:00+07:00'
-                    item.emp_id = item.id
-                    item.personal_id = item.personal_id
-                    item.document_ids = new Array()
-                    item.status = true
-                    item.description_detail = dataDialog.description_detail
+                this.list_employees.map((set, index) => {
+                   if (set.check === true) {
+                       
+                   } 
                 })
-                // //console.log(newArray);
+                let newEmp = []
 
-                // //console.log(this.$$('#admin-dialog-use-all-welfare').validateForm('.required'));
-                if (this.$$('#admin-dialog-use-all-welfare').validateForm('.required')) {
-                    this.fire('toast', {
-                        status: 'openDialog',
-                        text: 'กรุณายืนยันการทำรายการ ?',
-                        confirmed: (result) => {
-                            if (result == true) {
-                                this.$$('#welfare_budget').close()
-                                newArray.map((data) => {
-                                    // //console.log(data);
-                                    this.dispatchAction('EMPLOYEE_USE_WELFARE', data);
-                                })
-                                // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);
-                                this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
-                                this.set('paperFab', true)
-                                this.type_seleted = 'all'
-                            }
-                        }
-                    })
+                console.log(newArray);
+                console.log(dataDialog);
 
-                }
+                console.log(newData);
+                // newArray.map((item) => {
+                //     item.budget_balance = 0
+                //     item.budget_cover = dataDialog.budget_cover
+                //     item.budget_use = dataDialog.budget_cover
+                //     item.date_approve = dataDialog.date_approve + 'T00:00:00+07:00'
+                //     item.date_use = dataDialog.date_use + 'T00:00:00+07:00'
+                //     item.emp_id = item.id
+                //     item.personal_id = item.personal_id
+                //     item.document_ids = new Array()
+                //     item.status = true
+                //     item.description_detail = dataDialog.description_detail
+                // })
+                // // //console.log(newArray);
+
+                // // //console.log(this.$$('#admin-dialog-use-all-welfare').validateForm('.required'));
+                // if (this.$$('#admin-dialog-use-all-welfare').validateForm('.required')) {
+                //     this.fire('toast', {
+                //         status: 'openDialog',
+                //         text: 'กรุณายืนยันการทำรายการ ?',
+                //         confirmed: (result) => {
+                //             if (result == true) {
+                //                 this.$$('#welfare_budget').close()
+                //                 newArray.map((data) => {
+                //                     // //console.log(data);
+                //                     this.dispatchAction('EMPLOYEE_USE_WELFARE', data);
+                //                 })
+                //                 // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);
+                //                 this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
+                //                 this.set('paperFab', true)
+                //                 this.type_seleted = 'all'
+                //             }
+                //         }
+                //     })
+
+                // }
             },
 
         });

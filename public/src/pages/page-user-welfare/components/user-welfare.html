@@ -171,6 +171,17 @@
                                         <div class="text-right">[[formatNumber(item.budget_use)]]</div>
                                     </template>
                                 </vaadin-grid-column>
+                                
+                                <vaadin-grid-column width="calc(10% - 20px)">
+                                    <template class="header">
+                                        <div class="text-right">จ่ายเอง</div>
+                                    </template>
+                                    <template>
+                                        <div class="text-right">
+                                            [[checkZero(item.budget_emp_use)]]
+                                        </div>
+                                    </template>
+                                </vaadin-grid-column>
                                 <vaadin-grid-column width="calc(10% - 20px)">
                                     <template class="header">
                                         <div class="text-right">คงเหลือ</div>
@@ -241,6 +252,38 @@
                         return 'หลายครั้ง'
                         break;
                     default:
+
+                }
+            },
+            checkWelfareFull(data) {
+                try {
+                    if ((data.onetime_use && data.budget_use !== 0)
+                        || data.budget_balance <= 0)
+                        return true
+                } catch (e) {
+                    // //console.log(e);
+                }
+
+            },
+            checkGroup(group) {
+                try {
+                    if (group)
+                        return ' ( กลุ่ม )'
+                    // return 'เดี่ยว'
+                } catch (e) {
+
+                }
+            },
+            checkZero(budget_emp_use) {
+                if (budget_emp_use <= 0)
+                    return '-'
+                return this.formatNumber(budget_emp_use)
+            },
+            checkVoluntary(voluntary) {
+                try {
+                    if (voluntary)
+                        return 'แบบสมัครใจ'
+                } catch (e) {
 
                 }
             },
