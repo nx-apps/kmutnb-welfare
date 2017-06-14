@@ -183,7 +183,10 @@
             getdepartment: function (facultyId) {
                 try {
                     this.set('data.department_id', '')
+                    // console.log(facultyId);
+                    // console.log(this.list_faculty);
                     let newDepartment = this.list_faculty.find((fid) => fid.id === facultyId)
+                    // console.log(newDepartment);
                     this.set('list_department', newDepartment.department)
                 } catch (e) {
 

@@ -245,9 +245,9 @@
                 let date = new Date()
                 let today = date.toISOString().split('T')[0]
                 let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
-                this.set('data','')
-                this.set('data.date', today)
-                this.set('data.date', tomorrow)
+                // this.set('data','')
+                this.set('date.date', today)
+                this.set('date.date', tomorrow)
                 // console.log(this.data.date_start);
 
                 //     data.date_end
