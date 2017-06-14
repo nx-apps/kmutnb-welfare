@@ -456,7 +456,7 @@
                                                 });
                                             }
                                         }else{
-                                            if(checkBudEmp === false){
+                                            if(checkBudEmp === false || checkBudEmp === true){
                                                 this.dispatchAction('WELFARE_EDIT', newData).then((val)=>{
                                                     this.isEnable = true;
                                                 })
