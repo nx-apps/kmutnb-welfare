@@ -76,7 +76,7 @@ exports.report1 = function (req, res, next) {
         .run()
         .then(function (result) {
             // res.json(result);
-            res.ireport("report1.jasper", req.query.EXPORT  || req.query.export || "pdf", result, parameters);
+            res.ireport("report1.jasper", req.query.EXPORT || req.query.export || "pdf", result, parameters);
         });
 }
 exports.report11 = function (req, res, next) {
@@ -234,7 +234,7 @@ exports.report2 = function (req, res) {
     var date_start = req.query.date_start + "T00:00:00+07:00";
     var date_end = req.query.date_end + "T00:00:00+07:00";
     var res_type = req.query.res_type;
-    console.log(date_start);
+    // console.log(date_start);
 
     r.db('welfare').table('history_welfare').filter(function (row) {
         return row('date_approve').date().eq(r.ISO8601(date_start))
@@ -270,7 +270,7 @@ exports.report2 = function (req, res) {
             }
 
             //   if (result.length > 0 ) 
-            res.ireport("report2.jasper", req.query.EXPORT  || req.query.export || "pdf", result, parameters);
+            res.ireport("report2.jasper", req.query.EXPORT || req.query.export || "pdf", result, parameters);
         });
 }
 exports.report2_1 = function (req, res) {
@@ -323,7 +323,7 @@ exports.report2_1 = function (req, res) {
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
-            res.ireport("report2_1.jasper", req.query.EXPORT  || req.query.export || "pdf", result.history_welfare, parameters);
+            res.ireport("report2_1.jasper", req.query.EXPORT || req.query.export || "pdf", result.history_welfare, parameters);
         });
 }
 exports.report3 = function (req, res, next) {
@@ -445,7 +445,7 @@ exports.report3 = function (req, res, next) {
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
-            res.ireport("report3.jasper", req.query.EXPORT  || req.query.export || "pdf", result, parameters);
+            res.ireport("report3.jasper", req.query.EXPORT || req.query.export || "pdf", result, parameters);
         });
 }
 exports.report3_1 = function (req, res) {
@@ -575,7 +575,7 @@ exports.report3_1 = function (req, res) {
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
-            res.ireport("report3_1.jasper", req.query.EXPORT  || req.query.export || "pdf", result.welfare_name, parameters);
+            res.ireport("report3_1.jasper", req.query.EXPORT || req.query.export || "pdf", result.welfare_name, parameters);
         })
 }
 exports.report4 = function (req, res, next) {
@@ -688,7 +688,7 @@ exports.report4 = function (req, res, next) {
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
-            res.ireport("report4.jasper", req.query.EXPORT  || req.query.export || "pdf", result, parameters);
+            res.ireport("report4.jasper", req.query.EXPORT || req.query.export || "pdf", result, parameters);
         });
 }
 exports.report4_1 = function (req, res, next) {
@@ -764,7 +764,7 @@ exports.report4_1 = function (req, res, next) {
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
-            res.ireport("report4_1.jasper", req.query.EXPORT  || req.query.export || "pdf", result, parameters);
+            res.ireport("report4_1.jasper", req.query.EXPORT || req.query.export || "pdf", result, parameters);
         });
 }
 exports.report4_2 = function (req, res, next) {
@@ -871,7 +871,7 @@ exports.report4_2 = function (req, res, next) {
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
-            res.ireport("report4_2.jasper", req.query.EXPORT  || req.query.export || "pdf", result, parameters);
+            res.ireport("report4_2.jasper", req.query.EXPORT || req.query.export || "pdf", result, parameters);
         });
 }
 exports.report5 = function (req, res) {
@@ -926,7 +926,7 @@ exports.report5 = function (req, res) {
                 date_start: date_start,
                 date_end: date_end
             };
-            res.ireport("report5.jasper", req.query.EXPORT  || req.query.export || "pdf", result, parameters);
+            res.ireport("report5.jasper", req.query.EXPORT || req.query.export || "pdf", result, parameters);
         });
 }
 exports.report5_1 = function (req, res) {
@@ -988,7 +988,7 @@ exports.report5_1 = function (req, res) {
             }
             //   if (result.length > 0 ) 
 
-            res.ireport("report5_1.jasper", req.query.EXPORT  || req.query.export || "pdf", result.history_welfare, parameters);
+            res.ireport("report5_1.jasper", req.query.EXPORT || req.query.export || "pdf", result.history_welfare, parameters);
         });
 }
 exports.report6 = function (req, res, next) {
@@ -1112,7 +1112,7 @@ exports.report6 = function (req, res, next) {
         .run()
         .then(function (result) {
             // res.json(result);
-            res.ireport("report6.jasper", req.query.EXPORT  || req.query.export || "pdf", result, parameters);
+            res.ireport("report6.jasper", req.query.EXPORT || req.query.export || "pdf", result, parameters);
         });
 }
 exports.list_group = function (req, res) {
@@ -1252,7 +1252,7 @@ exports.list_group = function (req, res) {
         .run()
         .then(function (result) {
             res.json(result);
-            res.ireport("list_group.jasper", req.query.EXPORT  || req.query.export || "pdf", result);
+            res.ireport("list_group.jasper", req.query.EXPORT || req.query.export || "pdf", result);
         })
 }
 exports.list_year = function (req, res) {
@@ -1358,7 +1358,7 @@ exports.list_year = function (req, res) {
         .then(function (result) {
             res.json(result);
             var parameters = {};
-            res.ireport("list_year.jasper", req.query.EXPORT  || req.query.export || "pdf", result, parameters);
+            res.ireport("list_year.jasper", req.query.EXPORT || req.query.export || "pdf", result, parameters);
         })
 }
 exports.report_test = function (req, res, next) {
@@ -1481,7 +1481,7 @@ exports.report_test = function (req, res, next) {
         .run()
         .then(function (result) {
             // res.json(result);
-            res.ireport("list_group.jasper", req.query.EXPORT  || req.query.export || "pdf", result);
+            res.ireport("list_group.jasper", req.query.EXPORT || req.query.export || "pdf", result);
         })
 }
 exports.welfare1 = function (req, res) {
@@ -1539,7 +1539,7 @@ exports.welfare1 = function (req, res) {
             param = keysToUpper(param);
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
-            res.ireport("welfare1.jasper", req.query.EXPORT  || req.query.export || "pdf", result, param);
+            res.ireport("welfare1.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
 exports.welfare2 = function (req, res) {
@@ -1603,7 +1603,7 @@ exports.welfare2 = function (req, res) {
             param.CURRENT_DATE = CURRENT_DATE
             //console.log(req.query)
             // console.log(req.query.group_name)
-            res.ireport("welfare2.jasper", req.query.EXPORT  || req.query.export || "pdf", result, param);
+            res.ireport("welfare2.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
 exports.welfare3 = function (req, res) {
@@ -1659,7 +1659,7 @@ exports.welfare3 = function (req, res) {
             param = keysToUpper(param);
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
-            res.ireport("welfare3.jasper", req.query.EXPORT  || req.query.export || "pdf", result, param);
+            res.ireport("welfare3.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
 exports.welfare4 = function (req, res) {
@@ -1719,7 +1719,7 @@ exports.welfare4 = function (req, res) {
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
             // res.json(param);
-            res.ireport("welfare4.jasper", req.query.EXPORT  || req.query.export || "pdf", result, param);
+            res.ireport("welfare4.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
 exports.welfare5 = function (req, res) {
@@ -1773,7 +1773,7 @@ exports.welfare5 = function (req, res) {
             param = keysToUpper(param);
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
-            res.ireport("welfare5.jasper", req.query.EXPORT  || req.query.export || "pdf", result, param);
+            res.ireport("welfare5.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
 exports.welfare6 = function (req, res) {
@@ -1819,7 +1819,7 @@ exports.welfare6 = function (req, res) {
             param = keysToUpper(param);
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
-            res.ireport("welfare6.jasper", req.query.EXPORT  || req.query.export || "pdf", result, param);
+            res.ireport("welfare6.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
 exports.welfare7 = function (req, res) {
@@ -1903,7 +1903,7 @@ exports.welfare7 = function (req, res) {
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
 
-            res.ireport("welfare7.jasper", req.query.EXPORT  || req.query.export || "pdf", result, param);
+            res.ireport("welfare7.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
 exports.welfare8 = function (req, res) {
@@ -2001,7 +2001,7 @@ exports.welfare8 = function (req, res) {
             param = keysToUpper(param);
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
-            res.ireport("welfare8.jasper", req.query.EXPORT  || req.query.export || "pdf", result, param);
+            res.ireport("welfare8.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
 exports.welfare9 = function (req, res) {
@@ -2114,7 +2114,7 @@ exports.welfare9 = function (req, res) {
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
-            res.ireport("welfare9.jasper", req.query.EXPORT  || req.query.export || "pdf", result, parameters);
+            res.ireport("welfare9.jasper", req.query.EXPORT || req.query.export || "pdf", result, parameters);
         });
 }
 exports.employee = function (req, res) {
@@ -2203,17 +2203,17 @@ exports.emp_welfare = function (req, res) {
             param = keysToUpper(param);
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
-            res.ireport("emp_welfare.jasper", req.query.EXPORT  || req.query.export || "pdf", result, param);
+            res.ireport("emp_welfare.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
 exports.retire = function (req, res) {
 
     var param = {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
-        SELECT_DATE:req.query.date
+        SELECT_DATE: req.query.date
     };
     var r = req.r;
-    var time = r.ISO8601(req.query.date+'T00:00:00+07:00');
+    var time = r.ISO8601(req.query.date + 'T00:00:00+07:00');
 
     var calculateAge = function (birthday) { // birthday is a date
         // var ageDifMs = r.now().toEpochTime().sub(birthday.toEpochTime())
@@ -2223,7 +2223,7 @@ exports.retire = function (req, res) {
         return ageDate.year().sub(1970)
     }
     console.log(req.query.date)
-    r.db('welfare').table('employee').getAll(time.date(), {index : 'end_work_date'})//.getAll('ทำงาน', { index: 'active_name' })
+    r.db('welfare').table('employee').getAll(time.date(), { index: 'end_work_date' })//.getAll('ทำงาน', { index: 'active_name' })
         .merge(function (use) {
             return {
                 birthdate_cal: calculateAge(use('birthdate')),
@@ -2243,13 +2243,69 @@ exports.retire = function (req, res) {
         .run()
         .then(function (result) {
             // res.json(result);
-            res.ireport("retire.jasper", req.query.EXPORT  || req.query.export || "pdf", result, param);
+            res.ireport("retire.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         })
         .catch(function (err) {
             res.status(500).json(err);
         })
 
 }
+exports.welfare10 = function (req, res) {
+    var r = req.r
+
+    // var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
+    // var date_end = req.query.date_end + "T00:00:00+07:00";
+
+    var param = req.query;
+    param.year = Number(param.year) + 543;
+
+    var emp = r.db('welfare').table('employee').coerceTo('array').filter({ faculty_id: '03211202-6eac-4935-a0d3-82d8b6f6b1ef' })
+    var his = r.db('welfare').table('history_welfare').coerceTo('array').filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' }).filter({ status: true })
+    r.db('welfare').table('welfare').filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' })
+
+        .concatMap(function (emp_con) {
+            var conditions = emp_con('condition');
+            return getEmployee(emp, conditions)
+                .merge(function (m) {
+                    var data_his = his.filter({ emp_id: m('id') });
+                    return r.branch(
+                        data_his.eq([]),
+                        { budget_emp: 0, budget_use: 0 },
+                        data_his.pluck('budget_emp', 'budget_use')(0)
+                    )
+                })
+        })
+        // .map(function (emp_con) {
+        //     var conditions = emp_con('condition');
+        //     return getEmployee(emp, conditions)
+        //         .merge(function (m) {
+        //             var data_his = his.filter({ emp_id: m('id') });
+        //             return r.branch(
+        //                 data_his.eq([]),
+        //                 { budget_emp: 0, budget_use: 0 },
+        //                 data_his.pluck('budget_emp', 'budget_use')(0)
+        //             )
+        //         })
+        // })
+        // .reduce(function (left, right) {
+        //     return left.union(right)
+        // })
+        .run()
+        .then(function (result) {
+            res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
+            if (result.length > 0) {
+                param.employee_name = result[0].name;
+            }
+            param = keysToUpper(param);
+            CURRENT_DATE = new Date().toISOString().slice(0, 10)
+            param.CURRENT_DATE = CURRENT_DATE
+            res.ireport("welfare10.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
+        });
+}
+
 
 function keysToUpper(param) {
     var keyname = Object.keys(param);
