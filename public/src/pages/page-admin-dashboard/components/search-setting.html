@@ -24,7 +24,7 @@
                 <iron-input><input placeholder="type=date" type="date" value="{{data.datetest::input}}"></iron-input>
             </div>-->
             <!--{{data.group_id}}///-->
-            <div class="flex-2" >{{getWelareName(data.group_id)}}
+            <div class="flex-2">{{getWelareName(data.group_id)}}
                 <gl-combo-box label="สวัสดิการ" placeholder="สวัสดิการทั้งหมด" items="{{list_welfare}}" item-label-path="label" item-value-path="id"
                     value="{{data.group_id}}">
                     <template>
@@ -139,8 +139,18 @@
                 data: {
                     type: Object,
                     value: {},
+                    observer: 'setData',
                     notify: true
                 }
+            },
+            setData(data) {
+                console.log(12122);
+                let date = new Date()
+                let today = date.toISOString().split('T')[0]
+                let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
+                // this.set('data','')
+                this.set('data.date', today)
+                this.set('data.date', tomorrow)
             },
             getWelareName(group_id) {
 

@@ -136,7 +136,7 @@
                         </div>
                     </div>
                 </div>"
-                <list-employees data-check="{{data}}" ></list-employees>
+                <list-employees data-check="{{data}}"></list-employees>
             </paper-material>
         </div>
         <paper-dialog id="report" modal>
@@ -171,6 +171,10 @@
             properties: {
                 data: {
                     type: Object,
+                    value: {
+                        date_start: new Date().toISOString().split('T')[0],
+                        date_end: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0]
+                    }
                 },
                 // date: {
                 //     type: Object,
@@ -243,11 +247,12 @@
                 // this.TESTS();
                 this.WELFARE_LISTS();
                 let date = new Date()
-                let today = date.toISOString().split('T')[0]
-                let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
-                // this.set('data','')
-                this.set('data.date', today)
-                this.set('data.date', tomorrow)
+                // let today = date.toISOString().split('T')[0]
+                // let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
+                // // this.set('data','')
+                // this.set('data.date', today)
+                // this.set('data.date', tomorrow)
+                // console.log(this.data);
                 // console.log(this.data.date_start);
 
                 //     data.date_end
