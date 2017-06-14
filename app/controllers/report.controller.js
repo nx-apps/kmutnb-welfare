@@ -2223,7 +2223,7 @@ exports.retire = function (req, res) {
         return ageDate.year().sub(1970)
     }
     console.log(req.query.date)
-    r.db('welfare').table('employee').getAll('ทำงาน', { index: 'active_name' })
+    r.db('welfare').table('employee').getAll(time.date(), {index : 'end_work_date'})//.getAll('ทำงาน', { index: 'active_name' })
         .merge(function (use) {
             return {
                 birthdate_cal: calculateAge(use('birthdate')),
@@ -2235,9 +2235,9 @@ exports.retire = function (req, res) {
                 employee_name: use('prefix_name').add(use('firstname')).add('  ', use('lastname'))
             }
         })
-        .filter(function (f) {
-            return f('birthdate_cal').gt(60)
-        })
+        // .filter(function (f) {
+        //     return f('birthdate_cal').gt(60)
+        // })
 
 
         .run()
