@@ -1,4 +1,3 @@
-
 <link rel="import" href="./../../../../bower_components/iron-input/iron-input.html">
 
 <dom-module id="search-setting">
@@ -24,8 +23,8 @@
             <!--<div class="flex-2" style=" margin-right: 30px">{{getGroupWelfare(data.year)}}
                 <iron-input><input placeholder="type=date" type="date" value="{{data.datetest::input}}"></iron-input>
             </div>-->
-<!--{{data.group_id}}///-->
-            <div class="flex-2" style=" margin-right: 30px">{{getWelareName(data.group_id)}}
+            <!--{{data.group_id}}///-->
+            <div class="flex-2" >{{getWelareName(data.group_id)}}
                 <gl-combo-box label="สวัสดิการ" placeholder="สวัสดิการทั้งหมด" items="{{list_welfare}}" item-label-path="label" item-value-path="id"
                     value="{{data.group_id}}">
                     <template>
@@ -33,7 +32,7 @@
                     </template>
                 </gl-combo-box>
             </div>
-            <div class="flex" style=" margin-right: 30px">
+            <!--<div class="flex" style=" margin-right: 30px">
                 <gl-combo-box label="สถานภาพ" placeholder="สถานภาพทั้งหมด" items="{{list_active}}" item-label-path="active_name" item-value-path="id"
                     value="{{data.active_id}}">
                     <template>
@@ -48,7 +47,7 @@
                         [[item.type_employee_name]]
                     </template>
                 </gl-combo-box>
-            </div>
+            </div>-->
         </div>
         <div class="layout horizontal start-justified">
             <div class="flex-2" style=" margin-right: 30px">{{getdepartment(data.faculty_id)}}
@@ -68,6 +67,24 @@
                 </gl-combo-box>
             </div>
 
+        </div>
+        <div class="layout horizontal start-justified">
+            <div class="flex" style=" margin-right: 30px">
+                <gl-combo-box label="สถานภาพ" placeholder="สถานภาพทั้งหมด" items="{{list_active}}" item-label-path="active_name" item-value-path="id"
+                    value="{{data.active_id}}">
+                    <template>
+                        [[item.active_name]]
+                    </template>
+                </gl-combo-box>
+            </div>
+            <div class="flex">
+                <gl-combo-box label="ประเภทพนักงาน" placeholder="ประเภทพนักงานทั้งหมด" items="{{list_type_employee}}" item-label-path="type_employee_name"
+                    item-value-path="id" value="{{data.type_employee_id}}">
+                    <template>
+                        [[item.type_employee_name]]
+                    </template>
+                </gl-combo-box>
+            </div>
         </div>
         <div class="layout horizontal start-justified">
             <!--<div class="flex" style=" margin-right: 30px">
@@ -109,7 +126,7 @@
                 list_faculty: {
                     statePath: 'commonData.faculty'
                 },
-                list_active:{
+                list_active: {
                     statePath: 'commonData.active'
                 },
                 list_department: {
@@ -125,14 +142,14 @@
                     notify: true
                 }
             },
-            getWelareName(group_id){
-                
+            getWelareName(group_id) {
+
                 const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
                 const checkUndefined = (value) => value !== undefined && value !== ''
                 let name = ''
-                if (checkUndefined(group_id)) 
-                     name = getName(this.list_welfare,group_id).label
-               this.set('data.group_name',name)
+                if (checkUndefined(group_id))
+                    name = getName(this.list_welfare, group_id).label
+                this.set('data.group_name', name)
                 // //console.log(name);
             },
             setYear: function (year) {
