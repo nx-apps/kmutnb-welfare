@@ -227,10 +227,10 @@
                             report_id: 7,
                             report_name: 'รายงาน 8 รายงานการเบิกสวัสดิการตามปีงบประมาณรายบุคคล'
                         },
-                        // {
-                        //     report_id: 8,
-                        //     report_name: 'รายงาน 9 ผู้เกษียณ'
-                        // },
+                        {
+                            report_id: 8,
+                            report_name: 'รายงาน 9 ผู้เกษียณ'
+                        },
                     ]
                 },
                 report_id: {
@@ -302,8 +302,8 @@
 
             },
             _printRetire(){
-                const data = JSON.parse(JSON.stringify(this.data.data))
-                 window.open('./api/report/retire?date=' + this.genUrl(data) + '&export=' + this.report_type_seleted);
+                // const data = JSON.parse(JSON.stringify(this.data.data))
+                 window.open('./api/report/retire?date=' + this.data.date + '&export=' + this.report_type_seleted);
             },
             printReport: function () {
                 try {
