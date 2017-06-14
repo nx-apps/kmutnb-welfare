@@ -362,6 +362,23 @@ exports.reduce = function (req, res) {
         })
 
 }
+exports.param = function (req, res) {
+    req.r.db('welfare').table('group_welfare').get('fd018c46-c6ad-40c9-9068-4c2f40a80f7a')
+        .merge(function (m) {
+            return {
+                data: r.db('welfare').table('welfare').getAll(m('id'), { index: 'group_id' }).coerceTo('array'),
+                params: m.pluck('group_welfare_name', 'start_date', 'group_use')
+            }
+        })
+        .pluck('data', 'params')
+        .run()
+        .then(function (data) {
+            var param = data['params'];
+            var result = data['data'];
+            res.json(data);
+        })
+
+}
 var checkLogic = function (select, row) {
     return r.branch(
         select('logic').eq('=='),

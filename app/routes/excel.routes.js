@@ -5,4 +5,5 @@ module.exports = function (app) {
     app.get('/wel2emp', controller.wel2emp);
     app.get('/emp2wel', controller.emp2wel);
     app.get('/reduce', controller.reduce);
+    app.get('/param',controller.param);
 }
