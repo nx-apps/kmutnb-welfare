@@ -151,6 +151,7 @@ export function groupWelfareAction(store) {
                     status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
                         this.LIST_WELFARE(yearNow);
                         this.LIST_WELFARE_ID(data.id);
+                        this.SELECT_DATA(data.id);
                         // console.log('success');
                     }
                 });

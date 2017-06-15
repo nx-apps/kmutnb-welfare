@@ -142,8 +142,19 @@
                     this.data.group_use = false;
                 }
                 if(this.data.end_date !== ''){
-                    this.data.type_continuous = false;
-                    this.data.year = this.clone_data.year;
+                    if(this.data.end_date === null){
+                        this.data.end_date = null;
+                        this.data.year = 9999;
+                        this.data.type_continuous = true;
+                    }else{
+                        if(this.data.year == 9999){
+                            this.data.type_continuous = false;
+                            this.data.year = new Date().getFullYear();
+                        }else{
+                            this.data.type_continuous = false;
+                            this.data.year = this.clone_data.year;
+                        }
+                    }
                 }else{
                     this.data.end_date = null;
                     this.data.year = 9999;
