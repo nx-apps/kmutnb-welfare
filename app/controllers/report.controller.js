@@ -2259,9 +2259,16 @@ exports.welfare10 = function (req, res) {
     var param = req.query;
     param.year = Number(param.year) + 543;
 
-    var emp = r.db('welfare').table('employee').coerceTo('array').filter({ faculty_id: '03211202-6eac-4935-a0d3-82d8b6f6b1ef' })
-    var his = r.db('welfare').table('history_welfare').coerceTo('array').filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' }).filter({ status: true })
-    r.db('welfare').table('welfare').filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' })
+    var emp = r.db('welfare').table('employee').coerceTo('array')//.filter({ faculty_id: 'd9bf815e-44f5-49a2-9721-dc2ee188c8da' })
+        .filter({
+            'faculty_id': param.faculty_id,
+            'type_employee_id': param.type_employee_id,
+            'department_id': param.department_id
+        })
+    var his = r.db('welfare').table('history_welfare').coerceTo('array')//.filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' }).filter({ status: true })
+    .filter({ status: true, 'group_id': param.group_id })
+    r.db('welfare').table('welfare')//.filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' })
+    .filter({'group_id': param.group_id })
 
         .concatMap(function (emp_con) {
             var conditions = emp_con('condition');
@@ -2271,10 +2278,19 @@ exports.welfare10 = function (req, res) {
                     return r.branch(
                         data_his.eq([]),
                         { budget_emp: 0, budget_use: 0 },
-                        data_his.pluck('budget_emp', 'budget_use')(0)
+                        data_his.pluck('budget_emp', 'budget_use', 'date_use', 'date_approve')(0)
                     )
                 })
         })
+        .merge(function (name_merge) {
+            return {
+                name_employee: name_merge('prefix_name').add(name_merge('firstname'))
+                    .add('  ', name_merge('lastname'))
+            }
+        })
+
+     
+
         // .map(function (emp_con) {
         //     var conditions = emp_con('condition');
         //     return getEmployee(emp, conditions)
@@ -2292,7 +2308,7 @@ exports.welfare10 = function (req, res) {
         // })
         .run()
         .then(function (result) {
-            res.json(result);
+            // res.json(result);
             if (req.query.res_type == 'json') {
                 res.json(result);
             }
