@@ -26,8 +26,12 @@
                 text-align: center;
                 font-size: 30px;
             }
+
+            /*[type="checkbox"] {
+                margin: 20px;
+            }*/
         </style>
-        {{paperFab}}
+        <!--{{paperFab}}-->
         <vaadin-grid id="material" items='{{list_employees}}' inverted$="[[inverted]]">
 
             <!--<vaadin-grid-column width="100px" flex-grow="0">
@@ -132,14 +136,6 @@
                 list_type_employee: {
                     statePath: 'commonData.type_employee'
                 },
-                dataCheck: {
-                    type: Object,
-                    // observer:'checkDepart'
-                },
-                setCheck: {
-                    type: Boolean,
-                    value: false
-                },
                 paperFab: {
                     type: Boolean,
                     value: true
@@ -200,7 +196,7 @@
             },
 
 
-          
+
             _confirmRetier: function () {
                 let newArray = this.list_employees.filter((set, index) => set.check === true)
                 newArray = JSON.parse(JSON.stringify(newArray));
@@ -225,7 +221,7 @@
                             // //console.log(newArray);
                             // console.log(newArray);
                             newArray.map((data) => {
-                                console.log(data);
+                                // console.log(data);
                                 this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
                             })
                             // this.dispatchAction('RETIER_SEARCH', this.calDate);
