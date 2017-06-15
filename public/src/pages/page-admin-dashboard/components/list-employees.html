@@ -366,17 +366,16 @@
 
                     if (((paperFabStatus === true) && (this.list_employees[index].budget_use === 0)) ||
                         ((paperFabStatus === false) && (this.list_employees[index].budget_use !== 0))) {
-                        console.log(22);
+                        // console.log(22);
                         // console.log(check);
                         this.list_employees[index].checkUse = check
                     } else {
-                        console.log(11);
+                        // console.log(11);
                         this.list_employees[index].checkUse = false
                         // return false
                         check = false
                     }
                     let emp = this.list_employees.find((item) => item.checkUse === true)
-                    let cal = (typeof emp === 'undefined' ? false : true);
                     this.set('paperFab', typeof emp === 'undefined')
                     return check
                 } catch (e) {

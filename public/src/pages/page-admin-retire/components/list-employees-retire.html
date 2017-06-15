@@ -187,7 +187,8 @@
                 try {
                     let check = inverted != selected;
                     this.list_employees[index].check = inverted != selected
-                    this.set('paperFab', !check)
+                    let emp = this.list_employees.find((item) => item.check === true)
+                    this.set('paperFab', typeof emp === 'undefined')
                     return check
                 } catch (e) {
 
