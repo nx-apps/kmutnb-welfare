@@ -2266,9 +2266,9 @@ exports.welfare10 = function (req, res) {
             'department_id': param.department_id
         })
     var his = r.db('welfare').table('history_welfare').coerceTo('array')//.filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' }).filter({ status: true })
-    .filter({ status: true, 'group_id': param.group_id })
+        .filter({ status: true, 'group_id': param.group_id })
     r.db('welfare').table('welfare')//.filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' })
-    .filter({'group_id': param.group_id })
+        .filter({ 'group_id': param.group_id })
 
         .concatMap(function (emp_con) {
             var conditions = emp_con('condition');
@@ -2277,7 +2277,7 @@ exports.welfare10 = function (req, res) {
                     var data_his = his.filter({ emp_id: m('id') });
                     return r.branch(
                         data_his.eq([]),
-                        { budget_emp: 0, budget_use: 0 },
+                        { budget_emp: 0, budget_use: 0, date_use: '', date_approve: '' },
                         data_his.pluck('budget_emp', 'budget_use', 'date_use', 'date_approve')(0)
                     )
                 })
@@ -2289,7 +2289,6 @@ exports.welfare10 = function (req, res) {
             }
         })
 
-     
 
         // .map(function (emp_con) {
         //     var conditions = emp_con('condition');
@@ -2306,6 +2305,13 @@ exports.welfare10 = function (req, res) {
         // .reduce(function (left, right) {
         //     return left.union(right)
         // })
+        // .merge(function (name_merge) {
+        //     return {
+        //         name_employee: name_merge('prefix_name').add(name_merge('firstname'))
+        //             .add('  ', name_merge('lastname'))
+        //     }
+        // })
+        // .pluck('name_employee')
         .run()
         .then(function (result) {
             // res.json(result);
@@ -2321,7 +2327,122 @@ exports.welfare10 = function (req, res) {
             res.ireport("welfare10.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
+exports.group_health = function (req, res) {
+    // var r = req.r
 
+    // // var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
+    // // var date_end = req.query.date_end + "T00:00:00+07:00";
+
+    // var param = req.query;
+    // param.year = Number(param.year) + 543;
+    var time = r.now().inTimezone('+07')
+    var calculateAge = function (birthday) { // birthday is a date
+        // var ageDifMs = r.now().toEpochTime().sub(birthday.toEpochTime())
+        var ageDifMs = time.toEpochTime().sub(birthday.toEpochTime())
+        var ageDate = r.epochTime(ageDifMs); // miliseconds from epoch
+        //  return Math.abs(ageDate.year() - 1970);
+        return ageDate.year().sub(1970)
+    }
+
+    // var emp = r.db('welfare').table('employee').coerceTo('array')//.filter({ faculty_id: 'd9bf815e-44f5-49a2-9721-dc2ee188c8da' })
+    //     .filter({
+    //         'faculty_id': param.faculty_id,
+    //         'type_employee_id': param.type_employee_id,
+    //         'department_id': param.department_id
+    //     })
+    // var his = r.db('welfare').table('history_welfare').coerceTo('array')//.filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' }).filter({ status: true })
+    //     .filter({ status: true, 'group_id': param.group_id })
+    // r.db('welfare').table('welfare')//.filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' })
+    //     .filter({ 'group_id': param.group_id })
+
+    //     .concatMap(function (emp_con) {
+    //         var conditions = emp_con('condition');
+    //         return getEmployee(emp, conditions)
+    //     })
+    //     .merge(function (name_merge) {
+    //         return {
+    //             name_employee: name_merge('prefix_name').add(name_merge('firstname'))
+    //                 .add('  ', name_merge('lastname')),
+    //             age: calculateAge(name_merge('birthdate'))
+    //         }
+    //     }).orderBy('faculty_name')
+    //     .run()
+    //     .then(function (result) {
+    //         // res.json(result);
+    //         if (req.query.res_type == 'json') {
+    //             res.json(result);
+    //         }
+    //         if (result.length > 0) {
+    //             param.employee_name = result[0].name;
+    //         }
+    //         param = keysToUpper(param);
+    //         CURRENT_DATE = new Date().toISOString().slice(0, 10)
+    //         param.CURRENT_DATE = CURRENT_DATE
+    //         res.ireport("group_health.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
+    //     });
+
+    var emp = r.db('welfare').table('employee').coerceTo('array')//.filter({ faculty_id: 'd9bf815e-44f5-49a2-9721-dc2ee188c8da' })
+        .filter({
+            'faculty_id': req.query.faculty_id,
+            'type_employee_id': req.query.type_employee_id,
+            'department_id': req.query.department_id
+        })
+    var his = r.db('welfare').table('history_welfare').coerceTo('array')//.filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' }).filter({ status: true })
+        .filter({ status: true, 'group_id': req.query.group_id })
+    r.db('welfare').table('welfare')//.filter({ group_id: '96cb5c8e-0f3f-442d-87f7-4d1b18e95ecd' })
+        .filter({ 'group_id': req.query.group_id })
+
+        .concatMap(function (emp_con) {
+            var conditions = emp_con('condition');
+            return getEmployee(emp, conditions)
+        })
+        .merge(function (name_merge) {
+            return {
+                name_employee: name_merge('prefix_name').add(name_merge('firstname'))
+                    .add('  ', name_merge('lastname')),
+                age: calculateAge(name_merge('birthdate'))
+            }
+        })
+        .pluck('birthdate', 'department_name', 'faculty_name', 'gender_name', 'personal_id', 'name_employee','age')
+        .group('faculty_name').ungroup()
+        .merge(function (m) {
+            return {
+                reduction: m('reduction').map(function (ma) {
+                    return {
+                        NEXTCORP01รหัสบัตรประชาชน: ma('personal_id'),
+                        NEXTCORP02ชื่อ: ma('name_employee'),
+                        NEXTCORP03อายุ: ma('age'),
+                        NEXTCORP04เพศ: ma('gender_name'),
+                        NEXTCORP05วันเกิด: ma('birthdate'),
+                        NEXTCORP06คณะ: ma('faculty_name'),
+                        NEXTCORP07ภาควิชา: ma('department_name')
+                    }
+                })
+            }
+        })
+        .run().then(function (data) {
+            // res.json(data);
+            const XLSX = require('xlsx');
+            /* create workbook & set props*/
+            const wb = { SheetNames: [], Sheets: {} };
+            // // wb.Props = {
+            // //     Title: "Stats from app",
+            // //     Author: "John Doe"
+            // // };
+            // /*create sheet data & add to workbook*/
+            for (var prop in data) {
+                var ws = XLSX.utils.json_to_sheet(data[prop]['reduction']);
+                var ws_name = data[prop]['group'].substr(0, 30);
+                XLSX.utils.book_append_sheet(wb, ws, ws_name);
+            }
+            // /* create file 'in memory' */
+            var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
+            var filename = "group_health.xlsx";
+            res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+            res.type('application/octet-stream');
+            res.send(wbout);
+        })
+}
 
 function keysToUpper(param) {
     var keyname = Object.keys(param);
