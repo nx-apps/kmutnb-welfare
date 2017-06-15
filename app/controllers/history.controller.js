@@ -271,34 +271,52 @@ exports.usegroup = function (req, res) {
                     var condition = em('condition');
                     return {
                         countCon: condition.count(),
-                        reduce: getEmployee(emps, condition).merge((budget)=>{
+                        reduce: getEmployee(emps, condition).merge((budget) => {
                             return {
-                                budget_balance:0,
-                                budget_cover:em('budget'),
-                                budget_use:em('budget'),
-                                budget_emp: 0 ,
+                                budget_balance: 0,
+                                budget_cover: em('budget'),
+                                budget_use: em('budget'),
+                                budget_emp: em('budget_emp'),
                                 date_approve: r.now().inTimezone('+07'),
                                 date_create: r.now().inTimezone('+07'),
-                                date_update: r.now().inTimezone('+07'),
+                                // date_update: r.now().inTimezone('+07'),
                                 date_use: r.now().inTimezone('+07'),
-                                document_ids: [ ],
-                                group_id:  group_id ,
+                                document_ids: [],
+                                group_id: group_id,
                                 status: true,
-                                welfare_id : em('id'),
-                                emp_id : budget('id')
+                                welfare_id: em('id'),
+                                emp_id: budget('id')
                             }
-                        }).pluck('budget_balance','budget_cover','budget_use','budget_emp','date_approve','date_create',
-                        'date_use','date_update','document_ids','emp_id','group_id','status','welfare_id','emp_id','personal_id')
+                        }).pluck('budget_balance', 'budget_cover', 'budget_use', 'budget_emp', 'date_approve',
+                            'date_use', 'date_update', 'document_ids', 'emp_id', 'group_id', 'status', 'welfare_id', 'emp_id', 'personal_id')
                     }
                 }),
-                x:1
             }
         })
         .pluck('welfare')
+        .getField('welfare')('reduce')
+        // .merge((insert) => {
+        //     return {      // r.db('welfare').table('history_welfare').insert('reduce') 
+
+        //         result:r.db('welfare').table('history_welfare').insert(insert('reduce')) 
+        //     }
+        // })
+        .reduce((l, r) => {
+            return l.add(r)
+        })
         .run()
         .then(function (result) {
-            res.json(result);
-            // res.json([]);
+            // console.log(2);
+            r.db('welfare').table('history_welfare').insert(result).run()
+                .then(function (result) {
+                    // console.log(2);
+                    res.json(result);
+                    // res.json([]);
+                })
+                .catch(function (err) {
+                    res.status(500).json(err);
+                })
+            // res.json(result);
         })
         .catch(function (err) {
             res.status(500).json(err);

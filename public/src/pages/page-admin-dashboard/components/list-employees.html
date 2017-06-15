@@ -54,7 +54,8 @@
         </style>
         <!--{{dataCheck.group_name}}-->
         <template is="dom-if" if={{!setCheck}}>
-            <gl-form-dropdown-menu always-float-label label="รูปแบบการดู" placeholder="รูปแบบการดู" style="margin-top:15px;width:100%;">
+            <gl-form-dropdown-menu always-float-label label="รูปแบบการดู" placeholder="รูปแบบการดู" style="margin-top:15px;width:100%;"
+                on-tap="text">
                 <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{type_seleted}}">
                     <paper-item value="">ทั้่งหมด</paper-item>
                     <paper-item value="use">คนที่ใช้สวัสดิการไปแล้ว</paper-item>
@@ -100,7 +101,7 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">ลำดับ</div>
+                        <div class="text-center"></div>
                     </template>
                 </vaadin-grid-column>
 
@@ -283,6 +284,10 @@
             observers: [
                 'getSelectType(type_seleted)',
             ],
+            text() {
+                // console.log(111);
+                this.$$('#material').notifyResize()
+            },
             getSelectType(type_seleted) {
                 // all
                 // use
@@ -339,10 +344,7 @@
             },
             setLoad(data) {
                 try {
-                    //console.log(11111111111111111111);
-                    //console.log(this.$$('#material'));
-                    // this.$$('#material').notifyResize()
-                    // this.$$.material.notifyResize()
+                    // console.log(this.$$('#material'));
                     this.fire('toast', {
                         status: 'success', text: 'โหลดสำเร็จ',
                         callback: () => {
@@ -516,8 +518,12 @@
                 });
 
                 newEmprom.then((successMessage) => {
-                    console.log(successMessage);
-                    this.dispatchAction('EMPLOYEE_USE_WELFARE_GROUP', successMessage);
+                    // console.log(successMessage);
+                    this.dispatchAction('EMPLOYEE_USE_WELFARE_GROUP', successMessage)
+                    this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
+                    this.set('paperFab', true)
+                    this.type_seleted = 'all'
+                    // this.$$('#material').notifyResize()
                 });
 
                 // console.log(newArray);
