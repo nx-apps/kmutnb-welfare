@@ -40,17 +40,20 @@
                     </div>
                 </template>
                 
+                <template is="dom-if" if={{_obData(date.type_continuous,date.onetime_use)}}>
+                    <gl-grid-row>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                            <label id="label" style="font-weight:bold;color:#737373">รูปแบบการใช้งาน:</label>
+                            <paper-radio-group selected="{{data.round_use}}" attr-for-selected="value" aria-labelledby="label">
+                                <paper-radio-button value="[[!type_select]]" disabled="{{isEnable}}">ใช้แบบต่อรอบ</paper-radio-button>
+                                <paper-radio-button value="[[type_select]]" disabled="{{isEnable}}">ใช้แบบต่อครั้ง</paper-radio-button>
+                            </paper-radio-group>
+                        </gl-grid-col>
+                    </gl-grid-row>
+                </template>
+                
                 <gl-grid-row width="{{getWidth}}">
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <div style="font-weight:bold;color:#737373">รูปแบบการใช้งาน</div>
-                        <paper-radio-group selected="{{data.round_use}}" attr-for-selected="value">
-                            <paper-radio-button value="{{!type_select}}" disabled="{{isEnable}}">ใช้แบบต่อรอบ</paper-radio-button>
-                            <paper-radio-button value="{{type_select}}" disabled="{{isEnable}}">ใช้แบบต่อครั้ง</paper-radio-button>
-                        </paper-radio-group>
-                    </gl-grid-col>
-                </gl-grid-row>
-                <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                         <gl-form-input class="form" required disabled="{{isEnable}}" label="ชื่อเงื่อนไข" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อเงื่อนไข"></gl-form-input>
@@ -208,6 +211,10 @@
                 type_select:{
                     type: Boolean,
                     value: false
+                },
+                formRound:{
+                    type: Boolean,
+                    value: false
                 }
             },
             checkMenu: function (data) {
@@ -241,7 +248,7 @@
             },
             setItemShow: function (data) {
                 // //console.log(data);
-                this.data.condition.map((item) => {
+                data.condition.map((item) => {
                     if (typeof item.field.data == 'string') {
                         item.value_showInput = item.value_show;
                     }
@@ -337,8 +344,17 @@
                 }
             },
             save: function () {
-                if(this.budget_emp === undefined){
-                    this.budget_emp = 0;
+                var con = this.date.type_continuous;
+                var one = this.date.onetime_use;
+                if(con === true && one === true){
+                    this.data.round_use = true;
+                }else if(con === true && one === false){
+                    this.data.round_use = false;
+                }else if(con === false && one === true){
+                    this.data.round_use = true;
+                }
+                if(this.data.budget_emp === undefined){
+                    this.data.budget_emp = 0;
                 }
                 var check = this.validateForm('.form');
                 var checkBudEmp = this.validateForm('.checkBudgetEmp');
@@ -358,7 +374,7 @@
                             year: this.date.year,
                             budget_emp : this.unFormat(this.data.budget_emp)
                         }
-                        // //console.log(newData);
+                        // console.log(newData);
                         var condition = this.data.condition.map((item)=>{
                             if(item.value_showDropdown == ''){
                                 item.value_show = item.value_showInput;
@@ -409,7 +425,7 @@
                             return newitem
                         })
                         newData.condition = setCondition;    
-                        // //console.log(newData);
+                        // console.log(newData);
                         if (typeof this.data.id == 'undefined') {
                             this.fire('toast', {
                                 status: 'openDialog',
@@ -428,7 +444,7 @@
                                                 });
                                             }
                                         }else{
-                                            if(checkBudEmp === false){
+                                            if(checkBudEmp === false || checkBudEmp === true){
                                                 this.dispatchAction('WELFARE_INSERT', newData).then((val)=>{
                                                     this.fire('back');
                                                 })
@@ -504,6 +520,13 @@
                     this.fire('back');
                 }
             },
+            _obData: function(con, one){
+                if(con === false && one === false){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
             // _selectUser: function (e) {
             //     var id = e.target.data.id;
             //     window.open('https://localhost:3000/admin-manage/' + id);
