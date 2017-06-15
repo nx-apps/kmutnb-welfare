@@ -27,9 +27,10 @@
                 font-size: 30px;
             }
         </style>
-        <vaadin-grid id="material" items='{{list_employees}}'>
+        {{paperFab}}
+        <vaadin-grid id="material" items='{{list_employees}}' inverted$="[[inverted]]">
 
-            <vaadin-grid-column width="100px" flex-grow="0">
+            <!--<vaadin-grid-column width="100px" flex-grow="0">
                 <template class="header">
                     <div class="text-center">
                         <paper-checkbox checked="{{statusCheck}}" on-tap="selectAll"></paper-checkbox>#</div>
@@ -39,8 +40,15 @@
                         <paper-checkbox checked="{{item.check}}" on-tap="checkRretier"></paper-checkbox>
                     </div>
                 </template>
+            </vaadin-grid-column>-->
+            <vaadin-grid-column width="40px" flex-grow="0">
+                <template class="header">
+                    <input aria-label="Select All" type="checkbox" on-click="_invert" checked="[[_isChecked(inverted, indeterminate)]]" indeterminate="[[indeterminate]]">
+                </template>
+                <template>
+                    <input aria-label="Select Row" type="checkbox" on-change="_selectItem" checked="[[_isSelected(inverted, selected,index)]]">
+                </template>
             </vaadin-grid-column>
-
 
             <vaadin-grid-column width="80px" flex-grow="0">
                 <template class="header ">
@@ -102,6 +110,7 @@
                 </template>
             </vaadin-grid-column>
         </vaadin-grid>
+
         <div hidden="{{paperFab}}">
             <paper-fab id="_confirmRetier" icon="send" on-tap="_confirmRetier"></paper-fab>
             <paper-tooltip position="left" class="custom" for="_confirmRetier">เกษียณ</paper-tooltip>
@@ -134,33 +143,64 @@
                 paperFab: {
                     type: Boolean,
                     value: true
+                },
+                inverted: {
+                    type: Boolean,
+                    value: false
+                },
+                indeterminate: {
+                    type: Boolean,
+                    value: false
                 }
             },
             _Obindex: function (index) {
                 return index + 1
             },
-            setTrue: function (data) {
-                // //console.log(data.length > 0);
-                if (data.length > 0) {
-                    this.set('paperFab', false)
-                } else {
-                    this.set('paperFab', true)
+            observers: ['_resetSelection(inverted)'],
+
+            _resetSelection: function (inverted) {
+                try {
+                    this.$$('#material').selectedItems = [];
+                    this.updateStyles();
+                    this.indeterminate = false;
+                } catch (e) {
+
                 }
+
             },
-            checkRretier: function () {
-                let newArray = this.list_employees.find((set, index) => set.check === true)
-                if (newArray !== undefined) {
-                    this.set('paperFab', false)
+
+            _invert: function (e) {
+                this.inverted = !this.inverted;
+            },
+
+            // iOS needs indeterminated + checked at the same time
+            _isChecked: function (inverted, indeterminate) {
+                return indeterminate || inverted;
+            },
+
+            _selectItem: function (e) {
+                if (e.target.checked === this.inverted) {
+                    this.$$('#material').deselectItem(e.model.item);
                 } else {
-                    this.set('paperFab', true)
+                    this.$$('#material').selectItem(e.model.item);
                 }
+                this.indeterminate = this.$$('#material').selectedItems.length > 0;
             },
-            selectAll: function () {
-                this.list_employees.map((set, index) => {
-                    this.set('list_employees.' + index + '.check', this.statusCheck)
-                })
-                this.set('paperFab', !this.statusCheck)
+
+            _isSelected: function (inverted, selected, index) {
+                try {
+                    let check = inverted != selected;
+                    this.list_employees[index].check = inverted != selected
+                    this.set('paperFab', !check)
+                    return check
+                } catch (e) {
+
+                }
+
             },
+
+
+          
             _confirmRetier: function () {
                 let newArray = this.list_employees.filter((set, index) => set.check === true)
                 newArray = JSON.parse(JSON.stringify(newArray));
@@ -168,7 +208,6 @@
                 let list_type_employee = JSON.parse(JSON.stringify(this.list_type_employee));
                 let RETIREMENT = list_active.find((item) => item.active_code === 'RETIREMENT')
                 let type_employee = list_type_employee.find((item) => item.type_employee_name === 'ผู้เกษียณ')
-                // console.log(newArray);
                 newArray.map((item) => {
                     item.active_id = RETIREMENT.id
                     item.active_name = RETIREMENT.active_name
@@ -186,7 +225,7 @@
                             // //console.log(newArray);
                             // console.log(newArray);
                             newArray.map((data) => {
-                                // console.log(data);
+                                console.log(data);
                                 this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
                             })
                             // this.dispatchAction('RETIER_SEARCH', this.calDate);
