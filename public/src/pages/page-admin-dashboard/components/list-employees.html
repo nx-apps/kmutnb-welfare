@@ -53,6 +53,7 @@
             }
         </style>
         <!--{{dataCheck.group_name}}-->
+        [[paperFabStatus]]//[[paperFab]]//[[indeterminate]]//[[inverted]]
         <template is="dom-if" if={{!setCheck}}>
             <gl-form-dropdown-menu always-float-label label="รูปแบบการดู" placeholder="รูปแบบการดู" style="margin-top:15px;width:100%;"
                 on-tap="text">
@@ -60,7 +61,6 @@
                     <paper-item value="">ทั้่งหมด</paper-item>
                     <paper-item value="use">คนที่ใช้สวัสดิการไปแล้ว</paper-item>
                     <paper-item value="notuse">คนที่ยังไม่ได้ใช้สวัสดิการ</paper-item>
-
                 </paper-menu>
             </gl-form-dropdown-menu>
 
@@ -74,9 +74,34 @@
         <!--{{setCheck}}-->
         <template is="dom-if" if={{!isEnabled}}>
             <!--{{checkNoUse}}//-->
-            <vaadin-grid id="material" items='{{list_employees}}'>
+            <vaadin-grid id="material" items='{{list_employees}}' inverted$="[[inverted]]">
 
-                <vaadin-grid-column width="100px" flex-grow="0" hidden="{{setCheck}}">
+
+                <!--<template is="dom-if" if={{checkNoUse}}>-->
+                <vaadin-grid-column width="40px" flex-grow="0" hidden="{{setCheck}}">
+                    <template class="header">
+                        <input id="masterCheck" aria-label="Select All" type="checkbox" on-click="_invert" checked="[[_isChecked(inverted, indeterminate)]]"
+                            indeterminate="[[indeterminate]]">
+                    </template>
+                    <template>
+                        <input id "childCheck" aria-label="Select Row" type="checkbox" on-change="_selectItem" checked="[[_isSelected(inverted, selected,index,paperFabStatus)]]"
+                            hidden="{{checkboxUse(item.group_use,item.budget_use,paperFabStatus)}}">
+                    </template>
+                </vaadin-grid-column>
+                <!--</template>-->
+
+                <!--<template is="dom-if" if={{checkType(type_seleted)}}>
+                    <vaadin-grid-column width="40px" flex-grow="0">
+                        <template class="header">
+                            <input aria-label="Select All" type="checkbox" on-click="_invert" checked="[[_isChecked(inverted, indeterminate)]]" indeterminate="[[indeterminate]]">
+                        </template>
+                        <template>
+                            <input aria-label="Select Row" type="checkbox" on-change="_selectItem" checked="[[_isSelected(inverted, selected,index)]]">
+                        </template>
+                    </vaadin-grid-column>
+                </template>-->
+
+                <!--<vaadin-grid-column width="100px" flex-grow="0" hidden="{{setCheck}}">
                     <template class="header ">
                         <div class="text-center">
 
@@ -103,7 +128,7 @@
                     <template class="footer">
                         <div class="text-center"></div>
                     </template>
-                </vaadin-grid-column>
+                </vaadin-grid-column>-->
 
 
                 <vaadin-grid-column width="80px" flex-grow="0">
@@ -231,14 +256,21 @@
                     </template>
                 </vaadin-grid-column>
             </vaadin-grid>
-            <div hidden="{{paperFab}}">
-                <paper-fab id="confirmSend" icon="send" on-tap="confirmSend"></paper-fab>
-                <paper-tooltip position="left" class="custom" for="confirmSend">ใช้สวัสดิการ</paper-tooltip>
-            </div>
-            <div hidden="{{paperFabCancel}}">
-                <paper-fab id="confirmCancel" class="fabCancel" icon="send" on-tap="confirmCancel"></paper-fab>
-                <paper-tooltip position="left" class="custom" for="confirmCancel">ยกเลิกสวัสดิการ</paper-tooltip>
-            </div>
+
+            <template is="dom-if" if={{paperFabStatus}}>
+                <div hidden="{{paperFab}}">
+                    <paper-fab id="confirmSend" icon="send" on-tap="confirmSend"></paper-fab>
+                    <paper-tooltip position="left" class="custom" for="confirmSend">ใช้สวัสดิการ</paper-tooltip>
+                </div>
+            </template>
+
+            <template is="dom-if" if={{!paperFabStatus}}>
+                <div hidden="{{paperFab}}">
+                    <paper-fab id="confirmCancel" class="fabCancel" icon="send" on-tap="confirmCancel"></paper-fab>
+                    <paper-tooltip position="left" class="custom" for="confirmCancel">ยกเลิกสวัสดิการ</paper-tooltip>
+                </div>
+            </template>
+
             <paper-dialog id="welfare_budget" modal>
                 <admin-dialog-use-all-welfare id="admin-dialog-use-all-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-all-welfare>
                 <div class="flex horizontal end-justified layout buttons">
@@ -259,6 +291,7 @@
                 },
                 list_employees_old: {
                     statePath: 'users.lisyUserhistoryWelfare',
+                    observer: 'setLoad'
                 },
                 dataCheck: {
                     type: Object,
@@ -267,6 +300,10 @@
                 setCheck: {
                     type: Boolean,
                     value: false
+                },
+                paperFabStatus: {
+                    type: Boolean,
+                    value: true
                 },
                 paperFab: {
                     type: Boolean,
@@ -279,68 +316,94 @@
                 oldData: {
                     type: Array,
                     val: []
+                },
+                inverted: {
+                    type: Boolean,
+                    value: false
+                },
+                indeterminate: {
+                    type: Boolean,
+                    value: false
                 }
             },
             observers: [
                 'getSelectType(type_seleted)',
+                '_resetSelection(inverted)'
             ],
-            text() {
-                // console.log(111);
-                this.$$('#material').notifyResize()
-            },
-            getSelectType(type_seleted) {
-                // all
-                // use
-                // notuse
-                let newEmp = []
-                let data = JSON.parse(JSON.stringify(this.list_employees_old))
-                switch (type_seleted) {
-                    case 'notuse':
-                        newEmp = data.filter((emp) => {
-                            return emp.budget_balance !== 0
-                        })
-                        this.set('list_employees', newEmp)
-                        // this.set('setCheck', false)
-                        this.set('paperFab', true)
-                        break;
-                    case 'use':
-                        newEmp = data.filter((emp) => {
-                            return emp.budget_balance === 0
-                        })
-                        this.set('list_employees', newEmp)
-                        // this.set('setCheck', false)
-                        this.set('paperFabCancel', true)
-                        break;
-                    default:
-                        // this.set('setCheck', false)
-                        this.set('list_employees', this.list_employees_old)
-                        this.set('paperFabCancel', true)
-                        break;
-                }
-                this.set('setCheck', false)
-            },
-            checkDepart(data) {
-                // //console.log(this.dataCheck);
-                try {
 
-                    const checkNull = (data) => data !== ''
-                    if (checkNull(this.dataCheck.group_id)
-                        && checkNull(this.dataCheck.faculty_id)
-                        && checkNull(this.dataCheck.department_id)) {
-                        // //console.log(1111);
-                        // this.setLoad(this.list_employees)
-                        this.set('setCheck', false)
-                        // //console.log(this.setCheck);
-                    } else {
-                        // this.setLoad(this.list_employees)
-                        this.set('setCheck', true)
-                        // //console.log(2222);
-                        // //console.log(this.setCheck);
-                    }
+            _resetSelection: function (inverted) {
+                try {
+                    this.$$('#material').selectedItems = [];
+                    this.updateStyles();
+                    this.indeterminate = false;
                 } catch (e) {
 
                 }
+            },
 
+            _invert: function (e) {
+                this.inverted = !this.inverted;
+            },
+
+            // iOS needs indeterminated + checked at the same time
+            _isChecked: function (inverted, indeterminate) {
+                return indeterminate || inverted;
+            },
+
+            _selectItem: function (e) {
+                if (e.target.checked === this.inverted) {
+                    this.$$('#material').deselectItem(e.model.item);
+                } else {
+                    this.$$('#material').selectItem(e.model.item);
+                }
+                this.indeterminate = this.$$('#material').selectedItems.length > 0;
+            },
+
+            _isSelected: function (inverted, selected, index, paperFabStatus) {
+                try {
+                    // console.log(index);
+                    let check = inverted != selected
+                    this.set('paperFab', !check)
+                    if (((paperFabStatus === true) && (this.list_employees[index].budget_use === 0)) ||
+                        ((paperFabStatus === false) && (this.list_employees[index].budget_use !== 0))) {
+                        // console.log('ยังไม่ใช้');
+                        this.list_employees[index].checkUse = check
+                    } else {
+                        // console.log(11);
+                        this.list_employees[index].checkUse = false
+                        // return false
+                        check = false
+                    }
+                    return check
+                } catch (e) {
+
+                }
+            },
+            getSelectType(type_seleted) {
+                let newEmp = []
+                let data = JSON.parse(JSON.stringify(this.list_employees_old))
+                // console.log(data);
+                let paperFabStatus = true
+                switch (type_seleted) {
+                    case 'notuse':
+                        newEmp = data.filter((emp) => {
+                            return emp.budget_use === 0
+                        })
+                        break;
+                    case 'use':
+                        newEmp = data.filter((emp) => {
+                            return emp.budget_use !== 0
+                        })
+                        paperFabStatus = false
+                        break;
+                    default:
+                        newEmp = data
+                        break;
+                }
+                this.set('list_employees', newEmp)
+                this.set('paperFabStatus', paperFabStatus)
+                this.set('setCheck', false)
+                this.set('inverted', false)
             },
             setLoad(data) {
                 try {
@@ -352,7 +415,6 @@
                     });
                     // //console.log(data);
                     let xx = data.find((set, index) => set.group_use === true)
-
                     const checkNull = (data) => data !== '' && data !== undefined
                     // this.oldData = JSON.parse(JSON.stringify(data));
                     if (xx === undefined) {
@@ -369,20 +431,11 @@
                             this.set('setCheck', true)
                             // //console.log(2);
                         }
-                        // this.checkDepart(this.dataCheck)
                     }
-                    // this.set('paperFab', true)
                     if (data.length) {
                         this.set('isEnabled', false)
                     } else {
                         this.set('isEnabled', true)
-                    }
-                    let sum = data.find((set, index) => set.budget_balance > 0)
-                    // //console.log(sum);
-                    if (checkNull(sum)) {
-                        this.set('checkNoUse', true)
-                    } else {
-                        this.set('checkNoUse', false)
                     }
                     // this.getSelectType(this.type_seleted) 
                 } catch (e) {
@@ -395,56 +448,12 @@
                 // //console.log(item);
                 window.open('/admin-manage/' + id);
             },
-            checkboxUse(adminUse, budget_balance) {
+            checkboxUse(adminUse, budget_use, paperFabStatus) {
                 // ส่งจริง เปิดใช้
-                if (adminUse && budget_balance !== 0)
+                if (adminUse && (budget_use === 0 || !paperFabStatus))
                     return false
                 return true
 
-            },
-            selectAll(e) {
-                // //console.log(this.statusCheck);
-                this.fire('toast', { status: 'load' })
-                this.list_employees.map((set, index) => {
-                    // //console.log(this.list_employees[index].budget_balance);
-                    if (this.list_employees[index].budget_balance !== 0)
-                        this.set('list_employees.' + index + '.check', this.statusCheck)
-                    // //console.log(this.list_employees[index].budget_balance);
-                })
-                this.set('paperFab', !this.statusCheck)
-                // //console.log(this.paperFab);
-                this.fire('toast', { status: 'load' })
-            },
-            selectAllCalcel(e) {
-                this.fire('toast', { status: 'load' })
-                this.list_employees.map((set, index) => {
-                    // //console.log(this.list_employees[index].budget_balance);
-                    if (this.list_employees[index].budget_balance === 0)
-                        this.set('list_employees.' + index + '.checkForNotUse', this.statusNot)
-                    // //console.log(this.list_employees[index].budget_balance);
-                })
-                this.set('paperFabCancel', !this.statusNot)
-                // //console.log(this.paperFab);
-                this.fire('toast', { status: 'load' })
-            },
-            useWelfare(e) {
-                let newArray = this.list_employees.find((set, index) => set.check === true)
-                // //console.log(111);
-                // //console.log(newArray);
-                if (newArray !== undefined) {
-                    this.set('paperFab', false)
-                } else {
-                    this.set('paperFab', true)
-                }
-            },
-            notuseWelfare(e) {
-                let newArray = this.list_employees.find((set, index) => set.checkForNotUse === true)
-                // //console.log(newArray);
-                if (newArray !== undefined) {
-                    this.set('paperFabCancel', false)
-                } else {
-                    this.set('paperFabCancel', true)
-                }
             },
             checkType(type_seleted) {
                 if (type_seleted === 'use')
@@ -453,23 +462,25 @@
 
             },
             confirmCancel() {
+                // console.log(this.$$('#material'));
+                let newArray = this.list_employees.filter((set, index) => set.checkUse === true)
+                let newArray2 = []
+                newArray.map((item) => {
+                    newArray2.push({ id: item.history_welfare_id })
+                })
+                // console.log(newArray);
                 this.fire('toast', {
                     status: 'openDialog',
                     text: 'กรุณายืนยันการยกเลิกการทำรายการ ?',
                     confirmed: (result) => {
                         if (result == true) {
-                            let newArray = this.list_employees.filter((set, index) => set.checkForNotUse === true)
-                            let newArray2 = []
-                            newArray.map((item) => {
-                                // //console.log(item.history_welfare_id);
-                                newArray2.push({ id: item.history_welfare_id })
-                            })
+
                             // //console.log(newArray2);
                             this.dispatchAction('USER_REJECT_USE_WELFARE', newArray2)
                                 .then((res) => {
                                     this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
                                     this.type_seleted = 'all'
-                                    this.set('paperFabCancel', true)
+                                    this.set('inverted', false)
                                 })
                         }
                     }
@@ -479,7 +490,7 @@
             confirmSend(e) {
                 let data = new Object();
                 let date = new Date().toISOString().split('T')[0]
-                let newArray = this.list_employees.find((set, index) => set.check === true)
+                let newArray = this.list_employees.find((set, index) => set.checkUse === true)
                 newArray = JSON.parse(JSON.stringify(newArray))
                 // //console.log(date);
                 data = {
@@ -507,7 +518,7 @@
                 let newEmprom = new Promise((resolve, reject) => {
                     let newEmp = []
                     this.list_employees.map((set, index) => {
-                        if (set.check === true) {
+                        if (set.checkUse === true) {
                             newEmp.push({
                                 id: set.id,
                                 group_id: set.group_id
@@ -521,50 +532,10 @@
                     // console.log(successMessage);
                     this.dispatchAction('EMPLOYEE_USE_WELFARE_GROUP', successMessage)
                     this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
-                    this.set('paperFab', true)
+                    this.set('inverted', false)
+                    // this.set('paperFab', true)
                     this.type_seleted = 'all'
-                    // this.$$('#material').notifyResize()
                 });
-
-                // console.log(newArray);
-                // console.log(dataDialog);
-
-                // console.log(newEmp);
-                // newArray.map((item) => {
-                //     item.budget_balance = 0
-                //     item.budget_cover = dataDialog.budget_cover
-                //     item.budget_use = dataDialog.budget_cover
-                //     item.date_approve = dataDialog.date_approve + 'T00:00:00+07:00'
-                //     item.date_use = dataDialog.date_use + 'T00:00:00+07:00'
-                //     item.emp_id = item.id
-                //     item.personal_id = item.personal_id
-                //     item.document_ids = new Array()
-                //     item.status = true
-                //     item.description_detail = dataDialog.description_detail
-                // })
-                // // //console.log(newArray);
-
-                // // //console.log(this.$$('#admin-dialog-use-all-welfare').validateForm('.required'));
-                // if (this.$$('#admin-dialog-use-all-welfare').validateForm('.required')) {
-                //     this.fire('toast', {
-                //         status: 'openDialog',
-                //         text: 'กรุณายืนยันการทำรายการ ?',
-                //         confirmed: (result) => {
-                //             if (result == true) {
-                //                 this.$$('#welfare_budget').close()
-                //                 newArray.map((data) => {
-                //                     // //console.log(data);
-                //                     this.dispatchAction('EMPLOYEE_USE_WELFARE_GROUP', data);
-                //                 })
-                //                 // this.dispatchAction('EMPLOYEE_USE_WELFARE', newArray);
-                //                 this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
-                //                 this.set('paperFab', true)
-                //                 this.type_seleted = 'all'
-                //             }
-                //         }
-                //     })
-
-                // }
             },
 
         });
