@@ -46,8 +46,8 @@
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                             <label id="label" style="font-weight:bold;color:#737373">รูปแบบการใช้งาน:</label>
                             <paper-radio-group selected="{{data.round_use}}" attr-for-selected="value" aria-labelledby="label">
-                                <paper-radio-button value="[[!type_select]]" disabled="{{isEnable}}">ใช้แบบต่อรอบ</paper-radio-button>
-                                <paper-radio-button value="[[type_select]]" disabled="{{isEnable}}">ใช้แบบต่อครั้ง</paper-radio-button>
+                                <paper-radio-button value="{{!type_select}}" disabled="{{isEnable}}">ใช้แบบต่อรอบ</paper-radio-button>
+                                <paper-radio-button value="{{type_select}}" disabled="{{isEnable}}">ใช้แบบต่อครั้ง</paper-radio-button>
                             </paper-radio-group>
                         </gl-grid-col>
                     </gl-grid-row>
@@ -217,6 +217,12 @@
                     value: false
                 }
             },
+            observers: [
+                '_cloneTypeCon(date)'
+            ],
+            _cloneTypeCon:function(data){
+                this.clone_type =  JSON.parse(JSON.stringify(data));
+            },
             checkMenu: function (data) {
                 // //console.log('data',data);
                 if (typeof data.id == 'undefined') {
@@ -344,8 +350,8 @@
                 }
             },
             save: function () {
-                var con = this.date.type_continuous;
-                var one = this.date.onetime_use;
+                var con = this.clone_type.type_continuous;
+                var one = this.clone_type.onetime_use;
                 if(con === true && one === true){
                     this.data.round_use = true;
                 }else if(con === true && one === false){
@@ -359,7 +365,7 @@
                 var check = this.validateForm('.form');
                 var checkBudEmp = this.validateForm('.checkBudgetEmp');
                 // //console.log(check);
-                if(check == false) return '';
+                // if(check == false) return '';
                 if(check == true){
                     if(this.data.round_use === undefined){
                         this.fire('toast',{status:'connectError',text:'กรุณาเลือกรูปแบบการใช้งาน',
@@ -521,11 +527,11 @@
                 }
             },
             _obData: function(con, one){
-                if(con === false && one === false){
-                    return true;
-                }else{
-                    return false;
-                }
+                    if(con === false && one === false){
+                        return true;
+                    }else{
+                        return false;
+                    }                
             }
             // _selectUser: function (e) {
             //     var id = e.target.data.id;
