@@ -137,6 +137,11 @@
             /*margin-top: 15px;*/
             height: 480px;
         }
+
+        .history {
+            margin: 30px 15px;
+            font-size: 25px;
+        }
     </style>
     <template>
         <div class="xcontainer">
@@ -190,7 +195,7 @@
                         <label for="tab2">รายการสวัสดิการที่ขอใช้สิทธิ</label>
 
                         <input id="tab3" type="radio" name="tabs">
-                        <label for="tab3">ประกันสังคม</label>
+                        <label for="tab3">ประกันสังคม / กองทุน</label>
                         <!--<button type="" on-click="setVaadin">dd</button>-->
                         <section id="content1">
                             <!--<paper-material elevation="1">-->
@@ -286,7 +291,10 @@
                         <section id="content3">
                             <!--<paper-material elevation="1">-->
                             <div class="content center-justified layout">
+                                <div class="history">ประกันสังคม</div>
+
                                 <history-sso></history-sso>
+                                <div class="history">กองทุน</div>
                                 <history-rvd></history-rvd>
                             </div>
                             <!--</paper-material>-->

@@ -222,8 +222,19 @@ exports.welfaresYear = function (req, res) {
     //         })
     //         .coerceTo('array')
     // }
+    var calculateAge = function (birthday) { // birthday is a date
+        var ageDifMs = r.now().toEpochTime().sub(birthday.toEpochTime())
+        var ageDate = r.epochTime(ageDifMs); // miliseconds from epoch
+        //  return Math.abs(ageDate.year() - 1970);
+        return ageDate.year().sub(1970)
+    }
     // https://localhost:3000/api/employee/welfares/year/2017/id/411e54dd-b808-4d4d-9984-201b68c70dff
     r.db('welfare').table('employee').get(req.params.id)
+        .merge((use) => {
+            return {
+                work_age: calculateAge(use('start_work_date'))
+            }
+        })
         .merge((group_welfare) => {
             return {
                 group_welfares: r.db('welfare').table('group_welfare')
@@ -266,8 +277,8 @@ exports.welfaresYear = function (req, res) {
                                     }
                                 })
                                 .filter({ "count_pass_status": true })
-                                .pluck(['budget','budget_emp', 'welfare_name', 'group_id', 'welfare_id', 'group_welfare_name'
-                                    , 'onetime_use', 'group_use', 'type_continuous','voluntary_status', 'round_use'])
+                                .pluck(['budget', 'budget_emp', 'welfare_name', 'group_id', 'welfare_id', 'group_welfare_name'
+                                    , 'onetime_use', 'group_use', 'type_continuous', 'voluntary_status', 'round_use'])
                         }
                     })
                     .merge((e) => {
@@ -285,7 +296,7 @@ exports.welfaresYear = function (req, res) {
                                         .orderBy(r.desc('date_create'))
                                         .coerceTo('array')
                                         .sum('budget_use'),
-                                    budget_emp_use:r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                                    budget_emp_use: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
                                         .filter({ welfare_id: el('welfare_id'), status: true })
                                         .orderBy(r.desc('date_create'))
                                         .coerceTo('array')
@@ -312,7 +323,7 @@ exports.welfaresYear = function (req, res) {
             return {
                 group_welfares: item('group_welfares').count().gt(0).branch(item('group_welfares').getField('welfare_conditions').reduce((l, r) => {
                     return l.add(r)
-                }),[]),
+                }), []),
                 birthdate: r.branch(item('birthdate').eq(''),
                     item('birthdate'), item('birthdate').toISO8601().split('T')(0))
                 ,
@@ -352,7 +363,7 @@ exports.welfaresYear = function (req, res) {
                             })
                         }
                     })
-                    .pluck('history_welfare_id','budget_emp', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'description_detail', 'status', 'file')
+                    .pluck('history_welfare_id', 'budget_emp', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'description_detail', 'status', 'file')
                     .coerceTo('array')
                     .orderBy(r.desc('date_approve'))
             }
