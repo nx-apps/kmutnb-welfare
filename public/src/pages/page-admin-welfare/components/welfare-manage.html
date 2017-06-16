@@ -98,10 +98,10 @@
                 <welfare-form date="{{list}}" is-enable="{{active}}"></welfare-form>
                 <!--<welfare-insert datas="{{data}}"></welfare-insert>-->
             </div>
-            <div>
+            <!--<div>
                 <welfare-form date="{{list}}" is-enable="{{active}}"></welfare-form>
-                <!--<welfare-edit datas="{{data}}" status="[[list.status_approve]]"></welfare-edit>-->
-            </div>
+                <welfare-edit datas="{{data}}" status="[[list.status_approve]]"></welfare-edit>
+            </div>-->
         </iron-pages>
     </template>
     <script>
@@ -144,7 +144,7 @@
                 });
 
                 // //console.log(this.$$('welfare-edit').changeisEnabled())
-                this.pages = '2';
+                this.pages = '1';
             },
             _delete: function (e) {
                 this.fire('toast', {

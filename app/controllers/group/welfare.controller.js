@@ -39,6 +39,12 @@ var reduceCondition = function (emp, con) {
         emp
     )
 }
+var calculateAge = function (birthday) { // birthday is a date
+    var ageDifMs = r.now().toEpochTime().sub(birthday.toEpochTime())
+    var ageDate = r.epochTime(ageDifMs); // miliseconds from epoch
+    //  return Math.abs(ageDate.year() - 1970);
+    return ageDate.year().sub(1970)
+}
 exports.list = function (req, res) {
     var r = req.r
 
@@ -106,6 +112,12 @@ exports.listId = function (req, res) {
     r.expr({
         employees: r.db('welfare').table('employee')/*.filter({ active_name: 'ทำงาน' })*/
             .without('dob', 'emp_no', 'firstname', 'lastname')
+             .merge((use) => {
+                return {
+                    age: calculateAge(use('birthdate')),
+                    work_age: calculateAge(use('start_work_date'))
+                }
+            })
             .coerceTo('array'),
         group: []
     })

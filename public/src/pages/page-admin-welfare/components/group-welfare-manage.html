@@ -47,6 +47,7 @@
                     </div>
                 </div>
             </template>
+            
             <template is="dom-if" if={{!data.type_continuous}}>
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
@@ -55,8 +56,21 @@
                     </gl-grid-col>
                 </gl-grid-row>
             </template>
-            
+
             <gl-grid-row width="{{getWidth}}">
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                    <gl-form-dropdown-menu class="checkValidate" required disabled="{{isEnable}}" label="รูปแบบสวัสดิการ" placeholder="กรุณาเลือกรูปแบบสวัสดิการ" style="width:100%">
+                        <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{data.type_group}}">
+                            <paper-item value="general">ทั่วไป</paper-item>
+                            <paper-item value="fund">กองทุน</paper-item>
+                            <paper-item value="sso">ประกันสังคม</paper-item>
+                        </paper-listbox>
+                    </gl-form-dropdown-menu>
+                </gl-grid-col>
+            </gl-grid-row>
+            
+            <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                     <gl-form-input class="checkValidate" required disabled="{{isEnable}}" label="ชื่อสวัสดิการ" value="{{data.group_welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
@@ -85,23 +99,27 @@
                     <gl-form-textarea disabled="{{isEnable}}" style="margin-top:15px;" label="รายละเอียด" value="{{data.description}}" placeholder="เพิ่มรายละเอียด"></gl-form-textarea>
                 </gl-grid-col>
             </gl-grid-row>
-            [[checkDisabled(isEnable)]]
-            <gl-grid-row style="margin-top: 10px">
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                    <paper-checkbox disabled="{{isEnable_onetime}}" checked="{{data.onetime_use}}">ใช้ครั้งเดียว</paper-checkbox>
-                </gl-grid-col>
-                [[checkSelect(data.group_use)]] 
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                    <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.group_use}}">สวัสดิการแบบกลุ่ม</paper-checkbox>
-                </gl-grid-col>
-            </gl-grid-row>
-            <gl-grid-row style="margin-top: 10px">
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
-                    <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.voluntary_status}}">สมัครใจ</paper-checkbox>
-                </gl-grid-col>
-            </gl-grid-row>
+
+            
+            <template is="dom-if" if={{_obTypeGroup(data.type_group)}}>
+                [[checkDisabled(isEnable)]]
+                <gl-grid-row style="margin-top: 10px">
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                        <paper-checkbox disabled="{{isEnable_onetime}}" checked="{{data.onetime_use}}">ใช้ครั้งเดียว</paper-checkbox>
+                    </gl-grid-col>
+                    [[checkSelect(data.group_use)]] 
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                        <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.group_use}}">สวัสดิการแบบกลุ่ม</paper-checkbox>
+                    </gl-grid-col>
+                </gl-grid-row>
+                <gl-grid-row style="margin-top: 10px">
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
+                        <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.voluntary_status}}">สมัครใจ</paper-checkbox>
+                    </gl-grid-col>
+                </gl-grid-row>
+            </template>
 
             <div class="horizontal end-justified layout btn-bottom">
                 <div hidden="{{isEnable}}">
@@ -131,7 +149,7 @@
             },
             save: function () {
                 var check = this.validateForm('.checkValidate');
-                // //console.log(check);
+
                 if(this.data.description === undefined){
                     this.data.description = '';
                 }
@@ -141,6 +159,10 @@
                 if (this.data.group_use != true) {
                     this.data.group_use = false;
                 }
+                if(this.data.cal_date === ''){
+                    this.data.cal_date = null;
+                }
+
                 if(this.data.end_date !== ''){
                     if(this.data.end_date === null){
                         this.data.end_date = null;
@@ -160,41 +182,33 @@
                     this.data.year = 9999;
                     this.data.type_continuous = true;
                 }
-                if(this.data.cal_date === ''){
-                    this.data.cal_date = null;
-                }
+
                 if(check == true){
-                    if(this.data.type_continuous === undefined){
-                        this.fire('toast',{status:'connectError',text:'กรุณาเลือกรูปแบบสวัสดิการ',
-                        callback:function(){
-                        }})
-                    }else{
-                        if (typeof this.data.id != 'undefined' && this.data.id != '') {
-                            this.fire('toast', {
-                                status: 'openDialog',
-                                text: 'ต้องการแก้ไขสวัสดิการใช่หรือไม่ ?',
-                                confirmed: (result) => {
-                                    if (result == true) {
-                                        this.data.year = this.unFormat(this.data.year);
-                                        this.dispatchAction('EDIT_WELFARE', this.data);
-                                        this.isEnable = true;
-                                    }
+                    if (typeof this.data.id != 'undefined' && this.data.id != '') {
+                        this.fire('toast', {
+                            status: 'openDialog',
+                            text: 'ต้องการแก้ไขสวัสดิการใช่หรือไม่ ?',
+                            confirmed: (result) => {
+                                if (result == true) {
+                                    this.data.year = this.unFormat(this.data.year);
+                                    this.dispatchAction('EDIT_WELFARE', this.data);
+                                    this.isEnable = true;
                                 }
-                            })
-                        }
-                        else {
-                            this.data.year = this.unFormat(this.data.year);
-                            this.data.status_approve = false;
-                            this.fire('toast', {
-                                status: 'openDialog',
-                                text: 'ต้องการเพิ่มสวัสดิการใช่หรือไม่ ?',
-                                confirmed: (result) => {
-                                    if (result == true) {
-                                        this.dispatchAction('INSERT_WELFARE', this.data)
-                                    }
+                            }
+                        })
+                    }
+                    else {
+                        this.data.year = this.unFormat(this.data.year);
+                        this.data.status_approve = false;
+                        this.fire('toast', {
+                            status: 'openDialog',
+                            text: 'ต้องการเพิ่มสวัสดิการใช่หรือไม่ ?',
+                            confirmed: (result) => {
+                                if (result == true) {
+                                    this.dispatchAction('INSERT_WELFARE', this.data)
                                 }
-                            })
-                        }
+                            }
+                        })
                     }
                 }
                 else{
@@ -286,6 +300,17 @@
             _confirmToast: function (result, detail) {
                 if (result == true) {
                     this.dispatchAction('DELETE_WELFARE', detail.datas)
+                }
+            },
+            _obTypeGroup: function(val){
+                if(val !== undefined){
+                    if(val == 'general'){
+                        this.data.voluntary_status = false;
+                        return true
+                    }else{
+                        this.data.voluntary_status = true;
+                        return false
+                    }
                 }
             }
         });

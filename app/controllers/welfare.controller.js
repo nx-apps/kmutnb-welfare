@@ -224,10 +224,21 @@ exports.listId = function (req, res) {
             row(select('field_name')).ne(select('value'))
         )
     };
-
+    var calculateAge = function (birthday) { // birthday is a date
+        var ageDifMs = r.now().toEpochTime().sub(birthday.toEpochTime())
+        var ageDate = r.epochTime(ageDifMs); // miliseconds from epoch
+        //  return Math.abs(ageDate.year() - 1970);
+        return ageDate.year().sub(1970)
+    }
     r.expr({
         employees: r.db('welfare').table('employee').filter({ active_name: 'ทำงาน' })
             .without('dob', 'emp_no', 'firstname', 'lastname')
+             .merge((use) => {
+                return {
+                    age: calculateAge(use('birthdate')),
+                    work_age: calculateAge(use('start_work_date'))
+                }
+            })
             .coerceTo('array'),
         welfare: []
     })
@@ -283,8 +294,6 @@ exports.listId = function (req, res) {
                     .without('countCon')
                     .merge(function (m) {
                         return {
-                            start_date: m('start_date').toISO8601().split('T')(0),
-                            end_date: m('end_date').toISO8601().split('T')(0),
                             count_employee: m('employee').count()
                         }
                     })
@@ -314,7 +323,7 @@ exports.active = function (req, res) {
             .coerceTo('array')
     }
     group_welfare()
-    .pluck("id","group_welfare_name","group_use")
+        .pluck("id", "group_welfare_name", "group_use")
         .run()
         .then(function (result) {
             console.log(111);
