@@ -1,4 +1,4 @@
-<dom-module id="history-sso">
+<dom-module id="history-rvd">
     <template>
         <style include="page-style gl-styles">
              :host {
@@ -17,10 +17,19 @@
             </vaadin-grid-column>
 
             <vaadin-grid-column width="350px" flex-grow="0">
-                <template class="header">โรงพยาบาล</template>
+                <template class="header">กองทุน</template>
                 <template>[[item.name.first]]</template>
             </vaadin-grid-column>
 
+            <vaadin-grid-column>
+                <template class="header">
+                    <div class="text-center">สิทธิประโยชน์</div>
+                </template>
+                <template>
+                    <div class="text-center"></div>
+                </template>
+            </vaadin-grid-column>
+            
             <vaadin-grid-column>
                 <template class="header">
                     <div class="text-center">วันเริ่มต้น</div>
@@ -51,7 +60,7 @@
     </template>
     <script>
         Polymer({
-            is: 'history-sso',
+            is: 'history-rvd',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
                 commonLogic, MonthBehavior],
         });

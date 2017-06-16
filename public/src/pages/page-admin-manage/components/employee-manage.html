@@ -88,12 +88,23 @@
                             <div class="flex label">
                                 <label for="birthdate">วันเกิด :</label>
                             </div>
-                            <div class="flex-5">
+                            <div class="flex-2">
                                 <vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]"
                                     class="required" required></vaadin-date-picker>
                             </div>
                         </div>
-
+                        <div class="flex layout horizontal">
+                            <div class="flex label">
+                                <label for="hospital">โรงพยาบาล :</label>
+                            </div>
+                            <div class="flex-2">
+                                <gl-form-input id="hospital" no-label-float value="{{data.hospital}}" disabled="[[disabled]]"></gl-form-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="from layout horizontal end-justified">
+                        * ตามในบัตรรับรองสิทธิการรักษาพยาบาล (บัตรประกันสังคม)
+                    </div>
                 </fieldset>
                 <fieldset>
                     <legend>ข้อมูลพนักงาน :</legend>
@@ -215,16 +226,16 @@
                         </div>
                     </div>
                 </fieldset>
-                </div>
-                </gl-form-panel-body>
+            </div>
+            </gl-form-panel-body>
 
-                <gl-form-panel-footer label="" set-padding="0px 10px 20px 0px">
-                    <div class="horizontal end-justified layout">
-                        <div hidden="[[disabled]]">
-                            <paper-button raised on-tap="cancle">ยกเลิก</paper-button>
-                            <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
-                        </div>
+            <gl-form-panel-footer label="" set-padding="0px 10px 20px 0px">
+                <div class="horizontal end-justified layout">
+                    <div hidden="[[disabled]]">
+                        <paper-button raised on-tap="cancle">ยกเลิก</paper-button>
+                        <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
                     </div>
+                </div>
 
         </paper-material>
 
@@ -297,9 +308,9 @@
                         text: 'ต้องการบันทึกข้อมูลใช่หรือไม่ ?',
                         confirmed: (result) => {
                             if (result == true) {
-                                this.dispatchAction('EMPLOYEE_UPDATE', this.data).then((item)=>{
-                                   this.disabled = true; 
-                                   
+                                this.dispatchAction('EMPLOYEE_UPDATE', this.data).then((item) => {
+                                    this.disabled = true;
+
                                 })
                             }
                         }

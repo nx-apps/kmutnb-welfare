@@ -17,6 +17,8 @@
 
 <link rel="import" href="./components/history-sso.html">
 
+<link rel="import" href="./components/history-rvd.html">
+
 <dom-module id="page-admin-manage">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
         * {
@@ -124,7 +126,8 @@
 
         history-welfare,
         vaadin-grid,
-        history-sso {
+        history-sso,
+        history-rvd {
             /*margin-top: 15px;*/
             width: 98%;
             margin: 10px;
@@ -193,7 +196,7 @@
                             <!--<paper-material elevation="1">-->
                             <div class="contenttable">
                                 <div class="content horizontal center-justified layout">
-                                    <vaadin-grid id="material" aria-label="Column Grouping Example" items={{data.group_welfares}}>
+                                    <vaadin-grid id="material" items={{data.group_welfares}}>
                                         <vaadin-grid-column width="50px" flex-grow="0">
                                             <template class="header ">
                                                 <div class="text-center">ลำดับ</div>
@@ -282,8 +285,9 @@
                         </section>
                         <section id="content3">
                             <!--<paper-material elevation="1">-->
-                            <div class="content horizontal center-justified layout">
+                            <div class="content center-justified layout">
                                 <history-sso></history-sso>
+                                <history-rvd></history-rvd>
                             </div>
                             <!--</paper-material>-->
                         </section>
