@@ -83,24 +83,27 @@ exports.fund = function (req, res) {
     var company = file[sheetname]['B' + startRow].v;
     var monthly = file[sheetname]['B' + (startRow += 2)].v;
     var month = parseInt(monthly.split('/')[1]);
-    var year = parseInt(monthly.split('/')[0])-543;
+    var year = parseInt(monthly.split('/')[0]) - 543;
     var rowNo = startRow + 4;
     var datas = [];
-    while (typeof file[sheetname]['B' + rowNo] !== "undefined" ) {
-        var data = {};
-        data.emp_name = file[sheetname]['A' + rowNo].v;
-        data.personal_id = Math.abs(file[sheetname]['B' + rowNo].v).toString();
-        data.fund_company = company;
-        data.fund_month = month;
-        data.fund_year = year;
-        data.fund_code = file[sheetname]['A' + (rowNo += 2)].v;
-        data.fund_name = file[sheetname]['B' + rowNo].v;
-        data.fund_date = file[sheetname]['B' + (rowNo += 1)].v;
-        data.emp_con = file[sheetname]['D' + rowNo].v;
-        data.emp_ear = file[sheetname]['E' + rowNo].v;
-        data.com_con = file[sheetname]['F' + rowNo].v;
-        data.com_ear = file[sheetname]['G' + rowNo].v;
-        data.total = file[sheetname]['H' + rowNo].v;
+    while (typeof file[sheetname]['B' + rowNo] !== "undefined") {
+        var data = {
+            emp_name: file[sheetname]['A' + rowNo].v,
+            personal_id: Math.abs(file[sheetname]['B' + rowNo].v).toString(),
+            fund_company: company,
+            fund_month: month,
+            fund_year: year,
+            fund_code: file[sheetname]['A' + (rowNo += 2)].v,
+            fund_name: file[sheetname]['B' + rowNo].v,
+            fund_date: file[sheetname]['B' + (rowNo += 1)].v,
+            emp_con: file[sheetname]['D' + rowNo].v,
+            emp_ear: file[sheetname]['E' + rowNo].v,
+            com_con: file[sheetname]['F' + rowNo].v,
+            com_ear: file[sheetname]['G' + rowNo].v,
+            total: file[sheetname]['H' + rowNo].v,
+            date_created: r.now().inTimezone('+07'),
+            date_updated: r.now().inTimezone('+07')
+        };
         datas.push(data);
         rowNo += 3;
     }
