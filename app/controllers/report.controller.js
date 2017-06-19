@@ -2443,6 +2443,23 @@ exports.group_health = function (req, res) {
             res.send(wbout);
         })
 }
+exports.fund = function (req, res) {
+    r.db('welfare').table('history_fund').getAll([year, month], { index: 'yearMonth' })
+        .run()
+        .then(function (result) {
+            // res.json(result);
+            if (req.query.res_type == 'json') {
+                res.json(result);
+            }
+            if (result.length > 0) {
+                param.employee_name = result[0].name;
+            }
+            param = keysToUpper(param);
+            CURRENT_DATE = new Date().toISOString().slice(0, 10)
+            param.CURRENT_DATE = CURRENT_DATE
+            res.ireport("welfare10.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
+        });
+}
 
 function keysToUpper(param) {
     var keyname = Object.keys(param);
