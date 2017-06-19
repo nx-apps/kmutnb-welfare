@@ -128,6 +128,9 @@ export function groupWelfareAction(store) {
         },
         EDIT_WELFARE: function (data) {
             var yearNow = new Date().getFullYear();
+            var con = data.type_continuous;
+            var one = data.onetime_use;
+            var typeGroup = data.type_group;
             // console.log(data);
             let { id, year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, type_continuous, voluntary_status, type_group} = data;
             let newData = { id, year, group_welfare_name, group_use, description, onetime_use, type_continuous, voluntary_status, type_group};
@@ -165,6 +168,17 @@ export function groupWelfareAction(store) {
                     // console.log(result.data);
                     var data = result.data.welfare;
                     for(var i = 0; i < data.length; i++){
+                        if(typeGroup == 'general'){
+                            if(con === true && one === true){
+                                data[i].round_use = true;
+                            }else if(con === true && one === false){
+                                data[i].round_use = false;
+                            }else if(con === false && one === true){
+                                data[i].round_use = true;
+                            }
+                        }else{
+                            data[i].round_use = true;
+                        }
                         // console.log(data[i].condition);
                         var condition = data[i].condition;
                         var arr = [];
@@ -204,8 +218,8 @@ export function groupWelfareAction(store) {
                         data[i].condition = arr;
                     }
                     var setWelfare = data.map((item) => {
-                                        let {budget, condition, group_id, id, status, welfare_name} = item;
-                                        let newitem = { budget, condition, group_id, id, status, welfare_name }
+                                        let {budget, budget_emp, condition, group_id, id, round_use, welfare_name} = item;
+                                        let newitem = { budget, condition, group_id, id, round_use, welfare_name }
                                         return newitem;
                                     })
                     // console.log(setWelfare);

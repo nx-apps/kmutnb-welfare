@@ -59,18 +59,44 @@
                         <gl-form-input class="form" required disabled="{{isEnable}}" label="ชื่อเงื่อนไข" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อเงื่อนไข"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
-                <gl-grid-row>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
-                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน (บาท)" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
-                    </gl-grid-col>
-                </gl-grid-row>
                 
-                <template is="dom-if" if={{date.voluntary_status}}>
+                <template is="dom-if" if={{!_obTypeGroupFund(date.type_group)}}>
+                    <template is="dom-if" if={{!_obTypeGroupSso(date.type_group)}}>
+                        <gl-grid-row>
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                                <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน (บาท)" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                            </gl-grid-col>
+                        </gl-grid-row>
+                    </template>
+                    
+                    <template is="dom-if" if={{_obTypeGroupSso(date.type_group)}}>
+                        <gl-grid-row>
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                                <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงินมหาลัยจ่าย (บาท)" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                            </gl-grid-col>
+                        </gl-grid-row>
+                        <gl-grid-row>
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                            <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                                <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="จำนวนเงินที่พนักงานจ่าย (บาท)" format-number="on" value="{{data.budget_emp}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                            </gl-grid-col>
+                        </gl-grid-row>
+                    </template>
+                </template>
+                
+                <template is="dom-if" if={{_obTypeGroupFund(date.type_group)}}>
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                            <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="จำนวนเงินพนักงาน (บาท)" format-number="on" value="{{data.budget_emp}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                            <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวน % ที่มหาลัยจ่าย" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        </gl-grid-col>
+                    </gl-grid-row>
+                    <gl-grid-row>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                            <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="จำนวน % ที่พนักงานจ่าย" format-number="on" value="{{data.budget_emp}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                         </gl-grid-col>
                     </gl-grid-row>
                 </template>
@@ -90,7 +116,6 @@
                                     </template>
                                 </paper-listbox>
                             </gl-form-dropdown-menu>
-                            <!--<vaadin-combo-box id="field-[[index]]" placeholder="[[item.itemField.length]]" items="[[item.itemField]]" value="{{item.field}}"></vaadin-combo-box>-->
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-form-dropdown-menu disabled="{{isEnable}}" style="margin-top: 15px">
@@ -100,11 +125,9 @@
                                     </template>
                                 </paper-listbox>
                             </gl-form-dropdown-menu>
-                            <!--<gl-combo-box id="symbo-[[index]]" items="[[item.itemLogic]]" item-label-path="name" item-value-path="symbol" value="{{item.logic_show}}"></gl-combobox>-->
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                             <template is="dom-if" if="{{!getFiled(item.field,index)}}">
-                                <!--<div id="combobox-[[index]]" hidden>-->
                                 <gl-form-dropdown-menu disabled="{{isEnable}}" style="margin-top:15px;width:100%;">
                                     <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{item.value_showDropdown}}">
                                         <template is="dom-repeat" items="{{item.field.data}}">
@@ -112,15 +135,11 @@
                                         </template>
                                     </paper-listbox>
                                 </gl-form-dropdown-menu>
-                                <!--<gl-combo-box id="value-combo-[[index]]" items="[[item.itemValue]]" item-label-path="name" item-value-path="id" value="{{item.value_show}}"></gl-combobox>-->
-                                <!--</div>-->
                             </template>
                             <template is="dom-if" if="{{getFiled(item.field,index)}}">
-                                <!--<div id="input-[[index]]" hidden>-->
                                 <gl-form-input disabled="{{isEnable}}" pattern="[0-9]*" value="{{item.value_showInput}}">
                                     <div suffix>ปี</div>
                                 </gl-form-input>
-                                <!--</div>-->
                             </template>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]">
@@ -145,44 +164,10 @@
                     <div class="horizontal layout">
                         <div hidden="{{!isEnable}}" class="btn-bottom">
                             <paper-button raised on-tap="back">ย้อนกลับ</paper-button>
-                            <!--<paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
-                            <paper-button raised class="gl-btn-warning" on-tap="print">Print</paper-button>-->
                         </div>
                     </div>
                 </template>
             </paper-material>
-
-            <!--<template is="dom-if" if="{{tableStatus}}">
-                <div class="horizontal end-justified layout">
-                    <div style="margin:30px 30px 10px 0px;font-weight: bold;font-size: 20px;">จำนวนผู้ได้รับสิทธิ [[employees.count_employee]] คน</div>
-                </div>
-                <div class="table-detail" style="margin-bottom:30px;">
-                    <paper-material elevation="1">
-                        <table class="gl-table-default">
-                            <thead class="table-head">
-                                <tr>
-                                    <th></th>
-                                    <th style="text-align:center">เลขบัตรประชาชน</th>
-                                    <th style="text-align:center">ชื่อ</th>
-                                    <th style="text-align:center">ตำแหน่ง</th>
-                                    <th style="text-align:center">แผนก</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-body">
-                                <template is="dom-repeat" items="{{employees.employee}}">
-                                    <tr>
-                                        <td><iron-icon style="cursor:pointer" icon="list" on-tap="_selectUser" data="[[item]]"></iron-icon></td>
-                                        <td style="text-align:left">[[item.personal_id]]</td>
-                                        <td style="text-align:left">[[item.prefix_name]] [[item.firstname]] [[item.lastname]]</td>
-                                        <td style="text-align:left">[[item.position_name]]</td>
-                                        <td style="text-align:left">[[item.department_name]]</td>
-                                    </tr>
-                                </template>
-                            </tbody>
-                        </table>
-                    </paper-material>
-                </div>
-            </template>-->
         </div>
     </template>
     <script>
@@ -352,11 +337,15 @@
             save: function () {
                 var con = this.clone_type.type_continuous;
                 var one = this.clone_type.onetime_use;
-                if(con === true && one === true){
-                    this.data.round_use = true;
-                }else if(con === true && one === false){
-                    this.data.round_use = false;
-                }else if(con === false && one === true){
+                if(this.date.type_group == 'general'){
+                    if(con === true && one === true){
+                        this.data.round_use = true;
+                    }else if(con === true && one === false){
+                        this.data.round_use = false;
+                    }else if(con === false && one === true){
+                        this.data.round_use = true;
+                    }
+                }else{
                     this.data.round_use = true;
                 }
                 if(this.data.budget_emp === undefined){
@@ -532,21 +521,21 @@
                     }else{
                         return false;
                     }                
+            },
+            _obTypeGroupFund:function(val){
+                if(val == 'fund'){
+                    return true
+                }else{
+                    return false
+                }
+            },
+            _obTypeGroupSso:function(val){
+                if(val == 'sso'){
+                    return true
+                }else{
+                    return false
+                }
             }
-            // _selectUser: function (e) {
-            //     var id = e.target.data.id;
-            //     window.open('https://localhost:3000/admin-manage/' + id);
-            //     // this.fire('nylon-change-page',{path:'/admin-employee/'+id})
-            // },
-            // list_users: function () {
-            //     var id = this.data.id;
-            //     this.dispatchAction('WELFARE_LIST_EMPLOYEE', id)
-            //     this.tableStatus = true;
-            // },
-            // print: function () {
-            //     var id = this.data.id;
-            //     window.open('api/report/report1/' + id);
-            // },
         });
     </script>
 </dom-module>

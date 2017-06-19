@@ -48,9 +48,20 @@
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <!--<th style="width:15%;text-align: center">ปี</th>-->
                                     <th style="text-align:left;">ชื่อเงื่อนไข</th>
-                                    <th style="width:15%;">จำนวนเงิน (บาท)</th>
+                                    <template is="dom-if" if={{!_obTypeGroupFund(list.type_group)}}>
+                                        <template is="dom-if" if={{!_obTypeGroupSso(list.type_group)}}>
+                                            <th style="width:15%;">จำนวนเงิน (บาท)</th>
+                                        </template>
+                                        <template is="dom-if" if={{_obTypeGroupSso(list.type_group)}}>
+                                            <th style="width:15%;">จำนวนเงินที่มหาลัยจ่าย (บาท)</th>
+                                            <th style="width:15%;">จำนวนเงินที่พนักงานจ่าย (บาท)</th>
+                                        </template>
+                                    </template>
+                                    <template is="dom-if" if={{_obTypeGroupFund(list.type_group)}}>
+                                        <th style="width:15%;">จำนวน % ที่มหาลัยจ่าย</th>
+                                        <th style="width:15%;">จำนวน % ที่พนักงานจ่าย</th>
+                                    </template>
                                     <th style="text-align:center;">จำนวนผู้มีสิทธิ</th>
                                     <th style="text-align:center;">จำนวนผู้ใช้สิทธิ</th>
                                     <th style="width:20%;text-align:center;">เครื่องมือ</th>
@@ -59,9 +70,20 @@
                             <tbody class="table-body">
                                 <template is="dom-repeat" items="{{list.welfare}}" as="welfare">
                                     <tr data="[[item]]">
-                                        <!--<td style="text-align:center;">[[list.year]]</td>-->
                                         <td style="text-align:left;">[[welfare.welfare_name]]</td>
-                                        <td style="text-align:right;">[[formatNumber(welfare.budget)]]</td>
+                                        <template is="dom-if" if={{!_obTypeGroupFund(list.type_group)}}>
+                                            <template is="dom-if" if={{!_obTypeGroupSso(list.type_group)}}>
+                                                <td style="text-align:right;">[[formatNumber(welfare.budget)]]</td>
+                                            </template>
+                                            <template is="dom-if" if={{_obTypeGroupSso(list.type_group)}}>
+                                                <td style="text-align:right;">[[formatNumber(welfare.budget)]]</td>
+                                                <td style="text-align:right;">[[formatNumber(welfare.budget_emp)]]</td>
+                                            </template>
+                                        </template>
+                                        <template is="dom-if" if={{_obTypeGroupFund(list.type_group)}}>
+                                            <td style="text-align:right;">[[formatNumber(welfare.budget)]]</td>
+                                            <td style="text-align:right;">[[formatNumber(welfare.budget_emp)]]</td>
+                                        </template>
                                         <td style="text-align:center;">[[welfare.emp_budget]]</td>
                                         <td style="text-align:center;">[[welfare.emp_use]]</td>
                                         <td style="text-align:center;">
@@ -77,7 +99,7 @@
                                 <template is="dom-if" if={{_ObIsHave(list.welfare)}}>
                                     <tr>
                                         <td colspan="10" style="text-align: center">ไม่มีข้อมูลเงื่อนไขสวัสดิการ</td>
-
+                                    </tr>
                                 </template>
                             </tbody>
                         </table>
@@ -207,6 +229,20 @@
             _print: function (e) {
                 var id = e.currentTarget.data.id;
                 window.open('./api/report/report1/' + id);
+            },
+            _obTypeGroupFund:function(val){
+                if(val == 'fund'){
+                    return true
+                }else{
+                    return false
+                }
+            },
+            _obTypeGroupSso:function(val){
+                if(val == 'sso'){
+                    return true
+                }else{
+                    return false
+                }
             }
         });
     </script>

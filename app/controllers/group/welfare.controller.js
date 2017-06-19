@@ -112,12 +112,12 @@ exports.listId = function (req, res) {
     r.expr({
         employees: r.db('welfare').table('employee')/*.filter({ active_name: 'ทำงาน' })*/
             .without('dob', 'emp_no', 'firstname', 'lastname')
-             .merge((use) => {
-                return {
-                    age: calculateAge(use('birthdate')),
-                    work_age: calculateAge(use('start_work_date'))
-                }
-            })
+            //  .merge((use) => {
+            //     return {
+            //         age: calculateAge(use('birthdate')),
+            //         work_age: calculateAge(use('start_work_date'))
+            //     }
+            // })
             .coerceTo('array'),
         group: []
     })
