@@ -19,6 +19,8 @@
 
 <link rel="import" href="./components/history-rvd.html">
 
+<link rel="import" href="./components/admin-dialog-use-fund.html">
+
 <dom-module id="page-admin-manage">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
         * {
@@ -223,15 +225,24 @@
 
                                         <vaadin-grid-column-group>
                                             <template class="header">
-                                                <div class="text-center">จำนวนเงิน (บาท)</div>
+                                                <div class="text-center">จำนวนเงิน </div>
                                             </template>
 
-                                            <vaadin-grid-column width="calc(10% - 20px)">
+                                            <vaadin-grid-column width="calc(15% - 10px)">
                                                 <template class="header">
-                                                    <div class="text-right">มีสิทธิ</div>
+                                                    <div class="text-right">มหาวิทยาลัยออกให้</div>
                                                 </template>
                                                 <template>
                                                     <div class="text-right">[[formatNumber(item.budget)]]</div>
+                                                </template>
+                                            </vaadin-grid-column>
+
+                                            <vaadin-grid-column width="calc(15% - 10px)">
+                                                <template class="header">
+                                                    <div class="text-right">พนักงานออกเอง</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">[[formatNumber(item.budget_emp)]]</div>
                                                 </template>
                                             </vaadin-grid-column>
 
@@ -293,9 +304,9 @@
                             <div class="content center-justified layout">
                                 <div class="history">ประกันสังคม</div>
 
-                                <history-sso></history-sso>
+                                <history-sso data={{data.history_sso}}></history-sso>
                                 <div class="history">กองทุน</div>
-                                <history-rvd></history-rvd>
+                                <history-rvd data={{data.history_rvd}}></history-rvd>
                             </div>
                             <!--</paper-material>-->
                         </section>
@@ -310,8 +321,17 @@
 
                 </paper-dialog-scrollable>
                 <div class="flex horizontal end-justified layout">
-                    <paper-button raised class="gl-btn-default" dialog-dismiss=fasle>ปิด</paper-button>
+                    <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
                     <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้สิทธิ</paper-button>
+                </div>
+            </paper-dialog>
+            <paper-dialog id="rvd_budget" modal style="width:600px">
+                <paper-dialog-scrollable>
+                    <admin-dialog-use-fund id="admin-dialog-use-fund" data="{{dataDialog}}" style="height:300px"></admin-dialog-use-fund>
+                </paper-dialog-scrollable>
+                <div class="flex horizontal end-justified layout">
+                    <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
+                    <paper-button raised class="gl-btn-primary" on-tap="getrvd">เลือก</paper-button>
                 </div>
             </paper-dialog>
             <!--</section>-->
@@ -356,7 +376,7 @@
             },
             ready: function () {
                 this._getcommon();
-                
+
             },
             nylonPageActive: function () {
                 this.id = window.location.pathname.split('/')[2];
@@ -452,31 +472,56 @@
                 let item = e.model.item
                 let date = new Date()
                 let today = date.toISOString().split('T')[0]
-                // let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
-                // this.set('data.date_start', today)
-                // this.set('data.date_end', tomorrow)
-                data.date_use = today
-                data.date_approve = today
-                data.title = item.group_welfare_name + " " + item.welfare_name
-                data.emp_id = this.data.id
-                data.personal_id = this.data.personal_id
-                data.welfare_id = item.welfare_id
-                data.budget = item.budget
-                data.budget_cover = item.budget_balance
-                data.budget_use = item.budget_balance
-                data.voluntary_status = item.voluntary_status
-                data.budget_emp_cover = item.budget_emp
-                data.budget_emp = item.budget_emp
-                data.status = true
-                data.onetime = item.onetime_use
-                data.group_id = item.group_id
-                this.set('disabled', item.onetime)
-                this.$$('#welfare_budget').open()
-                // //console.log(e.model.item.budget_balance);
-                this.dataDialog = data;
-                // //console.log(this.dataDialog);
-                // //console.log(data);
-                this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', this.dataDialog);
+                console.log(e.model.item);
+                // type_group  general sso fund
+                switch (e.model.item.type_group) {
+                    case 'general':
+                        // let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
+                        // this.set('data.date_start', today)
+                        // this.set('data.date_end', tomorrow)
+                        data.date_use = today
+                        data.date_approve = today
+                        data.title = item.group_welfare_name + " " + item.welfare_name
+                        data.emp_id = this.data.id
+                        data.personal_id = this.data.personal_id
+                        data.welfare_id = item.welfare_id
+                        data.budget = item.budget
+                        data.budget_cover = item.budget_balance
+                        data.budget_use = item.budget_balance
+                        data.voluntary_status = item.voluntary_status
+                        data.budget_emp_cover = item.budget_emp
+                        data.budget_emp = item.budget_emp
+                        data.status = true
+                        data.onetime = item.onetime_use
+                        data.group_id = item.group_id
+                        this.set('disabled', item.onetime)
+                        this.$$('#welfare_budget').open()
+                        // //console.log(e.model.item.budget_balance);
+                        this.dataDialog = data;
+                        this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', this.dataDialog);
+                        break;
+                    case 'sso':
+                        console.log(222);
+                        break;
+                    case 'fund':
+                        data = {
+                            title: item.group_welfare_name,
+                            description: item.description,
+                            personal_id: this.data.personal_id,
+                            emp_id: this.data.id
+
+                        }
+                        console.log(item.description);
+                        this.set('dataDialog', data)
+                        this.$$('#rvd_budget').open()
+                        console.log(111);
+                        break;
+                    default:
+                        console.log('Not Found');
+                        break;
+                }
+
+
             },
             getwelfare() {
                 this.usewelfareProp.document_ids = this.$$('admin-dialog-use-welfare').keepFile()
@@ -503,6 +548,36 @@
                 }
 
 
+            },
+            getrvd() {
+
+                if (this.$$('#admin-dialog-use-fund').validateForm('.required')) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'กรุณายืนยันการทำรายการ ?',
+                        confirmed: (result) => {
+                            if (result == true) {
+                                let data = {
+                                    "com_contributions": 0,
+                                    "com_earnings": 0,
+                                    "emp_contributions": 0,
+                                    "emp_earnings": 0,
+                                    "emp_id": this.dataDialog.emp_id,
+                                    "personal_id": this.dataDialog.personal_id,
+                                    "policy": "SINSA_EQ20",
+                                    "total": 0
+                                }
+
+                                console.log(data);
+                                // this.$$('#welfare_budget').close()
+                                // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
+                                    this.dispatchAction('EMPLOYEE_USE_RVD', data);
+                                    this.$$('#rvd_budget').close()
+                                // }
+                            }
+                        }
+                    })
+                }
             },
             checkOnce(status) {
                 if (status)

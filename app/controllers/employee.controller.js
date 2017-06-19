@@ -269,15 +269,17 @@ exports.welfaresYear = function (req, res) {
                                         count_pass_status: status('countpass_total').eq(status('count')),
                                         welfare_id: status('id'),
                                         group_welfare_name: welfare_conditions('group_welfare_name'),
+                                        type_group: welfare_conditions('type_group'),
                                         onetime_use: welfare_conditions('onetime_use'),
                                         group_use: welfare_conditions('group_use'),
                                         type_continuous: welfare_conditions('type_continuous'),
                                         // voluntary_status: welfare_conditions('voluntary_status'),
+                                        description: welfare_conditions('description'),
                                         voluntary_status: welfare_conditions('voluntary_status'),
                                     }
                                 })
                                 .filter({ "count_pass_status": true })
-                                .pluck(['budget', 'budget_emp', 'welfare_name', 'group_id', 'welfare_id', 'group_welfare_name'
+                                .pluck(['budget', 'budget_emp','description', 'type_group', 'welfare_name', 'group_id', 'welfare_id', 'group_welfare_name'
                                     , 'onetime_use', 'group_use', 'type_continuous', 'voluntary_status', 'round_use'])
                         }
                     })
@@ -325,14 +327,11 @@ exports.welfaresYear = function (req, res) {
                     return l.add(r)
                 }), []),
                 birthdate: r.branch(item('birthdate').eq(''),
-                    item('birthdate'), item('birthdate').toISO8601().split('T')(0))
-                ,
+                    item('birthdate'), item('birthdate').toISO8601().split('T')(0)),
                 start_work_date: r.branch(item('start_work_date').eq(''),
-                    item('start_work_date'), item('start_work_date').toISO8601().split('T')(0))
-                ,
+                    item('start_work_date'), item('start_work_date').toISO8601().split('T')(0)),
                 end_work_date: r.branch(item('end_work_date').eq(null),
-                    item('end_work_date'), item('end_work_date').toISO8601().split('T')(0))
-                ,
+                    item('end_work_date'), item('end_work_date').toISO8601().split('T')(0)),
                 // เข้าไปเช็คว่าเปิดให้พนักงานแก้ไขข้อมูลหรือไม่
                 employee_edit: r.db('welfare').table('system_config')(0)('employee_edit')
             }
@@ -342,7 +341,6 @@ exports.welfaresYear = function (req, res) {
             return {
                 history_welfare: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
                     .filter({ status: true })
-
                     .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'onetime'] }).zip()
                     .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
                     .merge((mer_oneTime) => {
@@ -366,6 +364,24 @@ exports.welfaresYear = function (req, res) {
                     .pluck('history_welfare_id', 'budget_emp', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'description_detail', 'status', 'file')
                     .coerceTo('array')
                     .orderBy(r.desc('date_approve'))
+            }
+        })
+        // กองทุน
+        .merge((rvd) => {
+            return {
+                history_rvd: r.db('welfare').table('history_rvd').getAll(req.params.id, { index: 'emp_id' })
+                .filter({'status' : true})
+                // .orderBy({ index: r.desc('date_create') })
+                .orderBy(r.desc('date_create'))
+                    .merge((id) => {
+                        return {
+                            history_rvd_id: id('id'),
+                            date_update: id('date_update').toISO8601().split('T')(0),
+                            date_create: id('date_create').toISO8601().split('T')(0)
+                        }
+                    }).without('id')
+                    .coerceTo('array')
+                    
             }
         })
         // .merge((mer_oneTime) => {

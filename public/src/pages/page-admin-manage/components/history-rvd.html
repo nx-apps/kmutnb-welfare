@@ -5,55 +5,86 @@
                 display: block;
             }
         </style>
-        <vaadin-grid id="material" items="[[items]]">
+        <vaadin-grid id="material" items="[[data]]">
 
             <vaadin-grid-column width="50px" flex-grow="0">
                 <template class="header">
                     <div class="text-center">#</div>
                 </template>
                 <template>
-                    <div class="text-center">[[index]]</div>
-                </template>
-            </vaadin-grid-column>
-
-            <vaadin-grid-column width="350px" flex-grow="0">
-                <template class="header">กองทุน</template>
-                <template>[[item.name.first]]</template>
-            </vaadin-grid-column>
-
-            <vaadin-grid-column>
-                <template class="header">
-                    <div class="text-center">สิทธิประโยชน์</div>
-                </template>
-                <template>
-                    <div class="text-center"></div>
-                </template>
-            </vaadin-grid-column>
-            
-            <vaadin-grid-column>
-                <template class="header">
-                    <div class="text-center">วันเริ่มต้น</div>
-                </template>
-                <template>
-                    <div class="text-center">[[toCCDate(item.date_approve)]]</div>
+                    <div class="text-center">[[_Obindex(index)]]</div>
                 </template>
             </vaadin-grid-column>
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">วันสิ้นสุด</div>
+                    <div class="text-center">นโยบาย</div>
                 </template>
                 <template>
-                    <div class="text-center">[[toCCDate(item.date_approve)]]</div>
+                    <div class="text-center">[[item.policy]]</div>
                 </template>
             </vaadin-grid-column>
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">วันที่อัพเดต</div>
+                    <div class="text-right">เงินสะสม</div>
                 </template>
                 <template>
-                    <div class="text-center">[[toCCDate(item.date_approve)]]</div>
+                    <div class="text-right">[[formatNumber(item.emp_contributions)]]</div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">
+                    <div class="text-right">ประโยชน์เงินสะสม</div>
+                </template>
+                <template>
+                    <div class="text-right">[[formatNumber(item.emp_earnings)]]</div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column>
+                <template class="header">
+                    <div class="text-right">เงินสมทบ</div>
+                </template>
+                <template>
+                    <div class="text-right">[[formatNumber(item.com_contributions)]]</div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">
+                    <div class="text-right">ประโยชน์เงินสมทบ</div>
+                </template>
+                <template>
+                    <div class="text-right">[[formatNumber(item.com_earnings)]]</div>
+                </template>
+            </vaadin-grid-column>
+            <vaadin-grid-column>
+                <template class="header">
+                    <div class="text-right">รวม</div>
+                </template>
+                <template>
+                    <div class="text-right">[[formatNumber(item.total)]]</div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column>
+                <template class="header">
+                    <div class="text-center">วันที่ทำกำไร</div>
+                </template>
+                <template>
+                    <div class="text-center">[[toCCDate(item.date_update)]]</div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">
+                    <div class="text-center">ดำเนินการ</div>
+                </template>
+                <template>
+                    <div class="text-center">
+                        <paper-button raised class="gl-btn-danger gl-small" on-tap="btnCancel" data="[[item]]">ยกเลิก</paper-button>
+                    </div>
                 </template>
             </vaadin-grid-column>
         </vaadin-grid>
@@ -63,6 +94,26 @@
             is: 'history-rvd',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
                 commonLogic, MonthBehavior],
+            btnCancel(e) {
+                // //console.log(e.currentTarget.data);
+                let newData = { id: e.model.item.history_rvd_id ,emp_id:e.model.item.emp_id}
+                // //console.log(newData);
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result == true) {
+                            console.log(e.model.item);
+                            this.dispatchAction('EMPLOYEE_USE_REJECT_RVD', newData)
+                                .then((el) => {
+                                    // let id = window.location.pathname.split('/')[2];
+                                    // this.dispatchAction('EMPLOYEE_GET_WELFARES', newData.emp_id);
+                                    // //console.log(222);
+                                })
+                        }
+                    }
+                })
+            },
         });
     </script>
 </dom-module>

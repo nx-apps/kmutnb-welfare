@@ -246,6 +246,45 @@ exports.adminApprove = function (req, res) {
             res.status(500).json(err);
         })
 }
+exports.useRvd = function (req, res) {
+    var r = req.r;
+    req.body = Object.assign(req.body,
+        {
+            date_update: r.now().inTimezone('+07'),//.inTimezone('+07'),
+            date_create: r.now().inTimezone('+07'),
+            status:true
+        }
+    );
+    // console.log( req.body);
+    r.db('welfare').table('history_rvd').insert(req.body)
+        .run()
+        .then(function (result) {
+            res.json(result);
+            // res.json([]);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.rejectRvd = function (req, res) {
+    var r = req.r;
+    req.body = Object.assign(req.body,
+        {
+            date_update: r.now().inTimezone('+07'),
+            status:false
+        }
+    );
+    // console.log( req.body);
+    r.db('welfare').table('history_rvd').update(req.body)
+        .run()
+        .then(function (result) {
+            res.json(result);
+            // res.json([]);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
 exports.usegroup = function (req, res) {
     var r = req.r;
     let body = req.body

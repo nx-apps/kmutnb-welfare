@@ -1,0 +1,44 @@
+<link rel="import" href="../../components/validateFormBehaviors.html">
+<dom-module id="admin-dialog-use-fund">
+    <template>
+        <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
+             :host {
+                display: block;
+            }
+        </style>
+        <div class="flex">
+            <h2 id="welfare_name">[[data.title]]</h2>
+        </div>
+        <div class="flex vertical start-justified layout">
+            <div class="flex-2 label">
+                <label for="total_budget">รายละเอียดนโยบายของกองทุน :</label>
+            </div>
+            <div class="flex-2">
+                <gl-form-textarea rows="4" label="" placeholder="" value="{{data.description}}" name="description_detail" disabled></gl-form-textarea>
+            </div>
+            <div class="flex horizontal start-justified layout">
+                <div class="flex label">
+                    <label for="emp_id">เลือกกองทุน :</label>
+                </div>
+                <div class="flex">
+                    <gl-form-input id="policy" placeholder="เช่น SINSA_FI" no-label-float allowed-pattern="[a-z||A-Z||-||_||0-9||,||.]"  value="{{data.budget_emp}}"
+                        disabled="[[disabled]]" class="required" required >
+                    </gl-form-input>
+                </div>
+            </div>
+        </div>
+        <!--admin-dialog-use-fund-->
+    </template>
+    <script>
+        Polymer({
+            is: 'admin-dialog-use-fund',
+            behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic, ValidateFormBehavior],
+            properties: {
+                data: {
+                    type: Object,
+                    notify: true
+                },
+            },
+        });
+    </script>
+</dom-module>
