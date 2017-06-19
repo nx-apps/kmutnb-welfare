@@ -60,20 +60,11 @@ function keysToUpper(param) {
 exports.fund01 = function (req, res) {
     var r = req.r;
     var param = req.query;
-    // var parameters = {
-    //     CURRENT_DATE: new Date().toISOString().slice(0, 10)
-    // };
     r.db('welfare').table('history_fund').getAll([2017, 4], { index: 'yearMonth' })
         .filter({ 'personal_id': param.personal_id })
         .run()
         .then(function (result) {
             // res.json(result);
-            // if (req.query.res_type == 'json') {
-            //     res.json(result);
-            // }
-            // if (result.length > 0) {
-            //     param.employee_name = result[0].name;
-            // }
             param = keysToUpper(param);
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
