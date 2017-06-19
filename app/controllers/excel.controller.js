@@ -72,6 +72,48 @@ exports.read = function (req, res) {
         })
 
 }
+exports.fund = function (req, res) {
+    //Read file here.
+    var XLSX = require('xlsx');
+    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/fund.xlsx');
+
+    var file = workbook.Sheets;
+    var sheetname = "Sheet1";
+    var startRow = 3;
+    var company = file[sheetname]['B' + startRow].v;
+    var monthly = file[sheetname]['B' + (startRow += 2)].v;
+    var month = parseInt(monthly.split('/')[1]);
+    var year = parseInt(monthly.split('/')[0])-543;
+    var rowNo = startRow + 4;
+    var datas = [];
+    while (typeof file[sheetname]['B' + rowNo] !== "undefined" ) {
+        var data = {};
+        data.emp_name = file[sheetname]['A' + rowNo].v;
+        data.personal_id = Math.abs(file[sheetname]['B' + rowNo].v).toString();
+        data.fund_company = company;
+        data.fund_month = month;
+        data.fund_year = year;
+        data.fund_code = file[sheetname]['A' + (rowNo += 2)].v;
+        data.fund_name = file[sheetname]['B' + rowNo].v;
+        data.fund_date = file[sheetname]['B' + (rowNo += 1)].v;
+        data.emp_con = file[sheetname]['D' + rowNo].v;
+        data.emp_ear = file[sheetname]['E' + rowNo].v;
+        data.com_con = file[sheetname]['F' + rowNo].v;
+        data.com_ear = file[sheetname]['G' + rowNo].v;
+        data.total = file[sheetname]['H' + rowNo].v;
+        datas.push(data);
+        rowNo += 3;
+    }
+    req.r.db('welfare').table('history_fund').getAll([year, month], { index: 'yearMonth' }).delete()
+        .do(function (d) {
+            return r.db('welfare').table('history_fund').insert(datas)
+        })
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+
+}
 function str2NumOnly(string) { //input AB123  => output 123
     let t = [];
     for (let i = 0; i < string.length; i++) {
