@@ -11,6 +11,7 @@
 	<field name="com_ear" class="java.lang.Double"/>
 	<field name="total" class="java.lang.Double"/>
 	<field name="fund_date" class="java.lang.String"/>
+	<field name="emp_name" class="java.lang.String"/>
 	<variable name="CURRENT_PAGE" class="java.lang.Integer" resetType="None" calculation="DistinctCount">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
@@ -19,7 +20,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="107" splitType="Stretch">
+		<band height="125" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="14" width="555" height="20" uuid="e78e79aa-dba9-4882-8d91-1a3e488c7ce3"/>
 				<box leftPadding="5" rightPadding="5">
@@ -75,6 +76,20 @@
 					<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["ประจำเดือน"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="94" width="532" height="20" uuid="03f2c7f8-c16d-43b5-9a98-c38d57c52d22"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_name}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

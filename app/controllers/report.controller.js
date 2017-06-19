@@ -2443,7 +2443,7 @@ exports.group_health = function (req, res) {
             res.send(wbout);
         })
 }
-exports.fund = function (req, res) {
+exports.fund01 = function (req, res) {
     r.db('welfare').table('history_fund').getAll([year, month], { index: 'yearMonth' })
         .run()
         .then(function (result) {
@@ -2457,7 +2457,7 @@ exports.fund = function (req, res) {
             param = keysToUpper(param);
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
-            res.ireport("welfare10.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
+            res.ireport("fund01.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
 

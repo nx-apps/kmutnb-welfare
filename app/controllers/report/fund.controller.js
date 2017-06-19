@@ -64,6 +64,7 @@ exports.fund01 = function (req, res) {
     //     CURRENT_DATE: new Date().toISOString().slice(0, 10)
     // };
     r.db('welfare').table('history_fund').getAll([2017, 4], { index: 'yearMonth' })
+        .filter({ 'personal_id': param.personal_id })
         .run()
         .then(function (result) {
             // res.json(result);
