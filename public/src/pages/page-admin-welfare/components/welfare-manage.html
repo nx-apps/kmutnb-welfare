@@ -34,13 +34,17 @@
             <div>
                 <div class="horizontal justified layout">
                     <div class="vertical layout">
-                        <div class="text-header" style="margin: 20px;">ชื่อสวัสดิการ : [[list.group_welfare_name]]</div>
-                        <div class="text-header" style="margin-left:20px;">รายละเอียด : [[list.description]]</div>
+                        <div class="text-header" style="margin: 20px 20px 10px 20px;">ชื่อสวัสดิการ : [[list.group_welfare_name]]</div>
+                        <!--<div class="text-header" style="margin-left:20px;">รายละเอียด : [[list.description]]</div>-->
+                        <div style="margin-left:20px;"><gl-form-textarea label="รายละเอียด : " value="[[list.description]]" disabled></gl-form-textarea></div>
                     </div>
-                    <template is="dom-if" if={{!list.status_approve}}>
-                        <paper-button raised style="margin:20px" class="gl-btn-primary" on-tap="_insert">
-                            <iron-icon icon="add"></iron-icon>เพิ่มเงื่อนไข</paper-button>
-                    </template>
+                    <div></div>
+                    <div>
+                        <template is="dom-if" if={{!list.status_approve}}>
+                            <paper-button raised style="margin:20px" class="gl-btn-primary" on-tap="_insert">
+                                <iron-icon icon="add"></iron-icon>เพิ่มเงื่อนไข</paper-button>
+                        </template>
+                    </div>
                 </div>
 
                 <div class="table-detail">
