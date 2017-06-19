@@ -264,12 +264,21 @@
                                                     </div>
                                                 </template>
                                             </vaadin-grid-column>
-                                            <vaadin-grid-column width="calc(10% - 20px)">
+                                            <vaadin-grid-column width="calc(20% - 20px)">
                                                 <template class="header">
-                                                    <div class="text-right">คงเหลือ</div>
+                                                    <div class="text-right">คงเหลือ (มหาวิทยาลัย)</div>
                                                 </template>
                                                 <template>
                                                     <div class="text-right">[[formatNumber(item.budget_balance)]]</div>
+                                                </template>
+                                            </vaadin-grid-column>
+
+                                            <vaadin-grid-column width="calc(15% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">คงเหลือ (พนักงาน)</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">[[formatNumber(item.budget_balance_emp)]]</div>
                                                 </template>
                                             </vaadin-grid-column>
                                         </vaadin-grid-column-group>
@@ -306,7 +315,7 @@
 
                                 <history-sso data={{data.history_sso}}></history-sso>
                                 <div class="history">กองทุน</div>
-                                <history-rvd data={{data.history_rvd}}></history-rvd>
+                                <history-rvd data={{data.history_fund}}></history-rvd>
                             </div>
                             <!--</paper-material>-->
                         </section>
@@ -475,10 +484,20 @@
                 console.log(e.model.item);
                 // type_group  general sso fund
                 switch (e.model.item.type_group) {
-                    case 'general':
-                        // let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
-                        // this.set('data.date_start', today)
-                        // this.set('data.date_end', tomorrow)
+                    case 'fund':
+                        data = {
+                            title: item.group_welfare_name,
+                            description: item.description,
+                            personal_id: this.data.personal_id,
+                            welfare_id: item.welfare_id,
+                            group_id: item.group_id
+                        }
+                        console.log(item.description);
+                        this.set('dataDialog', data)
+                        this.$$('#rvd_budget').open()
+                        console.log(111);
+                        break;
+                    default:
                         data.date_use = today
                         data.date_approve = today
                         data.title = item.group_welfare_name + " " + item.welfare_name
@@ -499,25 +518,6 @@
                         // //console.log(e.model.item.budget_balance);
                         this.dataDialog = data;
                         this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', this.dataDialog);
-                        break;
-                    case 'sso':
-                        console.log(222);
-                        break;
-                    case 'fund':
-                        data = {
-                            title: item.group_welfare_name,
-                            description: item.description,
-                            personal_id: this.data.personal_id,
-                            emp_id: this.data.id
-
-                        }
-                        console.log(item.description);
-                        this.set('dataDialog', data)
-                        this.$$('#rvd_budget').open()
-                        console.log(111);
-                        break;
-                    default:
-                        console.log('Not Found');
                         break;
                 }
 
@@ -557,22 +557,31 @@
                         text: 'กรุณายืนยันการทำรายการ ?',
                         confirmed: (result) => {
                             if (result == true) {
+                                let date = new Date()
                                 let data = {
-                                    "com_contributions": 0,
-                                    "com_earnings": 0,
-                                    "emp_contributions": 0,
-                                    "emp_earnings": 0,
-                                    "emp_id": this.dataDialog.emp_id,
+                                    "com_con": 0,
+                                    "com_ear": 0,
+                                    "emp_con": 0,
+                                    "emp_ear": 0,
                                     "personal_id": this.dataDialog.personal_id,
-                                    "policy": "SINSA_EQ20",
-                                    "total": 0
+                                    "fund_code": this.dataDialog.fund_code,
+                                    "total": 0,
+                                    "fund_name": "",
+                                    "fund_company": "",
+                                    "emp_name": "",
+                                    "fund_date": `${date.getDay()}/${date.getMonth()}/${Number(date.getFullYear()) + 543}`,
+                                    // 31/03/2560
+                                    "fund_month": new Date().getMonth(),
+                                    "fund_year": new Date().getFullYear(),
+                                    "welfare_id": this.dataDialog.welfare_id,
+                                    "group_id": this.dataDialog.group_id,
                                 }
 
                                 console.log(data);
                                 // this.$$('#welfare_budget').close()
                                 // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
-                                    this.dispatchAction('EMPLOYEE_USE_RVD', data);
-                                    this.$$('#rvd_budget').close()
+                                this.dispatchAction('EMPLOYEE_USE_RVD', data);
+                                this.$$('#rvd_budget').close()
                                 // }
                             }
                         }

@@ -313,7 +313,9 @@ exports.welfaresYear = function (req, res) {
                             welfare_conditions: check_budget('welfare_conditions').merge((el) => {
                                 return {
                                     budget_balance: r.branch(el('round_use').eq(false),
-                                        el('budget'), el('budget').sub(el('budget_use')))
+                                        el('budget'), el('budget').sub(el('budget_use'))),
+                                    budget_balance_emp: r.branch(el('round_use').eq(false),
+                                        el('budget_emp'), el('budget_emp').sub(el('budget_emp_use')))    
                                     // false, true)
                                 }
                             })
@@ -369,15 +371,15 @@ exports.welfaresYear = function (req, res) {
         // กองทุน
         .merge((rvd) => {
             return {
-                history_rvd: r.db('welfare').table('history_rvd').getAll(req.params.id, { index: 'emp_id' })
-                .filter({'status' : true})
-                // .orderBy({ index: r.desc('date_create') })
-                .orderBy(r.desc('date_create'))
+                history_fund: r.db('welfare').table('history_fund').getAll(rvd('personal_id'), { index: 'personal_id' })
+                // .filter({'status' : true})
+                // // .orderBy({ index: r.desc('date_create') })
+                .orderBy(r.desc('date_created'))
                     .merge((id) => {
                         return {
-                            history_rvd_id: id('id'),
-                            date_update: id('date_update').toISO8601().split('T')(0),
-                            date_create: id('date_create').toISO8601().split('T')(0)
+                            history_fund_id: id('id'),
+                            date_updated: id('date_updated').toISO8601().split('T')(0),
+                            date_created: id('date_created').toISO8601().split('T')(0)
                         }
                     }).without('id')
                     .coerceTo('array')

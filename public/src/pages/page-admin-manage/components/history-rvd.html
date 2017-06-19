@@ -21,7 +21,7 @@
                     <div class="text-center">นโยบาย</div>
                 </template>
                 <template>
-                    <div class="text-center">[[item.policy]]</div>
+                    <div class="text-center">[[item.fund_code]]</div>
                 </template>
             </vaadin-grid-column>
 
@@ -30,7 +30,7 @@
                     <div class="text-right">เงินสะสม</div>
                 </template>
                 <template>
-                    <div class="text-right">[[formatNumber(item.emp_contributions)]]</div>
+                    <div class="text-right">[[formatNumber(item.emp_con)]]</div>
                 </template>
             </vaadin-grid-column>
 
@@ -39,7 +39,7 @@
                     <div class="text-right">ประโยชน์เงินสะสม</div>
                 </template>
                 <template>
-                    <div class="text-right">[[formatNumber(item.emp_earnings)]]</div>
+                    <div class="text-right">[[formatNumber(item.emp_ear)]]</div>
                 </template>
             </vaadin-grid-column>
 
@@ -48,7 +48,7 @@
                     <div class="text-right">เงินสมทบ</div>
                 </template>
                 <template>
-                    <div class="text-right">[[formatNumber(item.com_contributions)]]</div>
+                    <div class="text-right">[[formatNumber(item.com_con)]]</div>
                 </template>
             </vaadin-grid-column>
             <vaadin-grid-column width="150px" flex-grow="0">
@@ -56,7 +56,7 @@
                     <div class="text-right">ประโยชน์เงินสมทบ</div>
                 </template>
                 <template>
-                    <div class="text-right">[[formatNumber(item.com_earnings)]]</div>
+                    <div class="text-right">[[formatNumber(item.com_ear)]]</div>
                 </template>
             </vaadin-grid-column>
             <vaadin-grid-column>
@@ -73,11 +73,11 @@
                     <div class="text-center">วันที่ทำกำไร</div>
                 </template>
                 <template>
-                    <div class="text-center">[[toCCDate(item.date_update)]]</div>
+                    <div class="text-center">[[toCCDate(item.date_created)]]</div>
                 </template>
             </vaadin-grid-column>
 
-            <vaadin-grid-column width="150px" flex-grow="0">
+            <!--<vaadin-grid-column width="150px" flex-grow="0">
                 <template class="header">
                     <div class="text-center">ดำเนินการ</div>
                 </template>
@@ -86,7 +86,7 @@
                         <paper-button raised class="gl-btn-danger gl-small" on-tap="btnCancel" data="[[item]]">ยกเลิก</paper-button>
                     </div>
                 </template>
-            </vaadin-grid-column>
+            </vaadin-grid-column>-->
         </vaadin-grid>
     </template>
     <script>
