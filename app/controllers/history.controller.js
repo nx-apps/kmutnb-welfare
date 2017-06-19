@@ -250,16 +250,48 @@ exports.useRvd = function (req, res) {
     var r = req.r;
     req.body = Object.assign(req.body,
         {
-            date_update: r.now().inTimezone('+07'),//.inTimezone('+07'),
-            date_create: r.now().inTimezone('+07'),
-            status:true
+            date_created: r.now().inTimezone('+07'),
+            date_updated: r.now().inTimezone('+07')
         }
     );
-    // console.log( req.body);
-    r.db('welfare').table('history_rvd').insert(req.body)
+    console.log(req.body);
+
+    var have = r.db('welfare').table('history_fund').getAll(req.body.personal_id, { index: 'personal_id' })
+        .orderBy(r.desc('date_created'))
+        .limit(1)
+        .coerceTo('array')
+    //.insert(req.body)
+    // r.expr({ have: have.count() })
+    r.branch(have.count().gt(0),
+        have(0)
+            .merge((item) => {
+                return {
+                    fund_date: req.body.fund_date,
+                    fund_month: req.body.fund_month,
+                    fund_year: req.body.fund_year,
+                    welfare_id: req.body.welfare_id,
+                    group_id: req.body.group_id,
+                    date_created: r.now().inTimezone('+07'),
+                    date_updated: r.now().inTimezone('+07'),
+                    fund_code: req.body.fund_code,
+                }
+            })
+
+        , req.body)
+        // .orderBy('fund_month')
+        // .do(function(x){
+        //     return r.db('welfare').table('history_fund').insert(x)
+        // })
         .run()
         .then(function (result) {
-            res.json(result);
+            delete result.id
+            r.db('welfare').table('history_fund').insert(result)
+                .then(function (result) {
+                    res.json(result);
+                })
+                .catch(function (err) {
+                    res.status(500).json(err);
+                })
             // res.json([]);
         })
         .catch(function (err) {
@@ -271,7 +303,7 @@ exports.rejectRvd = function (req, res) {
     req.body = Object.assign(req.body,
         {
             date_update: r.now().inTimezone('+07'),
-            status:false
+            status: false
         }
     );
     // console.log( req.body);

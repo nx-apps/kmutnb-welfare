@@ -15,11 +15,11 @@ const clearData = (data, callback) => {
 
     let { prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id,
         academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name, end_work_date, work_age, age,
-        hospital } = data;
+        hospital,email,tel } = data;
     let newData = {
         prefix_id, firstname, lastname, gender_id, type_employee_id, active_id, position_id, matier_id, academic_id, department_id, faculty_id, emp_no, personal_id,
         academic_name, active_name, gender_name, matier_name, position_name, prefix_name, department_name, type_employee_name, faculty_name, end_work_date, work_age, age,
-        hospital
+        hospital,email,tel
     };
     // newData.period = new Array();
     // data.period.map((tag)=>{
@@ -270,7 +270,7 @@ export function userWelfareAction(store) {
                 this.fire('toast', { status: 'load' });
                 axios.post(`./history/rvd`, data)
                     .then(res => {
-                        this.EMPLOYEE_GET_WELFARES(data.emp_id);
+                        // this.EMPLOYEE_GET_WELFARES(data.emp_id);
                         this.fire('toast', {
                             status: 'success', text: 'บันทึกสำเร็จ',
                             callback: () => {
