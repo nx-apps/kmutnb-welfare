@@ -135,8 +135,15 @@ exports.sso = function (req, res) {
 
         if (typeof file[sheetname]['B' + rowNo] !== "undefined") {
             var data = {};
+<<<<<<< HEAD
             data.personal_id = file[sheetname]['B' + rowNo].v.replace(/-/g, "").toString();
             
+=======
+            var pid = ''
+            //data.personal_id = file[sheetname]['B' + rowNo].v.replace("-", "").toString();
+            //แก้โดยการตัด - ออกทั้งหมดให้แล้ว
+            data.personal_id = file[sheetname]['B' + rowNo].v.split('-').join("")
+>>>>>>> 5090dac8a3e3e7e512434db641d8cec58fe3218e
             // if (typeof file[sheetname]['C' + rowNo] === "undefined") {
             //     data.prefix_name = "";
             // } else {
@@ -174,6 +181,9 @@ exports.sso = function (req, res) {
             // }
             data.expired_date = new Date(file[sheetname]['H' + rowNo].w);
             data.faculty_name = faculty_name;
+            // data.date_created = r.now().inTimezone('+07'),
+            // data.date_updated = r.now().inTimezone('+07'),
+
             datas.push(data);
             // res.json(data);
         } else {
@@ -181,6 +191,12 @@ exports.sso = function (req, res) {
         }
         rowNo += 1;
     }
+    // r.db('welfare').table('history_sso').insert(datas)
+
+    //     .run()
+    //     .then(function (result) {
+            // res.json(result);
+        // })
     res.json(datas);
 }
 
