@@ -171,9 +171,9 @@ exports.ssl = function (req, res) {
             // }
             data.expired_date = new Date(file[sheetname]['H' + rowNo].w);
             data.faculty_name = faculty_name;
-            data.date_created = r.now().inTimezone('+07'),
-            data.date_updated = r.now().inTimezone('+07'),
-            
+            // data.date_created = r.now().inTimezone('+07'),
+            // data.date_updated = r.now().inTimezone('+07'),
+
             datas.push(data);
             // res.json(data);
         } else {
@@ -181,13 +181,13 @@ exports.ssl = function (req, res) {
         }
         rowNo += 1;
     }
-    r.db('welfare').table('history_sso').insert(datas)
+    // r.db('welfare').table('history_sso').insert(datas)
 
-        .run()
-        .then(function (result) {
-            res.json(result);
-        })
-    // res.json(datas);
+    //     .run()
+    //     .then(function (result) {
+            // res.json(result);
+        // })
+    res.json(datas);
 }
 
 function str2NumOnly(string) { //input AB123  => output 123
