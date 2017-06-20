@@ -264,7 +264,7 @@ exports.welfaresYear = function (req, res) {
                                         countpass_total: e('countpass').filter({ "pass": true }).count()
                                     }
                                 })
-                                
+
                                 .merge((status) => {
                                     return {
                                         count_pass_status: status('countpass_total').eq(status('count')),
@@ -280,7 +280,7 @@ exports.welfaresYear = function (req, res) {
                                     }
                                 })
                                 .filter({ "count_pass_status": true })
-                                .pluck(['budget','budget_emp','description', 'type_group', 'welfare_name', 'group_id', 'welfare_id', 'group_welfare_name'
+                                .pluck(['budget', 'budget_emp', 'description', 'type_group', 'welfare_name', 'group_id', 'welfare_id', 'group_welfare_name'
                                     , 'onetime_use', 'group_use', 'type_continuous', 'voluntary_status', 'round_use'])
                         }
                     })
@@ -294,56 +294,62 @@ exports.welfaresYear = function (req, res) {
                         return {
                             welfare_conditions: names('welfare_conditions').merge((el) => {
                                 return {
-                                    // budget_use: r.branch(el('type_group').eq('fund'), 
-                                    // r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
-                                    //     .filter({ welfare_id: el('welfare_id'), status: true })
-                                    //     .orderBy(r.desc('date_create'))
-                                    //     .limit(1)
-                                    //     .coerceTo('array')
-                                    //     .getField('budget_use')(0),
-                                    //    r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
-                                    //     .filter({ welfare_id: el('welfare_id'), status: true })
-                                    //     .orderBy(r.desc('date_create'))
-                                    //     .coerceTo('array')
-                                    //     .sum('budget_use'))
-                                    // ,
-                                    // budget_emp_use:  r.branch(el('type_group').eq('fund'), 
-                                    // r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
-                                    //     .filter({ welfare_id: el('welfare_id'), status: true })
-                                    //     .orderBy(r.desc('date_create'))
-                                    //     .limit(1)
-                                    //     .coerceTo('array')
-                                    //     .getField('budget_emp')(0),
-                                    // r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
-                                    //     .filter({ welfare_id: el('welfare_id'), status: true })
-                                    //     .orderBy(r.desc('date_create'))
-                                    //     .coerceTo('array')
-                                    //     .sum('budget_emp'))
+                                    budget_use: r.branch(el('type_group').eq('fund'),
+                                        r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                                            .filter({ welfare_id: el('welfare_id'), status: true })
+                                            .orderBy(r.desc('date_create'))
+                                            .limit(1)
+                                            .coerceTo('array')
+                                            .getField('budget_use')
+                                            .reduce((l, r) => {
+                                                return l.add(r)
+                                            }).default(''),
+                                        r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                                            .filter({ welfare_id: el('welfare_id'), status: true })
+                                            .orderBy(r.desc('date_create'))
+                                            .coerceTo('array')
+                                            .sum('budget_use'))
+                                    ,
+                                    budget_emp_use: r.branch(el('type_group').eq('fund'),
+                                        r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                                            .filter({ welfare_id: el('welfare_id'), status: true })
+                                            .orderBy(r.desc('date_create'))
+                                            .limit(1)
+                                            .coerceTo('array')
+                                            .getField('budget_emp')
+                                            .reduce((l, r) => {
+                                                return l.add(r)
+                                            }).default(''),
+                                        r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                                            .filter({ welfare_id: el('welfare_id'), status: true })
+                                            .orderBy(r.desc('date_create'))
+                                            .coerceTo('array')
+                                            .sum('budget_emp'))
                                 }
                             })
                         }
                     })
-                    // // เช็คคงเหลือ
-                    // .merge((check_budget) => {
-                    //     return {
-                    //         welfare_conditions: check_budget('welfare_conditions').merge((el) => {
-                    //             return {
-                    //                 budget_balance: r.branch(el('round_use').eq(false),
-                    //                     el('budget'), el('budget').sub(el('budget_use'))),
-                    //                 budget_balance_emp: r.branch(el('round_use').eq(false),
-                    //                     el('budget_emp'), el('budget_emp').sub(el('budget_emp_use')))    
-                    //                 // false, true)
-                    //                 // budget_balance: r.branch(el('type_group').eq('fund'), 0,
-                    //                 //     r.branch(el('round_use').eq(false),
-                    //                 //         el('budget'), el('budget').sub(el('budget_use'))))
-                    //                 // ,
-                    //                 // budget_balance_emp: r.branch(el('type_group').eq('fund'), 0,
-                    //                 //     r.branch(el('round_use').eq(false),
-                    //                 //         el('budget_emp'), el('budget_emp').sub(el('budget_emp_use'))))
-                    //             }
-                    //         })
-                    //     }
-                    // })
+                // // เช็คคงเหลือ
+                // .merge((check_budget) => {
+                //     return {
+                //         welfare_conditions: check_budget('welfare_conditions').merge((el) => {
+                //             return {
+                //                 budget_balance: r.branch(el('round_use').eq(false),
+                //                     el('budget'), el('budget').sub(el('budget_use'))),
+                //                 budget_balance_emp: r.branch(el('round_use').eq(false),
+                //                     el('budget_emp'), el('budget_emp').sub(el('budget_emp_use')))    
+                //                 // false, true)
+                //                 // budget_balance: r.branch(el('type_group').eq('fund'), 0,
+                //                 //     r.branch(el('round_use').eq(false),
+                //                 //         el('budget'), el('budget').sub(el('budget_use'))))
+                //                 // ,
+                //                 // budget_balance_emp: r.branch(el('type_group').eq('fund'), 0,
+                //                 //     r.branch(el('round_use').eq(false),
+                //                 //         el('budget_emp'), el('budget_emp').sub(el('budget_emp_use'))))
+                //             }
+                //         })
+                //     }
+                // })
             }
         })
         .merge((item) => {
@@ -389,7 +395,7 @@ exports.welfaresYear = function (req, res) {
         //             })
         //             .pluck('history_welfare_id', 'budget_emp', 'budget_use', 'date_use', 'check_onetime_thai', 'date_approve', 'description', 'description_detail', 'status', 'file')
         //             .coerceTo('array')
-                    
+
         //     }
         // })
         // // กองทุน
@@ -407,7 +413,7 @@ exports.welfaresYear = function (req, res) {
         //                 }
         //             }).without('id')
         //             .coerceTo('array')
-                    
+
         //     }
         // })
         // .merge((mer_oneTime) => {
