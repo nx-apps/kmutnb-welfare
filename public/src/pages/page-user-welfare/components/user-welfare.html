@@ -116,7 +116,7 @@
             font-size: 25px;
         }
 
-        paper-dialog{
+        paper-dialog {
             /*position: fixed;*/
             /*top: 16px;*/
             /*right: 16px;*/
@@ -124,6 +124,7 @@
             /*height: 300px;*/
             overflow: auto;
         }
+
         vaadin-grid {
             /*margin-top: 15px;*/
             height: 480px;
@@ -143,7 +144,10 @@
             <label for="tab2">รายการสวัสดิการที่ขอใช้สิทธิ</label>
 
             <input id="tab3" type="radio" name="tabs">
-            <label for="tab3">ประกันสังคม / กองทุน</label>
+            <label for="tab3">ประกันสังคม
+                <template is="dom-if" if={{data.fund_open}}> / กองทุน
+                </template>
+            </label>
 
             <section id="content1">
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
@@ -260,8 +264,10 @@
                     <div class="history">ประกันสังคม</div>
 
                     <history-sso data={{data}}></history-sso>
-                    <div class="history">กองทุน</div>
-                    <history-rvd data={{data}}></history-rvd>
+                    <template is="dom-if" if={{data.fund_open}}>
+                        <div class="history">กองทุน</div>
+                        <history-rvd data={{data}}></history-rvd>
+                    </template>
                 </div>
             </section>
         </main>

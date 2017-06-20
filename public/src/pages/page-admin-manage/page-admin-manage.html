@@ -197,7 +197,11 @@
                         <label for="tab2">รายการสวัสดิการที่ขอใช้สิทธิ</label>
 
                         <input id="tab3" type="radio" name="tabs">
-                        <label for="tab3">ประกันสังคม / กองทุน</label>
+                        <label for="tab3">ประกันสังคม
+                            <template is="dom-if" if={{data.fund_open}}>
+                                 / กองทุน
+                            </template>
+                        </label>
                         <!--<button type="" on-click="setVaadin">dd</button>-->
                         <section id="content1">
                             <!--<paper-material elevation="1">-->
@@ -316,8 +320,13 @@
                                 <div class="history">ประกันสังคม</div>
 
                                 <history-sso data={{data}}></history-sso>
-                                <div class="history">กองทุน</div>
-                                <history-rvd data={{data}}></history-rvd>
+
+                                <template is="dom-if" if={{data.fund_open}}>
+                                    <div class="history">กองทุน</div>
+                                    <history-rvd data={{data}}></history-rvd>
+                                </template>
+
+
                             </div>
                             <!--</paper-material>-->
                         </section>
@@ -490,7 +499,7 @@
                 data.title = item.group_welfare_name + " " + item.welfare_name
                 data.emp_id = this.data.id
                 data.description = item.description,
-                data.personal_id = this.data.personal_id
+                    data.personal_id = this.data.personal_id
                 data.welfare_id = item.welfare_id
                 data.budget = item.budget
                 data.type_group = item.type_group

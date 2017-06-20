@@ -233,7 +233,7 @@ export function userWelfareAction(store) {
             // console.log(year);
             axios.get('./employee/' + id)
                 .then(res => {
-                    console.log(2);
+                    // console.log(2);
                     // console.log(res.data);
                     // store.dispatch({ type: 'EMPLOYEE_GET_WELFARES', payload: res.data })
                     this.fire('toast', {

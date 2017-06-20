@@ -318,27 +318,27 @@ exports.welfaresYear = function (req, res) {
                             })
                         }
                     })
-                // // เช็คคงเหลือ
-                .merge((check_budget) => {
-                    return {
-                        welfare_conditions: check_budget('welfare_conditions').merge((el) => {
-                            return {
-                                budget_balance: r.branch(el('round_use').eq(false),
-                                    el('budget'), el('budget').sub(el('budget_use'))),
-                                budget_balance_emp: r.branch(el('round_use').eq(false),
-                                    el('budget_emp'), el('budget_emp').sub(el('budget_emp_use')))    
-                                // false, true)
-                                // budget_balance: r.branch(el('type_group').eq('fund'), 0,
-                                //     r.branch(el('round_use').eq(false),
-                                //         el('budget'), el('budget').sub(el('budget_use'))))
-                                // ,
-                                // budget_balance_emp: r.branch(el('type_group').eq('fund'), 0,
-                                //     r.branch(el('round_use').eq(false),
-                                //         el('budget_emp'), el('budget_emp').sub(el('budget_emp_use'))))
-                            }
-                        })
-                    }
-                })
+                    // // เช็คคงเหลือ
+                    .merge((check_budget) => {
+                        return {
+                            welfare_conditions: check_budget('welfare_conditions').merge((el) => {
+                                return {
+                                    budget_balance: r.branch(el('round_use').eq(false),
+                                        el('budget'), el('budget').sub(el('budget_use'))),
+                                    budget_balance_emp: r.branch(el('round_use').eq(false),
+                                        el('budget_emp'), el('budget_emp').sub(el('budget_emp_use')))
+                                    // false, true)
+                                    // budget_balance: r.branch(el('type_group').eq('fund'), 0,
+                                    //     r.branch(el('round_use').eq(false),
+                                    //         el('budget'), el('budget').sub(el('budget_use'))))
+                                    // ,
+                                    // budget_balance_emp: r.branch(el('type_group').eq('fund'), 0,
+                                    //     r.branch(el('round_use').eq(false),
+                                    //         el('budget_emp'), el('budget_emp').sub(el('budget_emp_use'))))
+                                }
+                            })
+                        }
+                    })
             }
         })
         .merge((item) => {
@@ -356,7 +356,33 @@ exports.welfaresYear = function (req, res) {
                 employee_edit: r.db('welfare').table('system_config')(0)('employee_edit')
             }
         })
-
+        //  check fund and sso for open tap
+        .merge((item) => {
+            return {
+                fund_open: r.branch(
+                r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                    .filter({
+                        status: true,
+                        type_group: "fund"
+                    })
+                    .limit(1)
+                    .coerceTo('Array')
+                    .count()
+                    .gt(0),true,false
+                ),
+                sso_open: true//r.branch(
+                // r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                //     .filter({
+                //         status: true,
+                //         type_group: "fund"
+                //     })
+                //     .limit(1)
+                //     .coerceTo('Array')
+                //     .count()
+                //     .gt(0),true,false
+                // )
+            }
+        })
         // .merge((use_his) => {
         //     return {
         //         history_welfare: r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
