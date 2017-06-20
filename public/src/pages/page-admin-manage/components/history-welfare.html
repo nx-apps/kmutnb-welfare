@@ -132,7 +132,7 @@
             properties: {
                 listYear: {
                     statePath: 'dateDb.listYear',
-                    // observer: 'setYear'
+                    // observer: 'initYear'
                 },
                 year: {
                     type: Number,
@@ -141,6 +141,19 @@
                 list_history: {
                     statePath: 'userWelfare.list_history_welfare',
                     observer: "setTabel"
+                }
+            },
+            observers: [
+                'initYear(listYear,data)'
+            ],
+            initYear(year, data) {
+                try {
+                    if (data.personal_id !== undefined) {
+                        let welfare_year = year.history_welfare_year
+                        this.set('year', welfare_year[welfare_year.legth - 1])
+                    }
+                } catch (e) {
+
                 }
             },
             setYear(e) {

@@ -109,6 +109,19 @@
                     observer: "setTabel"
                 }
             },
+            observers: [
+                'initYear(listYear,data)'
+            ],
+            initYear(year, data) {
+                try {
+                    if (data.personal_id !== undefined) {
+                        let welfare_year = year.history_welfare_year
+                        this.set('year', welfare_year[welfare_year.legth - 1])
+                    }
+                } catch (e) {
+
+                }
+            },
             setYear(e) {
                 try {
                     let data = {
