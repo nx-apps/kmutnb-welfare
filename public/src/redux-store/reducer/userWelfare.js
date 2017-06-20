@@ -119,7 +119,7 @@ export function userWelfareAction(store) {
         WELFARE_LIST_YEAR: function () {
             axios.get('./group/welfare/year')
                 .then(function (result) {
-                    console.log(result.data);
+                    // console.log(result.data);
                     store.dispatch({ type: 'WELFARE_LIST_YEAR', payload: result.data })
                 })
                 .catch(err => {
