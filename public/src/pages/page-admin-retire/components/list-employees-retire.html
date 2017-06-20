@@ -204,13 +204,13 @@
                 let list_active = JSON.parse(JSON.stringify(this.list_active));
                 let list_type_employee = JSON.parse(JSON.stringify(this.list_type_employee));
                 let RETIREMENT = list_active.find((item) => item.active_code === 'RETIREMENT')
-                let type_employee = list_type_employee.find((item) => item.type_employee_name === 'ผู้เกษียณ')
+                // let type_employee = list_type_employee.find((item) => item.type_employee_name === 'ผู้เกษียณ')
                 newArray.map((item) => {
                     item.active_id = RETIREMENT.id
                     item.active_name = RETIREMENT.active_name
                     item.end_work_date = this.calDate
-                    item.type_employee_id = type_employee.id
-                    item.type_employee_name = type_employee.type_employee_name
+                    // item.type_employee_id = type_employee.id
+                    // item.type_employee_name = type_employee.type_employee_name
                     return item
                 })
                 // console.log(type_employee);
@@ -225,7 +225,7 @@
                                 // console.log(data);
                                 this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
                             })
-                            // this.dispatchAction('RETIER_SEARCH', this.calDate);
+                            // // this.dispatchAction('RETIER_SEARCH', this.calDate);
                             window.open('./api/report/retire?date=' + this.calDate);
                             // //console.log(newArray);
                         }
