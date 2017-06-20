@@ -1,0 +1,119 @@
+<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
+<dom-module id="import-fund">
+    <style include="iron-flex iron-flex-factors iron-flex-alignment">
+        .text-center{
+            text-align: center;
+        }
+        .input-file{
+            margin: 20px;
+        }
+    </style>
+    <template>
+
+        <div class="input-file">
+            <input type="file" id="myFile" style="width:300px">
+            <paper-button raised on-tap="_preview">อัพโหลด</paper-button>
+        </div>
+
+        <vaadin-grid items={{data}}>
+            <vaadin-grid-column width="50px" flex-grow="0">
+                <template class="header">
+                    <div class="text-center">ลำดับ</div>
+                </template>
+                <template>
+                    <div class="text-center">[[_Obindex(index)]]</div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="350px" flex-grow="0">
+                <template class="header">
+                    นโยบาย
+                </template>
+                <template>
+                    {{item.name}}
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">
+                    เงินสะสม
+                </template>
+                <template>
+                    {{item.name}}
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">
+                    ประโยชน์เงินสะสม
+                </template>
+                <template>
+                    {{item.name}}
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">
+                    เงินสมทบ
+                </template>
+                <template>
+                    {{item.name}}
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">
+                    รวม
+                </template>
+                <template>
+                    {{item.name}}
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="150px" flex-grow="0">
+                <template class="header">
+                    วันที่ทำการ
+                </template>
+                <template>
+                    {{item.name}}
+                </template>
+            </vaadin-grid-column>
+        </vaadin-grid>
+        
+        <div class="horizontal end-justified layout" style="margin:20px 0px 10px 0px">
+            <paper-button raised on-tap="_cancle">ยกเลิก</paper-button>
+            <paper-button raised on-tap="_upload">เพิ่มลงฐานข้อมูล</paper-button>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'import-fund',
+            properties: {
+                data: {
+                    type: Array,
+                    value: [
+                        { name: 'ice' },
+                        { name: 'test' }
+                    ]
+                }
+            },
+            _Obindex:function(index){
+                return index+1
+            },
+            _preview:function(){
+                var x = this.$$('#myFile');
+                x.disabled = true; 
+            },
+            _upload:function(){
+
+            },
+            _cancle:function(){
+                var x = this.$$('#myFile');
+                x.disabled = false;
+            }
+        })
+    </script>
+
+</dom-module>

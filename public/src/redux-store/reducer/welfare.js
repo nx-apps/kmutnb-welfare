@@ -71,7 +71,7 @@ export function welfareAction(store) {
                     });
                 })
                 .catch((err) => {
-                    // console.log(err);
+                    console.log(err);
                 })
         },
         WELFARE_DELETE: function (data) {
