@@ -292,7 +292,7 @@ exports.welfaresYear = function (req, res) {
                                             .getField('budget_use')
                                             .reduce((l, r) => {
                                                 return l.add(r)
-                                            }).default(''),
+                                            }).default(0),
                                         r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
                                             .filter({ welfare_id: el('welfare_id'), status: true })
                                             .orderBy(r.desc('date_create'))
@@ -308,7 +308,7 @@ exports.welfaresYear = function (req, res) {
                                             .getField('budget_emp')
                                             .reduce((l, r) => {
                                                 return l.add(r)
-                                            }).default(''),
+                                            }).default(0),
                                         r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
                                             .filter({ welfare_id: el('welfare_id'), status: true })
                                             .orderBy(r.desc('date_create'))
