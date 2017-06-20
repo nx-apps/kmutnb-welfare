@@ -211,17 +211,6 @@ exports.welfaresYear = function (req, res) {
             row(select('field_name')).eq(select('value'))
         )
     };
-    // var group_welfare = function () {
-    //     return r.db('welfare').table('group_welfare')
-    //         .filter({ status_approve: true })
-    //         .filter(function (f) {
-    //             return r.branch(f('type_continuous').eq(true),
-    //                 r.now().inTimezone('+07').ge(f('start_date')),
-    //                 r.now().inTimezone('+07').during(f('start_date'), f('end_date'), { rightBound: 'closed' })
-    //             )
-    //         })
-    //         .coerceTo('array')
-    // }
     var calculateAge = function (birthday) { // birthday is a date
         var ageDifMs = r.now().toEpochTime().sub(birthday.toEpochTime())
         var ageDate = r.epochTime(ageDifMs); // miliseconds from epoch

@@ -538,7 +538,7 @@
                         if (result == true) {
 
                             newEmprom.then((successMessage) => {
-                                // console.log(successMessage);
+                                console.log(successMessage);
                                 this.dispatchAction('EMPLOYEE_USE_WELFARE_GROUP', successMessage)
                                 this.dispatchAction('USERS_LIST_HISTORY_WELFARE', this.genUrl(this.dataCheck))
                                 this.set('inverted', false)

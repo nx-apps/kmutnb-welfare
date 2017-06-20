@@ -356,6 +356,11 @@ exports.usegroup = function (req, res) {
     r.expr({
         emps: body,
         group_welfare: r.db('welfare').table('welfare').getAll(group_id, { index: 'group_id' }).coerceTo('array')
+        .merge((item)=>{
+            return {
+                type_group: r.db('welfare').table('group_welfare').get(group_id).getField('type_group')
+            }
+        })
     })
         .merge((emp) => {
             return {
@@ -376,6 +381,7 @@ exports.usegroup = function (req, res) {
                         reduce: getEmployee(emps, condition).merge((budget) => {
                             return {
                                 budget_balance: 0,
+                                type_group:em('type_group'),
                                 budget_cover: em('budget'),
                                 budget_use: em('budget'),
                                 budget_emp: em('budget_emp'),
@@ -389,7 +395,8 @@ exports.usegroup = function (req, res) {
                                 welfare_id: em('id'),
                                 emp_id: budget('id')
                             }
-                        }).pluck('budget_balance','type_group', 'budget_cover', 'budget_use', 'budget_emp', 'date_approve',
+                        })
+                        .pluck('budget_balance','type_group', 'budget_cover', 'budget_use', 'budget_emp', 'date_approve',
                             'date_use', 'date_update', 'document_ids', 'emp_id', 'group_id', 'status', 'welfare_id', 'emp_id', 'personal_id')
                     }
                 }),
@@ -409,16 +416,16 @@ exports.usegroup = function (req, res) {
         .run()
         .then(function (result) {
             // console.log(2);
-            // r.db('welfare').table('history_welfare').insert(result).run()
-            //     .then(function (result) {
-            //         // console.log(2);
-            //         res.json(result);
-            //         // res.json([]);
-            //     })
-            //     .catch(function (err) {
-            //         res.status(500).json(err);
-            //     })
-            res.json(result);
+            r.db('welfare').table('history_welfare').insert(result).run()
+                .then(function (result) {
+                    // console.log(2);
+                    res.json(result);
+                    // res.json([]);
+                })
+                .catch(function (err) {
+                    res.status(500).json(err);
+                })
+            // res.json(result);
         })
         .catch(function (err) {
             res.status(500).json(err);
