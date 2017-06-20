@@ -116,12 +116,17 @@ exports.fund = function (req, res) {
         })
 
 }
-exports.ssl = function (req, res) {
+exports.sso = function (req, res) {
     //Read file here.
     var XLSX = require('xlsx');
-    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/ssl.xlsx');
+    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/sso.xlsx');
 
     var file = workbook.Sheets;
+    // var sheets = [];
+    // for(var sheet in file){
+    //     sheets.push(sheet);
+    // }
+    // res.json(sheets);
     var sheetname = "ทะเบียน";
     var rowNo = 4;
     var datas = [];
@@ -130,7 +135,7 @@ exports.ssl = function (req, res) {
 
         if (typeof file[sheetname]['B' + rowNo] !== "undefined") {
             var data = {};
-            data.personal_id = file[sheetname]['B' + rowNo].v.replace("-", "").toString();
+            data.personal_id = file[sheetname]['B' + rowNo].v.replace(/-/g, "").toString();
             
             // if (typeof file[sheetname]['C' + rowNo] === "undefined") {
             //     data.prefix_name = "";
