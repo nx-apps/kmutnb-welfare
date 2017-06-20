@@ -135,15 +135,11 @@ exports.sso = function (req, res) {
 
         if (typeof file[sheetname]['B' + rowNo] !== "undefined") {
             var data = {};
-<<<<<<< HEAD
             data.personal_id = file[sheetname]['B' + rowNo].v.replace(/-/g, "").toString();
-            
-=======
             var pid = ''
             //data.personal_id = file[sheetname]['B' + rowNo].v.replace("-", "").toString();
             //แก้โดยการตัด - ออกทั้งหมดให้แล้ว
             data.personal_id = file[sheetname]['B' + rowNo].v.split('-').join("")
->>>>>>> 5090dac8a3e3e7e512434db641d8cec58fe3218e
             // if (typeof file[sheetname]['C' + rowNo] === "undefined") {
             //     data.prefix_name = "";
             // } else {
