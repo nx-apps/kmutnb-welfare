@@ -319,26 +319,26 @@ exports.welfaresYear = function (req, res) {
                         }
                     })
                 // // เช็คคงเหลือ
-                // .merge((check_budget) => {
-                //     return {
-                //         welfare_conditions: check_budget('welfare_conditions').merge((el) => {
-                //             return {
-                //                 budget_balance: r.branch(el('round_use').eq(false),
-                //                     el('budget'), el('budget').sub(el('budget_use'))),
-                //                 budget_balance_emp: r.branch(el('round_use').eq(false),
-                //                     el('budget_emp'), el('budget_emp').sub(el('budget_emp_use')))    
-                //                 // false, true)
-                //                 // budget_balance: r.branch(el('type_group').eq('fund'), 0,
-                //                 //     r.branch(el('round_use').eq(false),
-                //                 //         el('budget'), el('budget').sub(el('budget_use'))))
-                //                 // ,
-                //                 // budget_balance_emp: r.branch(el('type_group').eq('fund'), 0,
-                //                 //     r.branch(el('round_use').eq(false),
-                //                 //         el('budget_emp'), el('budget_emp').sub(el('budget_emp_use'))))
-                //             }
-                //         })
-                //     }
-                // })
+                .merge((check_budget) => {
+                    return {
+                        welfare_conditions: check_budget('welfare_conditions').merge((el) => {
+                            return {
+                                budget_balance: r.branch(el('round_use').eq(false),
+                                    el('budget'), el('budget').sub(el('budget_use'))),
+                                budget_balance_emp: r.branch(el('round_use').eq(false),
+                                    el('budget_emp'), el('budget_emp').sub(el('budget_emp_use')))    
+                                // false, true)
+                                // budget_balance: r.branch(el('type_group').eq('fund'), 0,
+                                //     r.branch(el('round_use').eq(false),
+                                //         el('budget'), el('budget').sub(el('budget_use'))))
+                                // ,
+                                // budget_balance_emp: r.branch(el('type_group').eq('fund'), 0,
+                                //     r.branch(el('round_use').eq(false),
+                                //         el('budget_emp'), el('budget_emp').sub(el('budget_emp_use'))))
+                            }
+                        })
+                    }
+                })
             }
         })
         .merge((item) => {
