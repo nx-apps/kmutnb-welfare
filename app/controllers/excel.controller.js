@@ -27,7 +27,6 @@ exports.read = function (req, res) {
                     } else {
                         row[temp.col[str2CharOnly(key)]] = file[sheet][key].v;
                     }
-
                     if (str2CharOnly(key) == temp.maxCol) {
                         data[temp.db].push(row);
                         row = {};
@@ -46,8 +45,8 @@ exports.read = function (req, res) {
 
 
     var dataSheet = [];
-    for (table in data) {
-        dataSheet.push({ table: table, data: data[table] });
+    for (key in data) {
+        dataSheet.push({ table: key, data: data[key] });
     }
 
     //res.json(dataSheet);
@@ -117,6 +116,69 @@ exports.fund = function (req, res) {
         })
 
 }
+exports.ssl = function (req, res) {
+    //Read file here.
+    var XLSX = require('xlsx');
+    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/ssl.xlsx');
+
+    var file = workbook.Sheets;
+    var sheetname = "ทะเบียน";
+    var rowNo = 4;
+    var datas = [];
+    var faculty_name = "";
+    while (typeof file[sheetname]['B' + rowNo] !== "undefined" || typeof file[sheetname]['C' + rowNo] !== "undefined") {
+
+        if (typeof file[sheetname]['B' + rowNo] !== "undefined") {
+            var data = {};
+            data.personal_id = file[sheetname]['B' + rowNo].v.replace("-", "").toString();
+            
+            // if (typeof file[sheetname]['C' + rowNo] === "undefined") {
+            //     data.prefix_name = "";
+            // } else {
+            //     data.prefix_name = file[sheetname]['C' + rowNo].v;
+            // }
+            data.prefix_name = file[sheetname]['C' + rowNo].v;
+            // if (typeof file[sheetname]['D' + rowNo] === "undefined") {
+            //     data.first_name = "";
+            // } else {
+            //     data.first_name = file[sheetname]['D' + rowNo].v;
+            // }
+            data.first_name = file[sheetname]['D' + rowNo].v;
+            // if (typeof file[sheetname]['E' + rowNo] === "undefined") {
+            //     data.last_name = "";
+            // } else {
+            //     data.last_name = file[sheetname]['E' + rowNo].v;
+            // }
+            data.last_name = file[sheetname]['E' + rowNo].v;
+            // if (typeof file[sheetname]['F' + rowNo] === "undefined") {
+            //     data.hospital = "";
+            // } else {
+            //     data.hospital = file[sheetname]['F' + rowNo].v;
+            // }
+            data.hospital = file[sheetname]['F' + rowNo].v;
+            // if (typeof file[sheetname]['G' + rowNo] === "undefined") {
+            //     data.issued_date = "";
+            // } else {
+            //     data.issued_date = file[sheetname]['G' + rowNo].w;
+            // }
+            data.issued_date = new Date(file[sheetname]['G' + rowNo].w);
+            // if (typeof file[sheetname]['H' + rowNo] === "undefined") {
+            //     data.expired_date = "";
+            // } else {
+            //     data.expired_date = file[sheetname]['H' + rowNo].w;
+            // }
+            data.expired_date = new Date(file[sheetname]['H' + rowNo].w);
+            data.faculty_name = faculty_name;
+            datas.push(data);
+            // res.json(data);
+        } else {
+            faculty_name = file[sheetname]['C' + rowNo].v;
+        }
+        rowNo += 1;
+    }
+    res.json(datas);
+}
+
 function str2NumOnly(string) { //input AB123  => output 123
     let t = [];
     for (let i = 0; i < string.length; i++) {

@@ -7,4 +7,5 @@ module.exports = function (app) {
     app.get('/reduce', controller.reduce);
     app.get('/param', controller.param);
     app.get('/fund', controller.fund);
+    app.get('/ssl', controller.ssl);
 }
