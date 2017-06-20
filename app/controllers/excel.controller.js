@@ -1,4 +1,5 @@
 sha1 = require('js-sha1');
+var tz = "T00:00:00+07:00";
 exports.read = function (req, res) {
     //Read file here.
     var XLSX = require('xlsx');
@@ -136,49 +137,27 @@ exports.sso = function (req, res) {
         if (typeof file[sheetname]['B' + rowNo] !== "undefined") {
             var data = {};
             data.personal_id = file[sheetname]['B' + rowNo].v.replace(/-/g, "").toString();
-            var pid = ''
-            //data.personal_id = file[sheetname]['B' + rowNo].v.replace("-", "").toString();
-            //แก้โดยการตัด - ออกทั้งหมดให้แล้ว
-            data.personal_id = file[sheetname]['B' + rowNo].v.split('-').join("")
-            // if (typeof file[sheetname]['C' + rowNo] === "undefined") {
-            //     data.prefix_name = "";
-            // } else {
-            //     data.prefix_name = file[sheetname]['C' + rowNo].v;
-            // }
             data.prefix_name = file[sheetname]['C' + rowNo].v;
-            // if (typeof file[sheetname]['D' + rowNo] === "undefined") {
-            //     data.first_name = "";
-            // } else {
-            //     data.first_name = file[sheetname]['D' + rowNo].v;
-            // }
             data.first_name = file[sheetname]['D' + rowNo].v;
-            // if (typeof file[sheetname]['E' + rowNo] === "undefined") {
-            //     data.last_name = "";
-            // } else {
-            //     data.last_name = file[sheetname]['E' + rowNo].v;
-            // }
             data.last_name = file[sheetname]['E' + rowNo].v;
-            // if (typeof file[sheetname]['F' + rowNo] === "undefined") {
-            //     data.hospital = "";
-            // } else {
-            //     data.hospital = file[sheetname]['F' + rowNo].v;
-            // }
             data.hospital = file[sheetname]['F' + rowNo].v;
-            // if (typeof file[sheetname]['G' + rowNo] === "undefined") {
-            //     data.issued_date = "";
-            // } else {
-            //     data.issued_date = file[sheetname]['G' + rowNo].w;
-            // }
-            data.issued_date = new Date(file[sheetname]['G' + rowNo].w);
-            // if (typeof file[sheetname]['H' + rowNo] === "undefined") {
-            //     data.expired_date = "";
-            // } else {
-            //     data.expired_date = file[sheetname]['H' + rowNo].w;
-            // }
-            data.expired_date = new Date(file[sheetname]['H' + rowNo].w);
+            var issued_date = file[sheetname]['G' + rowNo].w.split("-");
+            if (parseInt(issued_date[0]) > 2500) {
+                issued_date[0] = parseInt(issued_date) - 543;
+            }
+            data.issued_date = r.ISO8601(issued_date.join("-") + tz);
+            // data.issued_date = new Date(file[sheetname]['G' + rowNo].w);
+
+            var expired_date = file[sheetname]['H' + rowNo].w.split("-");
+            if (parseInt(expired_date[0]) > 2500) {
+                expired_date[0] = parseInt(expired_date) - 543;
+            }
+            data.expired_date = r.ISO8601(expired_date.join("-") + tz);
+            // data.expired_date = new Date(file[sheetname]['H' + rowNo].w);
+
             data.faculty_name = faculty_name;
-            // data.date_created = r.now().inTimezone('+07'),
-            // data.date_updated = r.now().inTimezone('+07'),
+            data.date_created = r.now().inTimezone('+07');
+            data.date_updated = r.now().inTimezone('+07');
 
             datas.push(data);
             // res.json(data);
@@ -187,13 +166,18 @@ exports.sso = function (req, res) {
         }
         rowNo += 1;
     }
-    // r.db('welfare').table('history_sso').insert(datas)
-
+    // res.json(datas[0]);
+    // r.expr(datas)
     //     .run()
     //     .then(function (result) {
-            // res.json(result);
-        // })
-    res.json(datas);
+    //         res.json(result)
+    //     })
+    r.db('welfare').table('history_sso').insert(datas)
+        .run()
+        .then(function (result) {
+            res.json(result);
+        })
+
 }
 
 function str2NumOnly(string) { //input AB123  => output 123
