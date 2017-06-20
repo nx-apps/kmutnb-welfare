@@ -246,52 +246,74 @@ exports.adminApprove = function (req, res) {
             res.status(500).json(err);
         })
 }
-exports.useRvd = function (req, res) {
+exports.listWelfare = function (req, res) {
     var r = req.r;
-    req.body = Object.assign(req.body,
-        {
-            date_created: r.now().inTimezone('+07'),
-            date_updated: r.now().inTimezone('+07')
-        }
-    );
-    console.log(req.body);
-
-    var have = r.db('welfare').table('history_fund').getAll(req.body.personal_id, { index: 'personal_id' })
-        .orderBy(r.desc('date_created'))
-        .limit(1)
-        .coerceTo('array')
-    //.insert(req.body)
-    // r.expr({ have: have.count() })
-    r.branch(have.count().gt(0),
-        have(0)
-            .merge((item) => {
-                return {
-                    fund_date: req.body.fund_date,
-                    fund_month: req.body.fund_month,
-                    fund_year: req.body.fund_year,
-                    welfare_id: req.body.welfare_id,
-                    group_id: req.body.group_id,
-                    date_created: r.now().inTimezone('+07'),
-                    date_updated: r.now().inTimezone('+07'),
-                    fund_code: req.body.fund_code,
-                }
-            })
-
-        , req.body)
-        // .orderBy('fund_month')
-        // .do(function(x){
-        //     return r.db('welfare').table('history_fund').insert(x)
-        // })
+    // console.log(req.body);
+    query = req.query
+    query.fund_year = Number(query.fund_year)
+    // console.log(query);    personal_id
+    r.db('welfare').table('history_welfare').getAll(query.personal_id, { index: 'personal_id' })
+        .filter({ status: true })
+        .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'description', 'onetime'] }).zip()
+        .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
+        .orderBy(r.desc('date_approve'))
+        .merge((mer_oneTime) => {
+            return {
+                history_welfare_id: mer_oneTime('id'),
+                date_use: mer_oneTime('date_use').toISO8601().split('T')(0),
+                date_approve: mer_oneTime('date_approve').toISO8601().split('T')(0),
+                group_welfare_name: mer_oneTime('group_welfare_name'),
+                welfare_name: mer_oneTime('welfare_name'),
+                descriptions_group: mer_oneTime('description')
+            }
+        })
+        .merge((files) => {
+            return {
+                file: files('document_ids').map((doc_id) => {
+                    return r.db('welfare').table('files').get(r.db('welfare').table('document_file').get(doc_id).getField('file_id'))
+                        .without('contents')
+                })
+            }
+        })
+        .pluck('history_welfare_id', 'budget_emp', 'budget_use', 'group_welfare_name',
+        'welfare_name', 'descriptions_group', 'date_use', 'check_onetime_thai', 'date_approve',
+         'description_detail', 'status', 'file')
         .run()
         .then(function (result) {
-            delete result.id
-            r.db('welfare').table('history_fund').insert(result)
-                .then(function (result) {
-                    res.json(result);
-                })
-                .catch(function (err) {
-                    res.status(500).json(err);
-                })
+
+            res.json(result);
+
+            // res.json([]);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.listFund = function (req, res) {
+    var r = req.r;
+    // console.log(req.body);
+    query = req.query
+    query.fund_year = Number(query.fund_year)
+    // console.log(query);
+    r.db('welfare').table('history_fund')
+        .getAll(query.personal_id, { index: 'personal_id' })
+        .filter({
+            fund_year: query.fund_year
+            // personal_id: params.personal_id,
+        })
+        .orderBy(r.desc('date_created'))
+        .merge((id) => {
+            return {
+                history_fund_id: id('id'),
+                date_updated: id('date_updated').toISO8601().split('T')(0),
+                date_created: id('date_created').toISO8601().split('T')(0)
+            }
+        }).without('id')
+        .run()
+        .then(function (result) {
+
+            res.json(result);
+
             // res.json([]);
         })
         .catch(function (err) {

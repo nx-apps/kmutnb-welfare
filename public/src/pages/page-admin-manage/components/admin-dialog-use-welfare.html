@@ -12,6 +12,11 @@
             <h2 id="welfare_name">สวัสดิการ : [[data.title]]</h2>
         </div>
         <div class="flex horizontal start-justified layout">
+            <div class="flex">
+                <gl-form-textarea rows="2" label="รายละเอียด" placeholder="" value="{{data.description}}" name="description_detail" disabled></gl-form-textarea>
+            </div>
+        </div>
+        <div class="flex horizontal start-justified layout">
             <div class="flex-2 label">
                 <label for="total_budget">จำนวนเงินคงเหลือ :</label>
             </div>
@@ -122,7 +127,7 @@
                     this.set('data.budget_use', this.data.budget_cover)
                 // if (this.data.onetime) {
                 //     this.set('data.budget_use', this.data.budget_cover)
-                    // //console.log(111);
+                // //console.log(111);
                 // }
             },
             checkmoneyEmp(e) {

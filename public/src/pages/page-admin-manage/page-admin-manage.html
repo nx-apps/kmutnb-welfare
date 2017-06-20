@@ -214,12 +214,12 @@
                                             </template>
                                         </vaadin-grid-column>
 
-                                        <vaadin-grid-column width="450px" flex-grow="0">
+                                        <vaadin-grid-column width="500px" flex-grow="0" resizable>
                                             <template class="header ">สวัสดิการที่สามารถใช้ได้
                                             </template>
                                             <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime_use)]]
                                                 [[checkVoluntary(item.voluntary_status)]] [[checkGroup(item.group_use)]]
-
+                                                [[checkTypeGroup(item.type_group)]]
                                             </template>
                                         </vaadin-grid-column>
 
@@ -242,7 +242,9 @@
                                                     <div class="text-right">พนักงานออกเอง</div>
                                                 </template>
                                                 <template>
-                                                    <div class="text-right">[[formatNumber(item.budget_emp)]]</div>
+                                                    <div class="text-right">
+                                                        [[formatNumber(item.budget_emp)]]
+                                                        </div>
                                                 </template>
                                             </vaadin-grid-column>
 
@@ -260,7 +262,7 @@
                                                 </template>
                                                 <template>
                                                     <div class="text-right">
-                                                        [[checkZero(item.budget_emp_use)]]
+                                                        [[formatNumber(item.budget_emp_use)]]
                                                     </div>
                                                 </template>
                                             </vaadin-grid-column>
@@ -334,7 +336,7 @@
                     <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้สิทธิ</paper-button>
                 </div>
             </paper-dialog>
-            <paper-dialog id="rvd_budget" modal style="width:600px">
+            <!--<paper-dialog id="rvd_budget" modal style="width:600px">
                 <paper-dialog-scrollable>
                     <admin-dialog-use-fund id="admin-dialog-use-fund" data="{{dataDialog}}" style="height:300px"></admin-dialog-use-fund>
                 </paper-dialog-scrollable>
@@ -342,7 +344,7 @@
                     <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
                     <paper-button raised class="gl-btn-primary" on-tap="getrvd">เลือก</paper-button>
                 </div>
-            </paper-dialog>
+            </paper-dialog>-->
             <!--</section>-->
             <!--<section>
                     <employee-manage data="{{data}}"></employee-manage>
@@ -359,7 +361,7 @@
             is: 'page-admin-manage',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
                 commonLogic, userWelfareAction, uploadAction, commonDataAction,
-                MonthBehavior, usersAction, ValidateFormBehavior],
+                MonthBehavior, usersAction,dateDbAction, ValidateFormBehavior],
             listeners: {
                 'back-page': 'changePage',
                 'close-panel-right': 'closePanelRight'
@@ -391,6 +393,7 @@
                 this.id = window.location.pathname.split('/')[2];
                 // //console.log(this.id);
                 this.WELFARE_LIST_YEAR();
+                this.GET_LIST_YEAR();
             },
             setDate(data) {
                 // //console.log(data);
@@ -435,9 +438,11 @@
             },
             checkWelfareFull(data) {
                 try {
-                    if ((data.onetime_use && data.budget_use !== 0)
-                        || data.budget_balance <= 0)
+                    console.log(data.type_group);
+                    if (((data.onetime_use && data.budget_use !== 0)
+                        || data.budget_balance <= 0) && data.type_group !== 'fund')
                         return true
+                    return false
                 } catch (e) {
                     // //console.log(e);
                 }
@@ -452,11 +457,11 @@
 
                 }
             },
-            checkZero(budget_emp_use) {
-                if (budget_emp_use <= 0)
-                    return '-'
-                return this.formatNumber(budget_emp_use)
-            },
+            // checkZero(budget_emp_use) {
+            //     if (budget_emp_use <= 0)
+            //         return '-'
+            //     return this.formatNumber(budget_emp_use)
+            // },
             checkVoluntary(voluntary) {
                 try {
                     if (voluntary)
@@ -481,45 +486,68 @@
                 let item = e.model.item
                 let date = new Date()
                 let today = date.toISOString().split('T')[0]
-                console.log(e.model.item);
+                data.date_use = today
+                data.date_approve = today
+                data.title = item.group_welfare_name + " " + item.welfare_name
+                data.emp_id = this.data.id
+                data.description= item.description,
+                data.personal_id = this.data.personal_id
+                data.welfare_id = item.welfare_id
+                data.budget = item.budget
+                data.type_group = item.type_group
+                data.budget_cover = item.budget_balance
+                data.budget_use = item.budget_balance
+                data.voluntary_status = item.voluntary_status
+                data.budget_emp_cover = item.budget_emp
+                data.budget_emp = item.budget_emp
+                data.status = true
+                data.onetime = item.onetime_use
+                data.group_id = item.group_id
+                this.set('disabled', item.onetime)
+                this.$$('#welfare_budget').open()
+                // //console.log(e.model.item.budget_balance);
+                this.dataDialog = data;
+                this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', this.dataDialog);
+                // console.log(e.model.item);
                 // type_group  general sso fund
-                switch (e.model.item.type_group) {
-                    case 'fund':
-                        data = {
-                            title: item.group_welfare_name,
-                            description: item.description,
-                            personal_id: this.data.personal_id,
-                            welfare_id: item.welfare_id,
-                            group_id: item.group_id
-                        }
-                        console.log(item.description);
-                        this.set('dataDialog', data)
-                        this.$$('#rvd_budget').open()
-                        console.log(111);
-                        break;
-                    default:
-                        data.date_use = today
-                        data.date_approve = today
-                        data.title = item.group_welfare_name + " " + item.welfare_name
-                        data.emp_id = this.data.id
-                        data.personal_id = this.data.personal_id
-                        data.welfare_id = item.welfare_id
-                        data.budget = item.budget
-                        data.budget_cover = item.budget_balance
-                        data.budget_use = item.budget_balance
-                        data.voluntary_status = item.voluntary_status
-                        data.budget_emp_cover = item.budget_emp
-                        data.budget_emp = item.budget_emp
-                        data.status = true
-                        data.onetime = item.onetime_use
-                        data.group_id = item.group_id
-                        this.set('disabled', item.onetime)
-                        this.$$('#welfare_budget').open()
-                        // //console.log(e.model.item.budget_balance);
-                        this.dataDialog = data;
-                        this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', this.dataDialog);
-                        break;
-                }
+                // switch (e.model.item.type_group) {
+                //     case 'fund':
+                //         data = {
+                //             title: item.group_welfare_name,
+                //             description: item.description,
+                //             personal_id: this.data.personal_id,
+                //             welfare_id: item.welfare_id,
+                //             group_id: item.group_id
+                //         }
+                //         // console.log(item.description);
+                //         this.set('dataDialog', data)
+                //         this.$$('#rvd_budget').open()
+                //         // console.log(111);
+                //         break;
+                //     default:
+                //         data.date_use = today
+                //         data.date_approve = today
+                //         data.title = item.group_welfare_name + " " + item.welfare_name
+                //         data.emp_id = this.data.id
+                //         data.personal_id = this.data.personal_id
+                //         data.welfare_id = item.welfare_id
+                //         data.budget = item.budget
+                //         data.type_group = item.type_group
+                //         data.budget_cover = item.budget_balance
+                //         data.budget_use = item.budget_balance
+                //         data.voluntary_status = item.voluntary_status
+                //         data.budget_emp_cover = item.budget_emp
+                //         data.budget_emp = item.budget_emp
+                //         data.status = true
+                //         data.onetime = item.onetime_use
+                //         data.group_id = item.group_id
+                //         this.set('disabled', item.onetime)
+                //         this.$$('#welfare_budget').open()
+                //         // //console.log(e.model.item.budget_balance);
+                //         this.dataDialog = data;
+                //         this.dispatchAction('EMPLOYEE_USE_SELETE_WELFARE', this.dataDialog);
+                //         break;
+                // }
 
 
             },
@@ -592,7 +620,10 @@
                 if (status)
                     return 'ครั้งเดียว'
                 return 'หลายครั้ง'
-
+            },
+            checkTypeGroup(typeGroup) {
+                if (typeGroup === 'fund') return 'เปอร์เซ็น'
+                return ''
             },
             editData() {
                 this.set('title', 'แก้ไขข้อมูลส่วนตัว')

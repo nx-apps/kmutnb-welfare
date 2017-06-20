@@ -45,9 +45,9 @@ const clearData = (data, callback) => {
 const clearDatawelfare = (data, callback) => {
 
     let { budget_balance, budget_cover, budget_use, emp_id, group_id, description_detail, 
-        status, welfare_id, date_use, date_approve, personal_id,budget_emp } = data;
+        status, welfare_id, date_use, date_approve, personal_id,budget_emp,type_group } = data;
     let newData = { budget_balance, budget_cover, budget_use, emp_id, group_id, description_detail, 
-        status, welfare_id, date_use, date_approve, personal_id,budget_emp };
+        status, welfare_id, date_use, date_approve, personal_id,budget_emp,type_group };
     // console.log(data.date/use_welfare/update_use == '');
 
     newData.document_ids = new Array()
