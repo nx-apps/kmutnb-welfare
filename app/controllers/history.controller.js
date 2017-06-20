@@ -250,10 +250,19 @@ exports.listWelfare = function (req, res) {
     var r = req.r;
     // console.log(req.body);
     query = req.query
-    query.fund_year = Number(query.fund_year)
+    if(query.year !== undefined)
+        query.year = Number(query.year)
     // console.log(query);    personal_id
     r.db('welfare').table('history_welfare').getAll(query.personal_id, { index: 'personal_id' })
         .filter({ status: true })
+        .merge((mer_oneTime) => {
+            return {
+                year: mer_oneTime('date_approve').year()
+            }
+        })
+        .filter({
+            year: query.year
+        })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck('left', { right: ['group_welfare_name', 'description', 'onetime'] }).zip()
         .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck('left', { right: ['welfare_name'] }).zip()
         .orderBy(r.desc('date_approve'))
@@ -275,7 +284,7 @@ exports.listWelfare = function (req, res) {
                 })
             }
         })
-        .pluck('history_welfare_id', 'budget_emp', 'budget_use', 'group_welfare_name',
+        .pluck('history_welfare_id','type_group', 'budget_emp', 'budget_use', 'group_welfare_name',
         'welfare_name', 'descriptions_group', 'date_use', 'check_onetime_thai', 'date_approve',
          'description_detail', 'status', 'file')
         .run()
@@ -293,13 +302,13 @@ exports.listFund = function (req, res) {
     var r = req.r;
     // console.log(req.body);
     query = req.query
-    query.fund_year = Number(query.fund_year)
+    if(query.year !== undefined)
+        query.year = Number(query.year)
     // console.log(query);
     r.db('welfare').table('history_fund')
         .getAll(query.personal_id, { index: 'personal_id' })
         .filter({
-            fund_year: query.fund_year
-            // personal_id: params.personal_id,
+            fund_year: query.year
         })
         .orderBy(r.desc('date_created'))
         .merge((id) => {
@@ -380,7 +389,7 @@ exports.usegroup = function (req, res) {
                                 welfare_id: em('id'),
                                 emp_id: budget('id')
                             }
-                        }).pluck('budget_balance', 'budget_cover', 'budget_use', 'budget_emp', 'date_approve',
+                        }).pluck('budget_balance','type_group', 'budget_cover', 'budget_use', 'budget_emp', 'date_approve',
                             'date_use', 'date_update', 'document_ids', 'emp_id', 'group_id', 'status', 'welfare_id', 'emp_id', 'personal_id')
                     }
                 }),
@@ -400,16 +409,16 @@ exports.usegroup = function (req, res) {
         .run()
         .then(function (result) {
             // console.log(2);
-            r.db('welfare').table('history_welfare').insert(result).run()
-                .then(function (result) {
-                    // console.log(2);
-                    res.json(result);
-                    // res.json([]);
-                })
-                .catch(function (err) {
-                    res.status(500).json(err);
-                })
-            // res.json(result);
+            // r.db('welfare').table('history_welfare').insert(result).run()
+            //     .then(function (result) {
+            //         // console.log(2);
+            //         res.json(result);
+            //         // res.json([]);
+            //     })
+            //     .catch(function (err) {
+            //         res.status(500).json(err);
+            //     })
+            res.json(result);
         })
         .catch(function (err) {
             res.status(500).json(err);

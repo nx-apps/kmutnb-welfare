@@ -8,11 +8,17 @@
                 display: block;
             }
 
+            * {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+
             vaadin-grid {
                 height: 480px;
             }
         </style>
-        <vaadin-grid id="material" items="{{data}}">
+        <list-year data="[[listYear.history_welfare_year]]" year="{{year}}"></list-year>
+        <vaadin-grid id="material" items="{{list_history}}">
 
             <vaadin-grid-column width="50px" flex-grow="0">
                 <template class="header ">
@@ -26,7 +32,7 @@
 
             <vaadin-grid-column width="450px" flex-grow="0">
                 <template class="header">สวัสดิการที่ใช้</template>
-                <template>[[item.description]]</template>
+                <template>[[item.group_welfare_name]] ([[item.welfare_name]])  [[checkTypeGroup(item.type_group)]]</template>
             </vaadin-grid-column>
 
             <vaadin-grid-column width="200px" flex-grow="0">
@@ -75,6 +81,7 @@
                 <template class="header">สถานะ</template>
                 <template>[[item.status]]</template>
             </vaadin-grid-column>-->
+
             <vaadin-grid-column width="350px" flex-grow="0" resizable>
                 <template class="header">รายละเอียด
                 </template>
@@ -82,6 +89,7 @@
                     [[item.description_detail]]
                 </template>
             </vaadin-grid-column>
+
             <vaadin-grid-column width="350px" flex-grow="0" resizable>
                 <template class="header">
                     <div class="text-center">เอกสารแนบ</div>
@@ -108,6 +116,39 @@
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
                 commonLogic, uploadAction, commonDataAction,
                 MonthBehavior, ValidateFormBehavior],
+            properties: {
+                listYear: {
+                    statePath: 'dateDb.listYear',
+                    // observer: 'setYear'
+                },
+                year: {
+                    type: Number,
+                    observer: 'setYear',
+                },
+                list_history: {
+                    statePath: 'userWelfare.list_history_welfare',
+                    observer: "setTabel"
+                }
+            },
+            setYear(e) {
+                try {
+                    let data = {
+                        year: e,
+                        personal_id: this.data.personal_id
+                    }
+                    this.dispatchAction('EMPLOYEE_HISTORY_WELFARE', this.genUrl(data))
+                } catch (e) {
+
+                }
+            },
+            checkTypeGroup(typeGroup) {
+                // console.log(typeGroup);
+                if (typeGroup === 'fund') return 'เปอร์เซ็นต์'
+                return ''
+            },
+            setTabel(e) {
+                this.$$('#material').notifyResize()
+            },
             downloadFile(e) {
                 // //console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id);

@@ -1,0 +1,28 @@
+<dom-module id="list-year">
+    <template>
+        <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
+             :host {
+                display: block;
+            }
+        </style>
+        <div class="from layout end-justified horizontal">
+            <div class="label">
+                    <label for="year">ปี :</label>
+                </div>
+            <gl-combo-box id="year" no-label-float items="{{data}}" value="{{year}}" item-label-path="year" item-value-path="year"
+            > </gl-combo-box>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'list-year',
+            properties: {
+                year: {
+                    type: Number,
+                    value: 0,
+                    notify: true
+                }
+            }
+        });
+    </script>
+</dom-module>

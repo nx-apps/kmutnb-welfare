@@ -6,6 +6,9 @@ const initialState = {
     select: {},
     list_id: [],
     list_user: [],
+    list_history_welfare: [],
+    list_history_fund: [],
+    list_history_sso:[],
     listSearch: [],
     welfare_employee: [],
     select_use_welefares: {},
@@ -83,6 +86,12 @@ export function userWelfareReducer(state = initialState, action) {
             return Object.assign({}, state, { list_id: action.payload });
         case 'LIST_USER':
             return Object.assign({}, state, { list_user: action.payload });
+        case 'EMPLOYEE_HISTORY_WELFARE':
+            return Object.assign({}, state, { list_history_welfare: action.payload });
+        case 'EMPLOYEE_HISTORY_FUND':
+             return Object.assign({}, state, { list_history_fund: action.payload });
+        case 'EMPLOYEE_HISTORY_SSO':
+             return Object.assign({}, state, { list_history_sso: action.payload });
         case 'LIST_USER_SERARCH':
             return Object.assign({}, state, { listSearch: action.payload });
         case 'LIST_EMPLOYEE_WELFARE':
@@ -319,6 +328,33 @@ export function userWelfareAction(store) {
                                 // this.$$('#welfare_budget').close()
                             }
                         });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+        },
+        EMPLOYEE_HISTORY_WELFARE(data) {
+                axios.get(`./history/list/welfare?`+ data)
+                    .then(res => {
+                        store.dispatch({ type: 'EMPLOYEE_HISTORY_WELFARE', payload: res.data })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+        },
+        EMPLOYEE_HISTORY_FUND(data) {
+                axios.get(`./history/list/fund?`+ data)
+                    .then(res => {
+                        store.dispatch({ type: 'EMPLOYEE_HISTORY_FUND', payload: res.data })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+        },
+        EMPLOYEE_HISTORY_SSO(data) {
+                axios.get(`./history/list/sso?`+ data)
+                    .then(res => {
+                        store.dispatch({ type: 'EMPLOYEE_HISTORY_SSO', payload: res.data })
                     })
                     .catch(err => {
                         console.log(err);

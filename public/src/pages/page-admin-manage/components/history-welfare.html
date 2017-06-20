@@ -1,6 +1,9 @@
-<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
+<!--<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="./../../components/format-number-behavior.html">
-<link rel="import" href="./../../components/common-logic.html">
+<link rel="import" href="./../../components/common-logic.html">-->
+
+<link rel="import" href="./list-year.html">
+
 <dom-module id="history-welfare">
     <template>
         <style include="page-style gl-styles">
@@ -17,7 +20,8 @@
                 height: 480px;
             }
         </style>
-        <vaadin-grid id="material" items="{{data}}">
+        <list-year data="[[listYear.history_welfare_year]]" year="{{year}}"></list-year>
+        <vaadin-grid id="material" items="{{list_history}}">
 
             <vaadin-grid-column width="50px" flex-grow="0">
                 <template class="header ">
@@ -31,7 +35,7 @@
 
             <vaadin-grid-column width="450px" flex-grow="0">
                 <template class="header">สวัสดิการที่ใช้</template>
-                <template>[[item.description]]</template>
+                <template>[[item.group_welfare_name]] ([[item.welfare_name]])</template>
             </vaadin-grid-column>
 
             <vaadin-grid-column width="200px" flex-grow="0">
@@ -124,8 +128,35 @@
         Polymer({
             is: 'history-welfare',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
-                commonLogic, uploadAction, commonDataAction,
-                MonthBehavior, ValidateFormBehavior],
+                commonLogic, MonthBehavior, ValidateFormBehavior],
+            properties: {
+                listYear: {
+                    statePath: 'dateDb.listYear',
+                    // observer: 'setYear'
+                },
+                year: {
+                    type: Number,
+                    observer: 'setYear',
+                },
+                list_history: {
+                    statePath: 'userWelfare.list_history_welfare',
+                    observer: "setTabel"
+                }
+            },
+            setYear(e) {
+                try {
+                    let data = {
+                        year: e,
+                        personal_id: this.data.personal_id
+                    }
+                    this.dispatchAction('EMPLOYEE_HISTORY_WELFARE', this.genUrl(data))
+                } catch (e) {
+
+                }
+            },
+            setTabel(e) {
+                this.$$('#material').notifyResize()
+            },
             downloadFile(e) {
                 // //console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id);
@@ -144,6 +175,7 @@
                                 .then((el) => {
                                     let id = window.location.pathname.split('/')[2];
                                     this.dispatchAction('EMPLOYEE_GET_WELFARES', id);
+                                    this.setYear(this.year)
                                     // //console.log(222);
                                 })
                         }

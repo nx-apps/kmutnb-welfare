@@ -2,7 +2,7 @@
 
 
 <link rel="import" href="./components/user-detail.html">
-<link rel="import" href="./components/user-fund.html">
+<!--<link rel="import" href="./components/user-fund.html">-->
 
 <link rel="import" href="./../components/page-style.html">
 
@@ -57,7 +57,7 @@
             is: 'page-user-welfare',
             behaviors: [
                 ReduxBehavior, nylonBehavior, commonDataAction, usersAction, 
-                userWelfareAction, uploadAction, fundRvdAction
+                userWelfareAction, uploadAction, fundRvdAction,dateDbAction
             ],
             properties: {
                 page: {
@@ -92,6 +92,9 @@
                 // this.dispatchAction('COMMONDATA_DATA_RELATION');
                 // this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
                 let url = window.location.pathname.split('/')[2]
+                this.WELFARE_LIST_YEAR();
+
+                this.GET_LIST_YEAR();
                 // //console.log(url);
                 // //console.log(url == 'undefined' || url == '');
                 // this.set('page', 0)

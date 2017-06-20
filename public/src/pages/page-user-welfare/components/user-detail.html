@@ -1,8 +1,8 @@
 <link rel="import" href="./user-welfare.html">
 
-<link rel="import" href="./fund-pay.html">
+<!--<link rel="import" href="./fund-pay.html">-->
 
-<link rel="import" href="./fund-rvd.html">
+<!--<link rel="import" href="./fund-rvd.html">-->
 
 <dom-module id="user-detail">
     <template>
@@ -23,51 +23,6 @@
                 background: #fff;
             }
             
-            section {
-                display: none;
-                padding: 20px 0 0;
-                border-top: 1px solid #ddd;
-            }
-            
-            input {
-                display: none;
-            }
-            
-            label {
-                display: inline-block;
-                margin: 0 0 -1px;
-                padding: 15px 25px;
-                font-weight: 600;
-                text-align: center;
-                color: #bbb;
-                border: 1px solid transparent;
-            }
-            
-            label:before {
-                font-family: fontawesome;
-                font-weight: normal;
-                margin-right: 10px;
-            }
-            /*label[for*='1']:before { content: '\f1cb'; }
-            label[for*='2']:before { content: '\f17d'; }*/
-            
-            label:hover {
-                color: #888;
-                cursor: pointer;
-            }
-            
-            input:checked+label {
-                color: #555;
-                border: 1px solid #ddd;
-                border-top: 3px solid orange;
-                border-bottom: 1px solid #fff;
-            }
-            
-            #tab1:checked~#content1,
-            #tab2:checked~#content2,
-            #tab3:checked~#content3 {
-                display: block;
-            }
         </style>
         <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
             <div class="horizontal layout">

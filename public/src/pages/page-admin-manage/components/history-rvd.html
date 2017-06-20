@@ -1,3 +1,4 @@
+<link rel="import" href="./list-year.html">
 <dom-module id="history-rvd">
     <template>
         <style include="page-style gl-styles">
@@ -5,7 +6,8 @@
                 display: block;
             }
         </style>
-        <vaadin-grid id="material" items="[[data]]">
+        <list-year data="[[listYear.history_fund_year]]" year="{{year}}"></list-year>
+        <vaadin-grid id="material" items="[[list_history_fund]]">
 
             <vaadin-grid-column width="50px" flex-grow="0">
                 <template class="header">
@@ -94,26 +96,54 @@
             is: 'history-rvd',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
                 commonLogic, MonthBehavior],
-            btnCancel(e) {
-                // //console.log(e.currentTarget.data);
-                let newData = { id: e.model.item.history_rvd_id ,emp_id:e.model.item.emp_id}
-                // //console.log(newData);
-                this.fire('toast', {
-                    status: 'openDialog',
-                    text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
-                    confirmed: (result) => {
-                        if (result == true) {
-                            console.log(e.model.item);
-                            this.dispatchAction('EMPLOYEE_USE_REJECT_RVD', newData)
-                                .then((el) => {
-                                    // let id = window.location.pathname.split('/')[2];
-                                    // this.dispatchAction('EMPLOYEE_GET_WELFARES', newData.emp_id);
-                                    // //console.log(222);
-                                })
-                        }
-                    }
-                })
+            properties: {
+                listYear: {
+                    statePath: 'dateDb.listYear',
+                },
+                year: {
+                    type: Number,
+                    observer: 'setYear',
+                },
+                list_history_fund: {
+                    statePath: 'userWelfare.list_history_fund',
+                    observer: "setTabel"
+                }
             },
+            setYear(e) {
+                try {
+                    let data = {
+                        year: e,
+                        personal_id: this.data.personal_id
+                    }
+                    this.dispatchAction('EMPLOYEE_HISTORY_FUND', this.genUrl(data))
+
+                } catch (e) {
+
+                }
+            },
+            setTabel(e) {
+                this.$$('#material').notifyResize()
+            },
+            // btnCancel(e) {
+            //     // //console.log(e.currentTarget.data);
+            //     let newData = { id: e.model.item.history_rvd_id, emp_id: e.model.item.emp_id }
+            //     // //console.log(newData);
+            //     this.fire('toast', {
+            //         status: 'openDialog',
+            //         text: 'คุณต้องการยกเลิกรายการใช่หรือไม่ ?',
+            //         confirmed: (result) => {
+            //             if (result == true) {
+            //                 console.log(e.model.item);
+            //                 this.dispatchAction('EMPLOYEE_USE_REJECT_RVD', newData)
+            //                     .then((el) => {
+            //                         // let id = window.location.pathname.split('/')[2];
+            //                         // this.dispatchAction('EMPLOYEE_GET_WELFARES', newData.emp_id);
+            //                         // //console.log(222);
+            //                     })
+            //             }
+            //         }
+            //     })
+            // },
         });
     </script>
 </dom-module>

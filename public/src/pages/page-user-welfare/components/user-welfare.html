@@ -1,16 +1,13 @@
 <link rel="import" href="./../../components/format-number-behavior.html">
 <link rel="import" href="./../../components/common-logic.html">
-
 <link rel="import" href="./../../components/month-behavior.html">
-
 <link rel="import" href="./../../components/validateFormBehaviors.html">
-
 <link rel="import" href="./user-history-welfare.html">
-
 <link rel="import" href="./dialog-use-welfare.html">
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
-
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
+<link rel="import" href="./../../page-admin-manage/components/history-sso.html">
+<link rel="import" href="./../../page-admin-manage/components/history-rvd.html">
 <dom-module id="user-welfare">
     <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
          :host {
@@ -100,7 +97,8 @@
         }
 
         #tab1:checked~#content1,
-        #tab2:checked~#content2 {
+        #tab2:checked~#content2,
+        #tab3:checked~#content3 {
             display: block;
         }
 
@@ -109,6 +107,10 @@
             /*margin-top: 15px;*/
             width: 98%;
             margin: 10px;
+        }
+        .history {
+            margin: 30px 15px;
+            font-size: 25px;
         }
     </style>
     <template>
@@ -124,75 +126,98 @@
             <input id="tab2" type="radio" name="tabs">
             <label for="tab2">รายการสวัสดิการที่ขอใช้สิทธิ</label>
 
+            <input id="tab3" type="radio" name="tabs">
+            <label for="tab3">ประกันสังคม / กองทุน</label>
+
             <section id="content1">
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <!--<div class="head-text">
                         สวัสดิการที่ได้รับสิทธิ
                     </div>-->
                     <div class="content horizontal center-justified layout">
-                        <vaadin-grid id="material" aria-label="Column Grouping Example" items={{data.group_welfares}}>
-                            <vaadin-grid-column width="50px" flex-grow="0">
-                                <template class="header ">
-                                    <div class="text-center">ลำดับ</div>
-                                </template>
-                                <template>
-                                    <div class="text-center">[[_Obindex(index)]]
-                                    </div>
-                                </template>
-                            </vaadin-grid-column>
+                        <vaadin-grid id="material" items={{data.group_welfares}}>
+                                        <vaadin-grid-column width="50px" flex-grow="0">
+                                            <template class="header ">
+                                                <div class="text-center">ลำดับ</div>
+                                            </template>
+                                            <template>
+                                                <div class="text-center">[[_Obindex(index)]]
+                                                </div>
+                                            </template>
+                                        </vaadin-grid-column>
 
-                            <vaadin-grid-column width="450px" flex-grow="0">
-                                <template class="header ">สวัสดิการที่สามารถใช้ได้
-                                </template>
-                                <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime_use)]]
+                                        <vaadin-grid-column width="500px" flex-grow="0" resizable>
+                                            <template class="header ">สวัสดิการที่สามารถใช้ได้
+                                            </template>
+                                            <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime_use)]]
+                                                [[checkVoluntary(item.voluntary_status)]] [[checkGroup(item.group_use)]]
+                                                [[checkTypeGroup(item.type_group)]]
+                                            </template>
+                                        </vaadin-grid-column>
 
-                                </template>
-                            </vaadin-grid-column>
+                                        <vaadin-grid-column-group>
+                                            <template class="header">
+                                                <div class="text-center">จำนวนเงิน </div>
+                                            </template>
 
-                            <vaadin-grid-column-group>
-                                <template class="header">
-                                    <div class="text-center">จำนวนเงิน (บาท)</div>
-                                </template>
+                                            <vaadin-grid-column width="calc(15% - 10px)">
+                                                <template class="header">
+                                                    <div class="text-right">มหาวิทยาลัยออกให้</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">[[formatNumber(item.budget)]]</div>
+                                                </template>
+                                            </vaadin-grid-column>
 
-                                <vaadin-grid-column width="calc(10% - 20px)">
-                                    <template class="header">
-                                        <div class="text-right">มีสิทธิ</div>
-                                    </template>
-                                    <template>
-                                        <div class="text-right">[[formatNumber(item.budget)]]</div>
-                                    </template>
-                                </vaadin-grid-column>
+                                            <vaadin-grid-column width="calc(15% - 10px)">
+                                                <template class="header">
+                                                    <div class="text-right">พนักงานออกเอง</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">
+                                                        [[formatNumber(item.budget_emp)]]
+                                                    </div>
+                                                </template>
+                                            </vaadin-grid-column>
 
-                                <vaadin-grid-column width="calc(10% - 20px)">
-                                    <template class="header">
-                                        <div class="text-right">ใช้สิทธิ</div>
-                                    </template>
-                                    <template>
-                                        <div class="text-right">[[formatNumber(item.budget_use)]]</div>
-                                    </template>
-                                </vaadin-grid-column>
-                                
-                                <vaadin-grid-column width="calc(10% - 20px)">
-                                    <template class="header">
-                                        <div class="text-right">จ่ายเอง</div>
-                                    </template>
-                                    <template>
-                                        <div class="text-right">
-                                            [[checkZero(item.budget_emp_use)]]
-                                        </div>
-                                    </template>
-                                </vaadin-grid-column>
-                                <vaadin-grid-column width="calc(10% - 20px)">
-                                    <template class="header">
-                                        <div class="text-right">คงเหลือ</div>
-                                    </template>
-                                    <template>
-                                        <div class="text-right">[[formatNumber(item.budget_balance)]]</div>
-                                    </template>
-                                </vaadin-grid-column>
-                            </vaadin-grid-column-group>
+                                            <vaadin-grid-column width="calc(10% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">ใช้สิทธิ</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">[[formatNumber(item.budget_use)]]</div>
+                                                </template>
+                                            </vaadin-grid-column>
+                                            <vaadin-grid-column width="calc(10% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">จ่ายเอง</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">
+                                                        [[formatNumber(item.budget_emp_use)]]
+                                                    </div>
+                                                </template>
+                                            </vaadin-grid-column>
+                                            <vaadin-grid-column width="calc(20% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">คงเหลือ (มหาวิทยาลัย)</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">[[formatNumber(item.budget_balance)]]</div>
+                                                </template>
+                                            </vaadin-grid-column>
 
-                        </vaadin-grid>
+                                            <vaadin-grid-column width="calc(15% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">คงเหลือ (พนักงาน)</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">[[formatNumber(item.budget_balance_emp)]]</div>
+                                                </template>
+                                            </vaadin-grid-column>
+                                        </vaadin-grid-column-group>
+
+                                    </vaadin-grid>
                     </div>
                 </gl-form-panel-body>
 
@@ -202,7 +227,16 @@
 
             <section id="content2">
                 <div class="content horizontal center-justified layout">
-                    <user-history-welfare data={{data.history_welfare}}></user-history-welfare>
+                    <user-history-welfare data={{data}}></user-history-welfare>
+                </div>
+            </section>
+            <section id="content3">
+                <div class="content center-justified layout">
+                    <div class="history">ประกันสังคม</div>
+
+                    <history-sso data={{data}}></history-sso>
+                    <div class="history">กองทุน</div>
+                    <history-rvd data={{data}}></history-rvd>
                 </div>
             </section>
         </main>
@@ -243,17 +277,9 @@
                 // }, 500);
             },
             checkOnce(status) {
-                // //console.log(status);
-                switch (status) {
-                    case true:
-                        return 'ครั้งเดียว'
-                        break;
-                    case false:
-                        return 'หลายครั้ง'
-                        break;
-                    default:
-
-                }
+                if (status)
+                    return 'ครั้งเดียว'
+                return 'หลายครั้ง'
             },
             checkWelfareFull(data) {
                 try {
@@ -273,6 +299,10 @@
                 } catch (e) {
 
                 }
+            },
+            checkTypeGroup(typeGroup) {
+                if (typeGroup === 'fund') return 'เปอร์เซ็นต์'
+                return ''
             },
             checkZero(budget_emp_use) {
                 if (budget_emp_use <= 0)
