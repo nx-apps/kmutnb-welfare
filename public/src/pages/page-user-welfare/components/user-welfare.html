@@ -132,10 +132,10 @@
         }
     </style>
     <template>
-        <div class="content horizontal end-justified layout">
+        <!--<div class="content horizontal end-justified layout">
             <paper-button raised on-tap="getWelfare" style="margin-top: 10px;">
                 <iron-icon icon="print" style="margin-right: 10px;"></iron-icon>สวัสดิการที่ได้รับสิทธิ</paper-button>
-        </div>
+        </div>-->
 
         <main>
             <input id="tab1" type="radio" name="tabs" checked on-click="setVaadin">
@@ -153,9 +153,13 @@
             </template>
             <section id="content1">
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
-                    <!--<div class="head-text">
-                        สวัสดิการที่ได้รับสิทธิ
-                    </div>-->
+                    <br>
+                                <div class="content horizontal end-justified layout">
+                                    <paper-button raised on-tap="getWelfareHave">
+                                        <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> สวัสดิการที่ได้รับสิทธิ
+                                    </paper-button>
+                                </div>
+                                <br>
                     <div class="content horizontal center-justified layout">
                         <vaadin-grid id="material" items={{data.group_welfares}}>
                             <vaadin-grid-column width="50px" flex-grow="0">

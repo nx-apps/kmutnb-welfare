@@ -185,11 +185,7 @@
                 </gl-form-panel-body>
 
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
-                    <div class="content horizontal end-justified layout">
-                        <paper-button raised on-tap="getWelfareHave">
-                            <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> สวัสดิการที่ได้รับสิทธิ
-                        </paper-button>
-                    </div>
+
                     <main>
                         <input id="tab1" type="radio" name="tabs" checked on-click="setVaadin">
                         <label for="tab1">สวัสดิการที่ได้รับสิทธิ</label>
@@ -209,6 +205,13 @@
                         <section id="content1">
                             <!--<paper-material elevation="1">-->
                             <div class="contenttable">
+                                <br>
+                                <div class="content horizontal end-justified layout">
+                                    <paper-button raised on-tap="getWelfareHave">
+                                        <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> สวัสดิการที่ได้รับสิทธิ
+                                    </paper-button>
+                                </div>
+                                <br>
                                 <div class="content horizontal center-justified layout">
                                     <vaadin-grid id="material" items={{data.group_welfares}}>
                                         <vaadin-grid-column width="50px" flex-grow="0">
@@ -329,12 +332,12 @@
                             </div>>
                         </section>
                         <template is="dom-if" if={{data.fund_open}}>
-                        <section id="content4">
-                            <div class="content center-justified layout">
+                            <section id="content4">
+                                <div class="content center-justified layout">
                                     <div class="history">กองทุน</div>
                                     <history-rvd data={{data}}></history-rvd>
-                            </div>
-                        </section>
+                                </div>
+                            </section>
                         </template>
                     </main>
 
