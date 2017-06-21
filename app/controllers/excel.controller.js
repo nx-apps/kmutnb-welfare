@@ -107,9 +107,19 @@ exports.fund = function (req, res) {
         datas.push(data);
         rowNo += 3;
     }
+    var mergeEmp = r.expr(datas)
+        .merge(function (m) {
+            var emp = r.db('welfare').table('employee').getAll(m('personal_id'), { index: 'personal_id' }).filter({ active_name: "ทำงาน" });
+            return r.branch(emp.count().eq(0),
+                {},
+                emp.merge(function (m2) {
+                    return { emp_id: m2('id') }
+                }).without('id')(0)
+            )
+        });
     req.r.db('welfare').table('history_fund').getAll([year, month], { index: 'yearMonth' }).delete()
         .do(function (d) {
-            return r.db('welfare').table('history_fund').insert(datas)
+            return r.db('welfare').table('history_fund').insert(mergeEmp)
         })
         .run()
         .then(function (result) {
