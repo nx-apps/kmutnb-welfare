@@ -100,7 +100,8 @@
 
         #tab1:checked~#content1,
         #tab2:checked~#content2,
-        #tab3:checked~#content3 {
+        #tab3:checked~#content3,
+        #tab4:checked~#content4 {
             display: block;
         }
 
@@ -145,10 +146,11 @@
 
             <input id="tab3" type="radio" name="tabs">
             <label for="tab3">ประกันสังคม
-                <template is="dom-if" if={{data.fund_open}}> / กองทุน
-                </template>
             </label>
-
+            <template is="dom-if" if={{data.fund_open}}>
+                <input id="tab4" type="radio" name="tabs">
+                <label for="tab4">กองทุน</label>
+            </template>
             <section id="content1">
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <!--<div class="head-text">
@@ -181,7 +183,7 @@
 
                                 <vaadin-grid-column width="calc(15% - 10px)">
                                     <template class="header">
-                                        <div class="text-right">มหาวิทยาลัยออกให้</div>
+                                        <div class="text-right">ส่วนของมหาวิทยาลัย</div>
                                     </template>
                                     <template>
                                         <div class="text-right">[[formatNumber(item.budget)]]</div>
@@ -190,11 +192,12 @@
 
                                 <vaadin-grid-column width="calc(15% - 10px)">
                                     <template class="header">
-                                        <div class="text-right">พนักงานออกเอง</div>
+                                        <div class="text-right">ส่วนของพนักงาน</div>
                                     </template>
                                     <template>
                                         <div class="text-right">
-                                            [[formatNumber(item.budget_emp)]]
+                                            [[checkIsBudgetEmp(item.budget_emp,item.budget_emp)]]
+                                            <!--[[formatNumber(item.budget_emp)]]-->
                                         </div>
                                     </template>
                                 </vaadin-grid-column>
@@ -213,7 +216,8 @@
                                     </template>
                                     <template>
                                         <div class="text-right">
-                                            [[formatNumber(item.budget_emp_use)]]
+                                            [[checkIsBudgetEmp(item.budget_emp,item.budget_emp_use)]]
+                                            <!--[[formatNumber(item.budget_emp_use)]]-->
                                         </div>
                                     </template>
                                 </vaadin-grid-column>
@@ -231,7 +235,9 @@
                                         <div class="text-right">คงเหลือ (พนักงาน)</div>
                                     </template>
                                     <template>
-                                        <div class="text-right">[[formatNumber(item.budget_balance_emp)]]</div>
+                                        <div class="text-right">
+                                            [[checkIsBudgetEmp(item.budget_emp,item.budget_balance_emp)]]</div>
+                                        <!--[[formatNumber(item.budget_balance_emp)]]</div>-->
                                     </template>
                                 </vaadin-grid-column>
                             </vaadin-grid-column-group>
@@ -262,14 +268,18 @@
             <section id="content3">
                 <div class="content center-justified layout">
                     <div class="history">ประกันสังคม</div>
-
                     <history-sso data={{data}}></history-sso>
-                    <template is="dom-if" if={{data.fund_open}}>
+
+                </div>>
+            </section>
+            <template is="dom-if" if={{data.fund_open}}>
+                <section id="content4">
+                    <div class="content center-justified layout">
                         <div class="history">กองทุน</div>
                         <history-rvd data={{data}}></history-rvd>
-                    </template>
-                </div>
-            </section>
+                    </div>
+                </section>
+            </template>
         </main>
         <paper-dialog id="welfare_budget" modal>
             <paper-dialog-scrollable>
@@ -360,6 +370,14 @@
             _Obindex(index) {
                 return index + 1
             },
+            checkIsBudgetEmp(budget_emp, budget) {
+                if (budget_emp === 0) {
+                    return '-'
+                } else {
+                    return this.formatNumber(budget)
+                }
+                // console.log(budget_emp,budget);
+            },
             downloadFile(e) {
                 // //console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id)
@@ -375,10 +393,13 @@
                 let data = {
                     title: item.group_welfare_name + " " + item.welfare_name,
                     emp_id: this.data.id,
-                    description: item.description
+                    description: item.description,
+                    budget_cover: item.budget_balance,
+                    budget_emp_cover: item.budget_balance_emp,
+                    type_group:item.type_group
                 }
 
-                console.log(item);
+                console.log(data);
 
                 this.set('dataDialog', data)
                 this.$$('#welfare_budget').open()

@@ -48,7 +48,23 @@ exports.listyear = function (req, res) {
             .pluck('year')
             .orderBy(r.desc('year'))
             .coerceTo('array'),
-        history_sso_year: 1,//cutYear('welfare','group_welfare'),
+        history_sso_year: r.db('welfare').table('history_sso')
+            .pluck('issued_date')
+            .merge((mer_oneTime) => {
+                return {
+                    year: mer_oneTime('issued_date').year(),
+                }
+            })
+            .group('year')
+            .ungroup()
+            .merge((item) => {
+                return {
+                    year: item('group')
+                }
+            })
+            .pluck('year')
+            .orderBy(r.desc('year'))
+            .coerceTo('array'),
         history_fund_year: r.db('welfare').table('history_fund')
             .pluck('fund_year').group('fund_year')
             .ungroup()

@@ -10,11 +10,11 @@
              :host {
                 display: block;
             }
-            
+
             fieldset {
                 margin: 15px;
             }
-            
+
             main {
                 min-width: 320px;
                 /*max-width: 1000px;*/
@@ -22,7 +22,6 @@
                 margin: 0 auto;
                 background: #fff;
             }
-            
         </style>
         <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
             <div class="horizontal layout">
@@ -77,7 +76,7 @@
                 <label for="tab3">กองทุน</label>-->
 
                 <!--<section id="content1">-->
-                    <user-welfare data="[[data]]" year="[[seleterYear]]"></user-welfare>
+                <user-welfare data="[[data]]" year="[[seleterYear]]"></user-welfare>
                 <!--</section>
                 <template is="dom-if" if=[[data.rvd_status]]>
                     [[_obRvpFund(data)]]
@@ -96,11 +95,11 @@
     <script>
         Polymer({
             is: 'user-detail',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior,MonthBehavior],
             properties: {
                 data: {
                     statePath: 'users.select_welefares',
-                    observer:'_set'
+                    observer: '_set'
                 },
                 year: {
                     statePath: 'userWelfare.list',
@@ -110,13 +109,19 @@
             listeners: {
                 '_getReloadData': 'gerYearWelfare'
             },
-            _set(data){
+            _set(datas) {
                 //console.log(data);
-            },  
+                // let data = {
+                //     personal_id: this.data.personal_id
+                // }
+                // this.dispatchAction('EMPLOYEE_HISTORY_SSO', this.genUrl(data))
+                // this.dispatchAction('EMPLOYEE_HISTORY_FUND', this.genUrl(data))
+                // this.dispatchAction('EMPLOYEE_HISTORY_WELFARE', this.genUrl(data))
+            },
             setYear(years) {
                 try {
-                   this.dispatchAction('USER_GET_WELFARES', window.location.pathname.split('/')[2], true);
-                //    //console.log(year);
+                    this.dispatchAction('USER_GET_WELFARES', window.location.pathname.split('/')[2], true);
+                    //    //console.log(year);
                 } catch (error) {
 
                 }
@@ -130,7 +135,7 @@
                 this.fire('_get-user-edit', this.data)
                 // this.dispatchAction('USER_SELECT',e.detail);
             },
-            backPage(){
+            backPage() {
                 // //console.log(1111)
                 this.fire('_changePage')
             }

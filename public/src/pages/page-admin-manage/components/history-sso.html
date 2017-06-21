@@ -5,7 +5,10 @@
                 display: block;
             }
         </style>
-        <list-year data="[[listYear.history_welfare_year]]" year="{{year}}"></list-year>
+        <div hidden>
+            <list-year data="[[listYear.history_sso_year]]" year="{{year}}"></list-year>
+        </div>
+
         <vaadin-grid id="material" items="[[list_history]]">
 
             <vaadin-grid-column width="50px" flex-grow="0">
@@ -13,30 +16,30 @@
                     <div class="text-center">#</div>
                 </template>
                 <template>
-                    <div class="text-center">[[index]]</div>
+                    <div class="text-center">[[_Obindex(index)]]</div>
                 </template>
             </vaadin-grid-column>
 
             <vaadin-grid-column width="350px" flex-grow="0">
                 <template class="header">โรงพยาบาล</template>
-                <template>[[item.name.first]]</template>
+                <template>[[item.hospital]]</template>
             </vaadin-grid-column>
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">วันเริ่มต้น</div>
+                    <div class="text-center">วันออกบัตร</div>
                 </template>
                 <template>
-                    <div class="text-center">[[toCCDate(item.date_approve)]]</div>
+                    <div class="text-center">[[toCCDate(item.issued_date)]]</div>
                 </template>
             </vaadin-grid-column>
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">วันสิ้นสุด</div>
+                    <div class="text-center">บัตรหมดอายุ</div>
                 </template>
                 <template>
-                    <div class="text-center">[[toCCDate(item.date_approve)]]</div>
+                    <div class="text-center">[[toCCDate(item.expired_date)]]</div>
                 </template>
             </vaadin-grid-column>
 
@@ -45,7 +48,7 @@
                     <div class="text-center">วันที่อัพเดต</div>
                 </template>
                 <template>
-                    <div class="text-center">[[toCCDate(item.date_approve)]]</div>
+                    <div class="text-center">[[toCCDate(item.date_updated)]]</div>
                 </template>
             </vaadin-grid-column>
         </vaadin-grid>
@@ -75,8 +78,8 @@
             initYear(year, data) {
                 try {
                     if (data.personal_id !== undefined) {
-                        let welfare_year = year.history_welfare_year
-                        this.set('year', welfare_year[welfare_year.legth - 1])
+                        let sso_year = year.history_sso_year
+                        this.set('year', sso_year[sso_year.legth - 1])
                     }
                 } catch (e) {
 
@@ -88,7 +91,7 @@
                         year: e,
                         personal_id: this.data.personal_id
                     }
-                    this.dispatchAction('EMPLOYEE_HISTORY_WELFARE', this.genUrl(data))
+                    this.dispatchAction('EMPLOYEE_HISTORY_SSO', this.genUrl(data))
                 } catch (e) {
 
                 }

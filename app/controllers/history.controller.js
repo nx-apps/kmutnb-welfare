@@ -250,7 +250,7 @@ exports.listWelfare = function (req, res) {
     var r = req.r;
     // console.log(req.body);
     query = req.query
-    if(query.year !== undefined)
+    if (query.year !== undefined)
         query.year = Number(query.year)
     // console.log(query);    personal_id
     r.db('welfare').table('history_welfare').getAll(query.personal_id, { index: 'personal_id' })
@@ -284,9 +284,9 @@ exports.listWelfare = function (req, res) {
                 })
             }
         })
-        .pluck('history_welfare_id','type_group', 'budget_emp', 'budget_use', 'group_welfare_name',
+        .pluck('history_welfare_id', 'type_group', 'budget_emp', 'budget_use', 'group_welfare_name',
         'welfare_name', 'descriptions_group', 'date_use', 'check_onetime_thai', 'date_approve',
-         'description_detail', 'status', 'file')
+        'description_detail', 'status', 'file')
         .run()
         .then(function (result) {
 
@@ -302,7 +302,7 @@ exports.listFund = function (req, res) {
     var r = req.r;
     // console.log(req.body);
     query = req.query
-    if(query.year !== undefined)
+    if (query.year !== undefined)
         query.year = Number(query.year)
     // console.log(query);
     r.db('welfare').table('history_fund')
@@ -316,6 +316,49 @@ exports.listFund = function (req, res) {
                 history_fund_id: id('id'),
                 date_updated: id('date_updated').toISO8601().split('T')(0),
                 date_created: id('date_created').toISO8601().split('T')(0)
+            }
+        }).without('id')
+        .run()
+        .then(function (result) {
+
+            res.json(result);
+
+            // res.json([]);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
+exports.listSso = function (req, res) {
+    var r = req.r;
+    // console.log(req.body);
+    query = req.query
+    if (query.year === undefined) query.year = Number(0000)
+    query.year = Number(query.year)
+    // console.log(query);
+    r.db('welfare').table('history_sso')
+        .getAll(query.personal_id, { index: 'personal_id' })
+        .merge((mer_oneTime) => {
+            return {
+                sso_year: mer_oneTime('issued_date').year(),
+                select_year: query.year
+            }
+        })
+        // .filter(function (f) {
+        //     return r.time(f('select_year'), 1, 1, "Z").during(f('issued_date'), f('expired_date'), { rightBound: 'closed' })
+            
+        // })
+        // .filter({
+        //     sso_year: query.year
+        // })
+        .orderBy(r.desc('issued_date'))
+        .merge((id) => {
+            return {
+                history_fund_id: id('id'),
+                date_updated: id('date_updated').toISO8601().split('T')(0),
+                date_created: id('date_created').toISO8601().split('T')(0),
+                expired_date: id('expired_date').toISO8601().split('T')(0),
+                issued_date: id('issued_date').toISO8601().split('T')(0),
             }
         }).without('id')
         .run()
@@ -356,11 +399,11 @@ exports.usegroup = function (req, res) {
     r.expr({
         emps: body,
         group_welfare: r.db('welfare').table('welfare').getAll(group_id, { index: 'group_id' }).coerceTo('array')
-        .merge((item)=>{
-            return {
-                type_group: r.db('welfare').table('group_welfare').get(group_id).getField('type_group')
-            }
-        })
+            .merge((item) => {
+                return {
+                    type_group: r.db('welfare').table('group_welfare').get(group_id).getField('type_group')
+                }
+            })
     })
         .merge((emp) => {
             return {
@@ -381,7 +424,7 @@ exports.usegroup = function (req, res) {
                         reduce: getEmployee(emps, condition).merge((budget) => {
                             return {
                                 budget_balance: 0,
-                                type_group:em('type_group'),
+                                type_group: em('type_group'),
                                 budget_cover: em('budget'),
                                 budget_use: em('budget'),
                                 budget_emp: em('budget_emp'),
@@ -396,7 +439,7 @@ exports.usegroup = function (req, res) {
                                 emp_id: budget('id')
                             }
                         })
-                        .pluck('budget_balance','type_group', 'budget_cover', 'budget_use', 'budget_emp', 'date_approve',
+                            .pluck('budget_balance', 'type_group', 'budget_cover', 'budget_use', 'budget_emp', 'date_approve',
                             'date_use', 'date_update', 'document_ids', 'emp_id', 'group_id', 'status', 'welfare_id', 'emp_id', 'personal_id')
                     }
                 }),

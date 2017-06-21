@@ -168,7 +168,12 @@
                 }
             },
             setTabel(e) {
-                this.$$('#material').notifyResize()
+                try {
+                    this.$$('#material').notifyResize()
+                } catch (e) {
+
+                }
+
             },
             downloadFile(e) {
                 // //console.log(e.currentTarget.data);
