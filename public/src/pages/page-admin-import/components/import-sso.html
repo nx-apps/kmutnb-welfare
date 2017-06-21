@@ -9,6 +9,9 @@
         .input-file{
             margin: 20px;
         }
+        .text-center{
+            text-align: center;
+        }
     </style>
     <template>
 
@@ -17,7 +20,7 @@
             <paper-button raised on-tap="_preview">อัพโหลด</paper-button>
         </div>
 
-        <vaadin-grid items={{data}}>
+        <vaadin-grid items={{list}}>
             <vaadin-grid-column width="50px" flex-grow="0">
                 <template class="header">
                     <div class="text-center">ลำดับ</div>
@@ -32,7 +35,7 @@
                     ชื่อ-นามสกุล
                 </template>
                 <template>
-                    {{item.name}}
+                    {{item.prefix_name}}{{item.first_name}}{{item.last_name}}
                 </template>
             </vaadin-grid-column>
 
@@ -41,7 +44,7 @@
                     รหัสบัตรประชาชน
                 </template>
                 <template>
-                    {{item.name}}
+                    {{item.personal_id}}
                 </template>
             </vaadin-grid-column>
 
@@ -50,36 +53,36 @@
                     สถานพยาบาล
                 </template>
                 <template>
-                    {{item.name}}
+                    {{item.hospital}}
                 </template>
             </vaadin-grid-column>
 
             <vaadin-grid-column width="150px" flex-grow="0">
                 <template class="header">
-                    วันที่ออกบัตร
+                    <div class="text-center">วันที่ออกบัตร</div>
                 </template>
                 <template>
-                    {{item.name}}
+                    <div class="text-center">{{item.issued_date}}</div>
                 </template>
             </vaadin-grid-column>
 
             <vaadin-grid-column width="150px" flex-grow="0">
                 <template class="header">
-                    วันที่บัตรหมดอายุ
+                    <div class="text-center">วันที่บัตรหมดอายุ</div>
                 </template>
                 <template>
-                    {{item.name}}
+                    <div class="text-center">{{item.expired_date}}</div>
                 </template>
             </vaadin-grid-column>
 
-            <vaadin-grid-column width="150px" flex-grow="0">
+            <!--<vaadin-grid-column width="150px" flex-grow="0">
                 <template class="header">
                     วันที่ิอัพเดท
                 </template>
                 <template>
                     {{item.name}}
                 </template>
-            </vaadin-grid-column>
+            </vaadin-grid-column>-->
         </vaadin-grid>
         
         <div class="horizontal end-justified layout" style="margin:20px 0px 10px 0px">
@@ -99,25 +102,35 @@
                         {name:'ice'},
                         {name:'test'}
                         ]
+                },
+                select_file:{
+                    statePath: 'sso.data'
+                },
+                list:{
+                    statePath: 'sso.list'
                 }
             },
             _Obindex:function(index){
                 return index+1
             },
             _preview:function(){
+                // console.log(this.select_file);
                 var x = this.$$('#myFile');
-                x.disabled = true; 
+                x.disabled = true;
+                this.dispatchAction('SSO_CLICK_UPLOAD', this.select_file.name);
             },
             _upload:function(){
-
+                // console.log(this.list);
+                this.dispatchAction('SSO_INSERT', this.list);
             },
             _cancle:function(){
                 var x = this.$$('#myFile');
                 x.disabled = false;
             },
             _uploadFile:function(e){
-                console.log(e.currentTarget.files)
-                // this.dispatchAction('SSO_UPLOADFILE')
+                // console.log(e.currentTarget.files)
+                var file = e.currentTarget.files;
+                this.dispatchAction('SSO_UPLOADFILE', file)
             }
         })
     </script>

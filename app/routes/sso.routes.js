@@ -1,5 +1,6 @@
 module.exports = function (app) {
     var controller = require('../controllers/sso.controller');
-    app.post('/upload', controller.upload);
-    app.get('/getfile', controller.getfile);
+    app.put('/upload', controller.upload);
+    app.get('/download/id/:id', controller.downloadFile);
+    app.get('/getfile/name/:name', controller.getfile);
 }

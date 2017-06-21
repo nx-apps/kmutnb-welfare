@@ -1,3 +1,8 @@
+var fs = require('fs');
+var path = require('path');
+var multiparty = require('multiparty');
+var stream = require('stream');
+
 exports.upload = function (req, res) {
     var r = req.r;
     // var params = req.params
@@ -7,9 +12,8 @@ exports.upload = function (req, res) {
         var prefile = files.file[0];
 
         fs.readFile(prefile.path, function (err, data) {
-            // console.log(r);
             r.db('welfare').table('files').insert({
-                name: prefile.originalFilename.split('.')[0] + '_' + new Date().getTime() + "." + prefile.originalFilename.split('.')[1],
+                name: prefile.originalFilename,//.split('.')[0] + '_' + new Date().getTime() + "." + prefile.originalFilename.split('.')[1],
                 type: prefile.headers['content-type'],
                 contents: data,
                 timestamp: r.now().inTimezone('+07'),
@@ -19,9 +23,6 @@ exports.upload = function (req, res) {
                     return r.db('welfare').table('document_file').insert({
                         file_id: file_id,
                         file_status: true,
-                        emp_id: params.emp_id,
-                        welfare_id: req.headers['welfare-id'],
-                        doc_status: false,
                         date_upload: r.now().inTimezone('+07'),
                         date_update: r.now().inTimezone('+07')
                     })
@@ -34,10 +35,50 @@ exports.upload = function (req, res) {
         });
     });
 }
+exports.downloadFile = function (req, res) {
+    var r = req.r;
+    r.db('welfare').table('document_file').getAll(req.params.id, { index: 'id' })
+        .eqJoin('file_id', r.db('welfare').table('files')).getField('right')
+        // r.db('welfare').table('files').get(req.params.id)
+        .run()
+        .then((result) => {
+            // res.json(result[0])
+            // res.writeHead(200, {
+            //     'Content-Type': result.type,
+            //     'Content-Length': result.contents.length,
+            //     'Content-Disposition': 'inline; filename=' + result.name //ชื่อเป็น ภาษาไทยจะไม่สามารถเขียนออกมาได้
+            // });
+            // //inline แสดง show ไฟล์
+            // //attachment โหลดไฟล์
+
+            // var bufferStream = new stream.PassThrough();
+            // bufferStream.end(result.contents);
+            // bufferStream.pipe(res);
+
+            fs.writeFile('./public/files/' + result[0].name, result[0].contents, ['utf8'], (err) => {
+                if (err) {
+                    return console.log(err);
+                }
+                else {
+                     console.log("The file was saved!");
+                     res.json(result);
+                }
+            })
+                // .on('close', function () {
+                //     console.log("The file was saved!");
+                //     res.json(result);
+                // })
+
+        })
+        .catch(function (err) {
+            res.status(500).json(err)
+        })
+}
 exports.getfile = function (req, res) {
     //Read file here.
     var XLSX = require('xlsx');
-    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/sso.xlsx');
+    // var workbook = XLSX.readFile('../kmutnb-welfare/app/files/sso.xlsx');
+    var workbook = XLSX.readFile('../kmutnb-welfare/public/files/'+req.params.name);
 
     var file = workbook.Sheets;
     // var sheets = [];
