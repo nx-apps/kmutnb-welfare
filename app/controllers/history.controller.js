@@ -337,15 +337,15 @@ exports.groupFund = function (req, res) {
         query.year = Number(query.year)
     // console.log(query);
     r.db('welfare').table('history_fund')
-        .group('fund_code')
+        .group('policy_code')
         .ungroup()
         .pluck('group')
         .merge((item)=>{
             return {
-                fund_code : item('group')
+                policy_code : item('group')
             }
         })
-        .pluck('fund_code')
+        .pluck('policy_code')
         .run()
         .then(function (result) {
 
