@@ -28,30 +28,16 @@
             </div>
             <div class="flex ">
                 <div class="horizontal start-justified layout">
-                    <div class="flex">สถานนะภาพที่แสดงว่าทำงาน :</div>
+                    <div class="horizontal layout center flex">สถานนะภาพที่แสดงว่าทำงาน :</div>
                     <div class="flex-3">
                         <div class="horizontal start-justified layout">
-                            <!--<paper-dropdown-menu label="" no-label-float>
-                                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{data.active_code}}">
-
-                                    <template is="dom-repeat" items={{list_active}}>
-                                        <paper-item value="{{item.active_id}}"> [[item.active_name]]</paper-item>
-                                    </template>
-
-                                </paper-listbox>
-                            </paper-dropdown-menu>-->
-                            <paper-dropdown-menu id="dropdownmenu" label="Type">
+                            <paper-dropdown-menu id="dropdownmenu" label="">
                                 <paper-menu id="menu" class="dropdown-content" attr-for-selected="value" selected="{{data.active_id}}">
                                     <template is="dom-repeat" items="{{list_active}}">
                                         <paper-item value="{{item.id}}">[[item.active_name]]</paper-item>
                                     </template>
                                 </paper-menu>
                             </paper-dropdown-menu>
-                            <!--<gl-combo-box label="สถานภาพ" items="{{list_active}}" item-label-path="active_name" item-value-path="id" value="{{data.active_id}}">
-                                <template>
-                                    [[item.active_name]]
-                                </template>
-                            </gl-combo-box>-->
                         </div>
 
                     </div>
