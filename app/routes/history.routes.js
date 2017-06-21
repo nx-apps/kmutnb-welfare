@@ -11,6 +11,7 @@ module.exports = function (app) {
     app.post('/approve', controller.adminApprove);
     app.get('/list/welfare', controller.listWelfare);
     app.get('/list/fund', controller.listFund);
+    app.get('/list/group/fund', controller.groupFund);
     app.get('/list/sso', controller.listSso);
     // app.post('/rvd', controller.useRvd);
     app.put('/rejectrvd', controller.rejectRvd);

@@ -6,6 +6,8 @@
 <link rel="import" href="./components/list-employees.html">
 <link rel="import" href="./components/employee-manage-add.html">
 
+<link rel="import" href="./../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
 <link rel="import" href="./../page-admin-manage/components/list-year.html">
 
 <link rel="import" href="./../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
@@ -61,6 +63,9 @@
 
             .print {
                 margin-top: 15px;
+            }
+            paper-dialog {
+                min-width: 550px;
             }
         </style>
         <div class="xcontainer">
@@ -156,7 +161,7 @@
                 <paper-button raised class="gl-btn-primary" on-tap="printReport" dialog-confirm autofocus>ออกรายงาน</paper-button>
             </div>
         </paper-dialog>
-        
+
         <paper-dialog id="RETIREMENT" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
@@ -168,15 +173,31 @@
                 <paper-button raised class="gl-btn-primary" on-tap="_printRetire" dialog-confirm autofocus>ออกรายงาน</paper-button>
             </div>
         </paper-dialog>
+
         <paper-dialog id="FUND" modal>
+            <div class="flex">
+            <h2 id="welfare_name"ออกรายงาน>กองทุน</h2>
+        </div>
+            <paper-dialog-scrollable>
             <div class="layout horizontal start-justified">
-                <div class="flex" style=" margin-right: 30px">
-                    <list-year data="[[listYear.history_fund_year]]" year="{{year}}"></list-year>
-                </div>
+                <!--<div class="layout vertical start-justified">-->
+                    <div class="flex" style=" margin-right: 30px">
+                        <gl-combo-box id="fund" label="กลุ่ม"  placeholder="ทั้งหมด" always-float-label  items="{{listGroupFund}}" value="{{data.fund_code}}" item-label-path="fund_code" item-value-path="fund_code"> </gl-combo-box>
+                    </div>
+                    <div class="flex" style=" margin-right: 30px">
+                        <gl-combo-box id="month" label="เดือน" placeholder="ทั้งหมด" always-float-label  items="{{getMonth()}}" value="{{data.month}}" item-label-path="name" item-value-path="id">
+                        </gl-combo-box>
+                    </div>
+                    <div class="flex" style=" margin-right: 30px">
+                        <gl-combo-box id="year" label="ปี" placeholder="ทั้งหมด" items="[[listYear.history_fund_year]]" value="{{data.year}}" item-label-path="year" item-value-path="year"
+            > </gl-combo-box>
+                    </div>
+                <!--</div>-->
             </div>
+            </paper-dialog-scrollable>
             <div class="flex horizontal end-justified layout buttons">
                 <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
-                <paper-button raised class="gl-btn-primary" on-tap="_printRetire" dialog-confirm autofocus>ออกรายงาน</paper-button>
+                <paper-button raised class="gl-btn-primary" on-tap="printReport" dialog-confirm autofocus>ออกรายงาน</paper-button>
             </div>
         </paper-dialog>
         <panel-right id="test" title="{{title}}">
@@ -189,7 +210,7 @@
         Polymer({
             is: 'page-admin-dashboard',
             behaviors: [ReduxBehavior, nylonBehavior, usersAction, userWelfareAction,
-             commonDataAction, MonthBehavior,dateDbAction],
+                commonDataAction, MonthBehavior, dateDbAction],
             listeners: {
                 'back-page': 'changePage',
                 'close-panel-right': 'closePanelRight'
@@ -279,6 +300,9 @@
                 listYear: {
                     statePath: 'dateDb.listYear',
                 },
+                listGroupFund: {
+                    statePath: 'userWelfare.list_group_fund',
+                },
                 year: {
                     type: Number,
                 },
@@ -286,7 +310,7 @@
             nylonPageActive: function () {
                 // this.TESTS();
                 this.WELFARE_LISTS();
-                 this.GET_LIST_YEAR();
+                this.GET_LIST_YEAR();
                 let date = new Date()
                 // let today = date.toISOString().split('T')[0]
                 // let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
@@ -300,7 +324,7 @@
                 // WELFARE_LIST
                 // this.dispatchAction('WELFARE_LIST');
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
-                // this.dispatchAction('COMMONDATA_DATA_DEPARTMENT');
+                this.dispatchAction('EMPLOYEE_LIST_GROUP_FUND');
                 this.dispatchAction('COMMONDATA_DATA_ACTIVE');
                 this.dispatchAction('COMMONDATA_DATA_FACULTY');
                 this.dispatchAction('COMMONDATA_DATA_GENDER');
@@ -318,19 +342,26 @@
                 this.$$('panel-right').close();
             },
             _print: function (e) {
-                if(this.report_id  !== 8){
-                    this.$$('#report').open()
-                } else {
-                    this.$$('#RETIREMENT').open()
-                } //else {
-                 //   this.$$('#FUND').open()
-                //}
-                
+                try {
+                    // if (this.report_id !== 8) {
+                    //     this.$$('#report').open()
+                    // } else {
+                    //     this.$$('#RETIREMENT').open()
+                    // } //else {
+                    this.$$('#FUND').open()
+                    //}
+
+                } catch (e) {
+
+                } finally {
+
+                }
+
 
             },
-            _printRetire(){
+            _printRetire() {
                 // const data = JSON.parse(JSON.stringify(this.data.data))
-                 window.open('./api/report/retire?date=' + this.data.date + '&export=' + this.report_type_seleted);
+                window.open('./api/report/retire?date=' + this.data.date + '&export=' + this.report_type_seleted);
             },
             printReport: function () {
                 try {

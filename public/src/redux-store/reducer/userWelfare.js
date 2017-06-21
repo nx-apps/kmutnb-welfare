@@ -8,6 +8,7 @@ const initialState = {
     list_user: [],
     list_history_welfare: [],
     list_history_fund: [],
+    list_group_fund:[],
     list_history_sso:[],
     listSearch: [],
     welfare_employee: [],
@@ -90,6 +91,8 @@ export function userWelfareReducer(state = initialState, action) {
             return Object.assign({}, state, { list_history_welfare: action.payload });
         case 'EMPLOYEE_HISTORY_FUND':
              return Object.assign({}, state, { list_history_fund: action.payload });
+        case 'EMPLOYEE_LIST_GROUP_FUND':
+             return Object.assign({}, state, { list_group_fund: action.payload });
         case 'EMPLOYEE_HISTORY_SSO':
              return Object.assign({}, state, { list_history_sso: action.payload });
         case 'LIST_USER_SERARCH':
@@ -346,6 +349,15 @@ export function userWelfareAction(store) {
                 axios.get(`./history/list/fund?`+ data)
                     .then(res => {
                         store.dispatch({ type: 'EMPLOYEE_HISTORY_FUND', payload: res.data })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+        },
+        EMPLOYEE_LIST_GROUP_FUND() {
+                axios.get(`./history/list/group/fund?`)
+                    .then(res => {
+                        store.dispatch({ type: 'EMPLOYEE_LIST_GROUP_FUND', payload: res.data })
                     })
                     .catch(err => {
                         console.log(err);

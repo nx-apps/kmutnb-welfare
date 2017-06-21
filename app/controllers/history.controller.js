@@ -329,6 +329,32 @@ exports.listFund = function (req, res) {
             res.status(500).json(err);
         })
 }
+exports.groupFund = function (req, res) {
+    var r = req.r;
+    // console.log(req.body);
+    query = req.query
+    if (query.year !== undefined)
+        query.year = Number(query.year)
+    // console.log(query);
+    r.db('welfare').table('history_fund')
+        .group('fund_code')
+        .ungroup()
+        .pluck('group')
+        .merge((item)=>{
+            return {
+                fund_code : item('group')
+            }
+        })
+        .pluck('fund_code')
+        .run()
+        .then(function (result) {
+
+            res.json(result);
+        })
+        .catch(function (err) {
+            res.status(500).json(err);
+        })
+}
 exports.listSso = function (req, res) {
     var r = req.r;
     // console.log(req.body);
