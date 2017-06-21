@@ -602,6 +602,7 @@
                                 this.$$('#welfare_budget').close()
                                 if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
                                     this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
+                                    this.GET_LIST_YEAR();
                                 }
                             }
                         }
