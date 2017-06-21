@@ -60,8 +60,15 @@ function keysToUpper(param) {
 exports.fund01 = function (req, res) {
     var r = req.r;
     var param = req.query;
-    r.db('welfare').table('history_fund').getAll([2017, 4], { index: 'yearMonth' })
-        .filter({ 'personal_id': param.personal_id })
+    if (param.year !== undefined)
+        param.year = Number(param.year)
+    r.db('welfare').table('history_fund')//.getAll(param.req.year, { index: 'year' })
+        // .filter({ 'personal_id': param.personal_id })
+        // // .getAll(param.personal_id, { index: 'personal_id' })
+        .filter({
+            fund_year: param.year
+        })
+        .orderBy('fund_code')
         .run()
         .then(function (result) {
             // res.json(result);
@@ -69,5 +76,26 @@ exports.fund01 = function (req, res) {
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
             res.ireport("fund01.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
+        });
+}
+exports.fund02 = function (req, res) {
+    var r = req.r;
+    var param = req.query;
+    if (param.year !== undefined)
+        param.year = Number(param.year)
+    r.db('welfare').table('history_fund')//.getAll(param.req.year, { index: 'year' })
+        .filter({ 'personal_id': param.personal_id })
+        // // .getAll(param.personal_id, { index: 'personal_id' })
+        .filter({
+            fund_year: param.year
+        })
+        .orderBy('date_updated')
+        .run()
+        .then(function (result) {
+            // res.json(result);
+            param = keysToUpper(param);
+            CURRENT_DATE = new Date().toISOString().slice(0, 10)
+            param.CURRENT_DATE = CURRENT_DATE
+            res.ireport("fund02.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         });
 }
