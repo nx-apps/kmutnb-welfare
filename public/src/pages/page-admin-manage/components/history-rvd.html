@@ -26,41 +26,49 @@
                     <div class="text-center">[[item.fund_code]]</div>
                 </template>
             </vaadin-grid-column>
+            <vaadin-grid-column-group>
+                <template class="header">
+                    <div class="text-center">ส่วนของพนักงาน</div>
+                </template>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <div class="text-right">เงินสะสม</div>
+                    </template>
+                    <template>
+                        <div class="text-right">[[formatNumber(item.emp_con)]]</div>
+                    </template>
+                </vaadin-grid-column>
 
-            <vaadin-grid-column>
+                <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">
+                        <div class="text-right">ประโยชน์เงินสะสม</div>
+                    </template>
+                    <template>
+                        <div class="text-right">[[formatNumber(item.emp_ear)]]</div>
+                    </template>
+                </vaadin-grid-column>
+            </vaadin-grid-column-group>
+            <vaadin-grid-column-group>
                 <template class="header">
-                    <div class="text-right">เงินสะสม</div>
+                    <div class="text-center">ส่วนของมหาวิทยาลัย</div>
                 </template>
-                <template>
-                    <div class="text-right">[[formatNumber(item.emp_con)]]</div>
-                </template>
-            </vaadin-grid-column>
-
-            <vaadin-grid-column width="150px" flex-grow="0">
-                <template class="header">
-                    <div class="text-right">ประโยชน์เงินสะสม</div>
-                </template>
-                <template>
-                    <div class="text-right">[[formatNumber(item.emp_ear)]]</div>
-                </template>
-            </vaadin-grid-column>
-
-            <vaadin-grid-column>
-                <template class="header">
-                    <div class="text-right">เงินสมทบ</div>
-                </template>
-                <template>
-                    <div class="text-right">[[formatNumber(item.com_con)]]</div>
-                </template>
-            </vaadin-grid-column>
-            <vaadin-grid-column width="150px" flex-grow="0">
-                <template class="header">
-                    <div class="text-right">ประโยชน์เงินสมทบ</div>
-                </template>
-                <template>
-                    <div class="text-right">[[formatNumber(item.com_ear)]]</div>
-                </template>
-            </vaadin-grid-column>
+                <vaadin-grid-column>
+                    <template class="header">
+                        <div class="text-right">เงินสมทบ</div>
+                    </template>
+                    <template>
+                        <div class="text-right">[[formatNumber(item.com_con)]]</div>
+                    </template>
+                </vaadin-grid-column>
+                <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">
+                        <div class="text-right">ประโยชน์เงินสมทบ</div>
+                    </template>
+                    <template>
+                        <div class="text-right">[[formatNumber(item.com_ear)]]</div>
+                    </template>
+                </vaadin-grid-column>
+            </vaadin-grid-column-group>
             <vaadin-grid-column>
                 <template class="header">
                     <div class="text-right">รวม</div>
