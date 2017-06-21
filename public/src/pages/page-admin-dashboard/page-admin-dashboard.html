@@ -6,6 +6,8 @@
 <link rel="import" href="./components/list-employees.html">
 <link rel="import" href="./components/employee-manage-add.html">
 
+<link rel="import" href="./../page-admin-manage/components/list-year.html">
+
 <link rel="import" href="./../../../bower_components/vaadin-combo-box/vaadin-combo-box.html">
 
 <dom-module id="page-admin-dashboard">
@@ -166,6 +168,17 @@
                 <paper-button raised class="gl-btn-primary" on-tap="_printRetire" dialog-confirm autofocus>ออกรายงาน</paper-button>
             </div>
         </paper-dialog>
+        <paper-dialog id="FUND" modal>
+            <div class="layout horizontal start-justified">
+                <div class="flex" style=" margin-right: 30px">
+                    <list-year data="[[listYear.history_fund_year]]" year="{{year}}"></list-year>
+                </div>
+            </div>
+            <div class="flex horizontal end-justified layout buttons">
+                <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
+                <paper-button raised class="gl-btn-primary" on-tap="_printRetire" dialog-confirm autofocus>ออกรายงาน</paper-button>
+            </div>
+        </paper-dialog>
         <panel-right id="test" title="{{title}}">
 
             <employee-manage-add></employee-manage-add>
@@ -175,7 +188,8 @@
     <script>
         Polymer({
             is: 'page-admin-dashboard',
-            behaviors: [ReduxBehavior, nylonBehavior, usersAction, userWelfareAction, commonDataAction, MonthBehavior],
+            behaviors: [ReduxBehavior, nylonBehavior, usersAction, userWelfareAction,
+             commonDataAction, MonthBehavior,dateDbAction],
             listeners: {
                 'back-page': 'changePage',
                 'close-panel-right': 'closePanelRight'
@@ -262,10 +276,17 @@
                 list_type_employee: {
                     statePath: 'commonData.type_employee'
                 },
+                listYear: {
+                    statePath: 'dateDb.listYear',
+                },
+                year: {
+                    type: Number,
+                },
             },
             nylonPageActive: function () {
                 // this.TESTS();
                 this.WELFARE_LISTS();
+                 this.GET_LIST_YEAR();
                 let date = new Date()
                 // let today = date.toISOString().split('T')[0]
                 // let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
@@ -301,7 +322,9 @@
                     this.$$('#report').open()
                 } else {
                     this.$$('#RETIREMENT').open()
-                }
+                } //else {
+                 //   this.$$('#FUND').open()
+                //}
                 
 
             },
@@ -328,11 +351,7 @@
 
                     if (checkUndefined(this.data.type_employee_id))
                         data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
-                    // //console.log(data.type_employee_name);
-                    // //console.log(data);
-                    // //console.log(data.department_id);
-                    // //console.log(this.genUrl(data));
-                    //console.log(this.report_type_seleted);
+
                     window.open('/api/report/welfare/welfare' + idReport + '?' + this.genUrl(data) + '&export=' + this.report_type_seleted);
                     // https://localhost:3000/api/report/welfare1?
                 } catch (error) {

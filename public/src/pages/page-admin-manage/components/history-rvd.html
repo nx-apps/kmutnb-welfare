@@ -6,7 +6,14 @@
                 display: block;
             }
         </style>
-        <list-year data="[[listYear.history_fund_year]]" year="{{year}}"></list-year>
+
+        <div class="content horizontal end-justified layout">
+            <list-year data="[[listYear.history_fund_year]]" year="{{year}}"></list-year>
+            <paper-button raised on-tap="getFund">
+                <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> กองทุน
+            </paper-button>
+        </div>
+        <br>
         <vaadin-grid id="material" items="[[list_history_fund]]">
 
             <vaadin-grid-column width="50px" flex-grow="0">
@@ -145,6 +152,14 @@
             setTabel(e) {
                 this.$$('#material').notifyResize()
             },
+            getFund() {
+                let data = {
+                    year: this.year,
+                    personal_id: this.data.personal_id
+                }
+                window.open('/api/report/fund/fund02?' + this.genUrl(data));
+                // console.log(this.genUrl(data));
+            }
             // btnCancel(e) {
             //     // //console.log(e.currentTarget.data);
             //     let newData = { id: e.model.item.history_rvd_id, emp_id: e.model.item.emp_id }
