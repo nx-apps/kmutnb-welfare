@@ -32,11 +32,7 @@ export function systemConfigsAction(store) {
             UPDATE_SYSTEM_CONFIG: function (data) {
                 // var user = store.getState().auth.user;
                 this.fire('toast', { status: 'load' });
-                this.fire('toast', {
-                    status: 'openDialog',
-                    text: 'ต้องการแก้ไขข้อมูลใช่หรือไม่ ?',
-                    confirmed: (result) => {
-                        if (result == true) {
+                
                             this.fire('toast', { status: 'load' })
                             axios.post('/system/config/update', data)
                                 .then(res => {
@@ -50,9 +46,7 @@ export function systemConfigsAction(store) {
                                 .catch(err => {
                                     console.log(err);
                                 })
-                        }
-                    }
-                })
+                
                 // axios.post('/system/config/update',data)
                 //     .then(res => {
                 //         // console.log(res.data)

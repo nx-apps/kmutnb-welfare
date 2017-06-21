@@ -81,7 +81,7 @@ exports.searchPid = function (req, res) {
     let personal_id = req.params.pid
     r.db('welfare').table('employee').getAll(personal_id, { index: 'personal_id' })
         .filter(function (row) {
-            return row("active_name").ne("ทำงาน");
+            return row("active_id").ne(r.db('welfare').table('system_config')(0)('active_id'));
         })
         .orderBy(r.desc('date_update'))
         .run()
