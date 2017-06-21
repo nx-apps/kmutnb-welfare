@@ -79,8 +79,10 @@ exports.fund = function (req, res) {
 
     var file = workbook.Sheets;
     var sheetname = "Sheet1";
-    var startRow = 3;
-    var company = file[sheetname]['B' + startRow].v;
+    var startRow = 1;
+    var fund_name = file[sheetname]['B' + startRow].v;
+    var uname = file[sheetname]['B' + (startRow += 1)].v;
+    var company = file[sheetname]['B' + (startRow += 1)].v;
     var monthly = file[sheetname]['B' + (startRow += 2)].v;
     var month = parseInt(monthly.split('/')[1]);
     var year = parseInt(monthly.split('/')[0]) - 543;
@@ -93,8 +95,10 @@ exports.fund = function (req, res) {
             fund_company: company,
             fund_month: month,
             fund_year: year,
-            fund_code: file[sheetname]['A' + (rowNo += 2)].v,
-            fund_name: file[sheetname]['B' + rowNo].v,
+            fund_name: fund_name,
+            fund_uname: uname,
+            policy_code: file[sheetname]['A' + (rowNo += 2)].v,
+            policy_name: file[sheetname]['B' + rowNo].v,
             fund_date: file[sheetname]['B' + (rowNo += 1)].v,
             emp_con: file[sheetname]['D' + rowNo].v,
             emp_ear: file[sheetname]['E' + rowNo].v,
