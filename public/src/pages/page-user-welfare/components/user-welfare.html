@@ -144,9 +144,11 @@
             <input id="tab2" type="radio" name="tabs">
             <label for="tab2">รายการสวัสดิการที่ขอใช้สิทธิ</label>
 
-            <input id="tab3" type="radio" name="tabs">
-            <label for="tab3">ประกันสังคม
+            <template is="dom-if" if={{data.sso_open}}>
+                <input id="tab3" type="radio" name="tabs">
+                <label for="tab3">ประกันสังคม
             </label>
+            </template>
             <template is="dom-if" if={{data.fund_open}}>
                 <input id="tab4" type="radio" name="tabs">
                 <label for="tab4">กองทุน</label>
@@ -154,12 +156,12 @@
             <section id="content1">
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <br>
-                                <div class="content horizontal end-justified layout">
-                                    <paper-button raised on-tap="getWelfareHave">
-                                        <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> สวัสดิการที่ได้รับสิทธิ
-                                    </paper-button>
-                                </div>
-                                <br>
+                    <div class="content horizontal end-justified layout">
+                        <paper-button raised on-tap="getWelfareHave">
+                            <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> สวัสดิการที่ได้รับสิทธิ
+                        </paper-button>
+                    </div>
+                    <br>
                     <div class="content horizontal center-justified layout">
                         <vaadin-grid id="material" items={{data.group_welfares}}>
                             <vaadin-grid-column width="50px" flex-grow="0">
@@ -276,14 +278,12 @@
 
                 </div>>
             </section>
-            <template is="dom-if" if={{data.fund_open}}>
-                <section id="content4">
-                    <div class="content center-justified layout">
-                        <div class="history">กองทุน</div>
-                        <history-rvd data={{data}}></history-rvd>
-                    </div>
-                </section>
-            </template>
+            <section id="content4">
+                <div class="content center-justified layout">
+                    <div class="history">กองทุน</div>
+                    <history-rvd data={{data}}></history-rvd>
+                </div>
+            </section>
         </main>
         <paper-dialog id="welfare_budget" modal>
             <paper-dialog-scrollable>
@@ -400,7 +400,7 @@
                     description: item.description,
                     budget_cover: item.budget_balance,
                     budget_emp_cover: item.budget_balance_emp,
-                    type_group:item.type_group
+                    type_group: item.type_group
                 }
 
                 // console.log(data);

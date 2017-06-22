@@ -370,17 +370,17 @@ exports.welfaresYear = function (req, res) {
                     .count()
                     .gt(0),true,false
                 ),
-                sso_open: true//r.branch(
-                // r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
-                //     .filter({
-                //         status: true,
-                //         type_group: "fund"
-                //     })
-                //     .limit(1)
-                //     .coerceTo('Array')
-                //     .count()
-                //     .gt(0),true,false
-                // )
+                sso_open: r.branch(
+                r.db('welfare').table('history_welfare').getAll(req.params.id, { index: 'emp_id' })
+                    .filter({
+                        status: true,
+                        type_group: "sso"
+                    })
+                    .limit(1)
+                    .coerceTo('Array')
+                    .count()
+                    .gt(0),true,false
+                )
             }
         })
         // .merge((use_his) => {

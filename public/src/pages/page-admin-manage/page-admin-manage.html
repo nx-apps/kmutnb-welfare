@@ -192,10 +192,10 @@
 
                         <input id="tab2" type="radio" name="tabs" on-click="setVaadin">
                         <label for="tab2">ประวัติการใช้สวัสดิการ</label>
-
-                        <input id="tab3" type="radio" name="tabs">
-                        <label for="tab3">ประกันสังคม</label>
-
+                        <template is="dom-if" if={{data.sso_open}}>
+                            <input id="tab3" type="radio" name="tabs">
+                            <label for="tab3">ประกันสังคม</label>
+                        </template>
                         <template is="dom-if" if={{data.fund_open}}>
                             <input id="tab4" type="radio" name="tabs">
                             <label for="tab4">กองทุน</label>
@@ -329,16 +329,16 @@
                                 <div class="history">ประกันสังคม</div>
                                 <history-sso data={{data}}></history-sso>
 
-                            </div>>
+                            </div>
                         </section>
-                        <template is="dom-if" if={{data.fund_open}}>
+                        <!--<template is="dom-if" if={{data.fund_open}}>-->
                             <section id="content4">
                                 <div class="content center-justified layout">
                                     <div class="history">กองทุน</div>
                                     <history-rvd data={{data}}></history-rvd>
                                 </div>
                             </section>
-                        </template>
+                        <!--</template>-->
                     </main>
 
                 </gl-form-panel-body>
