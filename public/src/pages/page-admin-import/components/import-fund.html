@@ -8,9 +8,14 @@
         .text-center {
             text-align: center;
         }
-
         .input-file {
             margin: 20px;
+        }
+        .text-empty {
+            text-align:right;
+            margin:30px 0px 30px 30px;
+            font-size: h4;
+            font-weight: bold;
         }
     </style>
     <template>
@@ -27,88 +32,124 @@
             <paper-button raised on-tap="_preview">อัพโหลด</paper-button>
         </div>        
 
-        <vaadin-grid items={{list}}>
-            <vaadin-grid-column width="50px" flex-grow="0">
-                <template class="header">
-                    <div class="text-center">ลำดับ</div>
-                </template>
-                <template>
-                    <div class="text-center">[[_Obindex(index)]]</div>
-                </template>
-            </vaadin-grid-column>
+        <template is="dom-if" if={{_obData(list)}}>
+            <vaadin-grid items={{list}}>
+                <vaadin-grid-column width="50px" flex-grow="0">
+                    <template class="header">
+                        <div class="text-center">ลำดับ</div>
+                    </template>
+                    <template>
+                        <div class="text-center">[[_Obindex(index)]]</div>
+                    </template>
+                </vaadin-grid-column>
 
-            <vaadin-grid-column width="250px" flex-grow="0">
-                <template class="header">
-                    ชื่อ-นามสกุล
-                </template>
-                <template>
-                    {{item.emp_name}}
-                </template>
-            </vaadin-grid-column>
+                <vaadin-grid-column width="250px" flex-grow="0">
+                    <template class="header">
+                        ชื่อ-นามสกุล
+                    </template>
+                    <template>
+                        {{item.emp_name}}
+                    </template>
+                </vaadin-grid-column>
 
-            <vaadin-grid-column width="200px" flex-grow="0">
-                <template class="header">
-                    เลขบัตรประชาชน
-                </template>
-                <template>
-                    {{item.personal_id}}
-                </template>
-            </vaadin-grid-column>
+                <vaadin-grid-column width="200px" flex-grow="0">
+                    <template class="header">
+                        เลขบัตรประชาชน
+                    </template>
+                    <template>
+                        {{item.personal_id}}
+                    </template>
+                </vaadin-grid-column>
 
-            <vaadin-grid-column width="200px" flex-grow="0">
-                <template class="header">
-                    นโยบาย
-                </template>
-                <template>
-                    {{item.policy_code}}
-                </template>
-            </vaadin-grid-column>
+                <vaadin-grid-column width="200px" flex-grow="0">
+                    <template class="header">
+                        นโยบาย
+                    </template>
+                    <template>
+                        {{item.policy_code}}
+                    </template>
+                </vaadin-grid-column>
 
-            <vaadin-grid-column width="150px" flex-grow="0">
-                <template class="header">
-                    เงินสะสม
-                </template>
-                <template>
-                    {{item.emp_con}}
-                </template>
-            </vaadin-grid-column>
+                <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">
+                        เงินสะสม
+                    </template>
+                    <template>
+                        {{item.emp_con}}
+                    </template>
+                </vaadin-grid-column>
 
-            <vaadin-grid-column width="150px" flex-grow="0">
-                <template class="header">
-                    ประโยชน์เงินสะสม
-                </template>
-                <template>
-                    {{item.emp_ear}}
-                </template>
-            </vaadin-grid-column>
+                <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">
+                        ประโยชน์เงินสะสม
+                    </template>
+                    <template>
+                        {{item.emp_ear}}
+                    </template>
+                </vaadin-grid-column>
 
-            <vaadin-grid-column width="150px" flex-grow="0">
-                <template class="header">
-                    เงินสมทบ
-                </template>
-                <template>
-                    {{item.com_con}}
-                </template>
-            </vaadin-grid-column>
+                <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">
+                        เงินสมทบ
+                    </template>
+                    <template>
+                        {{item.com_con}}
+                    </template>
+                </vaadin-grid-column>
 
-            <vaadin-grid-column width="150px" flex-grow="0">
-                <template class="header">
-                    รวม
-                </template>
-                <template>
-                    {{item.total}}
-                </template>
-            </vaadin-grid-column>
+                <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">
+                        รวม
+                    </template>
+                    <template>
+                        {{item.total}}
+                    </template>
+                </vaadin-grid-column>
 
-            <vaadin-grid-column width="150px" flex-grow="0">
-                <template class="header">
-                    วันที่ทำการ
-                </template>
-                <template>
-                    {{item.fund_date}}
-                </template>
-            </vaadin-grid-column>
-        </vaadin-grid>
+                <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">
+                        วันที่ทำการ
+                    </template>
+                    <template>
+                        {{item.fund_date}}
+                    </template>
+                </vaadin-grid-column>
+            </vaadin-grid>
+        </template>
+
+        <template is="dom-if" if={{!_obData(list)}}>
+            <vaadin-grid items="{{list_empty}}">
+                <vaadin-grid-column width="5%" flex-grow="0">
+                    <template class="header"><div class="text-center">ลำดับ</div></template>
+                    <template></template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="25%" flex-grow="0">
+                    <template class="header">ชื่อ-นามสกุล</template>
+                    <template></template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="20%" flex-grow="0">
+                    <template class="header">รหัสบัตรประชาชน</template>
+                    <template><div class="text-empty">[[item.name]]</div></template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="20%" flex-grow="0">
+                    <template class="header">สถานพยาบาล</template>
+                    <template></template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="15%" flex-grow="0">
+                    <template class="header"><div class="text-center">วันที่ออกบัตร</div></template>
+                    <template><div class="text-center"></div></template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="15%" flex-grow="0">
+                    <template class="header"><div class="text-center">วันที่บัตรหมดอายุ</div></template>
+                    <template><div class="text-center"></div></template>
+                </vaadin-grid-column>
+            </vaadin-grid>
+        </template>
 
         <div class="horizontal end-justified layout" style="margin:20px 0px 10px 0px">
             <paper-button raised on-tap="_cancle">ยกเลิก</paper-button>
@@ -130,6 +171,10 @@
                 },
                 list_sheet: {
                     statePath: 'fund.list_sheet'
+                },
+                list_empty: {
+                    type:Array,
+                    value: [{name:'ไม่มีข้อมูล'}]
                 }
             },
             _Obindex: function (index) {
@@ -195,6 +240,13 @@
                     dropDis.disabled = false;
                 } else {
                     dropDis.disabled = true;
+                }
+            },
+            _obData:function(data){
+                if(data.length > 0){
+                    return true
+                }else{
+                    return false
                 }
             }
         })
