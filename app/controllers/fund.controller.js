@@ -127,7 +127,14 @@ exports.insert = function (req, res) {
     var mergeEmp = r.expr(datas)
         .merge(function (m) {
             var emp = r.db('welfare').table('employee').getAll(m('personal_id'), { index: 'personal_id' })
-                .filter({ active_name: "ทำงาน" });
+                .filter({ active_name: "ทำงาน" })
+                .without('date_update', 'date_create')
+                .merge(function (m) {
+                    return {
+                        date_created: r.now().inTimezone('+07:00'),
+                        date_updated: r.now().inTimezone('+07:00')
+                    }
+                })
             return r.branch(emp.count().eq(0),
                 {},
                 emp.merge(function (m2) {
@@ -146,7 +153,7 @@ exports.insert = function (req, res) {
 }
 exports.getSheets = function (req, res) {
     var XLSX = require('xlsx');
-    var workbook = XLSX.readFile('../kmutnb-welfare/public/files/fund/'+req.params.name);
+    var workbook = XLSX.readFile('../kmutnb-welfare/public/files/fund/' + req.params.name);
     var file = workbook.Sheets;
     var sheets = [];
     for (var sheet in file) {

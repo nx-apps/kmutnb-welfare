@@ -3,13 +3,15 @@
 
 <dom-module id="import-sso">
     <style include="iron-flex iron-flex-factors iron-flex-alignment">
-        .text-center{
+        .text-center {
             text-align: center;
         }
-        .input-file{
+
+        .input-file {
             margin: 20px;
         }
-        .text-center{
+
+        .text-center {
             text-align: center;
         }
     </style>
@@ -17,7 +19,7 @@
 
         <div class="input-file">
             <input type="file" id="myFile" style="width:300px;" on-change="_uploadFile">
-            <gl-form-dropdown-menu label="ชื่อชีท" placeholder="กรุณาเลือกชื่อชีท">
+            <gl-form-dropdown-menu label="ชื่อชีท" placeholder="กรุณาเลือกชื่อชีท" id="dropdown">
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectSheet}}">
                     <template is="dom-repeat" items="{{list_sheet}}">
                         <paper-item value="{{item}}">{{item}}</paper-item>
@@ -91,7 +93,7 @@
                 </template>
             </vaadin-grid-column>-->
         </vaadin-grid>
-        
+
         <div class="horizontal end-justified layout" style="margin:20px 0px 10px 0px">
             <paper-button raised on-tap="_cancle">ยกเลิก</paper-button>
             <paper-button raised on-tap="_insert">เพิ่มลงฐานข้อมูล</paper-button>
@@ -102,50 +104,68 @@
         Polymer({
             is: 'import-sso',
             behaviors: [ReduxBehavior],
-            properties:{
-                select_file:{
+            properties: {
+                select_file: {
                     statePath: 'sso.data',
-                    observer : '_listSheets'
+                    observer: '_listSheets'
                 },
-                list:{
+                list: {
                     statePath: 'sso.list'
                 },
-                list_sheet:{
+                list_sheet: {
                     statePath: 'sso.list_sheet'
                 }
             },
-            _Obindex:function(index){
-                return index+1
+            _Obindex: function (index) {
+                return index + 1
             },
-            _preview:function(){
+            _preview: function () {
                 var data = {
-                    name : this.select_file.name,
-                    sheet : this.selectSheet
+                    name: this.select_file.name,
+                    sheet: this.selectSheet
                 };
-                var x = this.$$('#myFile');
-                x.disabled = true;
+                var uploadDis = this.$$('#myFile');
+                var dropDis = this.$$('#dropdown');
+                uploadDis.disabled = true;
+                dropDis.disabled = true;
                 this.dispatchAction('SSO_PREVIEW_DATA', data);
             },
-            _insert:function(){
+            _insert: function () {
                 var data = {
-                    name : this.select_file.name,
-                    sheet : this.selectSheet
+                    name: this.select_file.name,
+                    sheet: this.selectSheet
                 };
-                this.dispatchAction('SSO_INSERT', data);
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการเพิ่มข้อมูลลงฐานข้อมูลใช่หรือไม่ ?',
+                    confirmed: (result) => {
+                        if (result === true) {
+                            this.dispatchAction('SSO_INSERT', data);
+                        } else {
+                            this._cancle();
+                        }
+                    }
+                })
             },
-            _cancle:function(){
-                var x = this.$$('#myFile');
-                x.disabled = false;
+            _cancle: function () {
+                var uploadDis = this.$$('#myFile');
+                uploadDis.disabled = false;
+                var dropDis = this.$$('#dropdown');
+                dropDis.disabled = false;
             },
-            _uploadFile:function(e){
+            _uploadFile: function (e) {
                 // console.log(e.currentTarget.files)
                 var file = e.currentTarget.files;
                 this.dispatchAction('SSO_UPLOADFILE', file)
             },
-            _listSheets:function(data){
+            _listSheets: function (data) {
+                var dropDis = this.$$('#dropdown');
                 var checkObject = JSON.stringify(data) === JSON.stringify({});
-                if(checkObject === false){
+                if (checkObject === false) {
                     this.dispatchAction('SSO_GET_SHEET', data.name);
+                    dropDis.disabled = false;
+                } else {
+                    dropDis.disabled = true;
                 }
             }
         })
