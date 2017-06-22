@@ -334,15 +334,19 @@
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             },
             setYear(year) {
+                try {
+                    if (year.history_fund_year !== undefined) {
+                        let history_year = year.history_fund_year
+                        let i = 0
+                        history_year.map((item) => {
+                            i++
+                        })
+                        this.set('data.year', history_year[i - 1].year)
+                    }
+                } catch (error) {
 
-                if (year.history_fund_year !== undefined) {
-                    let history_year = year.history_fund_year
-                    let i = 0
-                    history_year.map((item) => {
-                        i++
-                    })
-                    this.set('data.year', history_year[i - 1].year)
                 }
+
 
             },
             _insertEmployee: function () {
@@ -357,11 +361,11 @@
                 try {
                     if (this.report_id === 10) {
                         this.$$('#FUND').open()
-                    }else if(this.report_id !== 8) {
+                    } else if (this.report_id !== 8) {
                         this.$$('#report').open()
                     } else {
                         this.$$('#RETIREMENT').open()
-                    } 
+                    }
 
                 } catch (e) {
 
@@ -376,24 +380,24 @@
                 console.log(this.data.date);
                 window.open('/api/report/retire?date=' + this.data.date + '&export=' + this.report_type_seleted);
             },
-            printFund:function (){
+            printFund: function () {
                 let idReport = this.report_id + 1
-                    const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
-                    const checkUndefined = (value) => value !== undefined && value !== ''
-                    const data = JSON.parse(JSON.stringify(this.data))
-                    if (checkUndefined(this.data.group_id))
-                        data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
-                    if (checkUndefined(this.data.faculty_id))
-                        data.faculty_name = getName(this.list_faculty, this.data.faculty_id).faculty_name
-                    if (checkUndefined(this.data.department_id)) {
-                        let department_list = getName(this.list_faculty, this.data.faculty_id).department
-                        data.department_name = getName(department_list, data.department_id).department_name
-                    }
+                const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
+                const checkUndefined = (value) => value !== undefined && value !== ''
+                const data = JSON.parse(JSON.stringify(this.data))
+                if (checkUndefined(this.data.group_id))
+                    data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
+                if (checkUndefined(this.data.faculty_id))
+                    data.faculty_name = getName(this.list_faculty, this.data.faculty_id).faculty_name
+                if (checkUndefined(this.data.department_id)) {
+                    let department_list = getName(this.list_faculty, this.data.faculty_id).department
+                    data.department_name = getName(department_list, data.department_id).department_name
+                }
 
-                    if (checkUndefined(this.data.type_employee_id))
-                        data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
+                if (checkUndefined(this.data.type_employee_id))
+                    data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
 
-                 window.open('/api/report/fund/fund01?'+this.genUrl(data) + '&export=' + this.report_type_seleted);
+                window.open('/api/report/fund/fund01?' + this.genUrl(data) + '&export=' + this.report_type_seleted);
             },
             printReport: function () {
                 try {
