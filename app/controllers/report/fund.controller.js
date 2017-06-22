@@ -48,6 +48,10 @@ function monthDiff(d1, d2) {
 }
 var arr_month = ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 
+function getMonth(month) {
+    return r.expr(["", "มกราคม", "กุมภาพันธ์", "มีนาคม", 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'])(month)
+}
+
 function keysToUpper(param) {
     var keyname = Object.keys(param);
     for (var i = 0; i < keyname.length; i++) {
@@ -96,16 +100,20 @@ exports.fund01 = function (req, res) {
     var data = r.db('welfare').table('history_fund');//;
     if (param.policy_code === undefined && param.month === undefined) {
         data = data.getAll(param.year, { index: 'fund_year' })
+        // res.json(1)
     } else if (param.policy_code !== undefined && param.month === undefined) {
         data = data.getAll([param.year, param.policy_code], { index: 'yearPolicy' })
+        // res.json(2)
     } else if (param.policy_code !== undefined && param.month !== undefined) {
         data = data.getAll([param.year, param.month, param.policy_code], { index: 'yearMonthPolicy' })
+        // res.json(3)
     } else if (param.policy_code === undefined && param.month !== undefined) {
         data = data.getAll([param.year, param.month], { index: 'yearMonth' })
+        // res.json(4)
     }
     r.expr({
-        data: data.group('personal_id').ungroup()//.count()
-            .coerceTo('array') //.limit(20)//.orderBy('fund_code')
+        data: data.coerceTo('array').group('personal_id').ungroup()//.count()
+            //.limit(20)//.orderBy('fund_code')
             // .filter({ policy_code : param.policy_code,
             //          fund_year: param.year,
             //          fund_month : param.month
@@ -125,7 +133,7 @@ exports.fund01 = function (req, res) {
                     fund_uname: m2('reduction')('fund_uname')(0),
                 }
             })
-            // .without('reduction')
+        // .without('reduction')
     }).merge(function (m) {
         return {
             params: r.branch(m('data').count().gt(0),
@@ -147,6 +155,7 @@ exports.fund01 = function (req, res) {
             // res.json(data['params']);
             res.ireport("fund01.jasper", req.query.EXPORT || req.query.export || "pdf", data['data'], data['params']);
         });
+
 }
 exports.fund02 = function (req, res) {
     var r = req.r;
@@ -161,6 +170,7 @@ exports.fund02 = function (req, res) {
     r.expr({
         data: r.db('welfare').table('history_fund')
             .getAll([param.year, param.personal_id], { index: 'yearPID' })
+            .merge({ fund_month: getMonth(r.row('fund_month')) })
             .coerceTo('array')
     }).merge(function (m) {
         return {
