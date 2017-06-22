@@ -5,36 +5,41 @@ var stream = require('stream');
 
 var readExcel = function (nameFile, sheet) {
     var XLSX = require('xlsx');
-    var workbook = XLSX.readFile('../kmutnb-welfare/public/files/sso/' + nameFile);
+    var workbook = XLSX.readFile('../kmutnb-welfare/public/files/fund/' + nameFile);
 
     var file = workbook.Sheets;
-    var sheetname = sheet;//"ทะเบียน";
-    var rowNo = 4;
+    var sheetname = sheet;//"Sheet1";
+    var startRow = 1;
+    var fund_name = file[sheetname]['B' + startRow].v;
+    var uname = file[sheetname]['B' + (startRow += 1)].v;
+    var company = file[sheetname]['B' + (startRow += 1)].v;
+    var monthly = file[sheetname]['B' + (startRow += 2)].v;
+    var month = parseInt(monthly.split('/')[1]);
+    var year = parseInt(monthly.split('/')[0]) - 543;
+    var rowNo = startRow + 4;
     var datas = [];
-    var faculty_name = "";
-    while (typeof file[sheetname]['B' + rowNo] !== "undefined" || typeof file[sheetname]['C' + rowNo] !== "undefined") {
-
-        if (typeof file[sheetname]['B' + rowNo] !== "undefined") {
-            var data = {};
-            data.personal_id = file[sheetname]['B' + rowNo].v.replace(/-/g, "").toString();
-            var pid = ''
-            data.personal_id = file[sheetname]['B' + rowNo].v.split('-').join("")
-            data.prefix_name = file[sheetname]['C' + rowNo].v;
-            data.first_name = file[sheetname]['D' + rowNo].v;
-            data.last_name = file[sheetname]['E' + rowNo].v;
-            data.hospital = file[sheetname]['F' + rowNo].v;
-            data.issued_date = new Date(file[sheetname]['G' + rowNo].w);
-            data.expired_date = new Date(file[sheetname]['H' + rowNo].w);
-            data.faculty_name = faculty_name;
-            // data.date_created = r.now().inTimezone('+07'),
-            // data.date_updated = r.now().inTimezone('+07'),
-
-            datas.push(data);
-            // res.json(data);
-        } else {
-            faculty_name = file[sheetname]['C' + rowNo].v;
-        }
-        rowNo += 1;
+    while (typeof file[sheetname]['B' + rowNo] !== "undefined") {
+        var data = {
+            emp_name: file[sheetname]['A' + rowNo].v,
+            personal_id: Math.abs(file[sheetname]['B' + rowNo].v).toString(),
+            fund_company: company,
+            fund_month: month,
+            fund_year: year,
+            fund_name: fund_name,
+            fund_uname: uname,
+            policy_code: file[sheetname]['A' + (rowNo += 2)].v,
+            policy_name: file[sheetname]['B' + rowNo].v,
+            fund_date: file[sheetname]['B' + (rowNo += 1)].v,
+            emp_con: file[sheetname]['D' + rowNo].v,
+            emp_ear: file[sheetname]['E' + rowNo].v,
+            com_con: file[sheetname]['F' + rowNo].v,
+            com_ear: file[sheetname]['G' + rowNo].v,
+            total: file[sheetname]['H' + rowNo].v,
+            // date_created: r.now().inTimezone('+07'),
+            // date_updated: r.now().inTimezone('+07')
+        };
+        datas.push(data);
+        rowNo += 3;
     }
     return datas
 }
@@ -91,7 +96,7 @@ exports.downloadFile = function (req, res) {
             // bufferStream.end(result.contents);
             // bufferStream.pipe(res);
 
-            fs.writeFile('./public/files/sso/' + result[0].name, result[0].contents, ['utf8'], (err) => {
+            fs.writeFile('./public/files/fund/' + result[0].name, result[0].contents, ['utf8'], (err) => {
                 if (err) {
                     return console.log(err);
                 }
@@ -117,32 +122,31 @@ exports.getfile = function (req, res) {
 exports.insert = function (req, res) {
     var r = req.r;
     var datas = readExcel(req.body.name, req.body.sheet);
-    datas.map((item) => {
-        return item.date_created = new Date(),
-            item.date_updated = new Date()
-    })
-    // res.json(datas);
-    r.db('welfare').table('history_sso').insert(datas)
+    var month = datas[0].fund_month;
+    var year = datas[0].fund_year;
+    var mergeEmp = r.expr(datas)
+        .merge(function (m) {
+            var emp = r.db('welfare').table('employee').getAll(m('personal_id'), { index: 'personal_id' })
+                .filter({ active_name: "ทำงาน" });
+            return r.branch(emp.count().eq(0),
+                {},
+                emp.merge(function (m2) {
+                    return { emp_id: m2('id') }
+                }).without('id')(0)
+            )
+        });
+    r.db('welfare').table('history_fund').getAll([year, month], { index: 'yearMonth' }).delete()
+        .do(function (d) {
+            return r.db('welfare').table('history_fund').insert(mergeEmp)
+        })
         .run()
         .then(function (result) {
             res.json(result);
         })
-        .catch(function (err) {
-            res.status(500).json(err)
-        })
-        
-    // r.db('welfare').table('test_sso').insert(datas)
-    //     .run()
-    //     .then(function (result) {
-    //         res.json(result);
-    //     })
-    //     .catch(function (err) {
-    //         res.status(500).json(err)
-    //     })
 }
 exports.getSheets = function (req, res) {
     var XLSX = require('xlsx');
-    var workbook = XLSX.readFile('../kmutnb-welfare/public/files/sso/'+req.params.name);
+    var workbook = XLSX.readFile('../kmutnb-welfare/public/files/fund/'+req.params.name);
     var file = workbook.Sheets;
     var sheets = [];
     for (var sheet in file) {

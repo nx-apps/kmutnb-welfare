@@ -7,22 +7,22 @@ const initialState = {
     list_sheet: []
 }
 
-export function ssoReducer(state = initialState, action) {
+export function fundReducer(state = initialState, action) {
     switch (action.type) {
-        case 'SSO_SELECT_UPLOAD':
+        case 'FUND_SELECT_UPLOAD':
             return Object.assign({}, state, { data: action.payload });
-        case 'SSO_PREVIEW_DATA':
+        case 'FUND_PREVIEW_DATA':
             return Object.assign({}, state, { list: action.payload });
-        case 'SSO_GET_SHEET':
-            return Object.assign({}, state, { list_sheet: action.payload});
+        case 'FUND_GET_SHEET':
+            return Object.assign({}, state, { list_sheet: action.payload });
         default:
             return state
     }
 }
 
-export function ssoAction(store) {
+export function fundAction(store) {
     return [commonAction(), {
-        SSO_UPLOADFILE: function (file) {
+        FUND_UPLOADFILE: function (file) {
             // console.log(file[0]);
             var data = new FormData();
             data.append('file', file[0]);
@@ -30,16 +30,16 @@ export function ssoAction(store) {
                 onUploadProgress: function (progressEvent) {
                     var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                 },
-                headers: { 'ref-path': 'sso.file' }
+                headers: { 'ref-path': 'fund.file' }
             };
-            axios.post('./sso/upload', data, config)
+            axios.post('./fund/upload', data, config)
                 .then((response) => {
                     // console.log(response.data);
                     var id = response.data.generated_keys[0];
-                    axios.get('./sso/download/id/' + id)
+                    axios.get('./fund/download/id/' + id)
                         .then((result) => {
                             // console.log(result);
-                            store.dispatch({ type: 'SSO_SELECT_UPLOAD', payload: result.data[0] })
+                            store.dispatch({ type: 'FUND_SELECT_UPLOAD', payload: result.data[0] })
                         })
                         .catch((err) => {
                             console.log(err);
@@ -49,22 +49,13 @@ export function ssoAction(store) {
                     console.log(err);
                 })
         },
-        SSO_PREVIEW_DATA: function (data) {
+        FUND_PREVIEW_DATA: function (data) {
             this.fire('toast', { status: 'load' });
-            axios.get('./sso/getfile/name/' + data.name + '/sheet/' + data.sheet)
+            axios.get('./fund/getfile/name/' + data.name + '/sheet/' + data.sheet)
                 .then((result) => {
-                    // console.log(result);
-                    for (var i = 0; i <= result.data.length; i++) {
-                        if (result.data[i]) {
-                            // console.log(result.data[i]);
-                            var data = result.data[i];
-                            data.issued_date = data.issued_date.split('T')[0];
-                            data.expired_date = data.expired_date.split('T')[0];
-                        }
-                    }
                     this.fire('toast', {
                         status: 'success', text: 'โหลดข้อมูลสำเร็จ', callback: () => {
-                            store.dispatch({ type: 'SSO_PREVIEW_DATA', payload: result.data })
+                            store.dispatch({ type: 'FUND_PREVIEW_DATA', payload: result.data })
                         }
                     });
                 })
@@ -72,11 +63,11 @@ export function ssoAction(store) {
                     console.log(err);
                 })
         },
-        SSO_INSERT: function (data) {
+        FUND_INSERT: function (data) {
             this.fire('toast', { status: 'load' });
-            axios.post('./sso/insert', data)
+            axios.post('./fund/insert', data)
                 .then((response) => {
-                    this.fire('toast', {
+                    this.fire('toast', { 
                         status: 'success', text: 'เก็บข้อมูลลงฐานข้อมูลสำเร็จ', callback: () => {
                             // console.log(response);
                         }
@@ -86,13 +77,13 @@ export function ssoAction(store) {
                     console.log(err)
                 })
         },
-        SSO_GET_SHEET: function (nameFile) {
-            axios.get('./sso/sheet/' + nameFile)
+        FUND_GET_SHEET: function (nameFile) {
+            axios.get('./fund/sheet/' + nameFile)
                 .then((result) => {
-                    store.dispatch({ type: 'SSO_GET_SHEET', payload: result.data });
+                    store.dispatch({ type: 'FUND_GET_SHEET', payload: result.data })
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.log(err)
                 })
         }
     }]

@@ -17,6 +17,13 @@
 
         <div class="input-file">
             <input type="file" id="myFile" style="width:300px;" on-change="_uploadFile">
+            <gl-form-dropdown-menu label="ชื่อชีท" placeholder="กรุณาเลือกชื่อชีท">
+                <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectSheet}}">
+                    <template is="dom-repeat" items="{{list_sheet}}">
+                        <paper-item value="{{item}}">{{item}}</paper-item>
+                    </template>
+                </paper-listbox>
+            </gl-form-dropdown-menu>
             <paper-button raised on-tap="_preview">อัพโหลด</paper-button>
         </div>
 
@@ -87,7 +94,7 @@
         
         <div class="horizontal end-justified layout" style="margin:20px 0px 10px 0px">
             <paper-button raised on-tap="_cancle">ยกเลิก</paper-button>
-            <paper-button raised on-tap="_upload">เพิ่มลงฐานข้อมูล</paper-button>
+            <paper-button raised on-tap="_insert">เพิ่มลงฐานข้อมูล</paper-button>
         </div>
     </template>
 
@@ -96,32 +103,35 @@
             is: 'import-sso',
             behaviors: [ReduxBehavior],
             properties:{
-                data:{
-                    type:Array,
-                    value:[
-                        {name:'ice'},
-                        {name:'test'}
-                        ]
-                },
                 select_file:{
-                    statePath: 'sso.data'
+                    statePath: 'sso.data',
+                    observer : '_listSheets'
                 },
                 list:{
                     statePath: 'sso.list'
+                },
+                list_sheet:{
+                    statePath: 'sso.list_sheet'
                 }
             },
             _Obindex:function(index){
                 return index+1
             },
             _preview:function(){
-                // console.log(this.select_file);
+                var data = {
+                    name : this.select_file.name,
+                    sheet : this.selectSheet
+                };
                 var x = this.$$('#myFile');
                 x.disabled = true;
-                this.dispatchAction('SSO_CLICK_UPLOAD', this.select_file.name);
+                this.dispatchAction('SSO_PREVIEW_DATA', data);
             },
-            _upload:function(){
-                // console.log(this.list);
-                this.dispatchAction('SSO_INSERT', this.list);
+            _insert:function(){
+                var data = {
+                    name : this.select_file.name,
+                    sheet : this.selectSheet
+                };
+                this.dispatchAction('SSO_INSERT', data);
             },
             _cancle:function(){
                 var x = this.$$('#myFile');
@@ -131,6 +141,12 @@
                 // console.log(e.currentTarget.files)
                 var file = e.currentTarget.files;
                 this.dispatchAction('SSO_UPLOADFILE', file)
+            },
+            _listSheets:function(data){
+                var checkObject = JSON.stringify(data) === JSON.stringify({});
+                if(checkObject === false){
+                    this.dispatchAction('SSO_GET_SHEET', data.name);
+                }
             }
         })
     </script>

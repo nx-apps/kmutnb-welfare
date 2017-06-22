@@ -18,6 +18,7 @@ import {chartReducer,chartAction} from './reducer/chart'
 import {systemConfigsReducer,systemConfigsAction} from './reducer/systemConfigs'
 import {retierReducer,retierAction} from './reducer/retier'
 import {ssoReducer,ssoAction} from './reducer/sso'
+import {fundReducer,fundAction} from './reducer/fund'
 
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
@@ -35,7 +36,8 @@ const rootReducer = combineReducers({
     chart: chartReducer,
     systemConfigs: systemConfigsReducer,
     retier:retierReducer,
-    sso:ssoReducer
+    sso:ssoReducer,
+    fund:fundReducer
 });
 const storeApp = createStore(
     rootReducer,
@@ -61,3 +63,4 @@ window.chartAction = chartAction(storeApp);
 window.systemConfigsAction = systemConfigsAction(storeApp);
 window.retierAction = retierAction(storeApp);
 window.ssoAction = ssoAction(storeApp);
+window.fundAction = fundAction(storeApp);
