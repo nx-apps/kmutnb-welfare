@@ -3,9 +3,18 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<import value="nylon.report.*"/>
 	<parameter name="CURRENT_DATE" class="java.lang.String"/>
 	<parameter name="YEAR" class="java.lang.Integer"/>
-	<field name="fund_code" class="java.lang.String"/>
+	<parameter name="MONTHNAME" class="java.lang.String"/>
+	<parameter name="FUND_NAME" class="java.lang.String"/>
+	<parameter name="FUND_COMPANY" class="java.lang.String"/>
+	<parameter name="FUND_UNAME" class="java.lang.String"/>
+	<parameter name="MONTHNAME_1" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Accounting\\Documents\\Project\\kmutnb-welfare\\app\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<field name="policy_code" class="java.lang.String"/>
 	<field name="emp_con" class="java.lang.Double"/>
 	<field name="emp_ear" class="java.lang.Double"/>
 	<field name="com_con" class="java.lang.Double"/>
@@ -13,12 +22,13 @@
 	<field name="total" class="java.lang.Double"/>
 	<field name="fund_date" class="java.lang.String"/>
 	<field name="emp_name" class="java.lang.String"/>
+	<field name="reduction" class="java.lang.Object"/>
 	<variable name="CURRENT_PAGE" class="java.lang.Integer" resetType="None" calculation="DistinctCount">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
 	</variable>
 	<group name="gp">
-		<groupExpression><![CDATA[$F{fund_code}]]></groupExpression>
+		<groupExpression><![CDATA[$F{policy_code}]]></groupExpression>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
@@ -26,7 +36,7 @@
 	<title>
 		<band height="99" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="14" width="802" height="20" uuid="e78e79aa-dba9-4882-8d91-1a3e488c7ce3"/>
+				<reportElement x="0" y="29" width="802" height="20" uuid="c817b13b-8d95-45da-88af-09a315742fa6"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -37,10 +47,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["กองทุน : สินสถาพร (01272541)"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{FUND_UNAME}== null ?"":$P{FUND_UNAME})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="34" width="802" height="20" uuid="e46562e7-98c8-48d2-9a6d-a3629fe5702d"/>
+				<reportElement x="0" y="9" width="802" height="20" uuid="147ab79b-e770-47a1-8bc2-46f40c8b0bb6"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -51,10 +61,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ (0127254101140)"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{FUND_NAME}== null ?"":"กองทุน : "+$P{FUND_NAME})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="54" width="802" height="20" uuid="d2d8a7f3-535c-4904-bf22-9db66fe8dba5"/>
+				<reportElement x="0" y="49" width="802" height="20" uuid="c810e835-60ee-4138-a171-667456be129d"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -65,10 +75,10 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["บริษัทหลักทรัพย์จัดการกองทุนรวม บัวหลวง จำกัด (BBLAM)"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{FUND_COMPANY}== null ?"":$P{FUND_COMPANY})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="74" width="802" height="20" uuid="2f2b07a3-afb1-4639-8428-529b298901de"/>
+				<reportElement x="0" y="69" width="802" height="20" uuid="c9dfcfce-cace-40a6-88d0-e1f4c5d51951"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -79,7 +89,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($P{YEAR}== null ?" ":"ประจำปี "+($P{YEAR}+543))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{YEAR}== null ?" ":"ประจำปี "+($P{YEAR}+543)+" "+$P{MONTHNAME})]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -230,20 +240,6 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField>
-				<reportElement x="192" y="0" width="120" height="20" uuid="30295281-5d0b-474f-8992-1bb6a208203b"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{fund_code}]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="312" y="0" width="100" height="20" uuid="54e5aa45-318b-4ed6-be8f-b9c8eac9d186"/>
 				<box leftPadding="5" rightPadding="5">
@@ -315,7 +311,21 @@
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="42" y="0" width="150" height="20" uuid="d8bc7c19-98ba-4e7a-b236-23c26bf9a41c"/>
+				<reportElement x="0" y="0" width="42" height="20" uuid="4aed2fe3-4727-4aa1-a351-7c72b9c86a75"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="42" y="0" width="150" height="20" uuid="2e004121-3ad4-4483-95a5-9eeaad9c59a5"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="1.0"/>
@@ -329,7 +339,7 @@
 				<textFieldExpression><![CDATA[$F{emp_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="42" height="20" uuid="4aed2fe3-4727-4aa1-a351-7c72b9c86a75"/>
+				<reportElement x="192" y="0" width="120" height="20" uuid="5c79f0af-0259-4b0b-8d39-47fcf58fd452"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="1.0"/>
@@ -337,10 +347,10 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{policy_code}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
