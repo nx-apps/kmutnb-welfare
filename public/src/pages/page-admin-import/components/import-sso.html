@@ -1,5 +1,7 @@
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
+<link rel="import" href="./../../components/validateFormBehaviors.html">
+<link rel="import" href="./../../components/format-number-behavior.html">
 
 <dom-module id="import-sso">
     <style include="iron-flex iron-flex-factors iron-flex-alignment">
@@ -19,7 +21,7 @@
 
         <div class="input-file">
             <input type="file" id="myFile" style="width:300px;" on-change="_uploadFile">
-            <gl-form-dropdown-menu label="ชื่อชีท" placeholder="กรุณาเลือกชื่อชีท" id="dropdown">
+            <gl-form-dropdown-menu class="checkValidate" required label="ชื่อชีท" placeholder="กรุณาเลือกชื่อชีท" id="dropdown">
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectSheet}}">
                     <template is="dom-repeat" items="{{list_sheet}}">
                         <paper-item value="{{item}}">{{item}}</paper-item>
@@ -83,15 +85,6 @@
                     <div class="text-center">{{item.expired_date}}</div>
                 </template>
             </vaadin-grid-column>
-
-            <!--<vaadin-grid-column width="150px" flex-grow="0">
-                <template class="header">
-                    วันที่ิอัพเดท
-                </template>
-                <template>
-                    {{item.name}}
-                </template>
-            </vaadin-grid-column>-->
         </vaadin-grid>
 
         <div class="horizontal end-justified layout" style="margin:20px 0px 10px 0px">
@@ -103,7 +96,7 @@
     <script>
         Polymer({
             is: 'import-sso',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior],
             properties: {
                 select_file: {
                     statePath: 'sso.data',
@@ -120,15 +113,28 @@
                 return index + 1
             },
             _preview: function () {
+                var uploadDis = this.$$('#myFile');
+                var dropDis = this.$$('#dropdown');
                 var data = {
                     name: this.select_file.name,
                     sheet: this.selectSheet
                 };
-                var uploadDis = this.$$('#myFile');
-                var dropDis = this.$$('#dropdown');
-                uploadDis.disabled = true;
-                dropDis.disabled = true;
-                this.dispatchAction('SSO_PREVIEW_DATA', data);
+                var check = this.validateForm('.checkValidate');
+                if(check === true){
+                    if(this.selectSheet !== undefined){
+                        this.dispatchAction('SSO_PREVIEW_DATA', data);
+                        uploadDis.disabled = true;
+                        dropDis.disabled = true;
+                    }else{
+                        this.fire('toast',{status:'connectError',text:'กรุณาเลือกไฟล์ที่จะอัพโหลด',
+                        callback:function(){
+                        }})
+                    }
+                }else{
+                     this.fire('toast',{status:'connectError',text:'กรุณาเลือกชีท',
+                     callback:function(){
+                     }})
+                }
             },
             _insert: function () {
                 var data = {

@@ -1,5 +1,8 @@
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
+<link rel="import" href="./../../components/validateFormBehaviors.html">
+<link rel="import" href="./../../components/format-number-behavior.html">
+
 <dom-module id="import-fund">
     <style include="iron-flex iron-flex-factors iron-flex-alignment">
         .text-center {
@@ -14,7 +17,7 @@
 
         <div class="input-file">
             <input type="file" id="myFile" style="width:300px" on-change="_uploadFile">
-            <gl-form-dropdown-menu label="ชื่อชีท" placeholder="กรุณาเลือกชื่อชีท" id="dropdown">
+            <gl-form-dropdown-menu class="checkValidate" required label="ชื่อชีท" placeholder="กรุณาเลือกชื่อชีท" id="dropdown">
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectSheet}}">
                     <template is="dom-repeat" items="{{list_sheet}}">
                         <paper-item value="{{item}}">{{item}}</paper-item>
@@ -22,7 +25,7 @@
                 </paper-listbox>
             </gl-form-dropdown-menu>
             <paper-button raised on-tap="_preview">อัพโหลด</paper-button>
-        </div>
+        </div>        
 
         <vaadin-grid items={{list}}>
             <vaadin-grid-column width="50px" flex-grow="0">
@@ -34,7 +37,25 @@
                 </template>
             </vaadin-grid-column>
 
-            <vaadin-grid-column width="350px" flex-grow="0">
+            <vaadin-grid-column width="250px" flex-grow="0">
+                <template class="header">
+                    ชื่อ-นามสกุล
+                </template>
+                <template>
+                    {{item.emp_name}}
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="200px" flex-grow="0">
+                <template class="header">
+                    เลขบัตรประชาชน
+                </template>
+                <template>
+                    {{item.personal_id}}
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="200px" flex-grow="0">
                 <template class="header">
                     นโยบาย
                 </template>
@@ -98,7 +119,7 @@
     <script>
         Polymer({
             is: 'import-fund',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior],
             properties: {
                 list: {
                     statePath: 'fund.list'
@@ -115,15 +136,28 @@
                 return index + 1
             },
             _preview: function () {
+                var uploadDis = this.$$('#myFile');
+                var dropDis = this.$$('#dropdown');
                 var data = {
                     name: this.select_file.name,
                     sheet: this.selectSheet
                 };
-                var uploadDis = this.$$('#myFile');
-                var dropDis = this.$$('#dropdown');
-                uploadDis.disabled = true;
-                dropDis.disabled = true;
-                this.dispatchAction('FUND_PREVIEW_DATA', data);
+                var check = this.validateForm('.checkValidate');
+                if(check === true){
+                    if(this.selectSheet !== undefined){
+                        this.dispatchAction('FUND_PREVIEW_DATA', data);
+                        uploadDis.disabled = true;
+                        dropDis.disabled = true;
+                    }else{
+                        this.fire('toast',{status:'connectError',text:'กรุณาเลือกไฟล์ที่จะอัพโหลด',
+                        callback:function(){
+                        }})
+                    }
+                }else{
+                     this.fire('toast',{status:'connectError',text:'กรุณาเลือกชีท',
+                     callback:function(){
+                     }})
+                }
             },
             _insert: function () {
                 var data = {
