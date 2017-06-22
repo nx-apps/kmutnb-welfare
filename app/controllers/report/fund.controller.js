@@ -125,7 +125,7 @@ exports.fund01 = function (req, res) {
                     fund_uname: m2('reduction')('fund_uname')(0),
                 }
             })
-
+            // .without('reduction')
     }).merge(function (m) {
         return {
             params: r.branch(m('data').count().gt(0),
