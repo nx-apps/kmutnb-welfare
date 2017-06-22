@@ -64,6 +64,7 @@
             .print {
                 margin-top: 15px;
             }
+
             paper-dialog {
                 min-width: 550px;
             }
@@ -176,28 +177,30 @@
 
         <paper-dialog id="FUND" modal>
             <div class="flex">
-            <h2 id="welfare_name"ออกรายงาน>กองทุน</h2>
-        </div>
+                <h2 id="welfare_name" ออกรายงาน>กองทุน</h2>
+            </div>
             <paper-dialog-scrollable>
-            <div class="layout horizontal start-justified">
-                <!--<div class="layout vertical start-justified">-->
+                <div class="layout horizontal start-justified">
+                    <!--<div class="layout vertical start-justified">-->
                     <div class="flex" style=" margin-right: 30px">
-                        <gl-combo-box id="fund" label="กลุ่ม"  placeholder="ทั้งหมด" always-float-label  items="{{listGroupFund}}" value="{{data.policy_code}}" item-label-path="policy_code" item-value-path="policy_code"> </gl-combo-box>
+                        <gl-combo-box id="fund" label="กลุ่ม" placeholder="ทั้งหมด" always-float-label items="{{listGroupFund}}" value="{{data.policy_code}}"
+                            item-label-path="policy_code" item-value-path="policy_code"> </gl-combo-box>
                     </div>
                     <div class="flex" style=" margin-right: 30px">
-                        <gl-combo-box id="month" label="เดือน" placeholder="ทั้งหมด" always-float-label  items="{{getMonth()}}" value="{{data.month}}" item-label-path="name" item-value-path="id">
+                        <gl-combo-box id="month" label="เดือน" placeholder="ทั้งหมด" always-float-label items="{{getMonth()}}" value="{{data.month}}"
+                            item-label-path="name" item-value-path="id">
                         </gl-combo-box>
                     </div>
                     <div class="flex" style=" margin-right: 30px">
-                        <gl-combo-box id="year" label="ปี" placeholder="ทั้งหมด" items="[[listYear.history_fund_year]]" value="{{data.year}}" item-label-path="year" item-value-path="year"
-            > </gl-combo-box>
+                        <gl-combo-box id="year" label="ปี" placeholder="ทั้งหมด" items="[[listYear.history_fund_year]]" value="{{data.year}}" item-label-path="year"
+                            item-value-path="year"> </gl-combo-box>
                     </div>
-                <!--</div>-->
-            </div>
+                    <!--</div>-->
+                </div>
             </paper-dialog-scrollable>
             <div class="flex horizontal end-justified layout buttons">
                 <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
-                <paper-button raised class="gl-btn-primary" on-tap="printReport" dialog-confirm autofocus>ออกรายงาน</paper-button>
+                <paper-button raised class="gl-btn-primary" on-tap="printFund" dialog-confirm autofocus>ออกรายงาน</paper-button>
             </div>
         </paper-dialog>
         <panel-right id="test" title="{{title}}">
@@ -220,7 +223,8 @@
                     type: Object,
                     value: {
                         date_start: new Date().toISOString().split('T')[0],
-                        date_end: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0]
+                        date_end: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0],
+                        year: ''
                     }
                 },
                 // date: {
@@ -270,6 +274,10 @@
                             report_id: 9,
                             report_name: 'รายงาน 10 รายสวัสดิการสมัครใจ'
                         },
+                        {
+                            report_id: 10,
+                            report_name: 'รายงาน 11 รายกงานกองทุน'
+                        },
                     ]
                 },
                 report_id: {
@@ -299,6 +307,7 @@
                 },
                 listYear: {
                     statePath: 'dateDb.listYear',
+                    observer: 'setYear'
                 },
                 listGroupFund: {
                     statePath: 'userWelfare.list_group_fund',
@@ -311,16 +320,7 @@
                 // this.TESTS();
                 this.WELFARE_LISTS();
                 this.GET_LIST_YEAR();
-                let date = new Date()
-                // let today = date.toISOString().split('T')[0]
-                // let tomorrow = new Date(date.setDate(date.getDate() + 7)).toISOString().split('T')[0]
-                // // this.set('data','')
-                // this.set('data.date', today)
-                // this.set('data.date', tomorrow)
-                // console.log(this.data);
-                // console.log(this.data.date_start);
 
-                //     data.date_end
                 // WELFARE_LIST
                 // this.dispatchAction('WELFARE_LIST');
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC');
@@ -333,6 +333,18 @@
                 this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
                 this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE');
             },
+            setYear(year) {
+
+                if (year.history_fund_year !== undefined) {
+                    let history_year = year.history_fund_year
+                    let i = 0
+                    history_year.map((item) => {
+                        i++
+                    })
+                    this.set('data.year', history_year[i - 1].year)
+                }
+
+            },
             _insertEmployee: function () {
                 this.set('title', 'เพิ่มสมาชิก')
                 this.$$('panel-right').open();
@@ -343,13 +355,13 @@
             },
             _print: function (e) {
                 try {
-                    if (this.report_id !== 8) {
+                    if (this.report_id === 10) {
+                        this.$$('#FUND').open()
+                    }else if(this.report_id !== 8) {
                         this.$$('#report').open()
                     } else {
                         this.$$('#RETIREMENT').open()
-                    } //else {
-                    // this.$$('#FUND').open()
-                    //}
+                    } 
 
                 } catch (e) {
 
@@ -359,9 +371,29 @@
 
 
             },
-            _printRetire() {
+            _printRetire: function () {
                 // const data = JSON.parse(JSON.stringify(this.data.data))
-                window.open('./api/report/retire?date=' + this.data.date + '&export=' + this.report_type_seleted);
+                console.log(this.data.date);
+                window.open('/api/report/retire?date=' + this.data.date + '&export=' + this.report_type_seleted);
+            },
+            printFund:function (){
+                let idReport = this.report_id + 1
+                    const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
+                    const checkUndefined = (value) => value !== undefined && value !== ''
+                    const data = JSON.parse(JSON.stringify(this.data))
+                    if (checkUndefined(this.data.group_id))
+                        data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
+                    if (checkUndefined(this.data.faculty_id))
+                        data.faculty_name = getName(this.list_faculty, this.data.faculty_id).faculty_name
+                    if (checkUndefined(this.data.department_id)) {
+                        let department_list = getName(this.list_faculty, this.data.faculty_id).department
+                        data.department_name = getName(department_list, data.department_id).department_name
+                    }
+
+                    if (checkUndefined(this.data.type_employee_id))
+                        data.type_employee_name = getName(this.list_type_employee, this.data.type_employee_id).type_employee_name
+
+                 window.open('/api/report/fund/fund01?'+this.genUrl(data) + '&export=' + this.report_type_seleted);
             },
             printReport: function () {
                 try {
@@ -369,8 +401,6 @@
                     const getName = (arrays, id) => arrays.find((wel) => wel.id === id)
                     const checkUndefined = (value) => value !== undefined && value !== ''
                     const data = JSON.parse(JSON.stringify(this.data))
-                    // console.log(data);
-                    // data.year = data.year - 543
                     if (checkUndefined(this.data.group_id))
                         data.group_name = getName(this.list_welfare, this.data.group_id).group_welfare_name
                     if (checkUndefined(this.data.faculty_id))
