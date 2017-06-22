@@ -2,9 +2,9 @@
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
 <link rel="import" href="./../../components/validateFormBehaviors.html">
 <link rel="import" href="./../../components/format-number-behavior.html">
-
+<link rel="import" href="./../../components/page-style.html">
 <dom-module id="import-sso">
-    <style include="iron-flex iron-flex-factors iron-flex-alignment">
+    <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
         .text-center {
             text-align: center;
         }
@@ -36,7 +36,7 @@
         </div>
 
         <template is="dom-if" if={{_obData(list)}}>
-            <vaadin-grid items="{{list}}">
+            <vaadin-grid id="material" items="{{list}}">
                 <vaadin-grid-column width="50px" flex-grow="0">
                     <template class="header">
                         <div class="text-center">ลำดับ</div>
@@ -129,7 +129,7 @@
 
         <div class="horizontal end-justified layout" style="margin:20px 0px 10px 0px">
             <paper-button raised on-tap="_cancle">ยกเลิก</paper-button>
-            <paper-button raised on-tap="_insert">เพิ่มลงฐานข้อมูล</paper-button>
+            <paper-button raised class="gl-btn-success" on-tap="_insert">เพิ่มลงฐานข้อมูล</paper-button>
         </div>
     </template>
 
