@@ -127,12 +127,14 @@ exports.fund01 = function (req, res) {
                     emp_ear: m2('reduction').sum('emp_ear'),
                     emp_name: m2('reduction')('emp_name')(0),
                     policy_code: m2('reduction')('policy_code')(0),
+                    personal_id: m2('reduction')('personal_id')(0),
                     total: m2('reduction').sum('total'),
                     fund_name: m2('reduction')('fund_name')(0),
                     fund_company: m2('reduction')('fund_company')(0),
                     fund_uname: m2('reduction')('fund_uname')(0),
                 }
             })
+            .orderBy('personal_id')
         // .without('reduction')
     }).merge(function (m) {
         return {
