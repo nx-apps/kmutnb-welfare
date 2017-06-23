@@ -8,7 +8,13 @@
         <div hidden>
             <list-year data="[[listYear.history_sso_year]]" year="{{year}}"></list-year>
         </div>
-
+        <div class="content horizontal end-justified layout">
+            <list-year data="[[listYear.history_fund_year]]" year="{{year}}"></list-year>
+            <paper-button raised on-tap="getSso">
+                <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> ประกันสังคม
+            </paper-button>
+        </div>
+        <br>
         <vaadin-grid id="material" items="[[list_history]]">
 
             <vaadin-grid-column width="50px" flex-grow="0">
@@ -99,6 +105,14 @@
             setTabel(e) {
                 this.$$('#material').notifyResize()
             },
+            getSso(){
+                let data = {
+                    year: this.year,
+                    personal_id: this.data.personal_id
+                }
+                window.open('/api/report/fund/sso?' + this.genUrl(data));
+
+            }
         });
     </script>
 </dom-module>
