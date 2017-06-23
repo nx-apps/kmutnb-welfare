@@ -117,7 +117,7 @@
                 </gl-grid-col>
             </gl-grid-row>
 
-            
+            {{isEnable_onetime}} test {{isEnable_admin}}
             <template is="dom-if" if={{_obTypeGroup(data.type_group)}}>
                 [[checkDisabled(isEnable)]]
                 <gl-grid-row style="margin-top: 10px">
@@ -159,6 +159,14 @@
                 type_select: {
                     type: Boolean,
                     value: false
+                },
+                isEnable_onetime: {
+                    type: Boolean,
+                    value: true
+                },
+                isEnable_admin: {
+                    type: Boolean,
+                    value: true
                 }
             },
             _cloneData: function(val){
