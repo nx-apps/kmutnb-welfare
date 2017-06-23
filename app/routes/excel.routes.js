@@ -8,4 +8,5 @@ module.exports = function (app) {
     app.get('/param', controller.param);
     app.get('/fund', controller.fund);
     app.get('/sso', controller.sso);
+    app.get('/groupJasper',controller.gJasper);
 }
