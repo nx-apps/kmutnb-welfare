@@ -3,7 +3,7 @@ import {commonAction} from '../config'
 
 const initialState = {
     module:[],
-    select:{data_source:'',conditions:[{name:'',symbol:''}]},
+    select:{type_continuous: "all" ,data_source:'',conditions:[{name:'',symbol:''}]},
     listConditions:[],
     listTable:[],
     listField:[],
@@ -31,7 +31,7 @@ const clearData = (data,callback)=>{
 export function conditionReadWelfareReducer(state = initialState,action){
     switch (action.type) {
         case 'CONDITIONREADWELFARE_SET':
-            return Object.assign({},state,{select:{conditions:[{name:'',symbol:''}]}});
+            return Object.assign({},state,{type_continuous: "all" ,select:{conditions:[{name:'',symbol:''}]}});
         case 'CONDITIONREADWELFARE_LIST' : 
             return Object.assign({},state,{listConditions:action.payload});        
         case 'CONDITIONREADWELFARE_TABLE_LIST' :

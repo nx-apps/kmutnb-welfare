@@ -233,7 +233,7 @@ exports.listId = function (req, res) {
     r.expr({
         employees: r.db('welfare').table('employee').filter({ active_name: 'ทำงาน' })
             .without('dob', 'emp_no', 'firstname', 'lastname')
-             .merge((use) => {
+            .merge((use) => {
                 return {
                     age: calculateAge(use('birthdate')),
                     work_age: calculateAge(use('start_work_date'))
@@ -324,6 +324,7 @@ exports.active = function (req, res) {
     }
     group_welfare()
         .pluck("id", "group_welfare_name", "group_use")
+        .orderBy('group_welfare_name')
         .run()
         .then(function (result) {
             console.log(111);

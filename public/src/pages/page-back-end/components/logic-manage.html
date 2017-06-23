@@ -57,18 +57,17 @@
                     </div>
                 </div>
                 <div class="flex layout horizontal">
-                    <!--<div class="flex label">
-                            <label for="personal_id" >{{localize('firstname')}} field :</label>
-                        </div>
-                        <div class="flex-2">
-                        <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]"></gl-form-input>
-                        </div>    -->
-                    <div style="font-weight:bold;color:#737373">{{localize('condition')}}{{localize('welfare')}}{{localize('model')}} :</div>
-                    <paper-radio-group selected="{{data.type_continuous}}" class="required" required attr-for-selected="value" >
-                        <paper-radio-button value="all" disabled="[[disabled]]">{{localize('all')}}</paper-radio-button>
-                        <paper-radio-button value="con" disabled="[[disabled]]">{{localize('continue')}}</paper-radio-button>
-                        <paper-radio-button value="uncon" disabled="[[disabled]]">{{localize('no')}}{{localize('continue')}}</paper-radio-button>
-                    </paper-radio-group>
+                    <div class="flex label">
+                        <label for="personal_id">{{localize('condition')}}{{localize('welfare')}}{{localize('model')}} :</label>
+                    </div>
+                    <div class="flex-2">
+                        <paper-radio-group selected="{{data.type_continuous}}" attr-for-selected="value">
+                            <paper-radio-button value="all" disabled="[[disabled]]">{{localize('all')}}</paper-radio-button>
+                            <paper-radio-button value="con" disabled="[[disabled]]">{{localize('continue')}}</paper-radio-button>
+                            <paper-radio-button value="uncon" disabled="[[disabled]]">{{localize('no')}}{{localize('continue')}}</paper-radio-button>
+                        </paper-radio-group>
+                    </div>
+
                 </div>
             </div>
             <div class="from layout horizontal">
@@ -95,14 +94,16 @@
                                     <gl-form-input id="personal_id" no-label-float value="{{item.name}}" class="required" required disabled="[[disabled]]"></gl-form-input>
                                 </td>
                                 <td>
-                                    <gl-form-dropdown-menu  no-label-float placeholder="" class="required" required disabled="[[disabled]]">
+                                    <gl-form-dropdown-menu no-label-float placeholder="" class="required" required disabled="[[disabled]]">
                                         <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{item.symbol}}">
                                             <paper-item value=">">></paper-item>
                                             <paper-item value=">=">>=</paper-item>
                                             <paper-item value="==">==</paper-item>
                                             <paper-item value="!=">!=</paper-item>
-                                            <paper-item value="<="> <=</paper-item>
-                                            <paper-item value="<"> <</paper-item>
+                                            <paper-item value="<=">
+                                                <=</paper-item>
+                                                    <paper-item value="<">
+                                                        <</paper-item>
                                         </paper-menu>
                                     </gl-form-dropdown-menu>
                                 </td>
@@ -138,14 +139,14 @@
     <script>
         Polymer({
             is: 'logic-manage',
-            behaviors: [ReduxBehavior, commonLogic, ValidateFormBehavior,nylonLocalizeBehavior],
+            behaviors: [ReduxBehavior, commonLogic, ValidateFormBehavior, nylonLocalizeBehavior],
             created: function () {
                 this.nylonLocalizeImport('/i18n-page1.json');
             },
             properties: {
                 data: {
                     type: Object,
-                    value: {type_continuous:"all"},
+                    value: { type_continuous: "all" },
                     notify: true
                 },
                 listTable: {
