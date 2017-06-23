@@ -2,7 +2,7 @@
 <link rel="import" href="./../../../components/validateFormBehaviors.html">
 
 <dom-module id="position-manage">
-    <style include="gl-table gl-color flex-style">
+    <style include="gl-table gl-color flex-style page-style">
         .container {
             padding: 20px
         }
@@ -27,7 +27,7 @@
                         <div class="container flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="position_name" placeholder="กรอกข้อมูล" value="{{data.position_name}}"></gl-form-input>
+                                <gl-form-input label="{{localize('position')}}" placeholder="กรอกข้อมูล" value="{{data.position_name}}"></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center">
                                 <paper-button class="gl-btn-success" on-tap="getForm" raised>เพิ่ม</paper-button>
@@ -43,7 +43,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
-                                <th>position_name</th>
+                                <th style="text-align: left !important">{{localize('position')}}</th>
                                 <th style="width: 20%">เครื่องมือ</th>
                             </tr>
                         </thead>
@@ -53,12 +53,12 @@
                                 <tr>
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             {{item.position_name}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             <paper-input no-label-float value="{{item.position_name}}"></paper-input>
                                         </td>
                                     </template>
@@ -89,7 +89,10 @@
     <script>
         Polymer({
             is: 'position-manage',
-            behaviors:[ReduxBehavior,ValidateFormBehavior],
+            behaviors:[ReduxBehavior,ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties:{
                 dataList:{
                     statePath:'commonData.position'

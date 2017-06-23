@@ -2,7 +2,36 @@
     "th":{
         "Meg":"TH",
         "test":"ทดสอบ",
-        "change":"เปลี่ยน"
+        "change":"เปลี่ยน",
+        "personal_id":"เลขประจำตัวประชาชน",
+        "academic":"ตำแหน่งทางวิชาการ",
+        "prefixname":"คำนำหน้าชื่อ",
+        "gender":"เพศ",
+        "firstname":"ชื่อ",
+        "lastname":"นามสกุล",
+        "email":"อีเมล",
+        "tel":"เบอร์",
+        "birthdate":"วันเกิด",
+        "hospital":"โรงพยาบาล",
+        "emp_no":"รหัสพนักงาน",
+        "start_work_date":"วันที่เริ่มทำงาน",
+        "active":"สถานณะการทำงาน",
+        "type_employee":"ประเภทลูกจ้าง",
+        "position":"ตำแหน่ง",
+        "matier":"ระดับทางวิชาการ",
+        "faculty":"คณะ",
+        "department":"แผนก",
+        "personal_data":"ข้อมูลส่วนตัว",
+
+        "tool":"เครื่องมือ",
+        "order":"ลำดับ",
+        "no_ata":"ไม่มีข้อมูล",
+        "edit":"แก้ไข",
+        "cancel":"ยกเลิก",
+        "save":"บันทึก",
+        "delete":"ลบ"
+
+
     },
     "en":{
         "Meg":"ENG",

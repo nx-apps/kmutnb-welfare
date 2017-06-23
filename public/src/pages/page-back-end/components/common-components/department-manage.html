@@ -1,7 +1,7 @@
 <link rel="import" href="./../../../components/validateFormBehaviors.html">
 
 <dom-module id="department-manage">
-    <style include="gl-table gl-styles flex-style">
+    <style include="gl-table gl-styles flex-style page-style">
         .container {
             padding: 20px
         }
@@ -34,14 +34,14 @@
                         <div class="flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="Department" placeholder="กรอกข้อมูล" value="{{data.department_name}}"></gl-form-input>
+                                <gl-form-input label="{{localize('department')}}" placeholder="กรอกข้อมูล" value="{{data.department_name}}"></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center"></div>
                         </div>
                         <div class="flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-combo-box label="Faculty" items="[[facultys]]" item-label-path="faculty_name" item-value-path="id" value="{{data.faculty_id}}">
+                                <gl-combo-box label="{{localize('faculty')}}" items="[[facultys]]" item-label-path="faculty_name" item-value-path="id" value="{{data.faculty_id}}">
                                 </gl-combo-box>
                                 <!--{{data.faculty_id}}-->
                                 <!--<gl-form-input label="faculty" placeholder="กรอกข้อมูล" value="{{data.faculty}}"></gl-form-input>-->
@@ -67,8 +67,8 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
-                                <th>faculty</th>
-                                <th>department_name</th>
+                                <th style="text-align: left !important">{{localize('faculty')}}</th>
+                                <th style="text-align: left !important">{{localize('department')}}</th>
                                 <th style="width: 20%">เครื่องมือ</th>
                             </tr>
                         </thead>
@@ -78,24 +78,24 @@
                                 <tr>
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             {{item.faculty_name}}
                                             <!--</gl-combo-box>-->
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             <gl-combo-box label="Faculty" items="[[facultys]]" item-label-path="faculty_name" item-value-path="id" value="{{item.faculty_id}}">
                                             </gl-combo-box>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             {{item.department_name}}
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             <paper-input no-label-float value="{{item.department_name}}"></paper-input>
                                         </td>
                                     </template>
@@ -128,7 +128,10 @@
     <script>
         Polymer({
             is: 'department-manage',
-            behaviors: [ReduxBehavior, ValidateFormBehavior],
+            behaviors: [ReduxBehavior, ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 dataList: {
                     statePath: 'commonData.department'
