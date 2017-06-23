@@ -43,7 +43,7 @@
                         <label for="name_field">{{localize('firstname')}}{{localize('field')}}{{localize('table')}}{{localize('employee')}} :</label>
                     </div>
                     <div class="flex-2">
-                        <gl-combo-box id="active_id" no-label-float items="{{listField}}" value="{{data.field}}" disabled="[[disabled]]"></gl-combo-box>
+                        <gl-combo-box id="active_id" no-label-float class="required" required items="{{listField}}" value="{{data.field}}" disabled="[[disabled]]"></gl-combo-box>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                         <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]"></gl-form-input>
                         </div>    -->
                     <div style="font-weight:bold;color:#737373">{{localize('condition')}}{{localize('welfare')}}{{localize('model')}} :</div>
-                    <paper-radio-group selected="{{data.type_continuous}}" attr-for-selected="value" >
+                    <paper-radio-group selected="{{data.type_continuous}}" class="required" required attr-for-selected="value" >
                         <paper-radio-button value="all" disabled="[[disabled]]">{{localize('all')}}</paper-radio-button>
                         <paper-radio-button value="con" disabled="[[disabled]]">{{localize('continue')}}</paper-radio-button>
                         <paper-radio-button value="uncon" disabled="[[disabled]]">{{localize('no')}}{{localize('continue')}}</paper-radio-button>
@@ -92,10 +92,10 @@
                             <tr>
                                 <td>[[_Obindex(index)]]</td>
                                 <td>
-                                    <gl-form-input id="personal_id" no-label-float value="{{item.name}}" disabled="[[disabled]]"></gl-form-input>
+                                    <gl-form-input id="personal_id" no-label-float value="{{item.name}}" class="required" required disabled="[[disabled]]"></gl-form-input>
                                 </td>
                                 <td>
-                                    <gl-form-dropdown-menu no-label-float placeholder="" disabled="[[disabled]]">
+                                    <gl-form-dropdown-menu  no-label-float placeholder="" class="required" required disabled="[[disabled]]">
                                         <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{item.symbol}}">
                                             <paper-item value=">">></paper-item>
                                             <paper-item value=">=">>=</paper-item>
@@ -108,14 +108,14 @@
                                 </td>
                                 <td>
                                     <template is="dom-if" if={{!disabled}}>
-                                        <paper-button id="[[index]]" class="gl-btn-danger gl-small" on-tap="deleteCondition" raised>{{localize('delete')}}{{localize('condition')}}</paper-button>
+                                        <paper-button id="[[index]]" class="gl-btn-danger gl-small" on-tap="deleteCondition" raised>{{localize('delete')}}{{localize('mark')}}{{localize('comparison')}}</paper-button>
                                     </template>
                                 </td>
                             </tr>
                         </template>
                         <template is="dom-if" if={{_ObIsHave(data.conditions)}}>
                             <tr>
-                                <td colspan="4" style="text-align: center">{{localize('no')}}{{localize('have')}}{{localize('condition')}}</td>
+                                <td colspan="4" style="text-align: center">{{localize('no')}}{{localize('have')}}{{localize('mark')}}{{localize('comparison')}}</td>
                             </tr>
                         </template>
 
@@ -125,7 +125,7 @@
             </div>
             <template is="dom-if" if={{!disabled}}>
                 <div class="horizontal end-justified layout btn">
-                    <paper-button class="gl-btn-primary" on-tap="insertCondition" raised>{{localize('insert')}}{{localize('condition')}}</paper-button>
+                    <paper-button class="gl-btn-primary" on-tap="insertCondition" raised>{{localize('insert')}}{{localize('mark')}}{{localize('comparison')}}</paper-button>
                 </div>
             </template>
 
@@ -145,7 +145,7 @@
             properties: {
                 data: {
                     type: Object,
-                    value: {},
+                    value: {type_continuous:"all"},
                     notify: true
                 },
                 listTable: {
