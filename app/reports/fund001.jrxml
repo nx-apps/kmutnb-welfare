@@ -20,9 +20,7 @@
 	<field name="com_con" class="java.lang.Double"/>
 	<field name="com_ear" class="java.lang.Double"/>
 	<field name="total" class="java.lang.Double"/>
-	<field name="fund_date" class="java.lang.String"/>
 	<field name="emp_name" class="java.lang.String"/>
-	<field name="reduction" class="java.lang.Object"/>
 	<field name="personal_id" class="java.lang.String"/>
 	<field name="fund_name" class="java.lang.String"/>
 	<field name="fund_company" class="java.lang.String"/>
@@ -30,7 +28,7 @@
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(1)]]></initialValueExpression>
 	</variable>
-	<group name="gp">
+	<group name="gp" isStartNewPage="true">
 		<groupExpression><![CDATA[$F{fund_company}]]></groupExpression>
 		<groupHeader>
 			<band height="60">
@@ -46,22 +44,8 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["บริษัทจัดการ : "+($F{fund_company}== null ?"":$F{fund_company})]]></textFieldExpression>
+					<textFieldExpression><![CDATA["บริษัทจัดการ: "+($F{fund_company}== null ?"":$F{fund_company})]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement x="282" y="20" width="120" height="40" uuid="436c7e9b-61b9-4e84-8e4e-1a73bfab1d16"/>
-					<box leftPadding="1" rightPadding="1">
-						<pen lineWidth="1.0"/>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-					</textElement>
-					<text><![CDATA[นโยบาย]]></text>
-				</staticText>
 				<staticText>
 					<reportElement x="482" y="40" width="80" height="20" uuid="5c7d91b3-a171-4104-8d68-2a7ad45558dc"/>
 					<box leftPadding="1" rightPadding="1">
@@ -162,7 +146,7 @@
 					<text><![CDATA[ส่วนของนายจ้าง]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="142" y="20" width="140" height="40" uuid="254422f9-68d6-4733-a9df-3b738d30c088"/>
+					<reportElement x="142" y="20" width="158" height="40" uuid="254422f9-68d6-4733-a9df-3b738d30c088"/>
 					<box leftPadding="1" rightPadding="1">
 						<pen lineWidth="1.0"/>
 						<topPen lineWidth="1.0"/>
@@ -203,6 +187,20 @@
 					</textElement>
 					<text><![CDATA[เลขบัตรประชาชน]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="300" y="20" width="102" height="40" uuid="13038d81-1268-4442-981c-3cdb07b7ec8b"/>
+					<box leftPadding="1" rightPadding="1">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[นโยบาย]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 	</group>
@@ -211,7 +209,7 @@
 		<groupHeader>
 			<band height="20">
 				<textField>
-					<reportElement x="0" y="0" width="802" height="20" uuid="d7da9635-50f6-4e0f-8968-21450619827e"/>
+					<reportElement x="0" y="0" width="802" height="20" uuid="0846bbb1-3e74-46c9-9aed-aeac6f08ce15"/>
 					<box leftPadding="5" rightPadding="5">
 						<pen lineWidth="0.0"/>
 						<topPen lineWidth="1.0"/>
@@ -220,12 +218,15 @@
 						<rightPen lineWidth="1.0"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="TH SarabunPSK" size="14" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+						<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[($F{fund_name}== null ?"":"กองทุน : "+$F{fund_name})]]></textFieldExpression>
+					<textFieldExpression><![CDATA["กองทุน : "+$F{fund_name}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
+	</group>
+	<group name="GpCode">
+		<groupExpression><![CDATA[$F{policy_code}]]></groupExpression>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
@@ -349,7 +350,7 @@
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="142" y="0" width="140" height="20" uuid="2e004121-3ad4-4483-95a5-9eeaad9c59a5"/>
+				<reportElement x="142" y="0" width="158" height="20" uuid="2e004121-3ad4-4483-95a5-9eeaad9c59a5"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="1.0"/>
@@ -361,20 +362,6 @@
 					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{emp_name}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="282" y="0" width="120" height="20" uuid="5c79f0af-0259-4b0b-8d39-47fcf58fd452"/>
-				<box leftPadding="5" rightPadding="5">
-					<pen lineWidth="0.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{policy_code}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="35" y="0" width="107" height="20" uuid="3fe61265-b08a-4929-b1c3-2f0038cae896"/>
@@ -389,6 +376,20 @@
 					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{personal_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="0" width="102" height="20" uuid="c4bfbd2a-1fae-4c31-a6f2-c7ddd5292497"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{policy_code}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

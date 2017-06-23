@@ -112,38 +112,65 @@ exports.fund01 = function (req, res) {
         // res.json(4)
     }
     r.expr({
-        data: data.coerceTo('array').group('personal_id').ungroup()//.count()
-            //.limit(20)//.orderBy('fund_code')
-            // .filter({ policy_code : param.policy_code,
-            //          fund_year: param.year,
-            //          fund_month : param.month
-            //  })
-            // .getAll([param.year, param.month], { index: 'yearMonth' })
-            .merge(function (m2) {
-                return {
-                    com_con: m2('reduction').sum('com_con'),
-                    com_ear: m2('reduction').sum('com_ear'),
-                    emp_con: m2('reduction').sum('emp_con'),
-                    emp_ear: m2('reduction').sum('emp_ear'),
-                    emp_name: m2('reduction')('emp_name')(0),
-                    policy_code: m2('reduction')('policy_code')(0),
-                    personal_id: m2('reduction')('personal_id')(0),
-                    total: m2('reduction').sum('total'),
-                    fund_name: m2('reduction')('fund_name')(0),
-                    fund_company: m2('reduction')('fund_company')(0),
-                    fund_uname: m2('reduction')('fund_uname')(0),
-                }
+        data: data.coerceTo('array')
+            // r.db('welfare').table('history_fund').limit(20)
+            .group(function (g) {
+                return g.pluck('fund_company', 'fund_name', 'policy_code')
             })
-            .orderBy('personal_id')
-        // .without('reduction')
-    }).merge(function (m) {
-        return {
-            params: r.branch(m('data').count().gt(0),
-                m('data')(0).pluck('fund_name', 'fund_company', 'fund_uname'),
-                {}
-            )
-        }
+            .ungroup()
+            .map(function (m) {
+                return m('group').merge(function (mer) {
+                    return m('reduction').group('personal_id').ungroup().map(function (m2) {
+                        return m('group').merge({
+                            personal_id: m2('group'),
+                            emp_name: m2('reduction')('emp_name')(0),
+                            fund_uname: m2('reduction')('fund_uname')(0),
+                            com_con: m2('reduction').sum('com_con'),
+                            com_ear: m2('reduction').sum('com_ear'),
+                            emp_con: m2('reduction').sum('emp_con'),
+                            emp_ear: m2('reduction').sum('emp_ear'),
+                            total: m2('reduction').sum('total')
+                        })
+                    })
+                })
+            })
+            .reduce(function (left, right) {
+                return left.add(right)
+            })
+            .orderBy('fund_company', 'fund_name', 'policy_code')
+        // data: data.coerceTo('array').limit(10).group('personal_id').ungroup()//.count()
+        //     //.limit(20)//.orderBy('fund_code')
+        //     // .filter({ policy_code : param.policy_code,
+        //     //          fund_year: param.year,
+        //     //          fund_month : param.month
+        //     //  })
+        //     // .getAll([param.year, param.month], { index: 'yearMonth' })
+        //     .merge(function (m2) {
+        //         return {
+        //             com_con: m2('reduction').sum('com_con'),
+        //             com_ear: m2('reduction').sum('com_ear'),
+        //             emp_con: m2('reduction').sum('emp_con'),
+        //             emp_ear: m2('reduction').sum('emp_ear'),
+        //             emp_name: m2('reduction')('emp_name')(0),
+        //             policy_code: m2('reduction')('policy_code')(0),
+        //             personal_id: m2('reduction')('personal_id')(0),
+        //             total: m2('reduction').sum('total'),
+        //             // fund_name: m2('reduction')('fund_name')(0),
+        //             // fund_company: m2('reduction')('fund_company')(0),
+        //             // fund_uname: m2('reduction')('fund_uname')(0),
+        //         }
+        //     })
+        //     .orderBy('personal_id')
+        // // .without('reduction')
     })
+        .merge(function (m) {
+            return {
+                params: r.branch(m('data').count().gt(0),
+                    m('data')(0).pluck('fund_name', 'fund_company', 'fund_uname'),
+                    {}
+                )
+            }
+        })
 
         .run()
         .then(function (data) {
@@ -172,16 +199,17 @@ exports.fund02 = function (req, res) {
     r.expr({
         data: r.db('welfare').table('history_fund')
             .getAll([param.year, param.personal_id], { index: 'yearPID' })
-            .merge({ fund_month: getMonth(r.row('fund_month')) })
+            .merge({ fund_month: getMonth(r.row('fund_month')) })//.orderBy('fund_month')
             .coerceTo('array')
-    }).merge(function (m) {
-        return {
-            params: r.branch(m('data').count().gt(0),
-                m('data')(0).pluck('fund_name', 'fund_company', 'fund_uname', 'emp_name'),
-                {}
-            )
-        }
     })
+        .merge(function (m) {
+            return {
+                params: r.branch(m('data').count().gt(0),
+                    m('data')(0).pluck('fund_name', 'fund_company', 'fund_uname', 'emp_name'),
+                    {}
+                )
+            }
+        })
         .run()
         .then(function (data) {
             // // var param = data['params'];
