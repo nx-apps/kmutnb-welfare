@@ -63,10 +63,10 @@
                         <div class="flex-2">
                         <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]"></gl-form-input>
                         </div>    -->
-                    <div style="font-weight:bold;color:#737373">รูปแบบการใช้งาน :</div>
+                    <div style="font-weight:bold;color:#737373">เงือนไขสวัสดิการแบบ :</div>
                     <paper-radio-group selected="{{data.type_continuous}}" attr-for-selected="value" >
                         <paper-radio-button value="all" disabled="[[disabled]]">ทั้งหมด</paper-radio-button>
-                        <paper-radio-button value="con" disabled="[[disabled]]">ต่อเรื่อง</paper-radio-button>
+                        <paper-radio-button value="con" disabled="[[disabled]]">ต่อเนื่่อง</paper-radio-button>
                         <paper-radio-button value="uncon" disabled="[[disabled]]">ไม่ต่อเนื่อง</paper-radio-button>
                     </paper-radio-group>
                 </div>
@@ -82,7 +82,7 @@
                         <tr>
                             <th>ลำดับ</th>
                             <th>ชื่อเงื่อนไขที่แสดง</th>
-                            <th>เครื่องหมาย</th>
+                            <th>เครื่องหมายเปรียบเทียบ</th>
                             <th>เครื่องมือ</th>
                         </tr>
                     </thead>

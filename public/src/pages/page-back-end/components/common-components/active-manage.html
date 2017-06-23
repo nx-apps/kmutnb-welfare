@@ -26,11 +26,12 @@
                         <div class="container flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flexchild">
-                                <gl-form-input label="active_name" placeholder="กรอกข้อมูล" value="{{data.active_name}}"></gl-form-input>
+                                <gl-form-input label="id" placeholder="กรอกข้อมูล" value="{{data.id}}"></gl-form-input>
                             </div>
                             <div class="flexchild">
-                                <gl-form-input label="active_code" placeholder="กรอกข้อมูล" value="{{data.active_code}}"></gl-form-input>
+                                <gl-form-input label="active_name" placeholder="กรอกข้อมูล" value="{{data.active_name}}"></gl-form-input>
                             </div>
+                            
                             <div class="flexchild" style="text-align: center">
                                 <paper-button class="gl-btn-success" on-tap="getForm" raised>เพิ่ม</paper-button>
                             </div>
@@ -45,8 +46,8 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
+                                <th>active_id</th>
                                 <th>active_name</th>
-                                <th>active_code</th>
                                 <th style="width: 20%">เครื่องมือ</th>
                             </tr>
                         </thead>
@@ -57,12 +58,17 @@
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
-                                            {{item.active_name}} 
+                                            {{item.id}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
-                                            {{item.active_code}} 
+                                            {{item.active_name}} 
+                                        </td>
+                                    </template>
+                                    <template is="dom-if" if="{{!item.check}}">
+                                        <td>
+                                            {{item.id}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
@@ -70,11 +76,7 @@
                                             <paper-input no-label-float value="{{item.active_name}}"></paper-input>
                                         </td>
                                     </template>
-                                    <template is="dom-if" if="{{!item.check}}">
-                                        <td>
-                                            <paper-input no-label-float value="{{item.active_code}}"></paper-input>
-                                        </td>
-                                    </template>
+                                    
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
                                             <paper-tooltip for="editData">แก้ไข</paper-tooltip>
@@ -142,10 +144,10 @@
             update:function(e){
                 var getForm = e.target.item;
                 var newItem = {
-                    id: getForm.id,
+                    id: getForm.active_id,
                     active_name: getForm.active_name,
-                    active_code: getForm.active_code
                 }
+                // console.log(newItem);
                 this.dispatchAction('COMMONDATA_DATA_ACTIVE_UPDATE',newItem);
             },
             confirmDelete:function(e){
