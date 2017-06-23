@@ -116,8 +116,7 @@
                     <gl-form-textarea disabled="{{isEnable}}" style="margin-top:15px;" label="รายละเอียด" value="{{data.description}}" placeholder="เพิ่มรายละเอียด"></gl-form-textarea>
                 </gl-grid-col>
             </gl-grid-row>
-
-            {{isEnable_onetime}} test {{isEnable_admin}}
+            
             <template is="dom-if" if={{_obTypeGroup(data.type_group)}}>
                 [[checkDisabled(isEnable)]]
                 <gl-grid-row style="margin-top: 10px">
