@@ -268,6 +268,7 @@ export function commonDataAction(store){
                 this.fire('toast',{status:'load'}); 
                 axios.post(`/common/faculty/insert`,data)
                 .then((response)=>{
+                    console.log(response);
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
                       callback:()=>{
                          this.COMMONDATA_DATA_FACULTY()

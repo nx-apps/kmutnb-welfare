@@ -12,9 +12,9 @@
 <link rel="import" href="./components/common-components/matier-manage.html">
 <link rel="import" href="./components/common-components/position-manage.html">
 <link rel="import" href="./components/common-components/prefixname-manage.html">
-<link rel="import" href="./components/common-components/relation-manage.html">
+<!--<link rel="import" href="./components/common-components/relation-manage.html">-->
 <link rel="import" href="./components/common-components/TypeEmployee-manage.html">
-
+<link rel="import" href="./../components/page-style.html">
 
 <link rel="import" href="./../../../bower_components/paper-radio-group/paper-radio-group.html">
 
@@ -116,6 +116,7 @@
 
         <div class="xcontainer">
             <div class="header-page container">จัดการข้อมูล
+                {{localize('academic')}}//////
             </div>
             <main>
                 <input id="tab1" type="radio" name="tabs" checked>
@@ -184,9 +185,9 @@
                 <div>
                     <prefixname-manage></prefixname-manage>
                 </div>
-                <div>
+                <!--<div>
                     <relation-manage></relation-manage>
-                </div>
+                </div>-->
                 <div>
                     <TypeEmployee-manage></TypeEmployee-manage>
                 </div>
@@ -203,11 +204,14 @@
         Polymer({
             is: 'page-back-end',
             behaviors: [nylonBehavior, ReduxBehavior, conditionReadWelfareAction, commonDataAction,
-                systemConfigsAction, dateDbAction],
+                systemConfigsAction, dateDbAction,nylonLocalizeBehavior],
             properties: {
                 data: {
                     statePath: 'conditionReadWelfare.select'
                 }
+            },
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
             },
             nylonPageActive: function () {
                 this.dispatchAction('CONDITIONREADWELFARE_LIST');
@@ -253,6 +257,7 @@
             openPanel: function (e) {
                 var item = e.detail;
                 this.set('title', 'แก้ไขฟิลด์')
+                console.log(item);
                 switch (item) {
                     case 'academic':
                         this.selected = 1;
@@ -297,13 +302,13 @@
                         // this.COMMONDATA_DATA_PREFIXNAME();
                         this.$$('panel-right').open();
                         break;
-                    case 'relation':
-                        this.selected = 9;
-                        // this.COMMONDATA_DATA_RELATION();
-                        this.$$('panel-right').open();
-                        break;
+                    // case 'relation':
+                    //     this.selected = 9;
+                    //     // this.COMMONDATA_DATA_RELATION();
+                    //     this.$$('panel-right').open();
+                    //     break;
                     case 'type_employee':
-                        this.selected = 10;
+                        this.selected = 9;
                         // this.COMMONDATA_DATA_TYPE_EMPLOYEE();
                         this.$$('panel-right').open();
                         break;

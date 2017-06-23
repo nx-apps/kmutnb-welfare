@@ -2,7 +2,7 @@
 <link rel="import" href="./../../../components/validateFormBehaviors.html">
 
 <dom-module id="faculty-manage">
-    <style include="gl-table gl-styles flex-style">
+    <style include="gl-table gl-styles flex-style page-style">
         .container {
             padding: 20px
         }
@@ -24,17 +24,17 @@
                         <!--<paper-icon-button icon="clear"></paper-icon-button>-->
                     </gl-form-panel-head>
                     <gl-form-panel-body label="" set-padding="10px" set-border="0px">
-                        <div class="flex-horizontal-with-ratios">
+                        <!--<div class="flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
                                 <gl-form-input label="faculty_code" placeholder="กรอกข้อมูล" value="{{data.faculty_code}}"></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center"></div>
-                        </div>
+                        </div>-->
                          <div class="flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="faculty_name" placeholder="กรอกข้อมูล" value="{{data.faculty_name}}"></gl-form-input>
+                                <gl-form-input label="{{localize('faculty')}}" placeholder="กรอกข้อมูล" value="{{data.faculty_name}}"></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center"></div>
                         </div>
@@ -57,8 +57,8 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
-                                <th>faculty_code</th>
-                                <th>faculty_name</th>
+                                <!--<th>faculty_code</th>-->
+                                <th style="text-align: left !important">{{localize('faculty')}}</th>
                                 <th style="width: 20%">เครื่องมือ</th>
                             </tr>
                         </thead>
@@ -67,23 +67,23 @@
                             <template is="dom-repeat" items="[[dataList]]">
                                 <tr>
                                     <td>[[count(index)]]</td>
-                                    <template is="dom-if" if="{{item.check}}">
+                                    <!--<template is="dom-if" if="{{item.check}}">
                                         <td>
                                             {{item.faculty_code}} 
                                         </td>
-                                    </template>
-                                    <template is="dom-if" if="{{!item.check}}">
+                                    </template>-->
+                                    <!--<template is="dom-if" if="{{!item.check}}">
                                         <td>
                                             <paper-input no-label-float value="{{item.faculty_code}}"></paper-input>
                                         </td>
-                                    </template>
+                                    </template>-->
                                     <template is="dom-if" if="{{item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             {{item.faculty_name}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             <paper-input no-label-float value="{{item.faculty_name}}"></paper-input>
                                         </td>
                                     </template>
@@ -114,7 +114,10 @@
     <script>
         Polymer({
             is: 'faculty-manage',
-            behaviors:[ReduxBehavior,ValidateFormBehavior],
+            behaviors:[ReduxBehavior,ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties:{
                 dataList:{
                     statePath:'commonData.faculty'

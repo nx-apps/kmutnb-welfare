@@ -1,7 +1,7 @@
 <!--<link rel="import" href="./../../../components/validateFormBehaviors.html"-->
 
 <dom-module id="active-manage">
-    <style include="gl-table gl-color flex-style">
+    <style include="gl-table gl-color flex-style page-style">
         .container {
             padding: 20px
         }
@@ -11,9 +11,9 @@
         table{
             border:1px solid #ddd;
         }
-        td,th{
-            text-align: center !important;
-        }
+        /*td,th{
+            text-align: center ;
+        }*/
     </style>
     <template>
         <div class="container">
@@ -26,10 +26,10 @@
                         <div class="container flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flexchild">
-                                <gl-form-input label="id" placeholder="กรอกข้อมูล" value="{{data.id}}"></gl-form-input>
+                                <gl-form-input label="ID" placeholder="กรอกข้อมูล" value="{{data.id}}"></gl-form-input>
                             </div>
                             <div class="flexchild">
-                                <gl-form-input label="active_name" placeholder="กรอกข้อมูล" value="{{data.active_name}}"></gl-form-input>
+                                <gl-form-input label="{{localize('active')}}" placeholder="กรอกข้อมูล" value="{{data.active_name}}"></gl-form-input>
                             </div>
                             
                             <div class="flexchild" style="text-align: center">
@@ -46,8 +46,8 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
-                                <th>active_id</th>
-                                <th>active_name</th>
+                                <th style="text-align: left !important">ID</th>
+                                <th style="text-align: left !important">{{localize('active')}}</th>
                                 <th style="width: 20%">เครื่องมือ</th>
                             </tr>
                         </thead>
@@ -57,22 +57,22 @@
                                 <tr>
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             {{item.id}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             {{item.active_name}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             {{item.id}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             <paper-input no-label-float value="{{item.active_name}}"></paper-input>
                                         </td>
                                     </template>
@@ -104,7 +104,10 @@
     <script>
         Polymer({
             is: 'active-manage',
-            behaviors:[ReduxBehavior,ValidateFormBehavior],
+            behaviors:[ReduxBehavior,ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties:{
                 dataList:{
                     statePath:'commonData.active'

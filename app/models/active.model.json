@@ -3,9 +3,6 @@
     "properties": {
         "active_name": {
             "type": "string"
-        },
-        "active_code": {
-            "type": "string"
         }
     },
     "required": ["active_name"]
