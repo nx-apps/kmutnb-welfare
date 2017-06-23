@@ -76,36 +76,39 @@
                     <gl-form-input class="checkValidate" required disabled="{{isEnable}}" label="ชื่อสวัสดิการ" value="{{data.group_welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
                 </gl-grid-col>
             </gl-grid-row>
-            <gl-grid-row>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                    <vaadin-date-picker class="checkValidate" required disabled="{{isEnable}}" label="วันที่เริ่มใช้งาน :" value="{{data.start_date}}"></vaadin-date-picker>
-                </gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                    <vaadin-date-picker disabled="{{isEnable}}" label="วันที่สิ้นสุดใช้งาน :" value="{{data.end_date}}"></vaadin-date-picker>
-                </gl-grid-col>
-            </gl-grid-row>
 
-            <gl-grid-row>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,8]]">
-                    <div style="margin-top:15px; font-size:16px; color:gray;">*ถ้าไม่ระบุวันที่สิ้นสุดการใช้งานจะเป็นสวัสดิการแบบต่อเนื่อง</div>
-                </gl-grid-col>
-            </gl-grid-row>
-            
-            <gl-grid-row>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                    <vaadin-date-picker disabled="{{isEnable}}" label="วันที่ใช้คำนวณ :" value="{{data.cal_date}}"></vaadin-date-picker>
-                </gl-grid-col>
-            </gl-grid-row>
+            <template is="dom-if" if={{_obTypeGroup(data.type_group)}}>
+                <gl-grid-row>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                        <vaadin-date-picker class="checkValidate" required disabled="{{isEnable}}" label="วันที่เริ่มใช้งาน :" value="{{data.start_date}}"></vaadin-date-picker>
+                    </gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                        <vaadin-date-picker disabled="{{isEnable}}" label="วันที่สิ้นสุดใช้งาน :" value="{{data.end_date}}"></vaadin-date-picker>
+                    </gl-grid-col>
+                </gl-grid-row>
 
-            <gl-grid-row>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
-                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,8]]">
-                    <div style="margin-top:15px; font-size:16px; color:gray;">*ใช้สำหรับสวัสดิที่คำนวณอายุพนักงาน</div>
-                </gl-grid-col>
-            </gl-grid-row>
+                <gl-grid-row>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,8]]">
+                        <div style="margin-top:15px; font-size:16px; color:gray;">*ถ้าไม่ระบุวันที่สิ้นสุดการใช้งานจะเป็นสวัสดิการแบบต่อเนื่อง</div>
+                    </gl-grid-col>
+                </gl-grid-row>
+                
+                <gl-grid-row>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
+                        <vaadin-date-picker disabled="{{isEnable}}" label="วันที่ใช้คำนวณ :" value="{{data.cal_date}}"></vaadin-date-picker>
+                    </gl-grid-col>
+                </gl-grid-row>
+
+                <gl-grid-row>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                    <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,8]]">
+                        <div style="margin-top:15px; font-size:16px; color:gray;">*ใช้สำหรับสวัสดิที่คำนวณอายุพนักงาน</div>
+                    </gl-grid-col>
+                </gl-grid-row>
+            </template>
 
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
@@ -167,38 +170,45 @@
                 if(this.data.description === undefined){
                     this.data.description = '';
                 }
-                if (this.data.onetime_use != true) {
-                    this.data.onetime_use = false;
-                }
-                if (this.data.group_use != true) {
-                    this.data.group_use = false;
-                }
-                if(this.data.cal_date === ''){
-                    this.data.cal_date = null;
-                }
+                
+                if(this.data.type_group == 'general'){
+                    if (this.data.onetime_use != true) {
+                        this.data.onetime_use = false;
+                    }
+                    if (this.data.group_use != true) {
+                        this.data.group_use = false;
+                    }
+                    if(this.data.cal_date === ''){
+                        this.data.cal_date = null;
+                    }
 
-                if(this.data.end_date !== ''){
-                    if(this.data.end_date === null){
+                    if(this.data.end_date !== ''){
+                        if(this.data.end_date === null){
+                            this.data.end_date = null;
+                            this.data.year = 9999;
+                            this.data.type_continuous = true;
+                        }else{
+                            if(this.data.year == 9999){
+                                this.data.type_continuous = false;
+                                this.data.year = new Date().getFullYear();
+                            }else{
+                                this.data.type_continuous = false;
+                                this.data.year = this.clone_data.year;
+                            }
+                        }
+                    }else{
                         this.data.end_date = null;
                         this.data.year = 9999;
                         this.data.type_continuous = true;
-                    }else{
-                        if(this.data.year == 9999){
-                            this.data.type_continuous = false;
-                            this.data.year = new Date().getFullYear();
-                        }else{
-                            this.data.type_continuous = false;
-                            this.data.year = this.clone_data.year;
-                        }
                     }
                 }else{
+                    this.data.start_date = new Date().toISOString().split('T')[0];
                     this.data.end_date = null;
-                    this.data.year = 9999;
-                    this.data.type_continuous = true;
+                    this.data.cal_date = null;
                 }
 
                 if(check == true){
-                    if (typeof this.data.id != 'undefined' && this.data.id != '') {
+                    if (typeof this.data.id !== 'undefined' && this.data.id !== '') {
                         this.fire('toast', {
                             status: 'openDialog',
                             text: 'ต้องการแก้ไขสวัสดิการใช่หรือไม่ ?',
@@ -323,6 +333,8 @@
                         return true
                     }else{
                         this.data.voluntary_status = true;
+                        this.data.onetime_use = true;
+                        this.data.group_use = true;
                         return false
                     }
                 }

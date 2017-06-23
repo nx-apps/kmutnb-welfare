@@ -544,7 +544,7 @@ exports.updateGroup = function (req, res) {
                 condition: req.body[i].condition.map(function (m) {
                     var change_value = {};
                     var search = m.field_name.search('date');
-                    if (search != -1) {
+                    if (search !== -1) {
                         change_value = r.ISO8601(m.value);
                     } else {
                         change_value = m.value;

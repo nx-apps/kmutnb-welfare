@@ -128,9 +128,6 @@ export function groupWelfareAction(store) {
         },
         EDIT_WELFARE: function (data) {
             var yearNow = new Date().getFullYear();
-            var con = data.type_continuous;
-            var one = data.onetime_use;
-            var typeGroup = data.type_group;
             // console.log(data);
             let { id, year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, type_continuous, voluntary_status, type_group} = data;
             let newData = { id, year, group_welfare_name, group_use, description, onetime_use, type_continuous, voluntary_status, type_group};
@@ -155,6 +152,7 @@ export function groupWelfareAction(store) {
                         this.LIST_WELFARE(yearNow);
                         this.LIST_WELFARE_ID(data.id);
                         this.SELECT_DATA(data.id);
+                        this.UPDATE_WELFARE(newData.id);
                         // console.log('success');
                     }
                 });
@@ -162,12 +160,19 @@ export function groupWelfareAction(store) {
             .catch((err) => {
                 // console.log(err);
             })
-
-            axios.get('/group/welfare/' + newData.id)
+        },
+        UPDATE_WELFARE: function(id){
+            axios.get('/group/welfare/' + id)
                 .then((result) => {
                     // console.log(result.data);
+                    var calDate = result.data.cal_date;
                     var data = result.data.welfare;
+                    var typeGroup = result.data.type_group;
+                    var con = result.data.type_continuous;
+                    var one = result.data.onetime_use;
+                    var tz = "T00:00:00+07:00";
                     for(var i = 0; i < data.length; i++){
+                        // console.log(data[i].condition);
                         if(typeGroup == 'general'){
                             if(con === true && one === true){
                                 data[i].round_use = true;
@@ -179,22 +184,19 @@ export function groupWelfareAction(store) {
                         }else{
                             data[i].round_use = true;
                         }
-                        // console.log(data[i].condition);
                         var condition = data[i].condition;
                         var arr = [];
-                        // var tz = "T00:00:00+07:00";
                         for(var j = 0; j < condition.length; j++){
                             var data2 = condition[j];
-                            // console.log(data2);
-                            var search = data2.field_name.search('date')
-                            var search_age = data2.field.field.search('age');
+                            var search = data2.field_name.search('date');
+                            var search_age = data2.field_name.search('age');
                             if (search != -1) {
                                 if (data2.logic_show.search(">") >= 0) {
-                                    var d = newData.cal_date.split("-");
+                                    var d = calDate.split("-");
                                     data2.value = (parseInt(d[0]) - parseInt(data2.value_show)) + "-" + d[1] + "-" + d[2].split("T")[0] + tz;
                                     data2.logic = data2.logic_show.replace(">", "<");
                                 } else if (data2.logic_show.search("<") >= 0) {
-                                    var d = newData.cal_date.split("-");
+                                    var d = calDate.split("-");
                                     data2.value = (parseInt(d[0]) - parseInt(data2.value_show)) + "-" + d[1] + "-" + d[2].split("T")[0] + tz;
                                     data2.logic = data2.logic_show.replace("<", ">");
                                 }
@@ -217,6 +219,7 @@ export function groupWelfareAction(store) {
                         }
                         data[i].condition = arr;
                     }
+                    // console.log(data);
                     var setWelfare = data.map((item) => {
                                         let {budget, budget_emp, condition, group_id, id, round_use, welfare_name} = item;
                                         let newitem = { budget, condition, group_id, id, round_use, welfare_name }

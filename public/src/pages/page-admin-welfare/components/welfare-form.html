@@ -45,10 +45,16 @@
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                             <label id="label" style="font-weight:bold;color:#737373">ให้สิทธิสวัสดิการ :</label>
-                            <paper-radio-group selected="{{data.round_use}}" attr-for-selected="value" aria-labelledby="label">
+                            <!--<paper-radio-group selected="{{data.round_use}}" attr-for-selected="value" aria-labelledby="label">
                                 <paper-radio-button value="{{!type_select}}" disabled="{{isEnable}}">ใช้แบบต่อรอบ</paper-radio-button>
                                 <paper-radio-button value="{{type_select}}" disabled="{{isEnable}}">ใช้แบบต่อครั้ง</paper-radio-button>
-                            </paper-radio-group>
+                            </paper-radio-group>-->
+                        </gl-grid-col>
+                    </gl-grid-row>
+                    <gl-grid-row>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
+                        <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
+                            <paper-checkbox style="margin-top:10px;" disabled="{{isEnable}}" checked="{{data.round_use}}">ใช้แบบต่อรอบ</paper-checkbox>
                         </gl-grid-col>
                     </gl-grid-row>
                 </template>
@@ -344,6 +350,10 @@
                         this.data.round_use = false;
                     }else if(con === false && one === true){
                         this.data.round_use = true;
+                    }else{
+                        if(this.data.round_use !== true){
+                            this.data.round_use = false;
+                        }
                     }
                 }else{
                     this.data.round_use = true;
