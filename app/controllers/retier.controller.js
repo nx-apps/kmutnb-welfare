@@ -8,7 +8,7 @@ exports.list = function (req, res) {
         //  return Math.abs(ageDate.year() - 1970);
         return ageDate.year().sub(1970)
     }
-    r.db('welfare').table('employee').getAll(r.db('welfare').table('system_config')(0)('active_id'), { index: 'active_id' })
+    r.db('welfare').table('employee').getAll('WORK', { index: 'active_id' })
         .merge(function (use) {
             return {
                 birthdate_cal: calculateAge(use('birthdate')),

@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex ">
+            <!--<div class="flex ">
                 <div class="horizontal start-justified layout">
                     <div class="horizontal layout center flex">สถานนะภาพที่แสดงว่าทำงาน :</div>
                     <div class="flex-3">
@@ -43,6 +43,23 @@
                     </div>
                 </div>
             </div>
+            <div class="flex ">
+                <div class="horizontal start-justified layout">
+                    <div class="horizontal layout center flex">สถานนะภาพที่แสดงว่าเกษียณ :</div>
+                    <div class="flex-3">
+                        <div class="horizontal start-justified layout">
+                            <paper-dropdown-menu id="dropdownmenu" label="">
+                                <paper-menu id="menu" class="dropdown-content" attr-for-selected="value" selected="{{data.active_id}}">
+                                    <template is="dom-repeat" items="{{list_active}}">
+                                        <paper-item value="{{item.id}}">[[item.active_name]]</paper-item>
+                                    </template>
+                                </paper-menu>
+                            </paper-dropdown-menu>
+                        </div>
+
+                    </div>
+                </div>
+            </div>-->
             <div class="flex">
                 <div class="horizontal end-justified layout">
                     <paper-button raised class="gl-btn-primary" on-tap="updateSystem"> บันทึกการตั้งค่า</paper-button>
