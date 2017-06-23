@@ -85,11 +85,25 @@
                     <vaadin-date-picker disabled="{{isEnable}}" label="วันที่สิ้นสุดใช้งาน :" value="{{data.end_date}}"></vaadin-date-picker>
                 </gl-grid-col>
             </gl-grid-row>
+
+            <gl-grid-row>
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,8]]">
+                    <div style="margin-top:15px; font-size:16px; color:gray;">*ถ้าไม่ระบุวันที่สิ้นสุดการใช้งานจะเป็นสวัสดิการแบบต่อเนื่อง</div>
+                </gl-grid-col>
+            </gl-grid-row>
             
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                     <vaadin-date-picker disabled="{{isEnable}}" label="วันที่ใช้คำนวณ :" value="{{data.cal_date}}"></vaadin-date-picker>
+                </gl-grid-col>
+            </gl-grid-row>
+
+            <gl-grid-row>
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
+                <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,8]]">
+                    <div style="margin-top:15px; font-size:16px; color:gray;">*ใช้สำหรับสวัสดิที่คำนวณอายุพนักงาน</div>
                 </gl-grid-col>
             </gl-grid-row>
 
