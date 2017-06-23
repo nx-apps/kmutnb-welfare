@@ -118,7 +118,6 @@
             </gl-grid-row>
             
             <template is="dom-if" if={{_obTypeGroup(data.type_group)}}>
-                [[checkDisabled(isEnable)]]
                 <gl-grid-row style="margin-top: 10px">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
@@ -150,6 +149,7 @@
         Polymer({
             is: 'group-welfare-manage',
             behaviors: [ReduxBehavior, FormatNumberBehavior, ValidateFormBehavior],
+            observers: ['checkDisabled(isEnable)'],
             properties: {
                 data: {
                     statePath: 'groupWelfare.select',
@@ -158,14 +158,6 @@
                 type_select: {
                     type: Boolean,
                     value: false
-                },
-                isEnable_onetime: {
-                    type: Boolean,
-                    value: true
-                },
-                isEnable_admin: {
-                    type: Boolean,
-                    value: true
                 }
             },
             _cloneData: function(val){

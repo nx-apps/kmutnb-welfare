@@ -69,7 +69,7 @@
             <label for="tab2">เงื่อนไข</label>
             <section id="content1">
                 <paper-material elevation="1">
-                    <group-welfare-manage is-enable="[[isEnable]]"></group-welfare-manage>
+                    <group-welfare-manage is-enable="{{isEnable}}"></group-welfare-manage>
                 </paper-material>
             </section>
 
@@ -88,6 +88,7 @@
                 this.$$(val).checked = true;
             },
             getGroupWelfareId:function(val){
+                console.log(val);
                 this.dispatchAction('LIST_WELFARE_ID', val);
             },
             tap1:function(){
