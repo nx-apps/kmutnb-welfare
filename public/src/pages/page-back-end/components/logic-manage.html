@@ -32,7 +32,7 @@
             <div class="from layout horizontal">
                 <div class="flex layout horizontal">
                     <div class="flex label">
-                        <label for="name_label">ชื่อที่แสดง :</label>
+                        <label for="name_label">{{localize('firstname')}}ที่แสดง :</label>
                     </div>
                     <div class="flex-2">
                         <gl-form-input id="name_label" no-label-float value="{{data.label}}" disabled="[[disabled]]" class="required" required></gl-form-input>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="flex layout horizontal">
                     <div class="flex label">
-                        <label for="name_field">ชื่อฟิลด์ตารางพนักงาน :</label>
+                        <label for="name_field">{{localize('firstname')}}{{localize('field')}}{{localize('table')}}{{localize('employee')}} :</label>
                     </div>
                     <div class="flex-2">
                         <gl-combo-box id="active_id" no-label-float items="{{listField}}" value="{{data.field}}" disabled="[[disabled]]"></gl-combo-box>
@@ -50,7 +50,7 @@
             <div class="from layout horizontal">
                 <div class="flex layout horizontal">
                     <div class="flex label">
-                        <label for="listTable">ชื่อตารางของ{{localize('data')}} :</label>
+                        <label for="listTable">{{localize('firstname')}}{{localize('table')}}{{localize('of')}}{{localize('data')}} :</label>
                     </div>
                     <div class="flex-2">
                         <gl-combo-box id="listTable" no-label-float items='[[listTable]]' value="{{data.data_source}}" disabled="[[disabled]]"></gl-combo-box>
@@ -58,32 +58,32 @@
                 </div>
                 <div class="flex layout horizontal">
                     <!--<div class="flex label">
-                            <label for="personal_id" >ชื่อ field :</label>
+                            <label for="personal_id" >{{localize('firstname')}} field :</label>
                         </div>
                         <div class="flex-2">
                         <gl-form-input id="personal_id" no-label-float value="{{data.personal_id}}" disabled="[[disabled]]"></gl-form-input>
                         </div>    -->
-                    <div style="font-weight:bold;color:#737373">เงือนไขสวัสดิการแบบ :</div>
+                    <div style="font-weight:bold;color:#737373">{{localize('condition')}}{{localize('welfare')}}{{localize('model')}} :</div>
                     <paper-radio-group selected="{{data.type_continuous}}" attr-for-selected="value" >
-                        <paper-radio-button value="all" disabled="[[disabled]]">ทั้งหมด</paper-radio-button>
-                        <paper-radio-button value="con" disabled="[[disabled]]">ต่อเนื่่อง</paper-radio-button>
-                        <paper-radio-button value="uncon" disabled="[[disabled]]">ไม่ต่อเนื่อง</paper-radio-button>
+                        <paper-radio-button value="all" disabled="[[disabled]]">{{localize('all')}}</paper-radio-button>
+                        <paper-radio-button value="con" disabled="[[disabled]]">{{localize('continue')}}</paper-radio-button>
+                        <paper-radio-button value="uncon" disabled="[[disabled]]">{{localize('no')}}{{localize('continue')}}</paper-radio-button>
                     </paper-radio-group>
                 </div>
             </div>
             <div class="from layout horizontal">
                 <div class="title">
-                    เงื่อนไขเปรียบเทียบ
+                    {{localize('condition')}}{{localize('comparison')}}
                 </div>
             </div>
             <div class="from layout horizontal">
                 <table class="gl-table-default">
                     <thead class="table-head">
                         <tr>
-                            <th>ลำดับ</th>
-                            <th>ชื่อเครื่องหมายเปรียบเทียบ</th>
-                            <th>เครื่องหมายเปรียบเทียบ</th>
-                            <th>เครื่องมือ</th>
+                            <th>{{localize('order')}}</th>
+                            <th>{{localize('firstname')}}{{localize('mark')}}{{localize('comparison')}}</th>
+                            <th>{{localize('mark')}}{{localize('comparison')}}</th>
+                            <th>{{localize('tool')}}</th>
                         </tr>
                     </thead>
                     <tbody class="table-body">
@@ -101,23 +101,21 @@
                                             <paper-item value=">=">>=</paper-item>
                                             <paper-item value="==">==</paper-item>
                                             <paper-item value="!=">!=</paper-item>
-                                            <paper-item value="<=">
-                                                <=</paper-item>
-                                                    <paper-item value="<">
-                                                        <</paper-item>
+                                            <paper-item value="<="> <=</paper-item>
+                                            <paper-item value="<"> <</paper-item>
                                         </paper-menu>
                                     </gl-form-dropdown-menu>
                                 </td>
                                 <td>
                                     <template is="dom-if" if={{!disabled}}>
-                                        <paper-button id="[[index]]" class="gl-btn-danger gl-small" on-tap="deleteCondition" raised>{{localize('delete')}}เงือนไข</paper-button>
+                                        <paper-button id="[[index]]" class="gl-btn-danger gl-small" on-tap="deleteCondition" raised>{{localize('delete')}}{{localize('condition')}}</paper-button>
                                     </template>
                                 </td>
                             </tr>
                         </template>
                         <template is="dom-if" if={{_ObIsHave(data.conditions)}}>
                             <tr>
-                                <td colspan="4" style="text-align: center">ไม่มีเงือนไข</td>
+                                <td colspan="4" style="text-align: center">{{localize('no')}}{{localize('have')}}{{localize('condition')}}</td>
                             </tr>
                         </template>
 
@@ -127,7 +125,7 @@
             </div>
             <template is="dom-if" if={{!disabled}}>
                 <div class="horizontal end-justified layout btn">
-                    <paper-button class="gl-btn-primary" on-tap="insertCondition" raised>{{localize('insert')}}เงือนไข</paper-button>
+                    <paper-button class="gl-btn-primary" on-tap="insertCondition" raised>{{localize('insert')}}{{localize('condition')}}</paper-button>
                 </div>
             </template>
 

@@ -15,16 +15,16 @@
 
         <!--<paper-material elevation="1">-->
         <div class="head-text">
-            ฟิลด์เงื่อนไข
+            {{localize('field')}}{{localize('condition')}}
         </div>
         <div class="content horizontal center-justified layout">
             <table class="gl-table-default">
                 <thead class="table-head">
                     <tr>
-                        <th>ลำดับ</th>
-                        <th style="text-align:left;">ชื่อ</th>
-                        <th style="text-align:left;">ชื่อตารางของ{{localize('data')}}</th>
-                        <th>เครื่องมือ</th>
+                        <th>{{localize('order')}}</th>
+                        <th style="text-align:left;">{{localize('firstname')}}</th>
+                        <th style="text-align:left;">{{localize('firstname')}}{{localize('table')}}{{localize('of')}}{{localize('data')}}</th>
+                        <th>{{localize('tool')}}</th>
                     </tr>
                 </thead>
                 <tfoot class="table-foot">
@@ -52,7 +52,7 @@
                     </template>
                     <template is="dom-if" if={{_ObIsHave(lists)}}>
                         <tr>
-                            <td colspan="4" style="text-align: center">ไม่มี{{localize('data')}}</td>
+                            <td colspan="4" style="text-align: center">{{localize('no')}}{{localize('have')}}{{localize('data')}}</td>
                         </tr>
                     </template>
 
