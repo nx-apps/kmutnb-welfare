@@ -50,7 +50,7 @@
             <div class="from layout horizontal">
                 <div class="flex layout horizontal">
                     <div class="flex label">
-                        <label for="listTable">ชื่อตารางของข้อมูล :</label>
+                        <label for="listTable">ชื่อตารางของ{{localize('data')}} :</label>
                     </div>
                     <div class="flex-2">
                         <gl-combo-box id="listTable" no-label-float items='[[listTable]]' value="{{data.data_source}}" disabled="[[disabled]]"></gl-combo-box>
@@ -110,7 +110,7 @@
                                 </td>
                                 <td>
                                     <template is="dom-if" if={{!disabled}}>
-                                        <paper-button id="[[index]]" class="gl-btn-danger gl-small" on-tap="deleteCondition" raised>ลบเงือนไข</paper-button>
+                                        <paper-button id="[[index]]" class="gl-btn-danger gl-small" on-tap="deleteCondition" raised>{{localize('delete')}}เงือนไข</paper-button>
                                     </template>
                                 </td>
                             </tr>
@@ -127,7 +127,7 @@
             </div>
             <template is="dom-if" if={{!disabled}}>
                 <div class="horizontal end-justified layout btn">
-                    <paper-button class="gl-btn-primary" on-tap="insertCondition" raised>เพิ่มเงือนไข</paper-button>
+                    <paper-button class="gl-btn-primary" on-tap="insertCondition" raised>{{localize('insert')}}เงือนไข</paper-button>
                 </div>
             </template>
 
@@ -140,7 +140,10 @@
     <script>
         Polymer({
             is: 'logic-manage',
-            behaviors: [ReduxBehavior, commonLogic, ValidateFormBehavior],
+            behaviors: [ReduxBehavior, commonLogic, ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 data: {
                     type: Object,

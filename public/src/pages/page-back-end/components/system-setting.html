@@ -11,12 +11,12 @@
             }
         </style>
         <div class="head-text">
-            ตั้งค่าระบบ
+            {{localize('setting')}}{{localize('system')}}
         </div>
         <div class="content vertical start-justified layout">
             <div class="flex ">
                 <div class="horizontal start-justified layout">
-                    <div class="flex">เปิดการแก้ไขข้อมูลพนักงาน :</div>
+                    <div class="flex">เปิดการ{{localize('edit')}}{{localize('data')}}พนักงาน :</div>
                     <div class="flex-3">
                         <div class="horizontal start-justified layout">
                             <paper-toggle-button checked={{data.employee_edit}}></paper-toggle-button>
@@ -62,7 +62,7 @@
             </div>-->
             <div class="flex">
                 <div class="horizontal end-justified layout">
-                    <paper-button raised class="gl-btn-primary" on-tap="updateSystem"> บันทึกการตั้งค่า</paper-button>
+                    <paper-button raised class="gl-btn-primary" on-tap="updateSystem"> {{localize('save')}}</paper-button>
                 </div>
             </div>
         </div>
@@ -70,7 +70,10 @@
     <script>
         Polymer({
             is: 'system-setting',
-            behaviors: [ReduxBehavior, nylonBehavior],
+            behaviors: [ReduxBehavior, nylonBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 data: {
                     statePath: 'systemConfigs.config',

@@ -20,7 +20,7 @@
         </style>
         <!--<paper-material elevation="1">-->
         <div class="head-text">
-            ฐานข้อมูลตั้งต้น
+            ฐาน{{localize('data')}}ตั้งต้น
         </div>
         <div class="content horizontal center-justified layout">
             <table class="gl-table-default">
@@ -34,7 +34,7 @@
                 <!--<template is="dom-if" if="">
                     <tbody>
                         <tr>
-                            <td colspan="3">ไม่พบข้อมูล</td>
+                            <td colspan="3">ไม่พบ{{localize('data')}}</td>
                         </tr>
                     </tbody>
                 </template>-->
@@ -44,7 +44,7 @@
                             <td style="text-align: center">[[count(index)]]</td>
                             <td>[[item]]</td>
                             <td style="text-align: center">
-                                <paper-tooltip for="editData">แก้ไข</paper-tooltip>
+                                <paper-tooltip for="editData">{{localize('edit')}}</paper-tooltip>
                                 <paper-icon-button id="editData"icon="create" item="[[item]]" on-tap="selectData"></paper-icon-button>
                             </td>
                         </tr>
@@ -57,7 +57,10 @@
     <script>
         Polymer({
             is: 'list-welfare-common',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 dataList: {
                     statePath: 'conditionReadWelfare.listTable'

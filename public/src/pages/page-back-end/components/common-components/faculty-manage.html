@@ -20,21 +20,21 @@
         <div class="container">
             <section>
                 <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
-                    <gl-form-panel-head label="เพิ่มข้อมูล" set-padding="10px" set-border="0px">
+                    <gl-form-panel-head label="{{localize('insert')}}{{localize('data')}}" set-padding="10px" set-border="0px">
                         <!--<paper-icon-button icon="clear"></paper-icon-button>-->
                     </gl-form-panel-head>
                     <gl-form-panel-body label="" set-padding="10px" set-border="0px">
                         <!--<div class="flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="faculty_code" placeholder="กรอกข้อมูล" value="{{data.faculty_code}}"></gl-form-input>
+                                <gl-form-input label="faculty_code" placeholder="กรอก{{localize('data')}}" value="{{data.faculty_code}}"></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center"></div>
                         </div>-->
                          <div class="flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="{{localize('faculty')}}" placeholder="กรอกข้อมูล" value="{{data.faculty_name}}"></gl-form-input>
+                                <gl-form-input label="{{localize('faculty')}}" placeholder="กรอก{{localize('data')}}" value="{{data.faculty_name}}"></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center"></div>
                         </div>
@@ -42,7 +42,7 @@
                             <div class="flexchild"></div>
                             <div class="flex3child" style="margin-top: 10px">
                                <paper-button on-tap="getForm" class="gl-btn-primary" style="width: 100%" raised>
-                                   เพิ่ม
+                                   {{localize('insert')}}
                                 </paper-button>
                             </div>
                             <div class="flexchild" style="text-align: center"></div>
@@ -89,17 +89,17 @@
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
-                                            <paper-tooltip for="editData">แก้ไข</paper-tooltip>
+                                            <paper-tooltip for="editData">{{localize('edit')}}</paper-tooltip>
                                             <paper-icon-button id="editData"  on-tap="edit" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="create"></paper-icon-button>
-                                            <paper-tooltip for="delData">ลบ</paper-tooltip>
+                                            <paper-tooltip for="delData">{{localize('delete')}}</paper-tooltip>
                                             <paper-icon-button id="delData"on-tap="confirmDelete" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="delete"></paper-icon-button>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
-                                            <paper-tooltip for="upDData">อัพเดต</paper-tooltip>
+                                            <paper-tooltip for="upDData">{{localize('update')}}</paper-tooltip>
                                             <paper-icon-button id="upDData"  on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
-                                            <paper-tooltip for="canData">ยกเลิก</paper-tooltip>
+                                            <paper-tooltip for="canData">{{localize('cancel')}}</paper-tooltip>
                                             <paper-icon-button id="canData"  on-tap="close" item=[[item.faculty_code]] index="[[index]]" icon="clear"></paper-icon-button>
                                         </td>
                                     </template>

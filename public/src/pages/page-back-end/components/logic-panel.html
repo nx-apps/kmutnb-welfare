@@ -28,12 +28,12 @@
         <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
             <gl-form-panel-head label="" set-padding="10px" set-border="1px">
                 <template is="dom-if" if={{!insertView}}>
-                    <paper-tooltip for="editData">แก้ไข</paper-tooltip>
+                    <paper-tooltip for="editData">{{localize('edit')}}</paper-tooltip>
                     <paper-icon-button id="editData" on-tap="editData" raised hidden="[[!disabled]]" icon="create"></paper-icon-button>
-                    <paper-tooltip for="delData">ลบ</paper-tooltip>
+                    <paper-tooltip for="delData">{{localize('delete')}}</paper-tooltip>
                     <paper-icon-button id="delData" on-tap="deleteData" raised hidden="[[!disabled]]" icon="delete"></paper-icon-button>
 
-                    <!--<paper-button class="gl-btn-info" on-tap="editData" raised hidden="[[!disabled]]">แก้ไข</paper-button>
+                    <!--<paper-button class="gl-btn-info" on-tap="editData" raised hidden="[[!disabled]]">{{localize('edit')}}</paper-button>
                     <paper-button class="gl-btn-danger" on-tap="deleteData" raised hidden="[[!disabled]]">ลบ</paper-button>-->
                 </template>
             </gl-form-panel-head>
@@ -44,11 +44,11 @@
             <gl-form-panel-footer label="" set-padding="10px">
                 <template is="dom-if" if={{!insertView}}>
 
-                    <paper-button class="gl-btn-success" on-tap="saveData" raised hidden="[[disabled]]">บันทึก</paper-button>
+                    <paper-button class="gl-btn-success" on-tap="saveData" raised hidden="[[disabled]]">{{localize('save')}}</paper-button>
                 </template>
 
                 <template is="dom-if" if={{insertView}}>
-                    <paper-button class="gl-btn-primary" on-tap="insertata" raised>เพิ่ม</paper-button>
+                    <paper-button class="gl-btn-primary" on-tap="insertata" raised>{{localize('insert')}}</paper-button>
                 </template>
             </gl-form-panel-footer>
         </gl-form-panel>
@@ -58,7 +58,10 @@
     <script>
         Polymer({
             is: 'logic-panel',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 data: {
                     statePath: 'conditionReadWelfare.select'
