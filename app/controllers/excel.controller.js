@@ -544,3 +544,167 @@ var getEmployee = function (emp, con) {
         emp
     )
 }
+
+exports.gJasper = function (req, res) {
+    /* req.r.expr([
+         {
+             "com_con": 74376,
+             "com_ear": 1296.32,
+             "emp_con": 27047,
+             "emp_ear": 471.42,
+             "emp_name": "นาย ศีขรินทร์ โกมลหิรัญ",
+             "group": "1100800343775",
+             "personal_id": "1100800343775",
+             "fund_name": "SIN1",
+             "policy_code": "SINSA_EQ10",
+             "fund_company": "ABC",
+             "total": 103190.74
+         },
+         {
+             "com_con": 9412,
+             "com_ear": 46.57,
+             "emp_con": 3424,
+             "emp_ear": 16.94,
+             "emp_name": "นางสาว ปานตะวัน บัวบาน",
+             "group": "1250400281577",
+             "personal_id": "1250400281577",
+             "fund_name": "SIN1",
+             "policy_code": "SINSA_EQ10",
+             "fund_company": "ABC",
+             "total": 12899.51
+         },
+         {
+             "com_con": 560111,
+             "com_ear": 77819.39,
+             "emp_con": 216259,
+             "emp_ear": 33632.83,
+             "emp_name": "นาย นนทกร สถิตานนท์",
+             "group": "3129900307503",
+             "personal_id": "3129900307503",
+             "fund_name": "SIN1",
+             "policy_code": "SINSA_EQ20",
+             "fund_company": "ABC",
+             "total": 887822.22
+         },
+         {
+             "com_con": 204204,
+             "com_ear": 9534.43,
+             "emp_con": 74252,
+             "emp_ear": 3466.77,
+             "emp_name": "นาย ฐิติพงษ์ เลิศวิริยะประภา",
+             "group": "3160300291233",
+             "personal_id": "3160300291233",
+             "fund_name": "SIN2",
+             "policy_code": "SINSA_EQ20",
+             "fund_company": "ABC",
+             "total": 291457.2
+         },
+         {
+             "com_con": 796455,
+             "com_ear": 126516.47,
+             "emp_con": 309427,
+             "emp_ear": 54418.13,
+             "emp_name": "นางสาว คันธรส แสนวงศ์",
+             "group": "5100599018879",
+             "personal_id": "5100599018879",
+             "policy_code": "SINSA_EQ20",
+             "fund_company": "XYZ",
+             "fund_name": "SIN1",
+             "total": 1286816.6
+         },
+         {
+             "com_con": 729671,
+             "com_ear": 72628.61,
+             "emp_con": 282216,
+             "emp_ear": 30228.88,
+             "emp_name": "นาย สมชาย เวชกรรม",
+             "group": "3191000191391",
+             "personal_id": "3191000191391",
+             "policy_code": "SINSA_EQ20",
+             "fund_name": "SIN2",
+             "fund_company": "ABC",
+             "total": 1114744.49
+         },
+         {
+             "com_con": 304698,
+             "com_ear": 49040.26,
+             "emp_con": 135505,
+             "emp_ear": 29896.21,
+             "emp_name": "นาง กนกกาญจน์ จิรกุลสมโชค",
+             "group": "3309900167491",
+             "personal_id": "3309900167491",
+             "policy_code": "SINSA_EQ10",
+             "fund_name": "SIN2",
+             "fund_company": "ABC",
+             "total": 519139.47
+         },
+         {
+             "com_con": 414538,
+             "com_ear": 64061.24,
+             "emp_con": 177869,
+             "emp_ear": 36236.63,
+             "emp_name": "นาย วัชรินทร์ โพธิ์เงิน",
+             "group": "3311100069528",
+             "personal_id": "3311100069528",
+             "policy_code": "SINSA_EQ20",
+             "fund_name": "SIN2",
+             "fund_company": "XYZ",
+             "total": 692704.87
+         },
+         {
+             "com_con": 204536,
+             "com_ear": 12793.76,
+             "emp_con": 74379,
+             "emp_ear": 4652.14,
+             "emp_name": "นาย ธัญญา ปรเมษฐานุวัฒน์",
+             "group": "4950500004328",
+             "personal_id": "4950500004328",
+             "policy_code": "SINSA_EQ10",
+             "fund_name": "SIN1",
+             "fund_company": "XYZ",
+             "total": 296360.9
+         },
+         {
+             "com_con": 567118,
+             "com_ear": 57514.19,
+             "emp_con": 206551,
+             "emp_ear": 21159.5,
+             "emp_name": "นาย อนุชา หิรัญวัฒน์",
+             "group": "3120100750811",
+             "personal_id": "3120100750811",
+             "fund_name": "SIN1",
+             "policy_code": "SINSA_EQ20",
+             "fund_company": "ABC",
+             "total": 852342.69
+         }
+     ])
+         .orderBy('fund_company', 'fund_name', 'policy_code')
+         .without('group') */
+    req.r.db('welfare').table('history_fund').limit(20)
+        .group(function (g) {
+            return g.pluck('fund_company', 'fund_name', 'policy_code')
+        })
+        .ungroup()
+        .map(function (m) {
+            return m('group').merge(function (mer) {
+                return m('reduction').group('personal_id').ungroup().map(function (m2) {
+                    return m('group').merge({
+                        personal_id: m2('group'),
+                        com_con: m2('reduction').sum('com_con'),
+                        com_ear: m2('reduction').sum('com_ear'),
+                        emp_con: m2('reduction').sum('emp_con'),
+                        emp_ear: m2('reduction').sum('emp_ear')
+                    })
+                })
+            })
+        })
+        .reduce(function (left, right) {
+            return left.add(right)
+        })
+        .orderBy('fund_company', 'fund_name', 'policy_code')
+        .run()
+        .then(function (data) {
+            // res.json(data);
+            res.ireport("fund001.jasper", req.query.EXPORT || req.query.export || "pdf", data, {});
+        })
+}
