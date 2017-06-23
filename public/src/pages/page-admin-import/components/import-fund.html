@@ -115,6 +115,10 @@
                     </template>
                 </vaadin-grid-column>
             </vaadin-grid>
+            <div class="horizontal end-justified layout" style="margin:20px 0px 10px 0px">
+                <!--<paper-button raised on-tap="_cancle">ยกเลิก</paper-button>-->
+                <paper-button raised class="gl-btn-success" on-tap="_insert">เพิ่มลงฐานข้อมูล</paper-button>
+            </div>
         </template>
 
         <template is="dom-if" if={{!_obData(list)}}>
@@ -150,11 +154,7 @@
                 </vaadin-grid-column>
             </vaadin-grid>
         </template>
-
-        <div class="horizontal end-justified layout" style="margin:20px 0px 10px 0px">
-            <paper-button raised on-tap="_cancle">ยกเลิก</paper-button>
-            <paper-button raised class="gl-btn-success" on-tap="_insert">เพิ่มลงฐานข้อมูล</paper-button>
-        </div>
+        
     </template>
 
     <script>
@@ -181,8 +181,8 @@
                 return index + 1
             },
             _preview: function () {
-                var uploadDis = this.$$('#myFile');
-                var dropDis = this.$$('#dropdown');
+                // var uploadDis = this.$$('#myFile');
+                // var dropDis = this.$$('#dropdown');
                 var data = {
                     name: this.select_file.name,
                     sheet: this.selectSheet
@@ -191,8 +191,8 @@
                 if(check === true){
                     if(this.selectSheet !== undefined){
                         this.dispatchAction('FUND_PREVIEW_DATA', data);
-                        uploadDis.disabled = true;
-                        dropDis.disabled = true;
+                        // uploadDis.disabled = true;
+                        // dropDis.disabled = true;
                     }else{
                         this.fire('toast',{status:'connectError',text:'กรุณาเลือกไฟล์ที่จะอัพโหลด',
                         callback:function(){
@@ -221,14 +221,13 @@
                     }
                 })
             },
-            _cancle: function () {
-                var uploadDis = this.$$('#myFile');
-                console.log(uploadDis);
-                uploadDis.disabled = false;
-                var dropDis = this.$$('#dropdown');
-                dropDis.disabled = false;
-                console.log(111);
-            },
+            // _cancle: function () {
+            //     var uploadDis = this.$$('#myFile');
+            //     uploadDis.disabled = false;
+            //     // var dropDis = this.$$('#dropdown');
+            //     // dropDis.disabled = false;
+            //     this.list = [];
+            // },
             _uploadFile: function (e) {
                 // console.log(e.currentTarget.files)
                 var file = e.currentTarget.files;
