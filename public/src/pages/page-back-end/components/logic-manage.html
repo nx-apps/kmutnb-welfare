@@ -32,7 +32,7 @@
             <div class="from layout horizontal">
                 <div class="flex layout horizontal">
                     <div class="flex label">
-                        <label for="name_label">{{localize('firstname')}}ที่แสดง :</label>
+                        <label for="name_label">{{localize('firstname')}}{{localize('condition')}} :</label>
                     </div>
                     <div class="flex-2">
                         <gl-form-input id="name_label" no-label-float value="{{data.label}}" disabled="[[disabled]]" class="required" required></gl-form-input>
@@ -40,7 +40,7 @@
                 </div>
                 <div class="flex layout horizontal">
                     <div class="flex label">
-                        <label for="name_field">{{localize('firstname')}}{{localize('field')}}{{localize('table')}}{{localize('employee')}} :</label>
+                        <label for="name_field">{{localize('firstname')}}{{localize('field')}} :</label>
                     </div>
                     <div class="flex-2">
                         <gl-combo-box id="active_id" no-label-float class="required" required items="{{listField}}" value="{{data.field}}" disabled="[[disabled]]"></gl-combo-box>

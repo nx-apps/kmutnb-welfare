@@ -2,7 +2,7 @@
 <link rel="import" href="./../../../components/validateFormBehaviors.html">
 
 <dom-module id="gender-manage">
-    <style include="gl-table gl-color flex-style page-style">
+    <style include="gl-table gl-styles flex-style page-style">
         .container {
             padding: 20px
         }
@@ -30,7 +30,7 @@
                                 <gl-form-input label="{{localize('gender')}}" placeholder="กรอก{{localize('data')}}" value="{{data.gender_name}}"></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center">
-                                <paper-button class="gl-btn-success" on-tap="getForm" raised>{{localize('insert')}}</paper-button>
+                                <paper-button class="gl-btn-primary"  on-tap="getForm" raised>{{localize('insert')}}</paper-button>
                             </div>
                         </div>
                     </gl-form-panel-body>
