@@ -221,3 +221,29 @@ exports.fund02 = function (req, res) {
             res.ireport("fund02.jasper", req.query.EXPORT || req.query.export || "pdf", data['data'], data['params']);
         })
 }
+exports.sso = function (req, res) {
+    var r = req.r;
+    var param = req.query;
+    // param.monthName = "";
+    // if (param.year !== undefined)
+    //     param.year = Number(param.year)
+    // if (param.month !== undefined) {
+    //     param.month = Number(param.month)
+    //     param.monthName = arr_month[param.month]
+    // }
+    r.db('welfare').table('history_sso').getAll( param.personal_id , { index: 'personal_id' })
+        .merge(function (name_merge) {
+            return {
+                employee_name: name_merge('prefix_name').add(name_merge('first_name'))
+                    .add('  ', name_merge('last_name'))
+            }
+        })
+        .run()
+        .then(function (result) {
+            // res.json(result);
+            param = keysToUpper(param);
+            CURRENT_DATE = new Date().toISOString().slice(0, 10)
+            param.CURRENT_DATE = CURRENT_DATE
+            res.ireport("sso.jasper", req.query.EXPORT || req.query.export || "pdf", result,param);
+        })
+}
