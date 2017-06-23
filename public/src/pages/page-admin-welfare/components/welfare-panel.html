@@ -88,12 +88,15 @@
                 this.$$(val).checked = true;
             },
             getGroupWelfareId:function(val){
-                console.log(val);
+                // console.log(val);
                 this.dispatchAction('LIST_WELFARE_ID', val);
+                this.group_id = val;
             },
             tap1:function(){
+                // console.log(this.group_id);
+                this.fire('edit_group', this.group_id);
                 // //console.log('tab1');
-                this.$$('group-welfare-manage').cancle();
+                // this.$$('group-welfare-manage').cancle();
             },
             tap2:function(){
                 // //console.log('tab2');
