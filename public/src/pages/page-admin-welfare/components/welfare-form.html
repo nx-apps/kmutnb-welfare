@@ -44,7 +44,7 @@
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                            <label id="label" style="font-weight:bold;color:#737373">รูปแบบการใช้งาน:</label>
+                            <label id="label" style="font-weight:bold;color:#737373">ใช้สิทธิสวัสดิการ :</label>
                             <paper-radio-group selected="{{data.round_use}}" attr-for-selected="value" aria-labelledby="label">
                                 <paper-radio-button value="{{!type_select}}" disabled="{{isEnable}}">ใช้แบบต่อรอบ</paper-radio-button>
                                 <paper-radio-button value="{{type_select}}" disabled="{{isEnable}}">ใช้แบบต่อครั้ง</paper-radio-button>
@@ -65,7 +65,7 @@
                         <gl-grid-row>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                                <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน (บาท)" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                                <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน (บาท) :" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                             </gl-grid-col>
                         </gl-grid-row>
                     </template>
@@ -74,13 +74,13 @@
                         <gl-grid-row>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                                <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงินมหาลัยจ่าย (บาท)" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                                <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงินมหาลัยจ่าย (บาท) :" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                             </gl-grid-col>
                         </gl-grid-row>
                         <gl-grid-row>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                                <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="จำนวนเงินที่พนักงานจ่าย (บาท)" format-number="on" value="{{data.budget_emp}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                                <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="จำนวนเงินที่พนักงานจ่าย (บาท) :" format-number="on" value="{{data.budget_emp}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                             </gl-grid-col>
                         </gl-grid-row>
                     </template>
@@ -90,13 +90,13 @@
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                            <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวน % ที่มหาลัยจ่าย" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                            <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวน % ที่มหาลัยจ่าย :" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                         </gl-grid-col>
                     </gl-grid-row>
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                            <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="จำนวน % ที่พนักงานจ่าย" format-number="on" value="{{data.budget_emp}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                            <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="จำนวน % ที่พนักงานจ่าย :" format-number="on" value="{{data.budget_emp}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
                         </gl-grid-col>
                     </gl-grid-row>
                 </template>
@@ -151,7 +151,7 @@
                 </template>
                 <div class="horizontal center-justified layout">
                     <div hidden$="{{isEnable}}">
-                        <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
+                        <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข :</paper-button>
                     </div>
                 </div>
                 <div class="horizontal end-justified layout btn-bottom">
