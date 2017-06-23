@@ -224,6 +224,7 @@ exports.fund02 = function (req, res) {
 exports.sso = function (req, res) {
     var r = req.r;
     var param = req.query;
+    // param.year = Number(param.year) + 543;
     // param.monthName = "";
     // if (param.year !== undefined)
     //     param.year = Number(param.year)
