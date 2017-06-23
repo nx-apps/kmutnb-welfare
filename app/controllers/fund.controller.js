@@ -122,6 +122,7 @@ exports.getfile = function (req, res) {
 exports.insert = function (req, res) {
     var r = req.r;
     var datas = readExcel(req.body.name, req.body.sheet);
+    var fundName = datas[0].fund_name;
     var month = datas[0].fund_month;
     var year = datas[0].fund_year;
     var mergeEmp = r.expr(datas)
@@ -142,7 +143,7 @@ exports.insert = function (req, res) {
                 }).without('id')(0)
             )
         });
-    r.db('welfare').table('history_fund').getAll([year, month], { index: 'yearMonth' }).delete()
+    r.db('welfare').table('history_fund').getAll([fundName, year, month], { index: 'fundNameYearMonth' }).delete()
         .do(function (d) {
             return r.db('welfare').table('history_fund').insert(mergeEmp)
         })
