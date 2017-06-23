@@ -15,22 +15,26 @@
         td,th{
             text-align: center !important;
         }
+        td:nth-child(1),
+        th:nth-child(1){
+            text-align: left !important;
+        }
     </style>
     <template>
         <div class="container">
             <section>
                 <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
-                    <gl-form-panel-head label="เพิ่มข้อมูล" set-padding="10px" set-border="0px">
+                    <gl-form-panel-head label="{{localize('insert')}}{{localize('data')}}" set-padding="10px" set-border="0px">
                         <!--<paper-icon-button icon="clear"></paper-icon-button>-->
                     </gl-form-panel-head>
                     <gl-form-panel-body label="" set-padding="10px" set-border="0px">
                         <div class="container flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="academic_name" id="form" placeholder="กรอกข้อมูล" value="{{data.academic_name}}" required></gl-form-input>
+                                <gl-form-input label="{{localize('academic')}}" id="form" placeholder="กรอก{{localize('data')}}" value="{{data.academic_name}}" required></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center">
-                                <paper-button class="gl-btn-success" on-tap="getForm" raised>เพิ่ม</paper-button>
+                                <paper-button class="gl-btn-success" on-tap="getForm" raised>{{localize('insert')}}</paper-button>
                             </div>
                         </div>
                     </gl-form-panel-body>
@@ -43,7 +47,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10%">ลำดับ</th>
-                                <th>academic_name</th>
+                                <th style="text-align: left !important">{{localize('academic')}}</th>
                                 <th style="width: 20%">เครื่องมือ</th>
                             </tr>
                         </thead>
@@ -53,28 +57,28 @@
                                 <tr>
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             {{item.academic_name}} 
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
-                                        <td>
+                                        <td style="text-align: left !important">
                                             <paper-input no-label-float id="formUpdate" value="{{item.academic_name}}" required></paper-input>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
-                                            <paper-tooltip for="editData">แก้ไข</paper-tooltip>
+                                            <paper-tooltip for="editData">{{localize('edit')}}</paper-tooltip>
                                             <paper-icon-button id="editData" on-tap="edit" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="create"></paper-icon-button>
-                                            <paper-tooltip for="delData">ลบ</paper-tooltip>
+                                            <paper-tooltip for="delData">{{localize('delete')}}</paper-tooltip>
                                             <paper-icon-button id="delData"  on-tap="confirmDelete" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="delete"></paper-icon-button>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
-                                            <paper-tooltip for="upDData">อัพเดต</paper-tooltip>
+                                            <paper-tooltip for="upDData">{{localize('update')}}</paper-tooltip>
                                             <paper-icon-button id="upDData"  on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
-                                            <paper-tooltip for="canData">ยกเลิก</paper-tooltip>
+                                            <paper-tooltip for="canData">{{localize('cancel')}}</paper-tooltip>
                                             <paper-icon-button id="canData"  on-tap="close" item=[[item.academic_name]] index="[[index]]" icon="clear"></paper-icon-button>
                                         </td>
                                     </template>
@@ -89,7 +93,10 @@
     <script>
         Polymer({
             is: 'academic-manage',
-            behaviors:[ReduxBehavior,ValidateFormBehavior],
+            behaviors:[ReduxBehavior,ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties:{
                 dataList:{
                     statePath:'commonData.academic'

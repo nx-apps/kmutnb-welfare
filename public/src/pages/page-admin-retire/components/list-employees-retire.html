@@ -26,7 +26,6 @@
                 text-align: center;
                 font-size: 30px;
             }
-
             /*[type="checkbox"] {
                 margin: 20px;
             }*/
@@ -203,7 +202,9 @@
                 newArray = JSON.parse(JSON.stringify(newArray));
                 let list_active = JSON.parse(JSON.stringify(this.list_active));
                 let list_type_employee = JSON.parse(JSON.stringify(this.list_type_employee));
-                let RETIREMENT = list_active.find((item) => item.active_code === 'RETIREMENT')
+                // console.log(list_active);
+                let RETIREMENT = list_active.find((item) => item.id === 'RETIREMENT')
+                // console.log(RETIREMENT);
                 // let type_employee = list_type_employee.find((item) => item.type_employee_name === 'ผู้เกษียณ')
                 newArray.map((item) => {
                     item.active_id = RETIREMENT.id
@@ -225,8 +226,11 @@
                                 // console.log(data);
                                 this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
                             })
-                            // // this.dispatchAction('RETIER_SEARCH', this.calDate);
-                            window.open('./api/report/retire?date=' + this.calDate);
+                            this.async(() => {
+                                this.dispatchAction('RETIER_SEARCH', this.calDate);
+                                window.open('./api/report/retire?date=' + this.calDate);
+                            }, 1000);
+
                             // //console.log(newArray);
                         }
                     }

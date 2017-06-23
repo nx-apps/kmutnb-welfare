@@ -22,7 +22,7 @@ exports.list = function (req, res) {
     //     .without('academic_id','active_id','department_id','faculty_id','gender_id','matier_id','position_id','type_employee_id','prefix_id')
     r.expr({
         academic: r.db('welfare_common').table('academic').coerceTo('Array'),
-        active: r.db('welfare_common').table('active').coerceTo('Array'),
+        // active: r.db('welfare_common').table('active').coerceTo('Array'),
         // department: r.db('welfare_common').table('department').coerceTo('Array'),
         // faculty: r.db('welfare_common').table('faculty').coerceTo('Array'),
         // gender: r.db('welfare_common').table('gender').coerceTo('Array'),
@@ -39,9 +39,9 @@ exports.list = function (req, res) {
                             academic_name: emp('academic').filter({ id: merName('academic_id') }).reduce((left, right) => {
                                 return left.add(right);
                             }).default('-').pluck('academic_name').getField('academic_name'),
-                            active_name: emp('active').filter({ id: merName('active_id') }).reduce((left, right) => {
-                                return left.add(right);
-                            }).default('-').pluck('active_name').getField('active_name'),
+                            // active_name: emp('active').filter({ id: merName('active_id') }).reduce((left, right) => {
+                            //     return left.add(right);
+                            // }).default('-').pluck('active_name').getField('active_name'),
                             // department_name: emp('department').filter({ id: merName('department_id') }).reduce((left, right) => {
                             //     return left.add(right);
                             // }).default('-').pluck('department_name').getField('department_name'),
@@ -466,7 +466,7 @@ exports.welfaresEmployee = function (req, res) {
             }
         })
         .eqJoin('academic_id', r.db('welfare_common').table('academic')).pluck('left', { right: ['academic_name'] }).zip()
-        .eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: ['active_name'] }).zip()
+        // .eqJoin('active_id', r.db('welfare_common').table('active')).pluck('left', { right: ['active_name'] }).zip()
         .eqJoin('department_id', r.db('welfare_common').table('department')).pluck('left', { right: ['department_name'] }).zip()
         .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck('left', { right: ['faculty_name'] }).zip()
         .eqJoin('gender_id', r.db('welfare_common').table('gender')).pluck('left', { right: ['gender_name'] }).zip()

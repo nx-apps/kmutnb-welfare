@@ -15,7 +15,7 @@
 
         <!--<paper-material elevation="1">-->
         <div class="head-text">
-            รายการฟิลด์เงื่อนไข
+            ฟิลด์เงื่อนไข
         </div>
         <div class="content horizontal center-justified layout">
             <table class="gl-table-default">
@@ -23,7 +23,7 @@
                     <tr>
                         <th>ลำดับ</th>
                         <th style="text-align:left;">ชื่อ</th>
-                        <th style="text-align:left;">ดึงข้อมูลจากตาราง</th>
+                        <th style="text-align:left;">ชื่อตารางของ{{localize('data')}}</th>
                         <th>เครื่องมือ</th>
                     </tr>
                 </thead>
@@ -31,7 +31,7 @@
                     <tr>
                         <td colspan="4">
                             <div class="horizontal end-justified layout">
-                                <paper-button raised class="gl-btn-primary" on-tap="addlogic">เพิ่ม</paper-button>
+                                <paper-button raised class="gl-btn-primary" on-tap="addlogic">{{localize('insert')}}</paper-button>
                             </div>
                         </td>
                     </tr>
@@ -44,15 +44,15 @@
                             <td style="text-align:left;">[[item.label]] ([[item.field]])</td>
                             <td style="text-align:left;">[[item.data_source]]</td>
                             <td>
-                                <paper-tooltip for="editData">แก้ไข</paper-tooltip>
+                                <paper-tooltip for="editData">{{localize('edit')}}</paper-tooltip>
                                 <paper-icon-button id="editData" icon="create" on-tap="editData" data="[[item]]"></paper-icon-button>
-                                <!--<paper-button class="gl-btn-info gl-small" raised on-tap="editData" data="[[item]]">แก้ไข</paper-button>-->
+                                <!--<paper-button class="gl-btn-info gl-small" raised on-tap="editData" data="[[item]]">{{localize('edit')}}</paper-button>-->
                             </td>
                         </tr>
                     </template>
                     <template is="dom-if" if={{_ObIsHave(lists)}}>
                         <tr>
-                            <td colspan="4" style="text-align: center">ไม่มีข้อมูล</td>
+                            <td colspan="4" style="text-align: center">ไม่มี{{localize('data')}}</td>
                         </tr>
                     </template>
 
@@ -66,7 +66,10 @@
     <script>
         Polymer({
             is: 'list-of-logic',
-            behaviors: [ReduxBehavior, commonLogic],
+            behaviors: [ReduxBehavior, commonLogic,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 lists: {
                     statePath: 'conditionReadWelfare.listConditions'
