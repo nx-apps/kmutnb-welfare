@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sso" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="75291837-a156-4242-939c-11ba68ea3812">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sso" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="75291837-a156-4242-939c-11ba68ea3812">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -17,9 +17,9 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="40" splitType="Stretch">
+		<band height="50" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="10" width="555" height="20" uuid="d21b2755-c8eb-4f49-a2d6-510d8bf499d8"/>
+				<reportElement x="0" y="12" width="802" height="20" uuid="d21b2755-c8eb-4f49-a2d6-510d8bf499d8"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -37,7 +37,7 @@
 	<pageHeader>
 		<band height="20" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="107" height="20" uuid="b4912910-ea27-4d52-b7f5-e82134840e1e"/>
+				<reportElement x="51" y="0" width="150" height="20" uuid="b4912910-ea27-4d52-b7f5-e82134840e1e"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -51,7 +51,7 @@
 				<text><![CDATA[เลขบัตรประชาชน]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="255" y="0" width="140" height="20" uuid="406909bd-7121-4bd6-baa8-30a39a1c6360"/>
+				<reportElement x="361" y="0" width="201" height="20" uuid="406909bd-7121-4bd6-baa8-30a39a1c6360"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -65,7 +65,7 @@
 				<text><![CDATA[โรงพยาบาล]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="395" y="0" width="80" height="20" uuid="293e0cef-1608-4a52-a344-ce7fea8be41c"/>
+				<reportElement x="562" y="0" width="120" height="20" uuid="293e0cef-1608-4a52-a344-ce7fea8be41c"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -79,7 +79,7 @@
 				<text><![CDATA[วันออกบัตร]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="475" y="0" width="80" height="20" uuid="951dccfc-7237-4f2a-8d87-63c531842b17"/>
+				<reportElement x="682" y="0" width="120" height="20" uuid="951dccfc-7237-4f2a-8d87-63c531842b17"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -93,7 +93,7 @@
 				<text><![CDATA[บัตรหมดอายุ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="107" y="0" width="148" height="20" uuid="f96b18f6-2baa-465a-952b-8fe09105bdae"/>
+				<reportElement x="201" y="0" width="160" height="20" uuid="f96b18f6-2baa-465a-952b-8fe09105bdae"/>
 				<box leftPadding="1" rightPadding="1">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -106,12 +106,26 @@
 				</textElement>
 				<text><![CDATA[ชื่อ]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="51" height="20" uuid="1995d8b2-9bfb-47f0-8ac9-a23e4c031cd2"/>
+				<box leftPadding="1" rightPadding="1">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ลำดับ]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="107" height="20" uuid="3d4e3f26-0c92-4a73-b70f-39ed2b51ffc5"/>
+				<reportElement x="51" y="0" width="150" height="20" uuid="3d4e3f26-0c92-4a73-b70f-39ed2b51ffc5"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="1.0"/>
@@ -125,7 +139,7 @@
 				<textFieldExpression><![CDATA[$F{personal_id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="107" y="0" width="148" height="20" uuid="e9727381-3add-49f3-b918-e25e65628436"/>
+				<reportElement x="201" y="0" width="160" height="20" uuid="e9727381-3add-49f3-b918-e25e65628436"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="1.0"/>
@@ -139,7 +153,7 @@
 				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="255" y="0" width="140" height="20" uuid="f372a909-439d-41a5-a740-c1ad8c685f06"/>
+				<reportElement x="361" y="0" width="201" height="20" uuid="f372a909-439d-41a5-a740-c1ad8c685f06"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="1.0"/>
@@ -153,7 +167,7 @@
 				<textFieldExpression><![CDATA[$F{hospital}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="395" y="0" width="80" height="20" uuid="72095148-86b1-4a32-9611-a3df40aef34f"/>
+				<reportElement x="562" y="0" width="120" height="20" uuid="72095148-86b1-4a32-9611-a3df40aef34f"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="1.0"/>
@@ -167,7 +181,7 @@
 				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDateShort ($F{issued_date})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="475" y="0" width="80" height="20" uuid="ccc8cf14-7e9f-4862-b9e1-5f6323115d4c"/>
+				<reportElement x="682" y="0" width="120" height="20" uuid="ccc8cf14-7e9f-4862-b9e1-5f6323115d4c"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="1.0"/>
@@ -180,12 +194,26 @@
 				</textElement>
 				<textFieldExpression><![CDATA[new nylon.utility.NumberFormat().toThaiDateShort ($F{expired_date})]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="51" height="20" uuid="43022fd2-c8a8-4ce3-b533-aeea8da1e395"/>
+				<box leftPadding="5" rightPadding="5">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="12" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
 		<band height="40" splitType="Stretch">
 			<textField>
-				<reportElement x="445" y="20" width="110" height="20" uuid="2538221c-e6ab-4132-b34c-205216a7aaf9"/>
+				<reportElement x="692" y="20" width="110" height="20" uuid="2538221c-e6ab-4132-b34c-205216a7aaf9"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -213,7 +241,7 @@
 				<textFieldExpression><![CDATA["พิมพ์โดย " + " Admin "+new nylon.utility.NumberFormat().toThaiDate($P{CURRENT_DATE})]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Auto">
-				<reportElement x="325" y="0" width="230" height="20" uuid="ba26af6e-aaec-4e5a-bfaa-891733624a8e"/>
+				<reportElement x="572" y="0" width="230" height="20" uuid="ba26af6e-aaec-4e5a-bfaa-891733624a8e"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
