@@ -343,7 +343,7 @@ exports.report3 = function (req, res, next) {
     // console.log(req.query.year)
 
     r.expr({
-        employees: r.db('welfare').table('employee').filter({ active_name: 'ทำงาน' }).coerceTo('array'),
+        employees: r.db('welfare').table('employee').filter({ active_id: 'WORK' }).coerceTo('array'),
         history_welfare: r.db('welfare').table('history_welfare')
             .filter(function (his_filter) {
                 return his_filter('date_use').year().eq(year)
@@ -483,7 +483,7 @@ exports.report3_1 = function (req, res) {
     // console.log(year);
 
     r.expr({
-        employees: r.db('welfare').table('employee').filter({ active_name: 'ทำงาน' }).coerceTo('array'),
+        employees: r.db('welfare').table('employee').filter({ active_id: 'WORK' }).coerceTo('array'),
         history_welfare: r.db('welfare').table('history_welfare').filter({ status: 'true' })
             .filter(function (his_filter) {
                 return his_filter('date_use').year().eq(year)
@@ -2223,7 +2223,7 @@ exports.retire = function (req, res) {
         return ageDate.year().sub(1970)
     }
     console.log(req.query.date)
-    r.db('welfare').table('employee').getAll(time.date(), { index: 'end_work_date' })//.getAll('ทำงาน', { index: 'active_name' })
+    r.db('welfare').table('employee').getAll(time.date(), { index: 'end_work_date' })//.getAll('WORK', { index: 'active_id' })
         .merge(function (use) {
             return {
                 birthdate_cal: calculateAge(use('birthdate')),
