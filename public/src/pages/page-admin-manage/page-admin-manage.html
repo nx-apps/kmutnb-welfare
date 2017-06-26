@@ -3,22 +3,14 @@
 <link rel="import" href="../components/month-behavior.html">
 <link rel="import" href="./components/admin-dialog-use-welfare.html">
 <link rel="import" href="./components/employee-manage.html">
-
 <link rel="import" href="./../components/validateFormBehaviors.html">
-
 <link rel="import" href="./../components/page-style.html">
-
 <link rel="import" href="./components/history-welfare.html">
 <link rel="import" href="./../../../bower_components/vaadin-grid/vaadin-grid.html">
-
 <link rel="import" href="./../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
-
 <link rel="import" href="./../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
-
 <link rel="import" href="./components/history-sso.html">
-
 <link rel="import" href="./components/history-rvd.html">
-
 <link rel="import" href="./components/admin-dialog-use-fund.html">
 
 <dom-module id="page-admin-manage">
@@ -151,29 +143,29 @@
             <!--<iron-pages selected="{{pages}}">-->
             <!--<section>-->
             <div class="header-page container">
-                ใช้สิทธิสวัสดิการรายบุคคล
+                {{localize('use')}}{{localize('right')}}{{localize('welfare')}}{{localize('item')}}{{localize('people')}}
             </div>
             <gl-form-panel set-padding="10px 20px 10px 20px" set-border="1px">
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <div class="horizontal end-justified layout">
-                        <paper-button class="gl-btn-info" on-tap="editData" raised>แก้ไขข้อมูลพนักงาน</paper-button>
+                        <paper-button class="gl-btn-info" on-tap="editData" raised>{{localize('edit')}}{{localize('data')}}{{localize('employee')}}</paper-button>
                     </div>
 
                 </gl-form-panel-body>
                 <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                     <fieldset>
-                        <legend>ข้อมูลพนักงาน :</legend>
+                        <legend>{{localize('data')}}{{localize('employee')}} :</legend>
                         <div class="flex content horizontal start-justified layout">
-                            <div class="flex">ชื่อ : [[data.prefix_name]] [[data.firstname]] [[data.lastname]]</div>
-                            <div class="flex">รหัสพนักงาน : [[data.emp_no]]</div>
+                            <div class="flex">{{localize('firstname')}} : [[data.prefix_name]] [[data.firstname]] [[data.lastname]]</div>
+                            <div class="flex">{{localize('code')}}{{localize('employee')}} : [[data.emp_no]]</div>
                         </div>
                         <div class="flex content horizontal start-justified layout">
-                            <div class="flex">สถานภาพการทำงาน : [[data.active_name]]</div>
-                            <div class="flex">ตำแหน่ง : [[data.position_name]]</div>
+                            <div class="flex">{{localize('active')}} : [[data.active_name]]</div>
+                            <div class="flex">{{localize('position')}} : [[data.position_name]]</div>
                         </div>
                         <div class="flex content horizontal start-justified layout">
-                            <div class="flex">ภาควิชา : [[data.department_name]]</div>
-                            <div class="flex">คณะ : [[data.faculty_name]]</div>
+                            <div class="flex">{{localize('department')}} : [[data.department_name]]</div>
+                            <div class="flex">{{localize('faculty')}} : [[data.faculty_name]]</div>
                         </div>
                     </fieldset>
                     <div class="content horizontal start-justified layout">
@@ -188,17 +180,17 @@
 
                     <main>
                         <input id="tab1" type="radio" name="tabs" checked on-click="setVaadin">
-                        <label for="tab1">สวัสดิการที่ได้รับสิทธิ</label>
+                        <label for="tab1">{{localize('welfare')}}{{localize('at')}}{{localize('get')}}{{localize('right')}}</label>
 
                         <input id="tab2" type="radio" name="tabs" on-click="setVaadin">
-                        <label for="tab2">ประวัติการใช้สวัสดิการ</label>
+                        <label for="tab2">{{localize('history')}}การ{{localize('use')}}{{localize('welfare')}}</label>
                         <template is="dom-if" if={{data.sso_open}}>
                             <input id="tab3" type="radio" name="tabs">
-                            <label for="tab3">ประกันสังคม</label>
+                            <label for="tab3">{{localize('social_security')}}</label>
                         </template>
                         <template is="dom-if" if={{data.fund_open}}>
                             <input id="tab4" type="radio" name="tabs">
-                            <label for="tab4">กองทุน</label>
+                            <label for="tab4">{{localize('fund')}}</label>
                         </template>
                         <!--<button type="" on-click="setVaadin">dd</button>
                         <paper-button on-tap="setVaadin">dd</paper-button>-->
@@ -208,7 +200,7 @@
                                 <br>
                                 <div class="content horizontal end-justified layout">
                                     <paper-button raised on-tap="getWelfareHave">
-                                        <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> สวัสดิการที่ได้รับสิทธิ
+                                        <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> {{localize('welfare')}}{{localize('at')}}{{localize('get')}}{{localize('right')}}
                                     </paper-button>
                                 </div>
                                 <br>
@@ -216,7 +208,7 @@
                                     <vaadin-grid id="material" items={{data.group_welfares}}>
                                         <vaadin-grid-column width="50px" flex-grow="0">
                                             <template class="header ">
-                                                <div class="text-center">ลำดับ</div>
+                                                <div class="text-center">{{localize('order')}}</div>
                                             </template>
                                             <template>
                                                 <div class="text-center">[[_Obindex(index)]]
@@ -225,7 +217,7 @@
                                         </vaadin-grid-column>
 
                                         <vaadin-grid-column width="500px" flex-grow="0" resizable>
-                                            <template class="header ">สวัสดิการที่สามารถใช้ได้
+                                            <template class="header ">{{localize('welfare')}}{{localize('at')}}{{localize('can')}}{{localize('available')}}
                                             </template>
                                             <template>[[item.group_welfare_name]] [[item.welfare_name]]
                                                 <!--[[checkOnce(item.onetime_use)]]-->
@@ -237,12 +229,12 @@
 
                                         <vaadin-grid-column-group>
                                             <template class="header">
-                                                <div class="text-center">จำนวนเงิน </div>
+                                                <div class="text-center">{{localize('number')}}{{localize('money')}} </div>
                                             </template>
 
                                             <vaadin-grid-column width="calc(15% - 10px)">
                                                 <template class="header">
-                                                    <div class="text-right">ส่วนของมหาวิทยาลัย</div>
+                                                    <div class="text-right">{{localize('part_of')}}{{localize('university')}}</div>
                                                 </template>
                                                 <template>
                                                     <div class="text-right">[[formatNumber(item.budget)]]</div>
@@ -251,7 +243,7 @@
 
                                             <vaadin-grid-column width="calc(15% - 10px)">
                                                 <template class="header">
-                                                    <div class="text-right">ส่วนของพนักงาน</div>
+                                                    <div class="text-right">{{localize('part_of')}}{{localize('employee')}}</div>
                                                 </template>
                                                 <template>
                                                     <div class="text-right">
@@ -263,7 +255,7 @@
 
                                             <vaadin-grid-column width="calc(10% - 20px)">
                                                 <template class="header">
-                                                    <div class="text-right">ใช้สิทธิ</div>
+                                                    <div class="text-right">{{localize('use')}}{{localize('right')}}</div>
                                                 </template>
                                                 <template>
                                                     <div class="text-right">[[formatNumber(item.budget_use)]]</div>
@@ -271,7 +263,7 @@
                                             </vaadin-grid-column>
                                             <vaadin-grid-column width="calc(10% - 20px)">
                                                 <template class="header">
-                                                    <div class="text-right">จ่ายเอง</div>
+                                                    <div class="text-right">{{localize('pay_person')}}</div>
                                                 </template>
                                                 <template>
                                                     <div class="text-right">
@@ -282,7 +274,7 @@
                                             </vaadin-grid-column>
                                             <vaadin-grid-column width="calc(20% - 20px)">
                                                 <template class="header">
-                                                    <div class="text-right">คงเหลือ (มหาวิทยาลัย)</div>
+                                                    <div class="text-right">{{localize('balance')}} ({{localize('university')}})</div>
                                                 </template>
                                                 <template>
                                                     <div class="text-right">[[formatNumber(item.budget_balance)]]</div>
@@ -291,7 +283,7 @@
 
                                             <vaadin-grid-column width="calc(15% - 20px)">
                                                 <template class="header">
-                                                    <div class="text-right">คงเหลือ (พนักงาน)</div>
+                                                    <div class="text-right">{{localize('balance')}} ({{localize('employee')}})</div>
                                                 </template>
                                                 <template>
                                                     <div class="text-right">
@@ -303,11 +295,11 @@
 
                                         <vaadin-grid-column width="150px" flex-grow="0">
                                             <template class="header ">
-                                                <div class="text-center">ดำเนินการ</div>
+                                                <div class="text-center">{{localize('tool')}}</div>
                                             </template>
                                             <template>
                                                 <div class="text-center">
-                                                    <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" disabled="[[checkWelfareFull(item)]]">ใช้สิทธิ</paper-button>
+                                                    <paper-button class="gl-btn-primary gl-small" raised on-tap="usewelfare" data="[[item]]" disabled="[[checkWelfareFull(item)]]">{{localize('use')}}{{localize('right')}}</paper-button>
                                                 </div>
                                             </template>
                                         </vaadin-grid-column>
@@ -326,7 +318,7 @@
                         </section>
                         <section id="content3">
                             <div class="content center-justified layout">
-                                <div class="history">ประกันสังคม</div>
+                                <div class="history">{{localize('social_security')}}</div>
                                 <history-sso data={{data}}></history-sso>
 
                             </div>
@@ -334,7 +326,7 @@
                         <!--<template is="dom-if" if={{data.fund_open}}>-->
                             <section id="content4">
                                 <div class="content center-justified layout">
-                                    <div class="history">กองทุน</div>
+                                    <div class="history">{{localize('fund')}}</div>
                                     <history-rvd data={{data}}></history-rvd>
                                 </div>
                             </section>
@@ -349,8 +341,8 @@
 
                 </paper-dialog-scrollable>
                 <div class="flex horizontal end-justified layout">
-                    <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
-                    <paper-button raised class="gl-btn-primary" on-tap="getwelfare">ใช้สิทธิ</paper-button>
+                    <paper-button raised class="gl-btn-default" dialog-dismiss>{{localize('close')}}</paper-button>
+                    <paper-button raised class="gl-btn-primary" on-tap="getwelfare">{{localize('use')}}{{localize('right')}}</paper-button>
                 </div>
             </paper-dialog>
             <!--<paper-dialog id="rvd_budget" modal style="width:600px">
@@ -358,8 +350,8 @@
                     <admin-dialog-use-fund id="admin-dialog-use-fund" data="{{dataDialog}}" style="height:300px"></admin-dialog-use-fund>
                 </paper-dialog-scrollable>
                 <div class="flex horizontal end-justified layout">
-                    <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
-                    <paper-button raised class="gl-btn-primary" on-tap="getrvd">เลือก</paper-button>
+                    <paper-button raised class="gl-btn-default" dialog-dismiss>{{localize('close')}}</paper-button>
+                    <paper-button raised class="gl-btn-primary" on-tap="getrvd">{{localize('choose')}}</paper-button>
                 </div>
             </paper-dialog>-->
             <!--</section>-->
@@ -378,7 +370,10 @@
             is: 'page-admin-manage',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
                 commonLogic, userWelfareAction, uploadAction, commonDataAction,
-                MonthBehavior, usersAction, dateDbAction, ValidateFormBehavior],
+                MonthBehavior, usersAction, dateDbAction, ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             listeners: {
                 'back-page': 'changePage',
                 'close-panel-right': 'closePanelRight'

@@ -7,15 +7,19 @@
         </style>
         <div class="from layout end-justified horizontal">
             <div class="label">
-                    <label for="year">ปี :</label>
+                    <label for="year">{{localize('year')}} :</label>
                 </div>
-            <gl-combo-box id="year" no-label-float placeholder="ทั้งหมด" items="{{data}}" value="{{year}}" item-label-path="year" item-value-path="year"
+            <gl-combo-box id="year" no-label-float placeholder="{{localize('all')}}" items="{{data}}" value="{{year}}" item-label-path="year" item-value-path="year"
             > </gl-combo-box>
         </div>
     </template>
     <script>
         Polymer({
             is: 'list-year',
+            behaviors: [nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 year: {
                     type: Number,

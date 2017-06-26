@@ -11,14 +11,14 @@
         </div>
         <div class="flex vertical start-justified layout">
             <div class="flex-2 label">
-                <label for="total_budget">รายละเอียดนโยบายของกองทุน :</label>
+                <label for="total_budget">{{localize('detail')}}{{localize('policy')}}ของ{{localize('fund')}} :</label>
             </div>
             <div class="flex-2">
                 <gl-form-textarea rows="4" label="" placeholder="" value="{{data.description}}" name="description_detail" disabled></gl-form-textarea>
             </div>
             <div class="flex horizontal start-justified layout">
                 <div class="flex label">
-                    <label for="emp_id">เลือกกองทุน :</label>
+                    <label for="emp_id">{{localize('choose')}}{{localize('fund')}} :</label>
                 </div>
                 <div class="flex">
                     <gl-form-input id="policy_code" placeholder="เช่น SINSA_FI" no-label-float allowed-pattern="[a-z||A-Z||-||_||0-9||,||.]"  value="{{data.policy_code}}"
@@ -32,7 +32,10 @@
     <script>
         Polymer({
             is: 'admin-dialog-use-fund',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic, ValidateFormBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic, ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 data: {
                     type: Object,

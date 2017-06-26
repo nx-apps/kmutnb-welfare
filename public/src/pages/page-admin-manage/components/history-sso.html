@@ -11,7 +11,7 @@
         <div class="content horizontal end-justified layout">
             <!--<list-year data="[[listYear.history_fund_year]]" year="{{year}}"></list-year>-->
             <paper-button raised on-tap="getSso">
-                <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> ประกันสังคม
+                <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> {{localize('social_security')}}
             </paper-button>
         </div>
         <br>
@@ -27,13 +27,13 @@
             </vaadin-grid-column>
 
             <vaadin-grid-column width="350px" flex-grow="0">
-                <template class="header">โรงพยาบาล</template>
+                <template class="header">{{localize('hospital')}}</template>
                 <template>[[item.hospital]]</template>
             </vaadin-grid-column>
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">วันออกบัตร</div>
+                    <div class="text-center">{{localize('day')}}{{localize('issue')}}{{localize('card')}}</div>
                 </template>
                 <template>
                     <div class="text-center">[[toCCDate(item.issued_date)]]</div>
@@ -42,7 +42,7 @@
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">บัตรหมดอายุ</div>
+                    <div class="text-center">{{localize('card')}}{{localize('expired')}}</div>
                 </template>
                 <template>
                     <div class="text-center">[[toCCDate(item.expired_date)]]</div>
@@ -51,7 +51,7 @@
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">วันที่อัพเดต</div>
+                    <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('update')}}</div>
                 </template>
                 <template>
                     <div class="text-center">[[toCCDate(item.date_updated)]]</div>
@@ -63,7 +63,10 @@
         Polymer({
             is: 'history-sso',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
-                commonLogic, MonthBehavior],
+                commonLogic, MonthBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 listYear: {
                     statePath: 'dateDb.listYear',
