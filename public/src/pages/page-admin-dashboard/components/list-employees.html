@@ -55,12 +55,12 @@
         <!--{{dataCheck.group_name}}-->
         <!--[[paperFabStatus]]//[[paperFab]]//[[indeterminate]]//[[inverted]]-->
         <template is="dom-if" if={{!setCheck}}>
-            <gl-form-dropdown-menu always-float-label label="รูปแบบการดู" placeholder="รูปแบบการดู" style="margin-top:15px;width:100%;"
-                on-tap="text">
+            <gl-form-dropdown-menu always-float-label label="{{localize('format')}}" placeholder="{{localize('format')}}{{localize('viewing')}}" style="margin-top:15px;width:100%;"
+                >
                 <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{type_seleted}}">
-                    <paper-item value="">ทั้่งหมด</paper-item>
-                    <paper-item value="use">คนที่ใช้สวัสดิการไปแล้ว</paper-item>
-                    <paper-item value="notuse">คนที่ยังไม่ได้ใช้สวัสดิการ</paper-item>
+                    <paper-item value="">{{localize('all')}}</paper-item>
+                    <paper-item value="use">{{localize('people')}}{{localize('at')}}{{localize('use')}}{{localize('welfare')}}</paper-item>
+                    <paper-item value="notuse">{{localize('people')}}{{localize('at')}}{{localize('not_yet')}}{{localize('use')}}{{localize('welfare')}}</paper-item>
                 </paper-menu>
             </gl-form-dropdown-menu>
 
@@ -68,7 +68,7 @@
         <!--{{type_seleted}}//{{setCheck}}-->
         <template is="dom-if" if={{isEnabled}}>
             <div class="title">
-                ไม่มีข้อมูล
+                {{localize('no')}}{{localize('have')}}{{localize('data')}}
             </div>
         </template>
         <!--{{setCheck}}-->
@@ -133,31 +133,31 @@
 
                 <vaadin-grid-column width="80px" flex-grow="0">
                     <template class="header ">
-                        <div class="text-center">ลำดับ</div>
+                        <div class="text-center">{{localize('order')}}</div>
                     </template>
                     <template>
                         <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[_Obindex(index)]]</div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">ลำดับ</div>
+                        <div class="text-center">{{localize('order')}}</div>
                     </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="150px" flex-grow="0">
                     <template class="header">
-                        <div class="text-center">เลขประจำตัวประชาชน</div>
+                        <div class="text-center">{{localize('personal_id')}}</div>
                     </template>
                     <template>
                         <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[item.personal_id]]
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">เลขประจำตัวประชาชน
+                        <div class="text-center">{{localize('personal_id')}}
                         </div>
                     </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="400px">
                     <template class="header">
-                        <div class="text-left">ชื่อ - นามสกุล
+                        <div class="text-left">{{localize('firstname')}} - {{localize('lastname')}}
                         </div>
                     </template>
                     <template>
@@ -165,14 +165,14 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-left">ชื่อ - นามสกุล
+                        <div class="text-left">{{localize('firstname')}} - {{localize('lastname')}}
                         </div>
                     </template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column width="300px">
                     <template class="header">
-                        <div class="text-left">ประเภทพนักงาน
+                        <div class="text-left">{{localize('category')}}{{localize('employee')}}
                         </div>
                     </template>
                     <template>
@@ -181,13 +181,13 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-left">ประเภทพนักงาน
+                        <div class="text-left">{{localize('category')}}{{localize('employee')}}
                         </div>
                     </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="70px">
                     <template class="header">
-                        <div class="text-center">อายุ (ปี)
+                        <div class="text-center">{{localize('people_age')}} ({{localize('year')}})
                         </div>
                     </template>
                     <template>
@@ -195,13 +195,13 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-center">อายุ (ปี)
+                        <div class="text-center">{{localize('people_age')}} ({{localize('year')}})
                         </div>
                     </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="90px">
                     <template class="header">
-                        <div class="text-right">อายุงาน (ปี)
+                        <div class="text-right">{{localize('work_age')}} ({{localize('year')}})
                         </div>
                     </template>
                     <template>
@@ -209,13 +209,13 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-right">อายุงาน (ปี)
+                        <div class="text-right">{{localize('work_age')}} ({{localize('year')}})
                         </div>
                     </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="180px">
                     <template class="header">
-                        <div class="text-right">จำนวนเงินที่ใช้ได้ (บาท)
+                        <div class="text-right">{{localize('number')}}{{localize('balance')}}{{localize('at')}}{{localize('available')}} ({{localize('bath')}})
                         </div>
                     </template>
                     <template>
@@ -223,13 +223,13 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-right">จำนวนเงินที่ใช้ได้ (บาท)
+                        <div class="text-right">{{localize('number')}}{{localize('balance')}}{{localize('at')}}{{localize('available')}} ({{localize('bath')}})
                         </div>
                     </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="150px">
                     <template class="header">
-                        <div class="text-right">ยอดการใช้ (บาท)
+                        <div class="text-right">{{localize('elite')}}{{localize('use')}} ({{localize('bath')}})
                         </div>
                     </template>
                     <template>
@@ -237,13 +237,13 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-right">ยอดการใช้ (บาท)
+                        <div class="text-right">{{localize('elite')}}{{localize('use')}} ({{localize('bath')}})
                         </div>
                     </template>
                 </vaadin-grid-column>
                 <vaadin-grid-column width="150px">
                     <template class="header">
-                        <div class="text-right">คงเหลือ (บาท)
+                        <div class="text-right">{{localize('balance')}} ({{localize('bath')}})
                         </div>
                     </template>
                     <template>
@@ -251,7 +251,7 @@
                         </div>
                     </template>
                     <template class="footer">
-                        <div class="text-right">คงเหลือ (บาท)
+                        <div class="text-right">{{localize('balance')}} ({{localize('bath')}})
                         </div>
                     </template>
                 </vaadin-grid-column>
@@ -260,22 +260,22 @@
             <template is="dom-if" if={{paperFabStatus}}>
                 <div hidden="{{paperFab}}">
                     <paper-fab id="confirmSend" icon="send" on-tap="confirmSend"></paper-fab>
-                    <paper-tooltip position="left" class="custom" for="confirmSend">ใช้สวัสดิการ</paper-tooltip>
+                    <paper-tooltip position="left" class="custom" for="confirmSend">{{localize('use')}}{{localize('welfare')}}</paper-tooltip>
                 </div>
             </template>
 
             <template is="dom-if" if={{!paperFabStatus}}>
                 <div hidden="{{paperFab}}">
                     <paper-fab id="confirmCancel" class="fabCancel" icon="send" on-tap="confirmCancel"></paper-fab>
-                    <paper-tooltip position="left" class="custom" for="confirmCancel">ยกเลิกสวัสดิการ</paper-tooltip>
+                    <paper-tooltip position="left" class="custom" for="confirmCancel">{{localize('cancel')}}{{localize('welfare')}}</paper-tooltip>
                 </div>
             </template>
 
             <paper-dialog id="welfare_budget" modal>
                 <admin-dialog-use-all-welfare id="admin-dialog-use-all-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></admin-dialog-use-all-welfare>
                 <div class="flex horizontal end-justified layout buttons">
-                    <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
-                    <paper-button raised class="gl-btn-primary" on-tap="getwelfare" dialog-confirm autofocus>ใช้งาน</paper-button>
+                    <paper-button raised class="gl-btn-default" dialog-dismiss>{{localize('close')}}</paper-button>
+                    <paper-button raised class="gl-btn-primary" on-tap="getwelfare" dialog-confirm autofocus>{{localize('use')}}</paper-button>
                 </div>
             </paper-dialog>
         </template>
@@ -283,7 +283,10 @@
     <script>
         Polymer({
             is: 'list-employees',
-            behaviors: [ReduxBehavior, nylonBehavior, FormatNumberBehavior, MonthBehavior, commonLogic, ValidateFormBehavior],
+            behaviors: [ReduxBehavior, nylonBehavior, FormatNumberBehavior, MonthBehavior, commonLogic, ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 list_employees: {
                     statePath: 'users.lisyUserhistoryWelfare',

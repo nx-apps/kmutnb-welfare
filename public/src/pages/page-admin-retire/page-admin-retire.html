@@ -36,14 +36,15 @@
             is: 'page-admin-retire',
             behaviors: [ReduxBehavior, nylonBehavior, retierAction,commonDataAction,userWelfareAction
             ,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties:{
                 calDate:{
                     notify:true
                 }
             },
-            created: function () {
-                this.nylonLocalizeImport('/i18n-page1.json');
-            },
+            
             nylonPageActive: function () {
                 // this.TESTS();
                 this.dispatchAction('COMMONDATA_DATA_ACTIVE');

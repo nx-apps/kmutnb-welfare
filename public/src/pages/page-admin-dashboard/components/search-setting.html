@@ -25,7 +25,7 @@
             </div>-->
             <!--{{data.group_id}}///-->
             <div class="flex-2">{{getWelareName(data.group_id)}}
-                <gl-combo-box label="สวัสดิการ" placeholder="สวัสดิการทั้งหมด" items="{{list_welfare}}" item-label-path="label" item-value-path="id"
+                <gl-combo-box label="{{localize('welfare')}}" placeholder="{{localize('welfare')}}{{localize('all')}}" items="{{list_welfare}}" item-label-path="label" item-value-path="id"
                     value="{{data.group_id}}">
                     <template>
                         [[item.label]]
@@ -33,7 +33,7 @@
                 </gl-combo-box>
             </div>
             <!--<div class="flex" style=" margin-right: 30px">
-                <gl-combo-box label="สถานภาพ" placeholder="สถานภาพทั้งหมด" items="{{list_active}}" item-label-path="active_name" item-value-path="id"
+                <gl-combo-box label="{{localize('status')}}" placeholder="{{localize('status')}}{{localize('all')}}" items="{{list_active}}" item-label-path="active_name" item-value-path="id"
                     value="{{data.active_id}}">
                     <template>
                         [[item.active_name]]
@@ -41,7 +41,7 @@
                 </gl-combo-box>
             </div>
             <div class="flex">
-                <gl-combo-box label="ประเภทพนักงาน" placeholder="ประเภทพนักงานทั้งหมด" items="{{list_type_employee}}" item-label-path="type_employee_name"
+                <gl-combo-box label="{{localize('category')}}{{localize('employee')}}" placeholder="{{localize('category')}}{{localize('employee')}}{{localize('all')}}" items="{{list_type_employee}}" item-label-path="type_employee_name"
                     item-value-path="id" value="{{data.type_employee_id}}">
                     <template>
                         [[item.type_employee_name]]
@@ -51,7 +51,7 @@
         </div>
         <div class="layout horizontal start-justified">
             <div class="flex-2" style=" margin-right: 30px">{{getdepartment(data.faculty_id)}}
-                <gl-combo-box label="คณะ" placeholder="คณะทั้งหมด" items="{{list_faculty}}" item-label-path="faculty_name" item-value-path="id"
+                <gl-combo-box label="{{localize('faculty')}}" placeholder="{{localize('faculty')}}{{localize('all')}}" items="{{list_faculty}}" item-label-path="faculty_name" item-value-path="id"
                     value="{{data.faculty_id}}">
                     <template>
                         [[item.faculty_name]]
@@ -59,7 +59,7 @@
                 </gl-combo-box>
             </div>
             <div class="flex-2">
-                <gl-combo-box label="ภาควิชา" placeholder="ภาควิชาทั้งหมด" items="{{list_department}}" item-label-path="department_name"
+                <gl-combo-box label="{{localize('department')}}" placeholder="{{localize('department')}}{{localize('all')}}" items="{{list_department}}" item-label-path="department_name"
                     item-value-path="id" value="{{data.department_id}}">
                     <template>
                         [[item.department_name]]
@@ -70,7 +70,7 @@
         </div>
         <div class="layout horizontal start-justified">
             <div class="flex" style=" margin-right: 30px">
-                <gl-combo-box label="สถานภาพ" placeholder="สถานภาพทั้งหมด" items="{{list_active}}" item-label-path="active_name" item-value-path="id"
+                <gl-combo-box label="{{localize('status')}}" placeholder="{{localize('status')}}{{localize('all')}}" items="{{list_active}}" item-label-path="active_name" item-value-path="id"
                     value="{{data.active_id}}">
                     <template>
                         [[item.active_name]]
@@ -78,7 +78,7 @@
                 </gl-combo-box>
             </div>
             <div class="flex">
-                <gl-combo-box label="ประเภทพนักงาน" placeholder="ประเภทพนักงานทั้งหมด" items="{{list_type_employee}}" item-label-path="type_employee_name"
+                <gl-combo-box label="{{localize('category')}}{{localize('employee')}}" placeholder="{{localize('category')}}{{localize('employee')}}{{localize('all')}}" items="{{list_type_employee}}" item-label-path="type_employee_name"
                     item-value-path="id" value="{{data.type_employee_id}}">
                     <template>
                         [[item.type_employee_name]]
@@ -88,19 +88,19 @@
         </div>
         <div class="layout horizontal start-justified">
             <!--<div class="flex" style=" margin-right: 30px">
-                <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_start}}"></vaadin-date-picker>
+                <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_start}}"></vaadin-date-picker>
             </div>
-            <div style="margin: 31px 10px;">ถึง</div>
+            <div style="margin: 31px 10px;">{{localize('to')}}</div>
             <div class="flex" style=" margin-right: 30px">
-                <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_end}}"></vaadin-date-picker>
+                <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_end}}"></vaadin-date-picker>
             </div>
             <div class="flex-2">-->
             <div class="flex-2" style=" margin-right: 30px">
-                <gl-form-input always-float-label label="เลขประจำตัวประชาชน" placeholder="เลขประจำตัวประชาชน" value="{{data.personal_id}}">
+                <gl-form-input always-float-label label="{{localize('personal_id')}}" placeholder="{{localize('personal_id')}}" value="{{data.personal_id}}">
                 </gl-form-input>
             </div>
             <div class="flex-2">
-                <gl-form-input always-float-label label="ชื่อ-นามสกุล" placeholder="ชื่อ-นามสกุล" value="{{data.personal_name}}">
+                <gl-form-input always-float-label label="{{localize('firstname')}}-{{localize('lastname')}}" placeholder="{{localize('firstname')}}-{{localize('lastname')}}" value="{{data.personal_name}}">
                 </gl-form-input>
             </div>
         </div>
@@ -111,13 +111,16 @@
         <div class="layout horizontal center-justified">
             <paper-button class="gl-btn-info" on-tap="search">
                 <iron-icon icon="search"></iron-icon>
-                ค้นหา</paper-button>
+                {{localize('search')}}</paper-button>
         </div>
     </template>
     <script>
         Polymer({
             is: 'search-setting',
-            behaviors: [ReduxBehavior, nylonBehavior, MonthBehavior],
+            behaviors: [ReduxBehavior, nylonBehavior, MonthBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 list_welfare: {
                     statePath: 'userWelfare.list_id',

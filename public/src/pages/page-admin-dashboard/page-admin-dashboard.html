@@ -71,29 +71,29 @@
         </style>
         <div class="xcontainer">
             <div class="horizontal justified layout">
-                <div class="header-page container">สิทธิสวัสดิการ</div>
+                <div class="header-page container">{{localize('right')}}{{localize('welfare')}}</div>
                 <div style="margin-top:20px;">
                     <paper-button raised class="gl-btn-primary" on-tap="_insertEmployee">
-                        <iron-icon icon="add"></iron-icon>เพิ่มพนักงาน
+                        <iron-icon icon="add"></iron-icon>{{localize('insert')}}{{localize('employee')}}
                     </paper-button>
                 </div>
             </div>
             <paper-material elevation="1">
-                <div class="title">ค้นหา</div>
+                <div class="title">{{localize('search')}}</div>
                 <search-setting data="{{data}}"></search-setting>
             </paper-material>
 
             <paper-material elevation="1">
                 <!--<div class="horizontal end-justified layout">
                     <div class="">
-                        <gl-form-dropdown-menu always-float-label label="ประเภทรายงาน" placeholder="ประเภทรายงาน" style="margin-top:15px;width:100%;">
+                        <gl-form-dropdown-menu always-float-label label="{{localize('category')}}{{localize('report')}}" placeholder="{{localize('category')}}{{localize('report')}}" style="margin-top:15px;width:100%;">
                             <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_id}}">
                                 <template is="dom-repeat" items={{typeReport}}>
                                     <paper-item value="[[item.report_id]]">[[item.report_name]]</paper-item>
                                 </template>
                             </paper-menu>
                         </gl-form-dropdown-menu>
-                        <gl-form-dropdown-menu always-float-label label="ประเภทรายงาน" placeholder="ประเภทรายงาน" style="margin-top:15px;width:100%;">
+                        <gl-form-dropdown-menu always-float-label label="{{localize('category')}}{{localize('report')}}" placeholder="{{localize('category')}}{{localize('report')}}" style="margin-top:15px;width:100%;">
                             <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_type}}">
                                 <template is="dom-repeat" items={{report_type}}>
                                     <paper-item value="[[item.report_type_id]]">[[item.report_type]]</paper-item>
@@ -103,20 +103,20 @@
                     </div>
                     <div class="horizontal layout center">
                         <paper-button raised class="gl-btn-defalse" on-tap="_print">
-                            <iron-icon icon="print"></iron-icon> ออกรายงาน
+                            <iron-icon icon="print"></iron-icon> {{localize('report')}}
                         </paper-button>
                     </div>
 
                 </div>
-                <div class="title">รายชื่อพนักงาน</div>-->
+                <div class="title">ราย{{localize('firstname')}}{{localize('employee')}}</div>-->
                 <div class="layout horizontal start-justified">
                     <div class="flex">
-                        <div class="title">รายชื่อพนักงาน</div>
+                        <div class="title">{{localize('firstname')}}{{localize('employee')}}</div>
                     </div>
                     <div class="flex-2">
                         <div class="horizontal end-justified layout">
                             <div class="flex-3">
-                                <gl-form-dropdown-menu always-float-label label="ประเภทรายงาน" placeholder="ประเภทรายงาน" style="margin-top:15px;width:100%;">
+                                <gl-form-dropdown-menu always-float-label label="{{localize('category')}}{{localize('report')}}" placeholder="{{localize('category')}}{{localize('report')}}" style="margin-top:15px;width:100%;">
                                     <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_id}}">
                                         <template is="dom-repeat" items={{typeReport}}>
                                             <paper-item value="[[item.report_id]]">[[item.report_name]]</paper-item>
@@ -125,7 +125,7 @@
                                 </gl-form-dropdown-menu>
                             </div>
                             <div class="flex" style="margin-left:5px;">
-                                <gl-form-dropdown-menu always-float-label label="รูปแบบรายงาน" placeholder="รูปแบบรายงาน" style="margin-top:15px;width:100%;">
+                                <gl-form-dropdown-menu always-float-label label="{{localize('format')}}{{localize('report')}}" placeholder="{{localize('format')}}{{localize('report')}}" style="margin-top:15px;width:100%;">
                                     <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_type_seleted}}">
                                         <template is="dom-repeat" items={{report_type}}>
                                             <paper-item value="[[item.report_type_id]]">[[item.report_type]]</paper-item>
@@ -136,7 +136,7 @@
                             <div class="flex">
                                 <div style="margin:0">
                                     <paper-button raised class="gl-btn-defalse print" on-tap="_print">
-                                        <iron-icon icon="print"></iron-icon> ออกรายงาน
+                                        <iron-icon icon="print"></iron-icon> {{localize('report')}}
                                     </paper-button>
                                 </div>
 
@@ -150,57 +150,57 @@
         <paper-dialog id="report" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
-                    <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_start}}"></vaadin-date-picker>
+                    <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_start}}"></vaadin-date-picker>
                 </div>
-                <div style="margin: 31px 10px;">ถึง</div>
+                <div style="margin: 31px 10px;">{{localize('to')}}</div>
                 <div class="flex" style=" margin-right: 30px">
-                    <vaadin-date-picker always-float-label label="วันที่" value="{{data.date_end}}"></vaadin-date-picker>
+                    <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_end}}"></vaadin-date-picker>
                 </div>
             </div>
             <div class="flex horizontal end-justified layout buttons">
-                <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
-                <paper-button raised class="gl-btn-primary" on-tap="printReport" dialog-confirm autofocus>ออกรายงาน</paper-button>
+                <paper-button raised class="gl-btn-default" dialog-dismiss>{{localize('close')}}</paper-button>
+                <paper-button raised class="gl-btn-primary" on-tap="printReport" dialog-confirm autofocus>{{localize('report')}}</paper-button>
             </div>
         </paper-dialog>
 
         <paper-dialog id="RETIREMENT" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
-                    <vaadin-date-picker always-float-label label="วันที่" value="{{data.date}}"></vaadin-date-picker>
+                    <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date}}"></vaadin-date-picker>
                 </div>
             </div>
             <div class="flex horizontal end-justified layout buttons">
-                <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
-                <paper-button raised class="gl-btn-primary" on-tap="_printRetire" dialog-confirm autofocus>ออกรายงาน</paper-button>
+                <paper-button raised class="gl-btn-default" dialog-dismiss>{{localize('close')}}</paper-button>
+                <paper-button raised class="gl-btn-primary" on-tap="_printRetire" dialog-confirm autofocus>{{localize('report')}}</paper-button>
             </div>
         </paper-dialog>
 
         <paper-dialog id="FUND" modal>
             <div class="flex">
-                <h2 id="welfare_name" ออกรายงาน>กองทุน</h2>
+                <h2 id="welfare_name" >{{localize('report')}}{{localize('fund')}}</h2>
             </div>
             <paper-dialog-scrollable>
                 <div class="layout horizontal start-justified">
                     <!--<div class="layout vertical start-justified">-->
                     <div class="flex" style=" margin-right: 30px">
-                        <gl-combo-box id="fund" label="นโยบาย" placeholder="ทั้งหมด" always-float-label items="{{listGroupFund}}" value="{{data.policy_code}}"
+                        <gl-combo-box id="fund" label="นโยบาย" placeholder="{{localize('all')}}" always-float-label items="{{listGroupFund}}" value="{{data.policy_code}}"
                             item-label-path="policy_code" item-value-path="policy_code"> </gl-combo-box>
                     </div>
                     <div class="flex" style=" margin-right: 30px">
-                        <gl-combo-box id="month" label="เดือน" placeholder="ทั้งหมด" always-float-label items="{{getMonth()}}" value="{{data.month}}"
+                        <gl-combo-box id="month" label="เดือน" placeholder="{{localize('all')}}" always-float-label items="{{getMonth()}}" value="{{data.month}}"
                             item-label-path="name" item-value-path="id">
                         </gl-combo-box>
                     </div>
                     <div class="flex" style=" margin-right: 30px">
-                        <gl-combo-box id="year" label="ปี" placeholder="ทั้งหมด" items="[[listYear.history_fund_year]]" value="{{data.year}}" item-label-path="year"
+                        <gl-combo-box id="year" label="{{localize('year')}}" placeholder="{{localize('all')}}" items="[[listYear.history_fund_year]]" value="{{data.year}}" item-label-path="year"
                             item-value-path="year"> </gl-combo-box>
                     </div>
                     <!--</div>-->
                 </div>
             </paper-dialog-scrollable>
             <div class="flex horizontal end-justified layout buttons">
-                <paper-button raised class="gl-btn-default" dialog-dismiss>ปิด</paper-button>
-                <paper-button raised class="gl-btn-primary" on-tap="printFund" dialog-confirm autofocus>ออกรายงาน</paper-button>
+                <paper-button raised class="gl-btn-default" dialog-dismiss>{{localize('close')}}</paper-button>
+                <paper-button raised class="gl-btn-primary" on-tap="printFund" dialog-confirm autofocus>{{localize('report')}}</paper-button>
             </div>
         </paper-dialog>
         <panel-right id="test" title="{{title}}">
@@ -213,7 +213,10 @@
         Polymer({
             is: 'page-admin-dashboard',
             behaviors: [ReduxBehavior, nylonBehavior, usersAction, userWelfareAction,
-                commonDataAction, MonthBehavior, dateDbAction],
+                commonDataAction, MonthBehavior, dateDbAction,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             listeners: {
                 'back-page': 'changePage',
                 'close-panel-right': 'closePanelRight'
