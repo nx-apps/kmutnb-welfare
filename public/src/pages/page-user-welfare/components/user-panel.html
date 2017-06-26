@@ -70,7 +70,10 @@
     <script>
         Polymer({
             is: 'user-panel',
-            behaviors: [ReduxBehavior, commonLogic],
+            behaviors: [ReduxBehavior, commonLogic, nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 data: {
                     // statePath: 'users.select_welefares',

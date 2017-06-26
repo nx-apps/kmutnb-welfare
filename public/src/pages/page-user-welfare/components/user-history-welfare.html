@@ -22,7 +22,7 @@
 
             <vaadin-grid-column width="50px" flex-grow="0">
                 <template class="header ">
-                    <div class="text-center">ลำดับ</div>
+                    <div class="text-center">{{localize('order')}}</div>
                 </template>
                 <template>
                     <div class="text-center">[[_Obindex(index)]]
@@ -31,13 +31,13 @@
             </vaadin-grid-column>
 
             <vaadin-grid-column width="450px" flex-grow="0">
-                <template class="header">สวัสดิการที่ใช้</template>
+                <template class="header">{{localize('welfare')}}{{localize('at')}}{{localize('use')}}</template>
                 <template>[[item.group_welfare_name]] ([[item.welfare_name]])  [[checkTypeGroup(item.type_group)]]</template>
             </vaadin-grid-column>
 
             <vaadin-grid-column width="200px" flex-grow="0">
                 <template class="header">
-                    <div class="text-right">ใช้สิทธิ
+                    <div class="text-right">{{localize('use')}}{{localize('right')}}
                     </div>
                 </template>
                 <template>
@@ -48,7 +48,7 @@
 
             <vaadin-grid-column width="200px" flex-grow="0">
                 <template class="header">
-                    <div class="text-right">จ่ายเอง
+                    <div class="text-right">{{localize('pay_person')}}
                     </div>
                 </template>
                 <template>
@@ -59,7 +59,7 @@
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-right">วันที่ใช้งาน </div>
+                    <div class="text-right">{{localize('day')}}{{localize('at')}}{{localize('use')}}{{localize('right')}} </div>
                 </template>
                 <template>
                     <div class="text-center">[[toCCDate(item.date_use)]]
@@ -69,7 +69,7 @@
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">วันที่อนุมัติ</div>
+                    <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('approve')}}</div>
                 </template>
                 <template>
                     <div class="text-center">[[toCCDate(item.date_approve)]]
@@ -83,7 +83,7 @@
             </vaadin-grid-column>-->
 
             <vaadin-grid-column width="350px" flex-grow="0" resizable>
-                <template class="header">รายละเอียด
+                <template class="header">{{localize('detail')}}
                 </template>
                 <template>
                     [[item.description_detail]]
@@ -92,7 +92,7 @@
 
             <vaadin-grid-column width="350px" flex-grow="0" resizable>
                 <template class="header">
-                    <div class="text-center">เอกสารแนบ</div>
+                    <div class="text-center">{{localize('attachment')}}</div>
                 </template>
                 <template>
                     <div class="text-center">
@@ -115,7 +115,10 @@
             is: 'user-history-welfare',
             behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
                 commonLogic, uploadAction, commonDataAction,
-                MonthBehavior, ValidateFormBehavior],
+                MonthBehavior, ValidateFormBehavior, nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 listYear: {
                     statePath: 'dateDb.listYear',

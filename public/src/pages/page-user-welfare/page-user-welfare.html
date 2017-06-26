@@ -13,12 +13,12 @@
          :host {
             display: block;
         }
-        
+
         * {
             font-family: 'CSChatThaiUI', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        
+
         .container {
             padding: 20px;
         }
@@ -35,7 +35,7 @@
                 </div>
                 <div>
                     <div class="header-page container">
-                        จัดการข้อมูลส่วนตัว
+                        จัดการ{{localize('data')}}ส่วนตัว
                     </div>
 
                     <user-detail></user-detail>
@@ -56,9 +56,12 @@
         Polymer({
             is: 'page-user-welfare',
             behaviors: [
-                ReduxBehavior, nylonBehavior, commonDataAction, usersAction, 
-                userWelfareAction, uploadAction, fundRvdAction,dateDbAction
-            ],
+                ReduxBehavior, nylonBehavior, commonDataAction, usersAction,
+                userWelfareAction, uploadAction, fundRvdAction, dateDbAction
+                , nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 page: {
                     type: Number,

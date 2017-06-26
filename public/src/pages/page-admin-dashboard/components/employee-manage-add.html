@@ -92,7 +92,7 @@
                                 <label for="birthdate">{{localize('email')}} :</label>
                             </div>
                             <div class="flex-2">
-                                 <gl-form-input id="hospital" no-label-float value="{{data.email}}" disabled="[[disabled]]"></gl-form-input>
+                                <gl-form-input id="hospital" no-label-float value="{{data.email}}" disabled="[[disabled]]"></gl-form-input>
                             </div>
                         </div>
                         <div class="flex layout horizontal">
@@ -115,17 +115,17 @@
                             </div>
                         </div>
                         <div class="flex layout horizontal">
-                            <div class="flex label">
+                            <!--<div class="flex label">
                                 <label for="hospital">{{localize('hospital')}} :</label>
                             </div>
                             <div class="flex-2">
                                 <gl-form-input id="hospital" no-label-float value="{{data.hospital}}" disabled="[[disabled]]"></gl-form-input>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
-                    <div class="from layout horizontal end-justified">
-                        * {{localize('follow')}}{{localize('in')}}{{localize('card')}}{{localize('social_security')}})
-                    </div>
+                    <!--<div class="from layout horizontal end-justified">
+                        * {{localize('follow')}}{{localize('in')}}{{localize('card')}}{{localize('social_security')}}
+                    </div>-->
                 </fieldset>
                 <fieldset>
                     <legend>{{localize('data')}}{{localize('employee')}} :</legend>
@@ -139,11 +139,29 @@
                             </div>
                         </div>
                         <div class="flex layout horizontal">
+                            <!--<div class="flex label">
+                                <label for="start_work_date">{{localize('start_work_date')}} :</label>
+                            </div>
+                            <div class="flex-2">
+                                <vaadin-date-picker always-float-label value="{{data.start_work_date}}" disabled="[[disabled]]" class="checkValidate" required></vaadin-date-picker>
+                            </div>-->
+                        </div>
+                    </div>
+                    <div class="from layout horizontal">
+                        <div class="flex layout horizontal">
                             <div class="flex label">
                                 <label for="start_work_date">{{localize('start_work_date')}} :</label>
                             </div>
                             <div class="flex-2">
                                 <vaadin-date-picker always-float-label value="{{data.start_work_date}}" disabled="[[disabled]]" class="checkValidate" required></vaadin-date-picker>
+                            </div>
+                        </div>
+                        <div class="flex layout horizontal">
+                            <div class="flex label">
+                                <label for="end_work_date">{{localize('end_work_date')}} :</label>
+                            </div>
+                            <div class="flex-2">
+                                <vaadin-date-picker always-float-label value="{{data.end_work_date}}" disabled="[[disabled]]"></vaadin-date-picker>
                             </div>
                         </div>
 
@@ -208,8 +226,8 @@
                         </div>
                         <div class="flex-5">
                             <div id="faculty">
-                                <gl-form-dropdown-menu class="checkValidate" style="margin-top:15px; width: 90%;" placeholder="{{faculty.length}}" no-label-float
-                                    required>
+                                <gl-form-dropdown-menu disabled="[[disabled]]" class="checkValidate" required class="checkValidate" style="margin-top:15px; width: 90%;"
+                                    placeholder="{{faculty.length}}" no-label-float required>
                                     <paper-listbox class="dropdown-content" no-label-float attr-for-selected="value" selected="{{data.faculty_id}}">
                                         <template is="dom-repeat" items="{{faculty}}">
                                             <paper-item value="{{item.id}}">{{item.faculty_name}}</paper-item>
@@ -226,8 +244,8 @@
                             <label for="department"><div style="margin-top:15px;">{{localize('department')}} :</div></label>
                         </div>
                         <div class="flex-5">
-                            <gl-form-dropdown-menu class="checkValidate" style="margin-top:15px; width: 90%;" placeholder="{{department.length}}" no-label-float
-                                required>
+                            <gl-form-dropdown-menu disabled="[[disabled]]" class="checkValidate" required class="checkValidate" style="margin-top:15px; width: 90%;"
+                                placeholder="{{department.length}}" no-label-float required>
                                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{data.department_id}}">
                                     <template is="dom-repeat" items="{{department}}">
                                         <paper-item value="{{item.id}}">{{item.department_name}}</paper-item>
@@ -244,7 +262,7 @@
 
             <gl-form-panel-footer label="" set-padding="0px 10px 20px 0px">
                 <div class="horizontal end-justified layout">
-                    <paper-button raised  on-tap="cancle">{{localize('cancel')}}</paper-button>
+                    <paper-button raised on-tap="cancle">{{localize('cancel')}}</paper-button>
                     <paper-button raised class="gl-btn-success" on-tap="save">{{localize('save')}}</paper-button>
                 </div>
 
@@ -254,7 +272,7 @@
     <script>
         Polymer({
             is: 'employee-manage-add',
-            behaviors: [ReduxBehavior, ValidateFormBehavior,nylonLocalizeBehavior],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, nylonLocalizeBehavior],
             created: function () {
                 this.nylonLocalizeImport('/i18n-page1.json');
             },

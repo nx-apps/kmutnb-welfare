@@ -30,20 +30,20 @@
                 </div>
                 <div class="flex">
                     <div class="horizontal end-justified layout">
-                        <paper-button class="gl-btn-info" on-tap="editData" raised>ดูข้อมูลส่วนตัว</paper-button>
+                        <paper-button class="gl-btn-info" on-tap="editData" raised>ดู{{localize('data')}}ส่วนตัว</paper-button>
                     </div>
 
                 </div>
             </div>
             <!--<gl-form-panel-head label="" set-padding="10px" set-border="1px">
-                <paper-button class="gl-btn-info" on-tap="editData" raised>ดูข้อมูลส่วนตัว</paper-button>
+                <paper-button class="gl-btn-info" on-tap="editData" raised>ดู{{localize('data')}}ส่วนตัว</paper-button>
             </gl-form-panel-head>-->
             <gl-form-panel-body label="" set-padding="10px" set-border="1px">
                 <fieldset>
-                    <legend>ข้อมูลพนักงาน :</legend>
+                    <legend>{{localize('data')}}{{localize('employee')}} :</legend>
                     <div class="flex content horizontal start-justified layout">
                         <div class="flex">ชื่อ : [[data.prefix_name]] [[data.firstname]] [[data.lastname]]</div>
-                        <div class="flex">รหัสพนักงาน : [[data.emp_no]]</div>
+                        <div class="flex">{{localize('emp_no')}} : [[data.emp_no]]</div>
                     </div>
                     <div class="flex content horizontal start-justified layout">
                         <div class="flex">สถานภาพการทำงาน : [[data.active_name]]</div>
@@ -61,7 +61,7 @@
             </gl-form-panel-body>
             <main>
                 <!--<input id="tab1" type="radio" name="tabs" checked>
-                <label for="tab1">สวัสดิการ</label>
+                <label for="tab1">{{localize('welfare')}}</label>
 
                 <!--//พนักงานมหาวิยาลัย ถึงจะเห็น-->
 
@@ -95,7 +95,10 @@
     <script>
         Polymer({
             is: 'user-detail',
-            behaviors: [ReduxBehavior,MonthBehavior],
+            behaviors: [ReduxBehavior,MonthBehavior, nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 data: {
                     statePath: 'users.select_welefares',
