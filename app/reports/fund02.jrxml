@@ -148,7 +148,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[เงินสมทบ]]></text>
+				<text><![CDATA[เงินสะสม]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="280" y="20" width="75" height="20" uuid="495c55ac-93c4-4380-b5db-5da373856cd1"/>
@@ -190,7 +190,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ประโยชน์เงินสมทบ
+				<text><![CDATA[ประโยชน์เงินสะสม
 ]]></text>
 			</staticText>
 			<staticText>
@@ -233,7 +233,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="12" isBold="true" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[ประโยชน์เงินสะสม]]></text>
+				<text><![CDATA[ประโยชน์เงินสมทบ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="0" width="50" height="40" uuid="24896e82-f457-4449-8640-7f47c4c96dce"/>

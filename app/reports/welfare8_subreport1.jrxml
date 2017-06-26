@@ -52,7 +52,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="TH SarabunPSK" size="16" isBold="false" pdfFontName="THSarabun.ttf" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{description_detail}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{description_detail}== null ?" ":$F{description_detail})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="128" height="20" uuid="b425efaa-9cb2-4546-96cc-d6483765923f"/>
