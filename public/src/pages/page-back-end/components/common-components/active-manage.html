@@ -5,11 +5,13 @@
         .container {
             padding: 20px
         }
-        .contentTable{
+
+        .contentTable {
             background-color: white;
         }
-        table{
-            border:1px solid #ddd;
+
+        table {
+            border: 1px solid #ddd;
         }
         /*td,th{
             text-align: center ;
@@ -31,9 +33,9 @@
                             <div class="flexchild">
                                 <gl-form-input label="{{localize('active')}}" placeholder="กรอก{{localize('data')}}" value="{{data.active_name}}"></gl-form-input>
                             </div>
-                            
+
                             <div class="flexchild" style="text-align: center">
-                                <paper-button class="gl-btn-primary"  on-tap="getForm" raised>{{localize('insert')}}</paper-button>
+                                <paper-button class="gl-btn-primary" on-tap="getForm" raised>{{localize('insert')}}</paper-button>
                             </div>
                         </div>
                     </gl-form-panel-body>
@@ -51,52 +53,52 @@
                                 <th style="width: 20%">{{localize('tool')}}</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody>
                             <template is="dom-repeat" items="[[dataList]]">
                                 <tr>
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td style="text-align: left !important">
-                                            {{item.id}} 
+                                            {{item.id}}
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td style="text-align: left !important">
-                                            {{item.active_name}} 
+                                            {{item.active_name}}
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td style="text-align: left !important">
-                                            {{item.id}} 
+                                            {{item.id}}
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td style="text-align: left !important">
-                                            <paper-input no-label-float value="{{item.active_name}}"></paper-input>
+                                            <paper-input id="formUpdate" required no-label-float value="{{item.active_name}}"></paper-input>
                                         </td>
                                     </template>
-                                    
+
                                     <template is="dom-if" if="{{item.check}}">
                                         <td>
                                             <paper-tooltip for="editData">{{localize('edit')}}</paper-tooltip>
-                                            <paper-icon-button id="editData"  on-tap="edit" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="create"></paper-icon-button>
+                                            <paper-icon-button id="editData" on-tap="edit" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="create"></paper-icon-button>
                                             <paper-tooltip for="delData">{{localize('delete')}}</paper-tooltip>
-                                            <paper-icon-button id="delData"  on-tap="confirmDelete" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="delete"></paper-icon-button>
+                                            <paper-icon-button id="delData" on-tap="confirmDelete" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="delete"></paper-icon-button>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
                                             <paper-tooltip for="upDData">{{localize('update')}}</paper-tooltip>
-                                            <paper-icon-button id="upDData"  on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
+                                            <paper-icon-button id="upDData" on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
                                             <paper-tooltip for="canData">{{localize('cancel')}}</paper-tooltip>
-                                            <paper-icon-button id="canData"  on-tap="close" item=[[item.active_name]] index="[[index]]" icon="clear"></paper-icon-button>
+                                            <paper-icon-button id="canData" on-tap="close" item=[[item.active_name]] index="[[index]]" icon="clear"></paper-icon-button>
                                         </td>
                                     </template>
                                 </tr>
                             </template>
                         </tbody>
-                    </table>       
+                    </table>
                 </div>
             </section>
         </div>
@@ -104,72 +106,84 @@
     <script>
         Polymer({
             is: 'active-manage',
-            behaviors:[ReduxBehavior,ValidateFormBehavior,nylonLocalizeBehavior],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, nylonLocalizeBehavior],
             created: function () {
                 this.nylonLocalizeImport('/i18n-page1.json');
             },
-            properties:{
-                dataList:{
-                    statePath:'commonData.active'
+            properties: {
+                dataList: {
+                    statePath: 'commonData.active'
                 },
-                data:{
-                    type:Object,
-                    value:{}
+                data: {
+                    type: Object,
+                    value: {}
                 }
             },
-            count:function(index){
-                return index+1;
+            count: function (index) {
+                return index + 1;
             },
             // update table function 
-            edit:function(e){
+            edit: function (e) {
                 var index = e.target.index;
-               
-                this.dataList.map((item,num)=>{
-                    if(num != index){
-                        this.set('dataList.'+num+'.check',true);
-                        this.set('dataList.'+num+'.status',true);
-                         
+
+                this.dataList.map((item, num) => {
+                    if (num != index) {
+                        this.set('dataList.' + num + '.check', true);
+                        this.set('dataList.' + num + '.status', true);
+
                     }
-                    else{
-                        this.set('dataList.'+num+'.check',false);
+                    else {
+                        this.set('dataList.' + num + '.check', false);
                     }
                 })
             },
-            close:function(e){
+            close: function (e) {
                 var index = e.target.index;
                 this.dispatchAction('COMMONDATA_DATA_ACTIVE')
-                this.set('dataList.'+index+'.check',true);
+                this.set('dataList.' + index + '.check', true);
             },
-            getForm:function(){
+            getForm: function () {
                 // //console.log(this.data);
-                this.dispatchAction('COMMONDATA_DATA_ACTIVE_INSERT',this.data);
+                this.dispatchAction('COMMONDATA_DATA_ACTIVE_INSERT', this.data);
             },
-            update:function(e){
+            update: function (e) {
                 var getForm = e.target.item;
                 var newItem = {
                     id: getForm.id,
                     active_name: getForm.active_name,
                 }
-                console.log(newItem);
-                this.dispatchAction('COMMONDATA_DATA_ACTIVE_UPDATE',newItem);
+                var check = this.validateForm('#formUpdate');
+                // console.log(check);
+                if (check == true) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'ต้องการแก้ไขข้อมูลใช่หรือไม่ ?',
+                        confirmed: (result) => {
+                            if (result == true) {
+                                this.dispatchAction('COMMONDATA_DATA_ACTIVE_UPDATE', newItem);
+                            }
+                        }
+                    })
+                }
+
             },
-            confirmDelete:function(e){
+            confirmDelete: function (e) {
                 var id = e.target.item.id;
-                this.fire('toast',{ 
-                 status:'openDialog',
-                 text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
-                 confirmed:this._deleteData.bind(this), 
-                 data:id 
-                 })
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                    confirmed: this._deleteData.bind(this),
+                    data: id
+                })
             },
-            _deleteData:function(check,id){
-                if(check == true){
+            _deleteData: function (check, id) {
+                if (check == true) {
                     // //console.log(id.data);
                     var id = id.data;
-                    this.dispatchAction('COMMONDATA_DATA_ACTIVE_DELETE',id);
+                    this.dispatchAction('COMMONDATA_DATA_ACTIVE_DELETE', id);
                 }
             }
-            
+
         });
     </script>
 </dom-module>

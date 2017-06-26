@@ -239,7 +239,7 @@
                 // this.set('dataSelete',{})
                 this.selected = 0;
                 this.$$('panel-right').open();
-                this.set('title', 'เพิ่มฟิลด์')
+                this.set('title', 'เพิ่มเขตข้อมูล')
                 // //console.log(111);
                 this.dispatchAction('CONDITIONREADWELFARE_SET');
                 this.dispatchAction('CONDITIONREADWELFARE_BTN', false);
@@ -247,7 +247,7 @@
             },
             _editDataCondition(e) {
                 this.selected = 0;
-                this.set('title', 'แก้ไขฟิลด์')
+                this.set('title', 'แก้ไขเขตข้อมูล')
                 // //console.log(2222);
                 this.dispatchAction('CONDITIONREADWELFARE_BTN', true);
                 this.dispatchAction('CONDITIONREADWELFARE_INSERT_VIEW', false);
@@ -256,8 +256,8 @@
             },
             openPanel: function (e) {
                 var item = e.detail;
-                this.set('title', 'แก้ไขฟิลด์')
-                console.log(item);
+                this.set('title', 'แก้ไขเขตข้อมูล')
+                // console.log(item);
                 switch (item) {
                     case 'academic':
                         this.selected = 1;

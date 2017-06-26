@@ -59,7 +59,7 @@
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
-                                            <paper-input no-label-float value="{{item.relation_name}}"></paper-input>
+                                            <paper-input class="formUpdate" required  no-label-float value="{{item.relation_name}}"></paper-input>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
@@ -137,7 +137,20 @@
                     id: getForm.id,
                     relation_name: getForm.relation_name
                 }
-                this.dispatchAction('COMMONDATA_DATA_RELATION_UPDATE',newItem);
+                var check = this.validateForm('.formUpdate');
+                // console.log(check);
+                if (check == true) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'ต้องการแก้ไขข้อมูลใช่หรือไม่ ?',
+                        confirmed: (result) => {
+                            if (result == true) {
+                                this.dispatchAction('COMMONDATA_DATA_RELATION_UPDATE',newItem);
+                            }
+                        }
+                    })
+                }
+                
             },
             confirmDelete:function(e){
                 var id = e.target.item.id;

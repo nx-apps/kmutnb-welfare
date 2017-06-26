@@ -85,7 +85,7 @@
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td style="text-align: left !important">
-                                            <gl-combo-box label="Faculty" items="[[facultys]]" item-label-path="faculty_name" item-value-path="id" value="{{item.faculty_id}}">
+                                            <gl-combo-box class="formUpdate" required label="Faculty" items="[[facultys]]" item-label-path="faculty_name" item-value-path="id" value="{{item.faculty_id}}">
                                             </gl-combo-box>
                                         </td>
                                     </template>
@@ -96,7 +96,7 @@
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td style="text-align: left !important">
-                                            <paper-input no-label-float value="{{item.department_name}}"></paper-input>
+                                            <paper-input class="formUpdate" required  no-label-float value="{{item.department_name}}"></paper-input>
                                         </td>
                                     </template>
                                     <!--[[facultys]]///-->
@@ -112,7 +112,7 @@
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
                                             <paper-tooltip for="upDData">{{localize('update')}}</paper-tooltip>
-                                            <paper-icon-button id="upDData" on-tap="update" item="[[item]]" index="[[index]]" icon="{{localize('insert')}}"></paper-icon-button>
+                                            <paper-icon-button id="upDData" on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
                                             <paper-tooltip for="canData">{{localize('cancel')}}</paper-tooltip>
                                             <paper-icon-button id="canData" on-tap="close" item=[[item.department_name]] index="[[index]]" icon="clear"></paper-icon-button>
                                         </td>
@@ -182,7 +182,20 @@
                     department_name: getForm.department_name,
                     faculty_id: getForm.faculty_id,
                 }
-                this.dispatchAction('COMMONDATA_DATA_DEPARTMENT_UPDATE', newItem);
+                var check = this.validateForm('.formUpdate');
+                // console.log(check);
+                if (check == true) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'ต้องการแก้ไขข้อมูลใช่หรือไม่ ?',
+                        confirmed: (result) => {
+                            if (result == true) {
+                                this.dispatchAction('COMMONDATA_DATA_DEPARTMENT_UPDATE', newItem);
+                            }
+                        }
+                    })
+                }
+                
             },
             confirmDelete: function (e) {
                 var id = e.target.item.id;

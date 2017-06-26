@@ -1,4 +1,3 @@
-
 <link rel="import" href="./../../../components/validateFormBehaviors.html">
 
 <dom-module id="academic-manage">
@@ -6,17 +5,22 @@
         .container {
             padding: 20px
         }
-        .contentTable{
+
+        .contentTable {
             background-color: white;
         }
-        table{
-            border:1px solid #ddd;
+
+        table {
+            border: 1px solid #ddd;
         }
-        td,th{
+
+        td,
+        th {
             text-align: center !important;
         }
+
         td:nth-child(1),
-        th:nth-child(1){
+        th:nth-child(1) {
             text-align: left !important;
         }
     </style>
@@ -31,7 +35,8 @@
                         <div class="container flex-horizontal-with-ratios">
                             <div class="flexchild"></div>
                             <div class="flex3child">
-                                <gl-form-input label="{{localize('academic')}}" id="form" placeholder="กรอก{{localize('data')}}" value="{{data.academic_name}}" required></gl-form-input>
+                                <gl-form-input label="{{localize('academic')}}" id="form" placeholder="กรอก{{localize('data')}}" value="{{data.academic_name}}"
+                                    required></gl-form-input>
                             </div>
                             <div class="flexchild" style="text-align: center">
                                 <paper-button class="gl-btn-primary" on-tap="getForm" raised>{{localize('insert')}}</paper-button>
@@ -51,14 +56,14 @@
                                 <th style="width: 20%">{{localize('tool')}}</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody>
                             <template is="dom-repeat" items="[[dataList]]">
                                 <tr>
                                     <td>[[count(index)]]</td>
                                     <template is="dom-if" if="{{item.check}}">
                                         <td style="text-align: left !important">
-                                            {{item.academic_name}} 
+                                            {{item.academic_name}}
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
@@ -71,21 +76,21 @@
                                             <paper-tooltip for="editData">{{localize('edit')}}</paper-tooltip>
                                             <paper-icon-button id="editData" on-tap="edit" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="create"></paper-icon-button>
                                             <paper-tooltip for="delData">{{localize('delete')}}</paper-tooltip>
-                                            <paper-icon-button id="delData"  on-tap="confirmDelete" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="delete"></paper-icon-button>
+                                            <paper-icon-button id="delData" on-tap="confirmDelete" item="[[item]]" disabled="[[item.status]]" index="[[index]]" icon="delete"></paper-icon-button>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td>
                                             <paper-tooltip for="upDData">{{localize('update')}}</paper-tooltip>
-                                            <paper-icon-button id="upDData"  on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
+                                            <paper-icon-button id="upDData" on-tap="update" item="[[item]]" index="[[index]]" icon="save"></paper-icon-button>
                                             <paper-tooltip for="canData">{{localize('cancel')}}</paper-tooltip>
-                                            <paper-icon-button id="canData"  on-tap="close" item=[[item.academic_name]] index="[[index]]" icon="clear"></paper-icon-button>
+                                            <paper-icon-button id="canData" on-tap="close" item=[[item.academic_name]] index="[[index]]" icon="clear"></paper-icon-button>
                                         </td>
                                     </template>
                                 </tr>
                             </template>
                         </tbody>
-                    </table>       
+                    </table>
                 </div>
             </section>
         </div>
@@ -93,78 +98,86 @@
     <script>
         Polymer({
             is: 'academic-manage',
-            behaviors:[ReduxBehavior,ValidateFormBehavior,nylonLocalizeBehavior],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, nylonLocalizeBehavior],
             created: function () {
                 this.nylonLocalizeImport('/i18n-page1.json');
             },
-            properties:{
-                dataList:{
-                    statePath:'commonData.academic'
+            properties: {
+                dataList: {
+                    statePath: 'commonData.academic'
                 },
-                data:{
-                    type:Object,
-                    value:{}
+                data: {
+                    type: Object,
+                    value: {}
                 }
             },
-            count:function(index){
-                return index+1;
+            count: function (index) {
+                return index + 1;
             },
             // update table function 
-            edit:function(e){
+            edit: function (e) {
                 var index = e.target.index;
-                this.dataList.map((item,num)=>{
-                    if(num != index){
-                        this.set('dataList.'+num+'.check',true);
-                        this.set('dataList.'+num+'.status',true);
-                         
+                this.dataList.map((item, num) => {
+                    if (num != index) {
+                        this.set('dataList.' + num + '.check', true);
+                        this.set('dataList.' + num + '.status', true);
+
                     }
-                    else{
-                        this.set('dataList.'+num+'.check',false);
+                    else {
+                        this.set('dataList.' + num + '.check', false);
                     }
                 })
             },
-            close:function(e){
+            close: function (e) {
                 var index = e.target.index;
                 this.dispatchAction('COMMONDATA_DATA_ACADEMIC')
-                this.set('dataList.'+index+'.check',true);
+                this.set('dataList.' + index + '.check', true);
                 // this.dataList.map((item,num)=>{
                 //     this.set('dataList.'+num+'.status',false);
                 // })
             },
-            getForm:function(){
+            getForm: function () {
                 var check = this.validateForm('#form');
-                if(check == true){
-                    this.dispatchAction('COMMONDATA_DATA_ACADEMIC_INSERT',this.data);
+                if (check == true) {
+                    this.dispatchAction('COMMONDATA_DATA_ACADEMIC_INSERT', this.data);
                 }
             },
-            update:function(e){
+            update: function (e) {
                 var check = this.validateForm('#formUpdate');
                 var getForm = e.target.item;
                 var newItem = {
                     id: getForm.id,
                     academic_name: getForm.academic_name
                 }
-                if(check == true){
-                    this.dispatchAction('COMMONDATA_DATA_ACADEMIC_UPDATE',newItem);
+                if (check == true) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'ต้องการแก้ไขข้อมูลใช่หรือไม่ ?',
+                        confirmed: (result) => {
+                            if (result == true) {
+                                this.dispatchAction('COMMONDATA_DATA_ACADEMIC_UPDATE', newItem);
+                            }
+                        }
+                    })
                 }
             },
-            confirmDelete:function(e){
+            confirmDelete: function (e) {
                 var id = e.target.item.id;
-                this.fire('toast',{ 
-                 status:'openDialog',
-                 text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
-                 confirmed:this._deleteData.bind(this), 
-                 data:id 
-                 })
+                this.fire('toast', {
+                    status: 'openDialog',
+                    text: 'ต้องการลบข้อมูลใช่หรือไม่ ?',
+                    confirmed: this._deleteData.bind(this),
+                    data: id
+                })
             },
-            _deleteData:function(check,id){
-                if(check == true){
+            _deleteData: function (check, id) {
+                if (check == true) {
                     // //console.log(id.data);
                     var id = id.data;
-                    this.dispatchAction('COMMONDATA_DATA_ACADEMIC_DELETE',id);
+                    this.dispatchAction('COMMONDATA_DATA_ACADEMIC_DELETE', id);
                 }
             }
-            
+
         });
     </script>
 </dom-module>

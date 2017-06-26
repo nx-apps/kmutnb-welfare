@@ -25,6 +25,15 @@
                 </template>
             </vaadin-grid-column>
 
+            <vaadin-grid-column width="350px" flex-grow="0" resizable>
+                <template class="header">
+                    <div class="text-center">บริษัทจัดการ</div>
+                </template>
+                <template>
+                    <div class="text-center">[[item.fund_company]]</div>
+                </template>
+            </vaadin-grid-column>
+
             <vaadin-grid-column>
                 <template class="header">
                     <div class="text-center">นโยบาย</div>
@@ -33,9 +42,9 @@
                     <div class="text-center">[[item.policy_code]]</div>
                 </template>
             </vaadin-grid-column>
-            <vaadin-grid-column>
+            <vaadin-grid-column width="150px" >
                 <template class="header">
-                    <div class="text-center">งวด</div>
+                    <div class="text-center">รายงานประจำเดือน</div>
                 </template>
                 <template>
                     <div class="text-center">[[item.fund_month]]</div>
@@ -44,7 +53,7 @@
             
             <vaadin-grid-column-group>
                 <template class="header">
-                    <div class="text-center">ส่วนของพนักงาน</div>
+                    <div class="text-center">ส่วนของสมาชิก</div>
                 </template>
                 <vaadin-grid-column>
                     <template class="header">
@@ -66,7 +75,7 @@
             </vaadin-grid-column-group>
             <vaadin-grid-column-group>
                 <template class="header">
-                    <div class="text-center">ส่วนของมหาวิทยาลัย</div>
+                    <div class="text-center">ส่วนของนายจ้าง</div>
                 </template>
                 <vaadin-grid-column>
                     <template class="header">

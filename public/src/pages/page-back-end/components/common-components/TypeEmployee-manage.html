@@ -59,7 +59,7 @@
                                     </template>
                                     <template is="dom-if" if="{{!item.check}}">
                                         <td style="text-align: left !important">
-                                            <paper-input no-label-float value="{{item.type_employee_name}}"></paper-input>
+                                            <paper-input class="formUpdate" required  no-label-float value="{{item.type_employee_name}}"></paper-input>
                                         </td>
                                     </template>
                                     <template is="dom-if" if="{{item.check}}">
@@ -137,7 +137,19 @@
                     id: getForm.id,
                     type_employee_name: getForm.type_employee_name
                 }
-                this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE_UPDATE',newItem);
+                var check = this.validateForm('.formUpdate');
+                // if (check == true) {
+                    this.fire('toast', {
+                        status: 'openDialog',
+                        text: 'ต้องการแก้ไขข้อมูลใช่หรือไม่ ?',
+                        confirmed: (result) => {
+                            if (result == true) {
+                                this.dispatchAction('COMMONDATA_DATA_TYPE_EMPLOYEE_UPDATE',newItem);
+                            }
+                        }
+                    })
+                // }
+                
             },
             confirmDelete:function(e){
                 var id = e.target.item.id;
