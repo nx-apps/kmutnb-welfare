@@ -147,10 +147,10 @@
             update:function(e){
                 var getForm = e.target.item;
                 var newItem = {
-                    id: getForm.active_id,
+                    id: getForm.id,
                     active_name: getForm.active_name,
                 }
-                // console.log(newItem);
+                console.log(newItem);
                 this.dispatchAction('COMMONDATA_DATA_ACTIVE_UPDATE',newItem);
             },
             confirmDelete:function(e){
