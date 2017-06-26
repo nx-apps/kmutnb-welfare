@@ -184,10 +184,10 @@
 
                         <input id="tab2" type="radio" name="tabs" on-click="setVaadin">
                         <label for="tab2">{{localize('history')}}การ{{localize('use')}}{{localize('welfare')}}</label>
-                        <template is="dom-if" if={{data.sso_open}}>
+                        <!--<template is="dom-if" if={{data.sso_open}}>-->
                             <input id="tab3" type="radio" name="tabs">
                             <label for="tab3">{{localize('social_security')}}</label>
-                        </template>
+                        <!--</template>-->
                         <template is="dom-if" if={{data.fund_open}}>
                             <input id="tab4" type="radio" name="tabs">
                             <label for="tab4">{{localize('fund')}}</label>
