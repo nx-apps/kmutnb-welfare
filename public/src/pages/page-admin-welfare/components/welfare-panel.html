@@ -63,10 +63,10 @@
         </style>
         <main>
             <input id="tab1" type="radio" name="tabs" on-tap="tap1">
-            <label for="tab1">สวัสดิการ</label>
+            <label for="tab1">{{localize('welfare')}}</label>
 
             <input id="tab2" type="radio" name="tabs" disabled="[[!isEnable]]" on-tap="tap2">
-            <label for="tab2">เงื่อนไข</label>
+            <label for="tab2">{{localize('condition')}}</label>
             <section id="content1">
                 <paper-material elevation="1">
                     <group-welfare-manage is-enable="{{isEnable}}"></group-welfare-manage>
@@ -83,7 +83,10 @@
     <script>
         Polymer({
             is: 'welfare-panel',
-            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             checked_tab:function(val){
                 this.$$(val).checked = true;
             },

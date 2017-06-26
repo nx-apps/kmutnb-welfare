@@ -51,12 +51,12 @@
             }
         </style>
         <div class="xcontainer">
-            <div class="header-page">เงื่อนไขสวัสดิการ</div>
+            <div class="header-page">{{localize('condition')}}{{localize('welfare')}}</div>
             <!--<group-welfare-chart></group-welfare-chart>-->
             [[_obYear(selectYear)]]
             <div class="horizontal layout">
                 <div class="flex horizontal start-justified layout">
-                    <gl-form-dropdown-menu style="margin-left:20px;" label="ปี" placeholder="เลือกปี">
+                    <gl-form-dropdown-menu style="margin-left:20px;" label="{{localize('year')}}" placeholder="{{localize('choose')}}{{localize('year')}}">
                         <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
                             <template is="dom-repeat" items={{list_year}}>
                                 <paper-item value="[[item.year]]">[[item.year]]</paper-item>
@@ -67,11 +67,11 @@
                 <div class="flex horizontal end-justified layout">
                     <div>
                         <!--<paper-button raised style="margin: 20px 10px 20px 20px;" class="gl-btn-info" on-tap="_print">
-                            <iron-icon icon="icons:print"></iron-icon>ออกรายงาน</paper-button>-->
+                            <iron-icon icon="icons:print"></iron-icon>ออกราย{{localize('work')}}</paper-button>-->
                         <paper-button raised style="margin: 20px 10px 20px 20px;" class="gl-btn-info" on-tap="_openDialog">
-                            <iron-icon icon="icons:content-copy"></iron-icon>คัดลอกสวัสดิการ</paper-button>
+                            <iron-icon icon="icons:content-copy"></iron-icon>{{localize('copy')}}{{localize('welfare')}}</paper-button>
                         <paper-button raised style="margin: 20px" class="gl-btn-primary" on-tap="_insert">
-                            <iron-icon icon="add"></iron-icon>เพิ่มเงื่อนไขสวัสดิการ</paper-button>
+                            <iron-icon icon="add"></iron-icon>{{localize('insert')}}{{localize('condition')}}{{localize('welfare')}}</paper-button>
                     </div>
                 </div>
 
@@ -82,14 +82,14 @@
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <!--<th style="text-align:center; width:10%;">ปี</th>-->
-                                    <th style="text-align:left; width:20%;">ชื่อสวัสดิการ</th>
-                                    <th style="text-align:center">จำนวนผู้มีสิทธิ</th>
-                                    <th style="text-align:center">จำนวนผู้ใช้สิทธิ</th>
-                                    <th style="text-align:center;width:15%;">ยอดเต็ม (บาท)</th>
-                                    <th style="text-align:center;width:15%;">ยอดที่ใช้ (บาท)</th>
-                                    <th style="text-align:left">สถานะการใช้งาน</th>
-                                    <th style="width:15%;text-align:center;">เครื่องมือ</th>
+                                    <!--<th style="text-align:center; width:10%;">{{localize('year')}}</th>-->
+                                    <th style="text-align:left; width:20%;">{{localize('firstname')}}{{localize('welfare')}}</th>
+                                    <th style="text-align:center">{{localize('number')}}{{localize('people')}}{{localize('get')}}{{localize('right')}}</th>
+                                    <th style="text-align:center">{{localize('number')}}{{localize('people')}}{{localize('use')}}{{localize('right')}}</th>
+                                    <th style="text-align:center;width:15%;">{{localize('elite')}}{{localize('full')}} ({{localize('bath')}})</th>
+                                    <th style="text-align:center;width:15%;">{{localize('elite')}}{{localize('at')}}{{localize('use')}} ({{localize('bath')}})</th>
+                                    <th style="text-align:left">{{localize('active')}}</th>
+                                    <th style="width:15%;text-align:center;">{{localize('tool')}}</th>
                                 </tr>
                             </thead>
                             <tbody class="table-body">
@@ -107,14 +107,14 @@
                                         <td style="text-align:right">[[formatNumber(item.value_use)]]</td>
                                         <td style="text-align:left">[[item.status_approve_name]]</td>
                                         <td style="text-align:center">
-                                            <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="แก้ไขสวัสดิการ"></paper-icon-button>
+                                            <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="{{localize('edit')}}{{localize('welfare')}}"></paper-icon-button>
                                         </td>
                                     </tr>
                                 </template>
                                 
                                 <template is="dom-if" if={{_ObIsHave(list)}}>
                                     <tr>
-                                        <td colspan="7"> ไม่มีข้อมูล</td>
+                                        <td colspan="7"> {{localize('no')}}{{localize('get')}}{{localize('data')}}</td>
                                     </tr>
                                 </template>
                                 
@@ -135,9 +135,9 @@
             <paper-dialog id="clone_welfare" modal>
                 <div class="container">
                     <div class="vertical layout">
-                        <div style="font-size:18px; font-style:bold;">เลือกปีสวัสดิการที่ต้องการคัดลอก</div>
+                        <div style="font-size:18px; font-style:bold;">{{localize('choose')}}{{localize('year')}}{{localize('welfare')}}{{localize('at')}}{{localize('want')}}{{localize('copy')}}</div>
                         [[_cloneData(year)]]
-                        <gl-form-dropdown-menu label="ปีสวัสดิการ" placeholder="เลือกปี">
+                        <gl-form-dropdown-menu label="{{localize('year')}}{{localize('welfare')}}" placeholder="{{localize('choose')}}{{localize('year')}}">
                             <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{year}}">
                                 <template is="dom-repeat" items={{list_year}}>
                                     <paper-item value="[[item.year]]">[[item.year]]</paper-item>
@@ -150,8 +150,8 @@
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <th><paper-checkbox on-tap="_changeselectDataAll" checked="{{selectDataAll}}"></paper-checkbox>เลือกทั้งหมด</th>
-                                    <th>ชื่อสวัสดิการ</th>
+                                    <th><paper-checkbox on-tap="_changeselectDataAll" checked="{{selectDataAll}}"></paper-checkbox>{{localize('choose')}}{{localize('all')}}</th>
+                                    <th>{{localize('firstname')}}{{localize('welfare')}}</th>
                                 </tr>
                             </thead>
                             <tbody class="table-body">
@@ -168,8 +168,8 @@
                     {{_obChecked(data_clone.*)}}
                 </div>
                 <div class="buttons">
-                    <paper-button dialog-dismiss autofocus>ยกเลิก</paper-button>
-                    <paper-button autofocus class="gl-btn-primary" on-tap="_submitClone" hidden="{{isHidden}}">คัดลอก</paper-button>
+                    <paper-button dialog-dismiss autofocus>{{localize('cancel')}}</paper-button>
+                    <paper-button autofocus class="gl-btn-primary" on-tap="_submitClone" hidden="{{isHidden}}">{{localize('copy')}}</paper-button>
                 </div>
             </paper-dialog>
 
@@ -177,11 +177,11 @@
                 <div class="horizontal end-justified layout">
                     <paper-icon-button icon="icons:close"  dialog-dismiss></paper-icon-button>
                 </div>
-                <div style="font-size:18px; font-style:bold;">คัดลอกเป็นสวัสดิการปี</div>
-                <gl-form-input class="checkValidate" required label="ปี" allowed-pattern="[0-9]" 
-                maxlength="4" value="{{yearClone.year}}" placeholder="กรุณากรอกปี พ.ศ."></gl-form-input><!--on-keyup="_insertClone"-->
+                <div style="font-size:18px; font-style:bold;">{{localize('copy')}}{{localize('are')}}{{localize('welfare')}}{{localize('year')}}</div>
+                <gl-form-input class="checkValidate" required label="{{localize('year')}}" allowed-pattern="[0-9]" 
+                maxlength="4" value="{{yearClone.year}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('year')}} {{localize('buddhist_era')}}"></gl-form-input><!--on-keyup="_insertClone"-->
                 <div class="buttons">
-                    <paper-button autofocus class="gl-btn-primary" on-tap="_insertClone">บันทึก</paper-button>
+                    <paper-button autofocus class="gl-btn-primary" on-tap="_insertClone">{{localize('save')}}</paper-button>
                 </div>
             </paper-dialog>
         </div>
@@ -190,7 +190,10 @@
     <script>
         Polymer({
             is: 'page-admin-welfare',
-            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction, nylonLocalizeBehavior,commonLogic],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction, nylonLocalizeBehavior,commonLogic,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             observers: ['changeYear(selectYear)'],
             properties: {
                 list: {

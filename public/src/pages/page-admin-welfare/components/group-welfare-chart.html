@@ -6,11 +6,11 @@
     <template>
         <div class="horizontal center-justified layout">
             <div class="vertical layout">
-                <div style="text-align: center;">จำนวนผู้มีสิทธิ</div>
+                <div style="text-align: center;">{{localize('number')}}{{localize('people')}}{{localize('get')}}{{localize('right')}}</div>
                 <chart-pie data="[[employee]]" style="width:250px;height:250px;"></chart-pie>
             </div>
             <div class="vertical layout">
-                <div style="text-align: center;">จำนวนผู้ใช้สิทธิ</div>
+                <div style="text-align: center;">{{localize('number')}}{{localize('people')}}{{localize('use')}}{{localize('right')}}</div>
                 <chart-pie data="[[employeeUse]]" style="width:250px;height:250px;"></chart-pie>
             </div>
         </div>
@@ -18,7 +18,10 @@
     <script>
         Polymer({
             is: 'group-welfare-chart',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 list: {
                     statePath: 'groupWelfare.list',
@@ -95,7 +98,7 @@
                         labels: label,
                         datasets: [
                             {
-                                label: "จำนวนเงิน",
+                                label: "ลำดับเงิน",
                                 backgroundColor: "rgba(220,220,220,0.2)",
                                 borderColor: "rgba(220,220,220,1)",
                                 borderWidth: 1,
@@ -107,14 +110,14 @@
                         labels: label,
                         datasets: [
                             {
-                                label: "จำนวนคนใช้งาน",
+                                label: "ลำดับคนใช้งาน",
                                 backgroundColor: "rgba(220,220,220,0.2)",
                                 borderColor: "rgba(220,220,220,1)",
                                 borderWidth: 1,
                                 data: chart.map((ed) => ed.emp_use)
                             },
                             {
-                                label: "จำนวนคนมีสิทธิ",
+                                label: "ลำดับคนมี{{localize('right')}}",
                                 backgroundColor: "rgba(220,220,220,0.2)",
                                 borderColor: "rgba(220,220,220,1)",
                                 borderWidth: 1,

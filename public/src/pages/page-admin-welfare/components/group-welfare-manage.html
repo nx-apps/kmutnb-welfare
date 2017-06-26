@@ -52,7 +52,7 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input class="checkValidate" required disabled label="ปี" allowed-pattern="[0-9]" maxlength="4" value="{{data.year}}" placeholder="กรุณากรอกปี พ.ศ."></gl-form-input>
+                        <gl-form-input class="checkValidate" required disabled label="{{localize('year')}}" allowed-pattern="[0-9]" maxlength="4" value="{{data.year}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('year')}} {{localize('buddhist_era')}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
             </template>
@@ -60,11 +60,11 @@
             <gl-grid-row width="{{getWidth}}">
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-dropdown-menu class="checkValidate" required disabled="{{isEnable}}" label="รูปแบบสวัสดิการ" placeholder="กรุณาเลือกรูปแบบสวัสดิการ" style="width:100%">
+                    <gl-form-dropdown-menu class="checkValidate" required disabled="{{isEnable}}" label="{{localize('format')}}{{localize('welfare')}}" placeholder="{{localize('are')}}{{localize('choose')}}{{localize('format')}}{{localize('welfare')}}" style="width:100%">
                         <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{data.type_group}}">
-                            <paper-item value="general">ทั่วไป</paper-item>
-                            <paper-item value="fund">กองทุน</paper-item>
-                            <paper-item value="sso">ประกันสังคม</paper-item>
+                            <paper-item value="general">{{localize('general')}}</paper-item>
+                            <paper-item value="fund">{{localize('fund')}}</paper-item>
+                            <paper-item value="sso">{{localize('social_security')}}</paper-item>
                         </paper-listbox>
                     </gl-form-dropdown-menu>
                 </gl-grid-col>
@@ -73,7 +73,7 @@
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-input class="checkValidate" required disabled="{{isEnable}}" label="ชื่อสวัสดิการ" value="{{data.group_welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
+                    <gl-form-input class="checkValidate" required disabled="{{isEnable}}" label="{{localize('firstname')}}{{localize('welfare')}}" value="{{data.group_welfare_name}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('firstname')}}{{localize('welfare')}}"></gl-form-input>
                 </gl-grid-col>
             </gl-grid-row>
 
@@ -81,31 +81,31 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker class="checkValidate" required disabled="{{isEnable}}" label="วันที่เริ่มใช้งาน :" value="{{data.start_date}}"></vaadin-date-picker>
+                        <vaadin-date-picker class="checkValidate" required disabled="{{isEnable}}" label="{{localize('date')}}เริ่ม{{localize('use')}}{{localize('work')}} :" value="{{data.start_date}}"></vaadin-date-picker>
                     </gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker disabled="{{isEnable}}" label="วันที่สิ้นสุดใช้งาน :" value="{{data.end_date}}"></vaadin-date-picker>
+                        <vaadin-date-picker disabled="{{isEnable}}" label="{{localize('date')}}{{localize('finished')}}{{localize('use')}}{{localize('work')}} :" value="{{data.end_date}}"></vaadin-date-picker>
                     </gl-grid-col>
                 </gl-grid-row>
                 
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,8]]">
-                        <div style="margin-top:15px; font-size:16px; color:gray;">*ถ้าไม่ระบุวันที่สิ้นสุดการใช้งานจะเป็นสวัสดิการแบบต่อเนื่อง</div>
+                        <div style="margin-top:15px; font-size:16px; color:gray;">*{{localize('if')}}{{localize('no')}}{{localize('specify')}}{{localize('date')}}{{localize('finished')}}{{localize('defecation')}}{{localize('use')}}{{localize('work')}}{{localize('will')}}{{localize('are')}}{{localize('welfare')}}{{localize('model')}}{{localize('continuous')}}</div>
                     </gl-grid-col>
                 </gl-grid-row>
                 
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker disabled="{{isEnable}}" label="วันที่ใช้คำนวณ :" value="{{data.cal_date}}"></vaadin-date-picker>
+                        <vaadin-date-picker disabled="{{isEnable}}" label="{{localize('date')}}{{localize('use')}}{{localize('calculate')}} :" value="{{data.cal_date}}"></vaadin-date-picker>
                     </gl-grid-col>
                 </gl-grid-row>
 
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,8]]">
-                        <div style="margin-top:15px; font-size:16px; color:gray;">*ใช้สำหรับสวัสดิการที่คำนวณอายุพนักงาน</div>
+                        <div style="margin-top:15px; font-size:16px; color:gray;">*{{localize('use')}}{{localize('for')}}{{localize('welfare')}}{{localize('at')}}{{localize('calculate')}}{{localize('people_age')}}</div>
                     </gl-grid-col>
                 </gl-grid-row>
             </template>
@@ -113,7 +113,7 @@
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-textarea disabled="{{isEnable}}" style="margin-top:15px;" label="รายละเอียด" value="{{data.description}}" placeholder="เพิ่มรายละเอียด"></gl-form-textarea>
+                    <gl-form-textarea disabled="{{isEnable}}" style="margin-top:15px;" label="{{localize('detail')}}" value="{{data.description}}" placeholder="{{localize('insert')}}{{localize('detail')}}"></gl-form-textarea>
                 </gl-grid-col>
             </gl-grid-row>
             
@@ -121,25 +121,25 @@
                 <gl-grid-row style="margin-top: 10px">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <paper-checkbox disabled="{{isEnable_onetime}}" checked="{{data.onetime_use}}">ใช้ครั้งเดียว</paper-checkbox>
+                        <paper-checkbox disabled="{{isEnable_onetime}}" checked="{{data.onetime_use}}">{{localize('use')}}{{localize('around')}}{{localize('single')}}</paper-checkbox>
                     </gl-grid-col>
                     [[checkSelect(data.group_use)]] 
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.group_use}}">สวัสดิการแบบกลุ่ม</paper-checkbox>
+                        <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.group_use}}">{{localize('welfare')}}{{localize('model')}}{{localize('group')}}</paper-checkbox>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row style="margin-top: 10px">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
-                        <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.voluntary_status}}">สมัครใจ</paper-checkbox>
+                        <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.voluntary_status}}">{{localize('voluntary')}}</paper-checkbox>
                     </gl-grid-col>
                 </gl-grid-row>
             </template>
 
             <div class="horizontal end-justified layout btn-bottom">
                 <div hidden="{{isEnable}}">
-                    <paper-button raised class="gl-btn-danger" on-tap="cancle">ยกเลิก</paper-button>
-                    <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                    <paper-button raised class="gl-btn-danger" on-tap="cancle">{{localize('cancel')}}</paper-button>
+                    <paper-button raised class="gl-btn-success" on-tap="save">{{localize('save')}}</paper-button>
                 </div>
             </div>
         </div>
@@ -148,7 +148,10 @@
     <script>
         Polymer({
             is: 'group-welfare-manage',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, ValidateFormBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             observers: ['checkDisabled(isEnable)'],
             properties: {
                 data: {

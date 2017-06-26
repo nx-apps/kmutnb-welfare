@@ -44,17 +44,17 @@
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                            <label id="label" style="font-weight:bold;color:#737373">ให้สิทธิสวัสดิการ :</label>
+                            <label id="label" style="font-weight:bold;color:#737373">{{localize('give')}}{{localize('right')}}{{localize('welfare')}} :</label>
                             <!--<paper-radio-group selected="{{data.round_use}}" attr-for-selected="value" aria-labelledby="label">
-                                <paper-radio-button value="{{!type_select}}" disabled="{{isEnable}}">ใช้แบบต่อรอบ</paper-radio-button>
-                                <paper-radio-button value="{{type_select}}" disabled="{{isEnable}}">ใช้แบบต่อครั้ง</paper-radio-button>
+                                <paper-radio-button value="{{!type_select}}" disabled="{{isEnable}}">{{localize('use')}}{{localize('model')}}{{localize('continue')}}{{localize('around')}}</paper-radio-button>
+                                <paper-radio-button value="{{type_select}}" disabled="{{isEnable}}">{{localize('use')}}{{localize('model')}}{{localize('continue')}}{{localize('around')}}</paper-radio-button>
                             </paper-radio-group>-->
                         </gl-grid-col>
                     </gl-grid-row>
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                            <paper-checkbox style="margin-top:10px;" disabled="{{isEnable}}" checked="{{data.round_use}}">ใช้แบบต่อรอบ</paper-checkbox>
+                            <paper-checkbox style="margin-top:10px;" disabled="{{isEnable}}" checked="{{data.round_use}}">{{localize('use')}}{{localize('model')}}{{localize('continue')}}{{localize('around')}}</paper-checkbox>
                         </gl-grid-col>
                     </gl-grid-row>
                 </template>
@@ -62,7 +62,7 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input class="form" required disabled="{{isEnable}}" label="ชื่อเงื่อนไข" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อเงื่อนไข"></gl-form-input>
+                        <gl-form-input class="form" required disabled="{{isEnable}}" label="{{localize('firstname')}}{{localize('condition')}}" value="{{data.welfare_name}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('firstname')}}{{localize('condition')}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 
@@ -71,7 +71,7 @@
                         <gl-grid-row>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                                <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงิน (บาท) :" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                                <gl-form-input class="form" required disabled="{{isEnable}}" label="{{localize('number')}}{{localize('money')}} ({{localize('bath')}}) :" format-number="on" value="{{data.budget}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('number')}}{{localize('money')}}"></gl-form-input>
                             </gl-grid-col>
                         </gl-grid-row>
                     </template>
@@ -80,13 +80,13 @@
                         <gl-grid-row>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                                <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวนเงินมหาลัยจ่าย (บาท) :" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                                <gl-form-input class="form" required disabled="{{isEnable}}" label="{{localize('number')}}{{localize('money')}}{{localize('university')}}{{localize('pay')}} ({{localize('bath')}}) :" format-number="on" value="{{data.budget}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('number')}}{{localize('money')}}"></gl-form-input>
                             </gl-grid-col>
                         </gl-grid-row>
                         <gl-grid-row>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                                <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="จำนวนเงินที่พนักงานจ่าย (บาท) :" format-number="on" value="{{data.budget_emp}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                                <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="{{localize('number')}}{{localize('money')}}{{localize('at')}}{{localize('employee')}}{{localize('work')}}{{localize('pay')}} ({{localize('bath')}}) :" format-number="on" value="{{data.budget_emp}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('number')}}{{localize('money')}}"></gl-form-input>
                             </gl-grid-col>
                         </gl-grid-row>
                     </template>
@@ -96,13 +96,13 @@
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                            <gl-form-input class="form" required disabled="{{isEnable}}" label="จำนวน % ที่มหาลัยจ่าย :" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                            <gl-form-input class="form" required disabled="{{isEnable}}" label="{{localize('number')}} % {{localize('at')}}{{localize('university')}}{{localize('pay')}} :" format-number="on" value="{{data.budget}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('number')}}{{localize('money')}}"></gl-form-input>
                         </gl-grid-col>
                     </gl-grid-row>
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                            <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="จำนวน % ที่พนักงานจ่าย :" format-number="on" value="{{data.budget_emp}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                            <gl-form-input class="checkBudgetEmp" required disabled="{{isEnable}}" label="{{localize('number')}} % {{localize('at')}}{{localize('employee')}}{{localize('work')}}{{localize('pay')}} :" format-number="on" value="{{data.budget_emp}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('number')}}{{localize('money')}}"></gl-form-input>
                         </gl-grid-col>
                     </gl-grid-row>
                 </template>
@@ -112,7 +112,7 @@
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
+                            <div class="label_condition">{{localize('condition')}} ([[count(index)]])</div>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                             <gl-form-dropdown-menu disabled="{{isEnable}}" on-value-changed="clearSelect" style="margin-top: 15px; width:100%">
@@ -144,7 +144,7 @@
                             </template>
                             <template is="dom-if" if="{{getFiled(item.field,index)}}">
                                 <gl-form-input disabled="{{isEnable}}" pattern="[0-9]*" value="{{item.value_showInput}}">
-                                    <div suffix>ปี</div>
+                                    <div suffix>{{localize('year')}}</div>
                                 </gl-form-input>
                             </template>
                         </gl-grid-col>
@@ -157,19 +157,19 @@
                 </template>
                 <div class="horizontal center-justified layout">
                     <div hidden$="{{isEnable}}">
-                        <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
+                        <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">{{localize('insert')}}{{localize('condition')}}</paper-button>
                     </div>
                 </div>
                 <div class="horizontal end-justified layout btn-bottom">
                     <div hidden$="{{isEnable}}">
-                        <paper-button raised class="gl-btn-danger" on-tap="cancel">ยกเลิก</paper-button>
-                        <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                        <paper-button raised class="gl-btn-danger" on-tap="cancel">{{localize('cancel')}}</paper-button>
+                        <paper-button raised class="gl-btn-success" on-tap="save">{{localize('save')}}</paper-button>
                     </div>
                 </div>
                 <template is="dom-if" if="{{checkMenu(data)}}">
                     <div class="horizontal layout">
                         <div hidden="{{!isEnable}}" class="btn-bottom">
-                            <paper-button raised on-tap="back">ย้อนกลับ</paper-button>
+                            <paper-button raised on-tap="back">{{localize('redo')}}</paper-button>
                         </div>
                     </div>
                 </template>
@@ -179,7 +179,10 @@
     <script>
         Polymer({
             is: 'welfare-form',
-            behaviors: [ReduxBehavior, FormatNumberBehavior,ValidateFormBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior,ValidateFormBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 condition: {
                     statePath: 'welfare.condition'

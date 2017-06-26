@@ -34,15 +34,15 @@
             <div>
                 <div class="horizontal justified layout">
                     <div class="vertical layout">
-                        <div class="text-header" style="margin: 20px 20px 10px 20px;">ชื่อสวัสดิการ : [[list.group_welfare_name]]</div>
-                        <!--<div class="text-header" style="margin-left:20px;">รายละเอียด : [[list.description]]</div>-->
-                        <div style="margin-left:20px;"><gl-form-textarea label="รายละเอียด : " value="[[list.description]]" disabled></gl-form-textarea></div>
+                        <div class="text-header" style="margin: 20px 20px 10px 20px;">{{localize('firstname')}}{{localize('welfare')}} : [[list.group_welfare_name]]</div>
+                        <!--<div class="text-header" style="margin-left:20px;">{{localize('detail')}} : [[list.description]]</div>-->
+                        <div style="margin-left:20px;"><gl-form-textarea label="{{localize('detail')}} : " value="[[list.description]]" disabled></gl-form-textarea></div>
                     </div>
                     <div></div>
                     <div>
                         <template is="dom-if" if={{!list.status_approve}}>
                             <paper-button raised style="margin:20px" class="gl-btn-primary" on-tap="_insert">
-                                <iron-icon icon="add"></iron-icon>เพิ่มเงื่อนไข</paper-button>
+                                <iron-icon icon="add"></iron-icon>{{localize('insert')}}{{localize('condition')}}</paper-button>
                         </template>
                     </div>
                 </div>
@@ -52,23 +52,23 @@
                         <table class="gl-table-default">
                             <thead class="table-head">
                                 <tr>
-                                    <th style="text-align:left;">ชื่อเงื่อนไข</th>
+                                    <th style="text-align:left;">{{localize('firstname')}}{{localize('condition')}}</th>
                                     <template is="dom-if" if={{!_obTypeGroupFund(list.type_group)}}>
                                         <template is="dom-if" if={{!_obTypeGroupSso(list.type_group)}}>
-                                            <th style="width:15%;">จำนวนเงิน (บาท)</th>
+                                            <th style="width:15%;">{{localize('number')}}{{localize('money')}} ({{localize('bath')}})</th>
                                         </template>
                                         <template is="dom-if" if={{_obTypeGroupSso(list.type_group)}}>
-                                            <th style="width:15%;">จำนวนเงินที่มหาลัยจ่าย (บาท)</th>
-                                            <th style="width:15%;">จำนวนเงินที่พนักงานจ่าย (บาท)</th>
+                                            <th style="width:15%;">{{localize('number')}}{{localize('money')}}{{localize('at')}}{{localize('university')}}{{localize('pay')}} ({{localize('bath')}})</th>
+                                            <th style="width:15%;">{{localize('number')}}{{localize('money')}}{{localize('at')}}{{localize('employee')}}{{localize('work')}}{{localize('pay')}} ({{localize('bath')}})</th>
                                         </template>
                                     </template>
                                     <template is="dom-if" if={{_obTypeGroupFund(list.type_group)}}>
-                                        <th style="width:15%;">จำนวน % ที่มหาลัยจ่าย</th>
-                                        <th style="width:15%;">จำนวน % ที่พนักงานจ่าย</th>
+                                        <th style="width:15%;">{{localize('number')}} % {{localize('at')}}{{localize('university')}}{{localize('pay')}}</th>
+                                        <th style="width:15%;">{{localize('number')}} % {{localize('at')}}{{localize('employee')}}{{localize('work')}}{{localize('pay')}}</th>
                                     </template>
-                                    <th style="text-align:center;">จำนวนผู้มีสิทธิ</th>
-                                    <th style="text-align:center;">จำนวนผู้ใช้สิทธิ</th>
-                                    <th style="width:20%;text-align:center;">เครื่องมือ</th>
+                                    <th style="text-align:center;">{{localize('number')}}{{localize('people')}}{{localize('get')}}{{localize('right')}}</th>
+                                    <th style="text-align:center;">{{localize('number')}}{{localize('people')}}{{localize('use')}}{{localize('right')}}</th>
+                                    <th style="width:20%;text-align:center;">{{localize('tool')}}</th>
                                 </tr>
                             </thead>
                             <tbody class="table-body">
@@ -91,8 +91,8 @@
                                         <td style="text-align:center;">[[welfare.emp_budget]]</td>
                                         <td style="text-align:center;">[[welfare.emp_use]]</td>
                                         <td style="text-align:center;">
-                                            <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:create" title="รายละเอียด"></paper-icon-button>
-                                            <paper-icon-button data="[[welfare]]" on-tap="_print" icon="icons:print" title="ออกรายงาน"></paper-icon-button>
+                                            <paper-icon-button data="[[welfare]]" on-tap="_edit" icon="icons:create" title="{{localize('detail')}}"></paper-icon-button>
+                                            <paper-icon-button data="[[welfare]]" on-tap="_print" icon="icons:print" title="ออกราย{{localize('work')}}"></paper-icon-button>
                                             <template is="dom-if" if={{!list.status_approve}}>
                                                 <paper-icon-button data="[[welfare]]" on-tap="_delete" icon="delete" title="ลบ"></paper-icon-button>
                                             </template>
@@ -102,7 +102,7 @@
 
                                 <template is="dom-if" if={{_ObIsHave(list.welfare)}}>
                                     <tr>
-                                        <td colspan="10" style="text-align: center">ไม่มีข้อมูลเงื่อนไขสวัสดิการ</td>
+                                        <td colspan="10" style="text-align: center">{{localize('no')}}{{localize('get')}}{{localize('data')}}{{localize('condition')}}{{localize('welfare')}}</td>
                                     </tr>
                                 </template>
                             </tbody>
@@ -112,10 +112,10 @@
                 <div class="horizontal end-justified layout">
                     <template is="dom-if" if={{!_ObIsHave(list.welfare)}}>
                         <template is="dom-if" if={{!list.status_approve}}>
-                            <paper-button raised style="margin:20px;" class="gl-btn-success" on-tap="welfare_approve">เปิดการใช้งาน</paper-button>
+                            <paper-button raised style="margin:20px;" class="gl-btn-success" on-tap="welfare_approve">{{localize('open')}}{{localize('defecation')}}{{localize('use')}}{{localize('work')}}</paper-button>
                         </template>
                         <template is="dom-if" if={{list.status_approve}}>
-                            <paper-button raised style="margin:20px;" class="gl-btn-danger" on-tap="welfare_unapprove">ปิดการใช้งาน</paper-button>
+                            <paper-button raised style="margin:20px;" class="gl-btn-danger" on-tap="welfare_unapprove">{{localize('close')}}{{localize('defecation')}}{{localize('use')}}{{localize('work')}}</paper-button>
                         </template>
                     </template>
                 </div>
@@ -133,7 +133,10 @@
     <script>
         Polymer({
             is: 'welfare-manage',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             listeners: {
                 'back': 'back_page'
             },

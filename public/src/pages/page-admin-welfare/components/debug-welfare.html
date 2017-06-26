@@ -39,13 +39,13 @@
                 <gl-grid-row width="{{getWidth}}">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input disabled="{{isEnable}}" label="ชื่อสวัสดิการย่อย" value="{{data.welfare_name}}" placeholder="กรุณากรอกชื่อสวัสดิการ"></gl-form-input>
+                        <gl-form-input disabled="{{isEnable}}" label="{{localize('firstname')}}{{localize('welfare')}}ย่อย" value="{{data.welfare_name}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('firstname')}}{{localize('welfare')}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input disabled="{{isEnable}}" label="จำนวนเงิน" format-number="on" value="{{data.budget}}" placeholder="กรุณากรอกจำนวนเงิน"></gl-form-input>
+                        <gl-form-input disabled="{{isEnable}}" label="{{localize('number')}}{{localize('money')}}" format-number="on" value="{{data.budget}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('number')}}{{localize('money')}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
                 <template is="dom-repeat" items="{{data.condition}}">
@@ -53,7 +53,7 @@
                     <gl-grid-row>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,1]]"></gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <div class="label_condition">เงื่อนไข ([[count(index)]])</div>
+                            <div class="label_condition">{{localize('condition')}} ([[count(index)]])</div>
                         </gl-grid-col>
                         <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                             <gl-form-dropdown-menu disabled="{{isEnable}}" style="margin-top: 15px">
@@ -92,7 +92,7 @@
                             <template is="dom-if" if="{{getFiled(item.field,index)}}">
                                 <!--<div id="input-[[index]]" hidden>-->
                                 <gl-form-input disabled="{{isEnable}}" pattern="[0-9]*" value="{{item.value_showInput}}">
-                                    <div suffix>ปี</div>
+                                    <div suffix>{{localize('year')}}</div>
                                 </gl-form-input>
                                 <!--</div>-->
                             </template>
@@ -106,21 +106,21 @@
                 </template>
                 <div class="horizontal center-justified layout">
                     <div hidden$="{{isEnable}}">
-                        <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">เพิ่มเงื่อนไข</paper-button>
+                        <paper-button raised class="gl-btn-info" style="margin-top:15px;" on-tap="add_condition">{{localize('insert')}}{{localize('condition')}}</paper-button>
                     </div>
                 </div>
                 <div class="horizontal end-justified layout btn-bottom">
                     <div hidden$="{{isEnable}}">
-                        <paper-button raised class="gl-btn-danger" on-tap="cancel">ยกเลิก</paper-button>
-                        <paper-button raised class="gl-btn-success" on-tap="save">บันทึก</paper-button>
+                        <paper-button raised class="gl-btn-danger" on-tap="cancel">{{localize('cancel')}}</paper-button>
+                        <paper-button raised class="gl-btn-success" on-tap="save">{{localize('save')}}</paper-button>
                     </div>
                 </div>
                 <template is="dom-if" if="{{checkMenu(data)}}">
                     <div class="horizontal layout">
                         <div hidden="{{!isEnable}}" class="btn-bottom">
-                            <paper-button raised class="gl-btn-danger" on-tap="back">ย้อนกลับ</paper-button>
-                            <paper-button raised class="gl-btn-info" on-tap="list_users">ดูสมาชิก</paper-button>
-                            <paper-button raised class="gl-btn-warning" on-tap="print">Print</paper-button>
+                            <paper-button raised class="gl-btn-danger" on-tap="back">{{localize('redo')}}</paper-button>
+                            <paper-button raised class="gl-btn-info" on-tap="list_users">{{localize('watch')}}{{localize('employee')}}</paper-button>
+                            <paper-button raised class="gl-btn-warning" on-tap="print">{{localize('report')}}</paper-button>
                         </div>
                     </div>
                 </template>
@@ -128,7 +128,7 @@
 
             <template is="dom-if" if="{{tableStatus}}">
                 <div class="horizontal end-justified layout">
-                    <div style="margin:30px 30px 10px 0px;font-weight: bold;font-size: 20px;">จำนวนผู้ได้รับสิทธิ [[employees.count_employee]] คน</div>
+                    <div style="margin:30px 30px 10px 0px;font-weight: bold;font-size: 20px;">{{localize('number')}}{{localize('people')}}{{localize('get')}}{{localize('right')}} [[employees.count_employee]] {{localize('people')}}</div>
                 </div>
                 <div class="table-detail" style="margin-bottom:30px;">
                     <paper-material elevation="1">
@@ -136,10 +136,10 @@
                             <thead class="table-head">
                                 <tr>
                                     <th></th>
-                                    <th style="text-align:center">เลขบัตรประชาชน</th>
-                                    <th style="text-align:center">ชื่อ</th>
-                                    <th style="text-align:center">ตำแหน่ง</th>
-                                    <th style="text-align:center">แผนก</th>
+                                    <th style="text-align:center">{{localize('personal_id')}}</th>
+                                    <th style="text-align:center">{{localize('firstname')}}</th>
+                                    <th style="text-align:center">{{localize('position')}}</th>
+                                    <th style="text-align:center">{{localize('department')}}</th>
                                 </tr>
                             </thead>
                             <tbody class="table-body">
@@ -164,7 +164,10 @@
     <script>
         Polymer({
             is: 'welfare-form',
-            behaviors: [ReduxBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 condition: {
                     statePath: 'welfare.condition'
