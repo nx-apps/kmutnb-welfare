@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="welfare6" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="340c9a75-a796-41c2-8899-4bb2cc2f89cb">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="537"/>
+	<property name="ireport.y" value="274"/>
 	<parameter name="CURRENT_DATE" class="java.lang.String"/>
 	<parameter name="DATE_START" class="java.lang.String"/>
 	<parameter name="DATE_END" class="java.lang.String"/>
@@ -210,7 +210,7 @@
 	<columnHeader>
 		<band height="20">
 			<staticText>
-				<reportElement x="49" y="0" width="129" height="20" uuid="6b3058b9-f709-4de5-aa34-0e3c3b56fa8d"/>
+				<reportElement x="43" y="0" width="135" height="20" uuid="6b3058b9-f709-4de5-aa34-0e3c3b56fa8d"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -280,7 +280,7 @@
 				<text><![CDATA[คงเหลือ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="0" width="49" height="20" uuid="21601864-c3d1-4517-ae63-840b79dc0e1f"/>
+				<reportElement x="0" y="0" width="43" height="20" uuid="21601864-c3d1-4517-ae63-840b79dc0e1f"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -298,7 +298,7 @@
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="49" y="0" width="129" height="20" uuid="168fa809-6f9d-4826-b32d-9a5c675876a3"/>
+				<reportElement x="43" y="0" width="135" height="20" uuid="168fa809-6f9d-4826-b32d-9a5c675876a3"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -368,7 +368,7 @@
 				<textFieldExpression><![CDATA[$F{budget_balance}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="0" width="49" height="20" uuid="2176eb88-3f88-48c5-84bf-d7dcb6def9e8"/>
+				<reportElement x="0" y="0" width="43" height="20" uuid="2176eb88-3f88-48c5-84bf-d7dcb6def9e8"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.0"/>
@@ -478,7 +478,7 @@
 				<text><![CDATA[วันที่เบิก]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="49" y="256" width="129" height="20" uuid="c172912c-835a-495b-81af-69aeda855921"/>
+				<reportElement x="43" y="256" width="135" height="20" uuid="c172912c-835a-495b-81af-69aeda855921"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -519,7 +519,7 @@
 				<text><![CDATA[ไม่มีข้อมูล]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="256" width="49" height="20" uuid="6bfb9898-c430-4d44-b20f-adc8a2f10940"/>
+				<reportElement x="0" y="256" width="43" height="20" uuid="6bfb9898-c430-4d44-b20f-adc8a2f10940"/>
 				<box leftPadding="5" rightPadding="5">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>

@@ -96,7 +96,7 @@ exports.welfare1 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true, type_group: 'general','group_id': param.group_id })
+        .filter({ status: true, 'group_id': param.group_id })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
         .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: ['type_employee_id', 'faculty_id', 'department_id'] }).zip()
         .filter({
@@ -156,7 +156,7 @@ exports.welfare2 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true , type_group: 'general'})
+        .filter({ status: true })
         .filter({ 'group_id': param.group_id })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
         .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: ['type_employee_id', 'faculty_id', 'department_id'] }).zip()
@@ -220,7 +220,7 @@ exports.welfare3 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true , type_group: 'general' })
+        .filter({ status: true })
         .filter({ 'group_id': param.group_id })
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
         .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
@@ -277,7 +277,7 @@ exports.welfare4 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true, type_group: 'general', 'group_id': param.group_id })
+        .filter({ status: true, 'group_id': param.group_id })
         .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
         .filter({ 'faculty_id': param.faculty_id })
         .filter({ 'type_employee_id': param.type_employee_id })
@@ -334,7 +334,7 @@ exports.welfare5 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true, type_group: 'general', 'group_id': param.group_id })
+        .filter({ status: true, 'group_id': param.group_id })
         .eqJoin('emp_id', r.db('welfare').table('employee')).pluck({ left: ['budget_use', 'welfare_id'] }, { right: ['faculty_id', 'department_id', 'type_employee_id'] }).zip()
         .filter({
             'faculty_id': param.faculty_id,
@@ -388,7 +388,7 @@ exports.welfare6 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true, type_group: 'general', 'group_id': param.group_id })
+        .filter({ status: true, 'group_id': param.group_id })
         .eqJoin('welfare_id', r.db('welfare').table('welfare')).pluck("left", { right: 'budget' }).zip()
         .eqJoin('group_id', r.db('welfare').table('group_welfare')).pluck("left", { right: 'group_welfare_name' }).zip()
         .eqJoin('emp_id', r.db('welfare').table('employee')).without({ right: 'id' }).zip()
@@ -455,7 +455,7 @@ exports.welfare7 = function (req, res) {
         .merge(function (data_merge) {
             return {
                 history: r.db('welfare').table('history_welfare').coerceTo('array')
-                    .filter({ status: true, type_group: 'general', 'group_id': param.group_id })
+                    .filter({ status: true, 'group_id': param.group_id })
                     .eqJoin('emp_id', r.db('welfare').table('employee')).pluck("left", { right: 'id' }).zip()
                     .filter({
                         'faculty_id': param.faculty_id,
@@ -542,7 +542,7 @@ exports.welfare8 = function (req, res) {
                 { rightBound: "closed" }
             )
         })
-        .filter({ status: true, type_group: 'general', 'group_id': param.group_id })
+        .filter({ status: true, 'group_id': param.group_id })
         .group('emp_id').ungroup()
         .eqJoin('group', r.db('welfare').table('employee'))
         .filter({
