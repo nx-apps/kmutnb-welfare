@@ -1939,7 +1939,7 @@ exports.welfare8 = function (req, res) {
     //     })
     //     .pluck('date_use', 'welfare_name', 'budget_use', 'name')
     r.db('welfare').table('history_welfare')
-        .filter({ 'personal_id': param.personal_id })
+        .filter({ 'personal_id': param.personal_id,type_group: 'general' })
         .filter(function (f) {
             return f('date_approve').date().during(
                 r.ISO8601(date_start),

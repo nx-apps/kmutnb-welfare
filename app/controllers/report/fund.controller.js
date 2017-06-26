@@ -232,19 +232,26 @@ exports.sso = function (req, res) {
     //     param.month = Number(param.month)
     //     param.monthName = arr_month[param.month]
     // }
-    r.db('welfare').table('history_sso').getAll( param.personal_id , { index: 'personal_id' })
+    r.db('welfare').table('history_sso').getAll(param.personal_id, { index: 'personal_id' })
         .merge(function (name_merge) {
             return {
                 employee_name: name_merge('prefix_name').add(name_merge('first_name'))
-                    .add('  ', name_merge('last_name'))
+                    .add('  ', name_merge('last_name')),
+                expired_date: name_merge('expired_date').toISO8601().split('T')(0),
+                issued_date: name_merge('issued_date').toISO8601().split('T')(0)
             }
         })
+        // .merge(function (time_merge) {
+        //     return {
+        //         AA: time_merge('expired_date').toISO8601().split('T')(0)
+        //     }
+        // })
         .run()
         .then(function (result) {
             // res.json(result);
             param = keysToUpper(param);
             CURRENT_DATE = new Date().toISOString().slice(0, 10)
             param.CURRENT_DATE = CURRENT_DATE
-            res.ireport("sso.jasper", req.query.EXPORT || req.query.export || "pdf", result,param);
+            res.ireport("sso.jasper", req.query.EXPORT || req.query.export || "pdf", result, param);
         })
 }
