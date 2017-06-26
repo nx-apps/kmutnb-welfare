@@ -10,7 +10,8 @@
     </style>
     <template>
         <div class="xcontainer">
-            <div class="header-page container">จัดการข้อมูลประกันสังคม/กองทุน
+            <div class="header-page container">
+                {{localize('manage')}}{{localize('data')}}{{localize('social_security')}}/{{localize('fund')}}
                 <!--{{localize('insert')}}//////-->
             </div>
             <import-manage></import-manage>
@@ -20,7 +21,10 @@
     <script>
         Polymer({
             is: 'page-admin-import',
-            behaviors:[ReduxBehavior, nylonBehavior, ssoAction, fundAction]
+            behaviors:[ReduxBehavior, nylonBehavior, ssoAction, fundAction,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
         })
     </script>
 

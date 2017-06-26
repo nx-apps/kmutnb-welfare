@@ -132,10 +132,6 @@
         }
     </style>
     <template>
-        <!--<div class="content horizontal end-justified layout">
-            <paper-button raised on-tap="getWelfare" style="margin-top: 10px;">
-                <iron-icon icon="print" style="margin-right: 10px;"></iron-icon>{{localize('welfare')}}ที่ได้รับสิทธิ</paper-button>
-        </div>-->
 
         <main>
             <input id="tab1" type="radio" name="tabs" checked on-click="setVaadin">
@@ -274,7 +270,7 @@
                     <div class="history">{{localize('social_security')}}</div>
                     <history-sso data={{data}}></history-sso>
 
-                </div>>
+                </div>
             </section>
             <section id="content4">
                 <div class="content center-justified layout">
@@ -387,12 +383,6 @@
                 // //console.log(e.currentTarget.data);
                 window.open('/api/file/download/' + e.currentTarget.data.id)
             },
-            getWelfare() {
-                // /api/report/emp_welfare?id=000183c1-23db-4af2-937f-3e359400e33c
-                let year = this.year[this.year.length - 1]
-                //console.log(year);
-                window.open('/api/report/emp_welfare?id=' + this.data.id + '&year=' + year.year);
-            },
             detailwelfare(e) {
                 let item = e.model.item
                 let data = {
@@ -408,6 +398,12 @@
 
                 this.set('dataDialog', data)
                 this.$$('#welfare_budget').open()
+            },
+            getWelfareHave() {
+                // /api/report/emp_welfare?id=000183c1-23db-4af2-937f-3e359400e33c
+                let year = this.year[this.year.length - 1]
+                //console.log(year);
+                window.open('/api/report/emp_welfare?id=' + this.data.id + '&year=' + year.year);
             }
         });
     </script>

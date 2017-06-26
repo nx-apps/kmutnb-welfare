@@ -56,10 +56,10 @@
         <gl-form-panel set-padding="10px 20px 10px 20px">
             <main>
                 <input id="tab1" type="radio" name="tabs" checked>
-                <label for="tab1">ประกันสังคม</label>
+                <label for="tab1">{{localize('social_security')}}</label>
 
                 <input id="tab2" type="radio" name="tabs">
-                <label for="tab2">กองทุน</label>
+                <label for="tab2">{{localize('fund')}}</label>
 
                 <section id="content1">
                     <import-sso></import-sso>
@@ -74,7 +74,11 @@
 
     <script>
         Polymer({
-            is:'import-manage'
+            is:'import-manage',
+            behaviors: [nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
         })
     </script>
     

@@ -32,14 +32,14 @@
                     </template>
                 </paper-listbox>
             </gl-form-dropdown-menu>
-            <paper-button raised on-tap="_preview">อัพโหลด</paper-button>
+            <paper-button raised on-tap="_preview">{{localize('upload')}}</paper-button>
         </div>
 
         <template is="dom-if" if={{_obData(list)}}>
             <vaadin-grid id="material" items="{{list}}">
                 <vaadin-grid-column width="50px" flex-grow="0">
                     <template class="header">
-                        <div class="text-center">ลำดับ</div>
+                        <div class="text-center">{{localize('order')}}</div>
                     </template>
                     <template>
                         <div class="text-center">[[_Obindex(index)]]</div>
@@ -48,7 +48,7 @@
 
                 <vaadin-grid-column width="300px" flex-grow="0">
                     <template class="header">
-                        ชื่อ-นามสกุล
+                        {{localize('firstname')}}-{{localize('lastname')}}
                     </template>
                     <template>
                         {{item.prefix_name}}{{item.first_name}}{{item.last_name}}
@@ -57,7 +57,7 @@
 
                 <vaadin-grid-column width="150px" flex-grow="0">
                     <template class="header">
-                        รหัสบัตรประชาชน
+                        {{localize('personal_id')}}
                     </template>
                     <template>
                         {{item.personal_id}}
@@ -66,7 +66,7 @@
 
                 <vaadin-grid-column width="300px" flex-grow="0">
                     <template class="header">
-                        สถานพยาบาล
+                        {{localize('hospital')}}
                     </template>
                     <template>
                         {{item.hospital}}
@@ -75,7 +75,7 @@
 
                 <vaadin-grid-column width="150px" flex-grow="0">
                     <template class="header">
-                        <div class="text-center">วันที่ออกบัตร</div>
+                        <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('issue')}}{{localize('card')}}</div>
                     </template>
                     <template>
                         <div class="text-center">{{item.issued_date}}</div>
@@ -84,7 +84,7 @@
 
                 <vaadin-grid-column width="150px" flex-grow="0">
                     <template class="header">
-                        <div class="text-center">วันที่บัตรหมดอายุ</div>
+                        <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('card')}}{{localize('expired')}}</div>
                     </template>
                     <template>
                         <div class="text-center">{{item.expired_date}}</div>
@@ -93,39 +93,39 @@
             </vaadin-grid>
             <div class="horizontal end-justified layout" style="margin:20px 0px 10px 0px">
                 <!--<paper-button raised on-tap="_cancle">ยกเลิก</paper-button>-->
-                <paper-button raised class="gl-btn-success" on-tap="_insert">เพิ่มลงฐานข้อมูล</paper-button>
+                <paper-button raised class="gl-btn-success" on-tap="_insert">{{localize('insert')}}</paper-button>
             </div>
         </template>
 
         <template is="dom-if" if={{!_obData(list)}}>
             <vaadin-grid items="{{list_empty}}">
                 <vaadin-grid-column width="5%" flex-grow="0">
-                    <template class="header"><div class="text-center">ลำดับ</div></template>
+                    <template class="header"><div class="text-center">{{localize('order')}}</div></template>
                     <template></template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column width="25%" flex-grow="0">
-                    <template class="header">ชื่อ-นามสกุล</template>
+                    <template class="header">{{localize('firstname')}} - {{localize('lastname')}}</template>
                     <template></template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column width="20%" flex-grow="0">
-                    <template class="header">รหัสบัตรประชาชน</template>
+                    <template class="header">{{localize('personal_id')}}</template>
                     <template><div class="text-empty">[[item.name]]</div></template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column width="20%" flex-grow="0">
-                    <template class="header">สถานพยาบาล</template>
+                    <template class="header">{{localize('hospital')}}</template>
                     <template></template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column width="15%" flex-grow="0">
-                    <template class="header"><div class="text-center">วันที่ออกบัตร</div></template>
+                    <template class="header"><div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('issue')}}{{localize('card')}}</div></template>
                     <template><div class="text-center"></div></template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column width="15%" flex-grow="0">
-                    <template class="header"><div class="text-center">วันที่บัตรหมดอายุ</div></template>
+                    <template class="header"><div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('card')}}{{localize('expired')}}</div></template>
                     <template><div class="text-center"></div></template>
                 </vaadin-grid-column>
             </vaadin-grid>
@@ -135,7 +135,10 @@
     <script>
         Polymer({
             is: 'import-sso',
-            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             properties: {
                 select_file: {
                     statePath: 'sso.data',

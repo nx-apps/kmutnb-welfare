@@ -33,7 +33,7 @@
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">{{localize('day')}}{{localize('issue')}}{{localize('card')}}</div>
+                    <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('issue')}}{{localize('card')}}</div>
                 </template>
                 <template>
                     <div class="text-center">[[toCCDate(item.issued_date)]]</div>
@@ -42,7 +42,7 @@
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">{{localize('card')}}{{localize('expired')}}</div>
+                    <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('card')}}{{localize('expired')}}</div>
                 </template>
                 <template>
                     <div class="text-center">[[toCCDate(item.expired_date)]]</div>

@@ -105,10 +105,10 @@
 
             <vaadin-grid-column>
                 <template class="header">
-                    <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('make')}}{{localize('profit')}}</div>
+                    <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('calculate')}}</div>
                 </template>
                 <template>
-                    <div class="text-center">[[toCCDate(item.date_created)]]</div>
+                    <div class="text-center">[[item.fund_date]]</div>
                 </template>
             </vaadin-grid-column>
 
