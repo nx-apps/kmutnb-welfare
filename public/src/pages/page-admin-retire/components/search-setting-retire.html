@@ -13,10 +13,10 @@
         <gl-grid-row width="{{getWidth}}">
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
-                <vaadin-date-picker label="วันที่ใช้คำนวณ :" value="{{calDate}}"></vaadin-date-picker>
+                <vaadin-date-picker label="{{localize('day')}}{{localize('at')}}{{localize('search')}} :" value="{{calDate}}"></vaadin-date-picker>
             </gl-grid-col>
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
-                <paper-button raised on-tap="_search">ค้นหา</paper-button>
+                <paper-button raised on-tap="_search">{{localize('search')}}</paper-button>
             </gl-grid-col>
         </gl-grid-row>
         
@@ -30,7 +30,10 @@
                     notify:true
                 }
             },
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior,nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
             _search:function(){
                 this.dispatchAction('RETIER_SEARCH', this.calDate);
                 // window.open('./api/report/retire/' + this.calDate);

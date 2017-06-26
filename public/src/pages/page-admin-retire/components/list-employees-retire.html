@@ -55,7 +55,7 @@
 
             <vaadin-grid-column width="80px" flex-grow="0">
                 <template class="header ">
-                    <div class="text-center">ลำดับ</div>
+                    <div class="text-center">{{localize('order')}}</div>
                 </template>
                 <template>
                     <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[_Obindex(index)]]</div>
@@ -63,7 +63,7 @@
             </vaadin-grid-column>
             <vaadin-grid-column width="150px" flex-grow="0">
                 <template class="header">
-                    <div class="text-center">เลขประจำตัวประชาชน</div>
+                    <div class="text-center">{{localize('personal_id')}}</div>
                 </template>
                 <template>
                     <div class="text-center cursor" on-tap="chagePageDetail" data="[[item]]">[[item.personal_id]]
@@ -72,7 +72,7 @@
             </vaadin-grid-column>
             <vaadin-grid-column width="350px">
                 <template class="header">
-                    <div class="text-left">ชื่อ - นามสกุล
+                    <div class="text-left">{{localize('firstname')}} - {{localize('lastname')}}
                     </div>
                 </template>
                 <template>
@@ -83,7 +83,7 @@
 
             <vaadin-grid-column width="150px">
                 <template class="header">
-                    <div class="text-left">ประเภทพนักงาน
+                    <div class="text-left">{{localize('category')}}{{localize('employee')}}
                     </div>
                 </template>
                 <template>
@@ -94,7 +94,7 @@
             </vaadin-grid-column>
             <vaadin-grid-column width="60px">
                 <template class="header">
-                    <div class="text-center">อายุ (ปี)
+                    <div class="text-center">{{localize('people_age')}} ({{localize('year')}})
                     </div>
                 </template>
                 <template>
@@ -104,7 +104,7 @@
             </vaadin-grid-column>
             <vaadin-grid-column width="60px">
                 <template class="header">
-                    <div class="text-right" style="margin-right:10px;">อายุงาน (ปี)
+                    <div class="text-right" style="margin-right:10px;">{{localize('work_age')}} ({{localize('year')}})
                     </div>
                 </template>
                 <template>
@@ -116,14 +116,14 @@
 
         <div hidden="{{paperFab}}">
             <paper-fab id="_confirmRetier" icon="send" on-tap="_confirmRetier"></paper-fab>
-            <paper-tooltip position="left" class="custom" for="_confirmRetier">เกษียณ</paper-tooltip>
+            <paper-tooltip position="left" class="custom" for="_confirmRetier">{{localize('retire')}}</paper-tooltip>
 
         </div>
     </template>
     <script>
         Polymer({
             is: 'list-employees-retire',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior,nylonLocalizeBehavior],
             properties: {
                 list_employees: {
                     statePath: 'retier.list',
@@ -147,6 +147,9 @@
                     type: Boolean,
                     value: false
                 }
+            },
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
             },
             _Obindex: function (index) {
                 return index + 1
@@ -205,7 +208,7 @@
                 // console.log(list_active);
                 let RETIREMENT = list_active.find((item) => item.id === 'RETIREMENT')
                 // console.log(RETIREMENT);
-                // let type_employee = list_type_employee.find((item) => item.type_employee_name === 'ผู้เกษียณ')
+                // let type_employee = list_type_employee.find((item) => item.type_employee_name === '{{localize('retire')}}')
                 newArray.map((item) => {
                     item.active_id = RETIREMENT.id
                     item.active_name = RETIREMENT.active_name

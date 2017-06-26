@@ -17,11 +17,11 @@
     </style>
     <template>
         <div class="xcontainer">
-            <div class="header-page container">ค้นหาผู้เกษียณ
+            <div class="header-page container">{{localize('search')}}{{localize('people')}}{{localize('retire')}}
                 <!--{{localize('insert')}}//////-->
             </div>
             <paper-material elevation="1">
-                <div class="title">ค้นหาผู้เกษียณ</div>
+                <div class="title">{{localize('search')}}{{localize('people')}}{{localize('retire')}}</div>
                 <search-setting-retire cal-date="{{calDate}}"></search-setting-retire>
             </paper-material>
 
@@ -34,11 +34,15 @@
     <script>
         Polymer({
             is: 'page-admin-retire',
-            behaviors: [ReduxBehavior, nylonBehavior, retierAction,commonDataAction,userWelfareAction],
+            behaviors: [ReduxBehavior, nylonBehavior, retierAction,commonDataAction,userWelfareAction
+            ,nylonLocalizeBehavior],
             properties:{
                 calDate:{
                     notify:true
                 }
+            },
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
             },
             nylonPageActive: function () {
                 // this.TESTS();
