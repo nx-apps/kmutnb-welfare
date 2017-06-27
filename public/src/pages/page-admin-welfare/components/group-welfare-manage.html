@@ -62,7 +62,7 @@
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
                     <gl-form-dropdown-menu class="checkValidate" required disabled="{{isEnable}}" label="{{localize('format')}}{{localize('welfare')}}" placeholder="{{localize('are')}}{{localize('choose')}}{{localize('format')}}{{localize('welfare')}}" style="width:100%">
                         <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{data.type_group}}">
-                            <paper-item value="general">{{localize('general')}}</paper-item>
+                            <paper-item value="general">{{localize('welfare')}}</paper-item>
                             <paper-item value="fund">{{localize('fund')}}</paper-item>
                             <paper-item value="sso">{{localize('social_security')}}</paper-item>
                         </paper-listbox>
@@ -81,10 +81,10 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker class="checkValidate" required disabled="{{isEnable}}" label="{{localize('date')}}เริ่ม{{localize('use')}}{{localize('work')}} :" value="{{data.start_date}}"></vaadin-date-picker>
+                        <gl-form-input  type="date" class="checkValidate" required disabled="{{isEnable}}" label="{{localize('date')}}เริ่ม{{localize('use')}}{{localize('work')}} :" value="{{data.start_date}}"></vaadin-date-picker>
                     </gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker disabled="{{isEnable}}" label="{{localize('date')}}{{localize('finished')}}{{localize('use')}}{{localize('work')}} :" value="{{data.end_date}}"></vaadin-date-picker>
+                        <gl-form-input  type="date" disabled="{{isEnable}}" label="{{localize('date')}}{{localize('finished')}}{{localize('use')}}{{localize('work')}} :" value="{{data.end_date}}"></vaadin-date-picker>
                     </gl-grid-col>
                 </gl-grid-row>
                 
@@ -98,7 +98,7 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <vaadin-date-picker disabled="{{isEnable}}" label="{{localize('date')}}{{localize('use')}}{{localize('calculate')}} :" value="{{data.cal_date}}"></vaadin-date-picker>
+                        <gl-form-input  type="date" disabled="{{isEnable}}" label="{{localize('date')}}{{localize('use')}}{{localize('calculate')}} :" value="{{data.cal_date}}"></vaadin-date-picker>
                     </gl-grid-col>
                 </gl-grid-row>
 
@@ -121,7 +121,7 @@
                 <gl-grid-row style="margin-top: 10px">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <paper-checkbox disabled="{{isEnable_onetime}}" checked="{{data.onetime_use}}">{{localize('use')}}{{localize('around')}}{{localize('single')}}</paper-checkbox>
+                        <paper-checkbox disabled="{{isEnable_onetime}}" checked="{{data.onetime_use}}">{{localize('one_use')}}</paper-checkbox>
                     </gl-grid-col>
                     [[checkSelect(data.group_use)]] 
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">

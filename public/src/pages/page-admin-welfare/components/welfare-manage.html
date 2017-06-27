@@ -58,13 +58,13 @@
                                             <th style="width:15%;">{{localize('number')}}{{localize('money')}} ({{localize('bath')}})</th>
                                         </template>
                                         <template is="dom-if" if={{_obTypeGroupSso(list.type_group)}}>
-                                            <th style="width:15%;">{{localize('number')}}{{localize('money')}}{{localize('at')}}{{localize('university')}}{{localize('pay')}} ({{localize('bath')}})</th>
-                                            <th style="width:15%;">{{localize('number')}}{{localize('money')}}{{localize('at')}}{{localize('employee')}}{{localize('work')}}{{localize('pay')}} ({{localize('bath')}})</th>
+                                            <th style="width:15%;">{{localize('part_u')}}<br>({{localize('bath')}})</th>
+                                            <th style="width:15%;">{{localize('part_emp')}}<br>({{localize('bath')}})</th>
                                         </template>
                                     </template>
                                     <template is="dom-if" if={{_obTypeGroupFund(list.type_group)}}>
-                                        <th style="width:15%;">{{localize('number')}} % {{localize('at')}}{{localize('university')}}{{localize('pay')}}</th>
-                                        <th style="width:15%;">{{localize('number')}} % {{localize('at')}}{{localize('employee')}}{{localize('work')}}{{localize('pay')}}</th>
+                                        <th style="width:15%;">{{localize('part_u')}}<br>(%)</th>
+                                        <th style="width:15%;">{{localize('part_emp')}}<br>(%)</th>
                                     </template>
                                     <th style="text-align:center;">{{localize('number')}}{{localize('people')}}{{localize('get')}}{{localize('right')}}</th>
                                     <th style="text-align:center;">{{localize('number')}}{{localize('people')}}{{localize('use')}}{{localize('right')}}</th>

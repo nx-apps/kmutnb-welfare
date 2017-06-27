@@ -140,8 +140,8 @@
             <input id="tab2" type="radio" name="tabs" on-click="setVaadin">
             <label for="tab2">{{localize('history')}}การ{{localize('use')}}{{localize('welfare')}}</label>
             <!--<template is="dom-if" if={{data.sso_open}}>-->
-                <input id="tab3" type="radio" name="tabs">
-                <label for="tab3">{{localize('social_security')}}</label>
+            <input id="tab3" type="radio" name="tabs">
+            <label for="tab3">{{localize('social_security')}}</label>
             <!--</template>-->
             <template is="dom-if" if={{data.fund_open}}>
                 <input id="tab4" type="radio" name="tabs">
@@ -169,78 +169,80 @@
                             </vaadin-grid-column>
 
                             <vaadin-grid-column width="500px" flex-grow="0" resizable>
-                                <template class="header ">{{localize('welfare')}}{{localize('at')}}{{localize('can')}}{{localize('available')}}
+                                <template class="header ">{{localize('firstname')}}
                                 </template>
-                                <template>[[item.group_welfare_name]] [[item.welfare_name]] [[checkOnce(item.onetime_use)]] [[checkVoluntary(item.voluntary_status)]]
-                                    [[checkGroup(item.group_use)]] [[checkTypeGroup(item.type_group)]]
+                                <template>[[item.group_welfare_name]] [[item.welfare_name]]
+                                    <!--[[checkOnce(item.onetime_use)]]-->
+                                    <!--[[checkVoluntary(item.voluntary_status)]]-->
+                                    [[checkGroup(item.group_use)]]
+                                    <!--[[checkTypeGroup(item.type_group)]]-->
                                 </template>
                             </vaadin-grid-column>
 
-                            <vaadin-grid-column-group>
+                            <!--<vaadin-grid-column-group>
                                 <template class="header">
                                     <div class="text-center">{{localize('number')}}{{localize('money')}} </div>
+                                </template>-->
+
+                            <vaadin-grid-column width="calc(15% - 5px)">
+                                <template class="header">
+                                    <div class="text-right" style="margin-left:10px">{{localize('part_of')}}{{localize('university')}}</div>
                                 </template>
+                                <template>
+                                    <div class="text-right">[[formatNumber(item.budget)]]</div>
+                                </template>
+                            </vaadin-grid-column>
 
-                                <vaadin-grid-column width="calc(15% - 10px)">
-                                    <template class="header">
-                                        <div class="text-right">{{localize('part_of')}}{{localize('university')}}</div>
-                                    </template>
-                                    <template>
-                                        <div class="text-right">[[formatNumber(item.budget)]]</div>
-                                    </template>
-                                </vaadin-grid-column>
+                            <vaadin-grid-column width="calc(15% - 10px)">
+                                <template class="header">
+                                    <div class="text-right">{{localize('part_of')}}{{localize('employee')}}</div>
+                                </template>
+                                <template>
+                                    <div class="text-right">
+                                        [[checkIsBudgetEmp(item.budget_emp,item.budget_emp)]]
+                                        <!--[[formatNumber(item.budget_emp)]]-->
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
 
-                                <vaadin-grid-column width="calc(15% - 10px)">
-                                    <template class="header">
-                                        <div class="text-right">{{localize('part_of')}}{{localize('employee')}}</div>
-                                    </template>
-                                    <template>
-                                        <div class="text-right">
-                                            [[checkIsBudgetEmp(item.budget_emp,item.budget_emp)]]
-                                            <!--[[formatNumber(item.budget_emp)]]-->
-                                        </div>
-                                    </template>
-                                </vaadin-grid-column>
+                            <vaadin-grid-column width="calc(10% - 20px)">
+                                <template class="header">
+                                    <div class="text-right">{{localize('use')}}{{localize('right')}}</div>
+                                </template>
+                                <template>
+                                    <div class="text-right">[[formatNumber(item.budget_use)]]</div>
+                                </template>
+                            </vaadin-grid-column>
+                            <!--<vaadin-grid-column width="calc(10% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">{{localize('pay_person')}}</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">
+                                                        [[checkIsBudgetEmp(item.budget_emp,item.budget_emp_use)]]
+                                                    </div>
+                                                </template>
+                                            </vaadin-grid-column>-->
 
-                                <vaadin-grid-column width="calc(10% - 20px)">
-                                    <template class="header">
-                                        <div class="text-right">{{localize('use')}}{{localize('right')}}</div>
-                                    </template>
-                                    <template>
-                                        <div class="text-right">[[formatNumber(item.budget_use)]]</div>
-                                    </template>
-                                </vaadin-grid-column>
-                                <vaadin-grid-column width="calc(10% - 20px)">
-                                    <template class="header">
-                                        <div class="text-right">{{localize('pay_person')}}</div>
-                                    </template>
-                                    <template>
-                                        <div class="text-right">
-                                            [[checkIsBudgetEmp(item.budget_emp,item.budget_emp_use)]]
-                                            <!--[[formatNumber(item.budget_emp_use)]]-->
-                                        </div>
-                                    </template>
-                                </vaadin-grid-column>
-                                <vaadin-grid-column width="calc(20% - 20px)">
-                                    <template class="header">
-                                        <div class="text-right">{{localize('balance')}} ({{localize('university')}})</div>
-                                    </template>
-                                    <template>
-                                        <div class="text-right">[[formatNumber(item.budget_balance)]]</div>
-                                    </template>
-                                </vaadin-grid-column>
+                            <vaadin-grid-column width="calc(20% - 20px)">
+                                <template class="header">
+                                    <div class="text-right">{{localize('balance')}}</div>
+                                </template>
+                                <template>
+                                    <div class="text-right">[[formatNumber(item.budget_balance)]]</div>
+                                </template>
+                            </vaadin-grid-column>
 
-                                <vaadin-grid-column width="calc(15% - 20px)">
-                                    <template class="header">
-                                        <div class="text-right">{{localize('balance')}} ({{localize('employee')}})</div>
-                                    </template>
-                                    <template>
-                                        <div class="text-right">
-                                            [[checkIsBudgetEmp(item.budget_emp,item.budget_balance_emp)]]</div>
-                                        <!--[[formatNumber(item.budget_balance_emp)]]</div>-->
-                                    </template>
-                                </vaadin-grid-column>
-                            </vaadin-grid-column-group>
+                            <!--<vaadin-grid-column width="calc(15% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">{{localize('balance')}} ({{localize('employee')}})</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">
+                                                        [[checkIsBudgetEmp(item.budget_emp,item.budget_balance_emp)]]
+                                                </template>
+                                            </vaadin-grid-column>-->
+                            <!--</vaadin-grid-column-group>-->
 
                             <vaadin-grid-column width="150px" flex-grow="0">
                                 <template class="header ">

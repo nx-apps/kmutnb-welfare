@@ -233,11 +233,11 @@
             //     this.list = [];
             // },
             _uploadFile: function (e) {
-                console.log(e.currentTarget.files)
+                // console.log(e.currentTarget.files)
                 // console.log(e.currentTarget.value)
                 var file = e.currentTarget.files;
                 // console.log(URL.createObjectURL(file));
-                // this.dispatchAction('FUND_UPLOADFILE', file)
+                this.dispatchAction('FUND_UPLOADFILE', file)
             },
             _listSheets: function (data) {
                 var dropDis = this.$$('#dropdown');
