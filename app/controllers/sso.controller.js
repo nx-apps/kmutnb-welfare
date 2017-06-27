@@ -2,7 +2,8 @@ var fs = require('fs');
 var path = require('path');
 var multiparty = require('multiparty');
 var stream = require('stream');
-
+var arr_month = ['', 'ม.ค.', 'ก.พ.', 'มี.ค', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+var tz = 'T00:00:00+07:00';
 var readExcel = function (nameFile, sheet) {
     var XLSX = require('xlsx');
     var workbook = XLSX.readFile('../kmutnb-welfare/public/files/sso/' + nameFile);
@@ -23,9 +24,15 @@ var readExcel = function (nameFile, sheet) {
             data.first_name = file[sheetname]['D' + rowNo].v;
             data.last_name = file[sheetname]['E' + rowNo].v;
             data.hospital = file[sheetname]['F' + rowNo].v;
-            data.issued_date = new Date(file[sheetname]['G' + rowNo].w);
-            data.expired_date = new Date(file[sheetname]['H' + rowNo].w);
-            data.faculty_name = faculty_name;
+            var dates = file[sheetname]['G' + rowNo].w;
+            dates = dates.split(' - ');
+            for (var i = 0; i < dates.length; i++) {
+                var date = dates[i].split(" ");
+                dates[i] = (parseInt(date[2]) - 543) + '-' + arr_month.indexOf(date[1]) + '-' + parseInt(date[0]) + tz;
+            }
+            data.issued_date = r.ISO8601(dates[0]);//new Date(file[sheetname]['G' + rowNo].w);
+            data.expired_date = r.ISO8601(dates[1]);//new Date(file[sheetname]['H' + rowNo].w);
+            // data.faculty_name = faculty_name;
             // data.date_created = r.now().inTimezone('+07'),
             // data.date_updated = r.now().inTimezone('+07'),
 
@@ -233,7 +240,7 @@ exports.downloadsso = function (req, res) {
         rowNo += 1;
     }
     res.json(datas)
-  
+
     // res.json(datas[0]);
     // r.expr(datas)
     //     .run()
