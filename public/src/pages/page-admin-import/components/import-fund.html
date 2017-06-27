@@ -21,7 +21,7 @@
     <template>
 
         <div class="input-file">
-            <input type="file" id="myFile" style="width:300px" on-change="_uploadFile">
+            <input type="file" id="myFile" style="width:300px" value=""  on-change="_uploadFile">
             <gl-form-dropdown-menu class="checkValidate" required label="ชื่อชีท" placeholder="กรุณาเลือกชื่อชีท" id="dropdown">
                 <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{selectSheet}}">
                     <template is="dom-repeat" items="{{list_sheet}}">
@@ -232,9 +232,11 @@
             //     this.list = [];
             // },
             _uploadFile: function (e) {
-                // console.log(e.currentTarget.files)
+                console.log(e.currentTarget.files)
+                // console.log(e.currentTarget.value)
                 var file = e.currentTarget.files;
-                this.dispatchAction('FUND_UPLOADFILE', file)
+                // console.log(URL.createObjectURL(file));
+                // this.dispatchAction('FUND_UPLOADFILE', file)
             },
             _listSheets: function (data) {
                 var dropDis = this.$$('#dropdown');
