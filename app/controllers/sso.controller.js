@@ -39,7 +39,7 @@ var readExcel = function (nameFile, sheet) {
             datas.push(data);
             // res.json(data);
         } else {
-            faculty_name = file[sheetname]['C' + rowNo].v;
+            // faculty_name = file[sheetname]['C' + rowNo].v;
         }
         rowNo += 1;
     }
