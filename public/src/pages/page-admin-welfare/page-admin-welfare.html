@@ -274,14 +274,16 @@
                 this.set('title', this.title = "เพิ่มสวัสดิการ");
             },
             _edit: function (e) {
-                var id = e.currentTarget.data.id;
-                if(id !== undefined){
-                    this.SELECT_DATA(id);
-                    this.LIST_WELFARE_ID(id);
-                    this.$$('panel-right').open();
-                }else{
-                    this.SELECT_DATA(e.detail);
-                    this.LIST_WELFARE_ID(e.detail);
+                var data = e.currentTarget.data;
+                if(typeof data !== 'undefined'){
+                    if(typeof data.id !== 'undefined'){
+                        this.SELECT_DATA(data.id);
+                        this.LIST_WELFARE_ID(data.id);
+                        this.$$('panel-right').open();
+                    }else{
+                        this.SELECT_DATA(e.detail);
+                        this.LIST_WELFARE_ID(e.detail);
+                    }
                 }
                 this.pages = 0;
                 this.active = true;
