@@ -203,6 +203,50 @@ exports.genSso = function (req, res) {
     // issued_date
     // expired_date
 }
+exports.downloadsso = function (req, res) {
+    //Read file here.
+    var XLSX = require('xlsx');
+    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/genfile.xlsx');
+
+    var file = workbook.Sheets;
+    // var sheets = [];
+    // for(var sheet in file){
+    //     sheets.push(sheet);
+    // }
+    // res.json(file);
+    var sheetname = "sso";
+    var rowNo = 2;
+    var datas = [];
+    var faculty_name = "";
+    while (typeof file[sheetname]['A' + rowNo] !== "undefined") {
+        var data = {
+            personal_id: file[sheetname]['A' + rowNo].v,
+            prefix_name: file[sheetname]['B' + rowNo].v,
+            firstname: file[sheetname]['C' + rowNo].v,
+            lastname: file[sheetname]['D' + rowNo].v,
+            faculty_name: file[sheetname]['E' + rowNo].v,
+            hospital: file[sheetname]['F' + rowNo].v,
+            issued_date: file[sheetname]['G' + rowNo].v,
+            expired_date: file[sheetname]['H' + rowNo].v
+        };
+        datas.push(data);
+        rowNo += 1;
+    }
+    res.json(datas)
+  
+    // res.json(datas[0]);
+    // r.expr(datas)
+    //     .run()
+    //     .then(function (result) {
+    //         res.json(result)
+    //     })
+    // r.db('welfare').table('history_sso').insert(datas)
+    // .run()
+    // .then(function (result) {
+    //     res.json(result);
+    // })
+
+}
 var checkLogic = function (select, row) {
     return r.branch(
         select('logic').eq('=='),
