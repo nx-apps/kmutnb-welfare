@@ -15,7 +15,7 @@ var readExcel = function (nameFile, sheet) {
     var faculty_name = "";
     while (typeof file[sheetname]['B' + rowNo] !== "undefined" || typeof file[sheetname]['C' + rowNo] !== "undefined") {
 
-        if (typeof file[sheetname]['B' + rowNo] !== "undefined") {
+        if (typeof file[sheetname]['B' + rowNo] !== "undefined" && !isNaN(file[sheetname]['B' + rowNo].v.replace(/-/g, ""))) {
             var data = {};
             data.personal_id = file[sheetname]['B' + rowNo].v.replace(/-/g, "").toString();
             var pid = ''
