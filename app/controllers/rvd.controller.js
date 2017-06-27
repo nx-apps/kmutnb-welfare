@@ -72,13 +72,13 @@ exports.downloadfund = function (req, res) {
             fund_month: file[sheetname]['F' + rowNo].v,
             fund_year: file[sheetname]['G' + rowNo].v,
             fund_date: file[sheetname]['H' + rowNo].v,
-            policy_code: file[sheetname]['H' + rowNo].v,
-            policy_name: file[sheetname]['H' + rowNo].v,
-            emp_con: file[sheetname]['H' + rowNo].v,
-            emp_ear: file[sheetname]['H' + rowNo].v,
-            com_con: file[sheetname]['H' + rowNo].v,
-            com_ear: file[sheetname]['H' + rowNo].v,
-            total: file[sheetname]['H' + rowNo].v
+            policy_code: file[sheetname]['I' + rowNo].v,
+            policy_name: file[sheetname]['J' + rowNo].v,
+            emp_con: file[sheetname]['K' + rowNo].v,
+            emp_ear: file[sheetname]['L' + rowNo].v,
+            com_con: file[sheetname]['M' + rowNo].v,
+            com_ear: file[sheetname]['N' + rowNo].v,
+            total: file[sheetname]['O' + rowNo].v
         };
         datas.push(data);
         rowNo += 1;
