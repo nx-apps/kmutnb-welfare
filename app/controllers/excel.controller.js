@@ -429,7 +429,7 @@ exports.write = function (req, res) {
             // }
             // /* create file 'in memory' */
             var ws = XLSX.utils.json_to_sheet(data);
-            res.json(ws);
+            // res.json(ws);
             var ws_name = 'test';
             var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
             var filename = "employee.xlsx";
