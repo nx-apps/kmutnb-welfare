@@ -148,7 +148,8 @@
                     statePath: 'sso.list'
                 },
                 list_sheet: {
-                    statePath: 'sso.list_sheet'
+                    statePath: 'sso.list_sheet',
+                    observer: '_selectSheet'
                 },
                 list_empty: {
                     type:Array,
@@ -227,6 +228,9 @@
                 }else{
                     return false
                 }
+            },
+            _selectSheet:function(e){
+                this.set('selectSheet',e[0]);
             }
         })
     </script>

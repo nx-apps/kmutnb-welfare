@@ -58,8 +58,11 @@ export function ssoAction(store) {
                         if (result.data[i]) {
                             // console.log(result.data[i]);
                             var data = result.data[i];
-                            data.issued_date = data.issued_date.split('T')[0];
-                            data.expired_date = data.expired_date.split('T')[0];
+                            if(data.issued_date === null){
+                                console.log(data);
+                            }
+                            // data.issued_date = data.issued_date.split('T')[0];
+                            // data.expired_date = data.expired_date.split('T')[0];
                         }
                     }
                     this.fire('toast', {

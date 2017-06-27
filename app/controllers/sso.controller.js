@@ -3,6 +3,10 @@ var path = require('path');
 var multiparty = require('multiparty');
 var stream = require('stream');
 
+var tz = 'T00:00:00+07:00';
+function checkMonth(month) {
+    return
+}
 var readExcel = function (nameFile, sheet) {
     var XLSX = require('xlsx');
     var workbook = XLSX.readFile('../kmutnb-welfare/public/files/sso/' + nameFile);
@@ -12,9 +16,10 @@ var readExcel = function (nameFile, sheet) {
     var rowNo = 4;
     var datas = [];
     var faculty_name = "";
+    var arr_month = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
     while (typeof file[sheetname]['B' + rowNo] !== "undefined" || typeof file[sheetname]['C' + rowNo] !== "undefined") {
 
-        if (typeof file[sheetname]['B' + rowNo] !== "undefined") {
+        if (typeof file[sheetname]['B' + rowNo] !== "undefined" && !isNaN(file[sheetname]['B' + rowNo].v.replace(/-/g, ""))) {
             var data = {};
             data.personal_id = file[sheetname]['B' + rowNo].v.replace(/-/g, "").toString();
             var pid = ''
@@ -23,19 +28,35 @@ var readExcel = function (nameFile, sheet) {
             data.first_name = file[sheetname]['D' + rowNo].v;
             data.last_name = file[sheetname]['E' + rowNo].v;
             data.hospital = file[sheetname]['F' + rowNo].v;
-            data.issued_date = new Date(file[sheetname]['G' + rowNo].w);
-            data.expired_date = new Date(file[sheetname]['H' + rowNo].w);
-            data.faculty_name = faculty_name;
+            var dates = file[sheetname]['G' + rowNo].w;
+            dates = dates.split(' - ');
+            // console.log(dates);
+            for (var i = 0; i < dates.length; i++) {
+                var date = dates[i].split(" ");
+                // console.log(date[1]);
+                var month = arr_month.indexOf(date[1]);
+                // console.log(month);
+
+                var day = parseInt(date[0]);
+                dates[i] = (parseInt(date[2]) - 543) + '-'
+                    + (month < 10 ? '0' + month : month) + '-'
+                    + (day < 10 ? '0' + day : day) + tz;
+            }
+
+            data.issued_date = new Date(dates[0]);
+            data.expired_date = new Date(dates[1]);
+            // data.faculty_name = faculty_name;
             // data.date_created = r.now().inTimezone('+07'),
             // data.date_updated = r.now().inTimezone('+07'),
 
             datas.push(data);
             // res.json(data);
         } else {
-            faculty_name = file[sheetname]['C' + rowNo].v;
+            // faculty_name = file[sheetname]['C' + rowNo].v;
         }
         rowNo += 1;
     }
+    // console.log(new Date('2017-06-27T00:00:00+07:00'));
     return datas
 }
 
@@ -202,6 +223,50 @@ exports.genSso = function (req, res) {
     // hospital
     // issued_date
     // expired_date
+}
+exports.downloadsso = function (req, res) {
+    //Read file here.
+    var XLSX = require('xlsx');
+    var workbook = XLSX.readFile('../kmutnb-welfare/app/files/genfile.xlsx');
+
+    var file = workbook.Sheets;
+    // var sheets = [];
+    // for(var sheet in file){
+    //     sheets.push(sheet);
+    // }
+    // res.json(file);
+    var sheetname = "sso";
+    var rowNo = 2;
+    var datas = [];
+    var faculty_name = "";
+    while (typeof file[sheetname]['A' + rowNo] !== "undefined") {
+        var data = {
+            personal_id: file[sheetname]['A' + rowNo].v,
+            prefix_name: file[sheetname]['B' + rowNo].v,
+            firstname: file[sheetname]['C' + rowNo].v,
+            lastname: file[sheetname]['D' + rowNo].v,
+            faculty_name: file[sheetname]['E' + rowNo].v,
+            hospital: file[sheetname]['F' + rowNo].v,
+            issued_date: file[sheetname]['G' + rowNo].v,
+            expired_date: file[sheetname]['H' + rowNo].v
+        };
+        datas.push(data);
+        rowNo += 1;
+    }
+    res.json(datas)
+
+    // res.json(datas[0]);
+    // r.expr(datas)
+    //     .run()
+    //     .then(function (result) {
+    //         res.json(result)
+    //     })
+    // r.db('welfare').table('history_sso').insert(datas)
+    // .run()
+    // .then(function (result) {
+    //     res.json(result);
+    // })
+
 }
 var checkLogic = function (select, row) {
     return r.branch(
