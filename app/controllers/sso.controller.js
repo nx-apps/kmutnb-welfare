@@ -153,26 +153,24 @@ exports.getSheets = function (req, res) {
 exports.genSso = function (req, res) {
     var r = req.r
 
-    r.db('welfare').table('employee')//.limit(20)
+    r.db('welfare').table('employee')
         .pluck('personal_id', 'prefix_name', 'firstname', 'lastname', 'faculty_name')
 
-        .group('faculty_name').ungroup()
-        .merge(function (m) {
+        // .group('faculty_name').ungroup()
+        .orderBy('faculty_name')
+        .map(function (ma) {
             return {
-                reduction: m('reduction').map(function (ma) {
-                    return {
-                        SSO01รหัสบัตรประชาชน: ma('personal_id'),
-                        SSO02คำนำหน้า: ma('prefix_name'),
-                        SSO03ชื่อ: ma('firstname'),
-                        SSO04นามสกุล: ma('lastname'),
-                        SSO05คณะ: ma('faculty_name'),
-                        SSO06โรงพยาบาล: '',
-                        SSO07วันที่ออกบัตร: '',
-                        SSO08วันหมดอายุ: ''
-                    }
-                })
+                SSO01รหัสบัตรประชาชน: ma('personal_id'),
+                SSO02คำนำหน้า: ma('prefix_name'),
+                SSO03ชื่อ: ma('firstname'),
+                SSO04นามสกุล: ma('lastname'),
+                SSO05คณะ: ma('faculty_name'),
+                SSO06โรงพยาบาล: '',
+                SSO07วันที่ออกบัตร: '',
+                SSO08วันหมดอายุ: ''
             }
         })
+
         .run().then(function (data) {
             // res.json(data);
             const XLSX = require('xlsx');
@@ -183,11 +181,11 @@ exports.genSso = function (req, res) {
             // //     Author: "John Doe"
             // // };
             // /*create sheet data & add to workbook*/
-            for (var prop in data) {
-                var ws = XLSX.utils.json_to_sheet(data[prop]['reduction']);
-                var ws_name = data[prop]['group'].substr(0, 30);
-                XLSX.utils.book_append_sheet(wb, ws, ws_name);
-            }
+            // for (var prop in data) {
+            var ws = XLSX.utils.json_to_sheet(data);
+            var ws_name = 'sso'
+            XLSX.utils.book_append_sheet(wb, ws, ws_name);
+            // }
             // /* create file 'in memory' */
             var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
             var filename = "genfile.xlsx";
