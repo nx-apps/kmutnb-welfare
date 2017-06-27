@@ -16,7 +16,7 @@ var readExcel = function (nameFile, sheet) {
     var rowNo = 4;
     var datas = [];
     var faculty_name = "";
-    var arr_month = ['', 'ม.ค.', 'ก.พ.', 'มี.ค', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    var arr_month = ['', 'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
     while (typeof file[sheetname]['B' + rowNo] !== "undefined" || typeof file[sheetname]['C' + rowNo] !== "undefined") {
 
         if (typeof file[sheetname]['B' + rowNo] !== "undefined" && !isNaN(file[sheetname]['B' + rowNo].v.replace(/-/g, ""))) {
@@ -43,8 +43,8 @@ var readExcel = function (nameFile, sheet) {
                     + (day < 10 ? '0' + day : day) + tz;
             }
 
-            data.issued_date = r.ISO8601(dates[0]);//new Date(file[sheetname]['G' + rowNo].w);
-            data.expired_date = r.ISO8601(dates[1]);//new Date(file[sheetname]['H' + rowNo].w);
+            data.issued_date = new Date(dates[0]);
+            data.expired_date = new Date(dates[1]);
             // data.faculty_name = faculty_name;
             // data.date_created = r.now().inTimezone('+07'),
             // data.date_updated = r.now().inTimezone('+07'),
@@ -56,6 +56,7 @@ var readExcel = function (nameFile, sheet) {
         }
         rowNo += 1;
     }
+    // console.log(new Date('2017-06-27T00:00:00+07:00'));
     return datas
 }
 
