@@ -2,8 +2,11 @@ var fs = require('fs');
 var path = require('path');
 var multiparty = require('multiparty');
 var stream = require('stream');
-var arr_month = ['', 'ม.ค.', 'ก.พ.', 'มี.ค', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+
 var tz = 'T00:00:00+07:00';
+function checkMonth(month) {
+    return
+}
 var readExcel = function (nameFile, sheet) {
     var XLSX = require('xlsx');
     var workbook = XLSX.readFile('../kmutnb-welfare/public/files/sso/' + nameFile);
@@ -13,6 +16,7 @@ var readExcel = function (nameFile, sheet) {
     var rowNo = 4;
     var datas = [];
     var faculty_name = "";
+    var arr_month = ['', 'ม.ค.', 'ก.พ.', 'มี.ค', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
     while (typeof file[sheetname]['B' + rowNo] !== "undefined" || typeof file[sheetname]['C' + rowNo] !== "undefined") {
 
         if (typeof file[sheetname]['B' + rowNo] !== "undefined" && !isNaN(file[sheetname]['B' + rowNo].v.replace(/-/g, ""))) {
@@ -26,12 +30,19 @@ var readExcel = function (nameFile, sheet) {
             data.hospital = file[sheetname]['F' + rowNo].v;
             var dates = file[sheetname]['G' + rowNo].w;
             dates = dates.split(' - ');
+            // console.log(dates);
             for (var i = 0; i < dates.length; i++) {
                 var date = dates[i].split(" ");
+                // console.log(date[1]);
                 var month = arr_month.indexOf(date[1]);
+                // console.log(month);
+
                 var day = parseInt(date[0]);
-                dates[i] = (parseInt(date[2]) - 543) + '-' + (month < 10 ? '0' + month : month) + '-' + (day < 10 ? '0' + day : day) + tz;
+                dates[i] = (parseInt(date[2]) - 543) + '-'
+                    + (month < 10 ? '0' + month : month) + '-'
+                    + (day < 10 ? '0' + day : day) + tz;
             }
+
             data.issued_date = r.ISO8601(dates[0]);//new Date(file[sheetname]['G' + rowNo].w);
             data.expired_date = r.ISO8601(dates[1]);//new Date(file[sheetname]['H' + rowNo].w);
             // data.faculty_name = faculty_name;
