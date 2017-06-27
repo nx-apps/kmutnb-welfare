@@ -28,7 +28,9 @@ var readExcel = function (nameFile, sheet) {
             dates = dates.split(' - ');
             for (var i = 0; i < dates.length; i++) {
                 var date = dates[i].split(" ");
-                dates[i] = (parseInt(date[2]) - 543) + '-' + arr_month.indexOf(date[1]) + '-' + parseInt(date[0]) + tz;
+                var month = arr_month.indexOf(date[1]);
+                var day = parseInt(date[0]);
+                dates[i] = (parseInt(date[2]) - 543) + '-' + (month < 10 ? '0' + month : month) + '-' + (day < 10 ? '0' + day : day) + tz;
             }
             data.issued_date = r.ISO8601(dates[0]);//new Date(file[sheetname]['G' + rowNo].w);
             data.expired_date = r.ISO8601(dates[1]);//new Date(file[sheetname]['H' + rowNo].w);
