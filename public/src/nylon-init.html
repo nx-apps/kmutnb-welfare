@@ -126,13 +126,13 @@
 			behaviors: [commonSystemAction],
 			ready: function () {
 				this.loader = true;
-				this.importHref(this.resolveUrl('/src/import.html'), (e) => {
+				// this.importHref(this.resolveUrl('/src/import.html'), (e) => {
 					this.rendered = true;
 					this.loader = false;
-				}, (e) => {
-					console.log('error')
-					this.loader = false;
-				});
+				// }, (e) => {
+				// 	console.log('error')
+				// 	this.loader = false;
+				// });
 
 
 				// oauth.Login(function (user) {
