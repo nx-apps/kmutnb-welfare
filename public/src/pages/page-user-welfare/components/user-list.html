@@ -43,7 +43,7 @@
                         </tr>
                     </thead>
                     <tbody class="table-body">
-                        <template is="dom-repeat" items=[[lists]]>
+                        <template is="dom-repeat" items=[[lists]] initial-count="20" >
                             <tr data=[[item]] on-tap="userClick">
                                 <td>[[_Obindex(index)]]</td>
                                 <td>[[item.emp_no]]</td>
