@@ -1,4 +1,3 @@
-
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../../bower_components/gl-styles/gl-size.html">
 <link rel="import" href="../../../bower_components/gl-styles/gl-styles.html">
@@ -10,6 +9,20 @@
             table.gl-table-default>thead.table-head>tr>th,
             table.gl-table-default>tbody.table-body>tr>td {
                 text-align: center;
+                padding: 10px 15px;
+                line-height: 20px;
+            }
+
+            paper-icon-button {
+                width: 35px;
+                height: 35px;
+                margin: 5px 5px 5px 5px;
+            }
+
+            paper-icon-button:hover {
+                background-color: var(--paper-grey-200);
+                border-radius: 5px;
+                box-shadow: inset 0 0 3px 3px rgba(0, 0, 0, .2);
             }
 
             table.gl-table-default {
