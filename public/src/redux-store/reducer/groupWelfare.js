@@ -39,6 +39,7 @@ export function groupWelfareAction(store) {
         LIST_WELFARE: function (year) {
             // console.log(year);
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/group/welfare/year/' + year)
                 .then((result) => {
                     // console.log(result.data);
@@ -54,6 +55,7 @@ export function groupWelfareAction(store) {
         },
         LIST_WELFARE_ID: function (data) {
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/group/welfare/' + data)
                 .then((result) => {
                     // console.log(result);
@@ -86,6 +88,7 @@ export function groupWelfareAction(store) {
             }
             // console.log(newData);
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.post(`./group/welfare/insert`, newData)
                 .then((result) => {
                     // console.log(result);
@@ -109,6 +112,7 @@ export function groupWelfareAction(store) {
         DELETE_WELFARE: function (data) {
             // console.log(data);
             var year = new Date().getFullYear();
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.delete(`./group/welfare/delete/id/` + data.id)
                 .then((result) => {
                     // console.log(result);
@@ -145,6 +149,7 @@ export function groupWelfareAction(store) {
             }
             // console.log(newData);
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.put(`./group/welfare/update`, newData)
             .then((result) => {
                 this.fire('toast', {
@@ -162,6 +167,7 @@ export function groupWelfareAction(store) {
             })
         },
         UPDATE_WELFARE: function(id){
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/group/welfare/' + id)
                 .then((result) => {
                     // console.log(result.data);
@@ -240,6 +246,7 @@ export function groupWelfareAction(store) {
         },
         SELECT_DATA: function (val) {
             // console.log(val);
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/group/welfare/' + val)
                 .then(function (result) {
                     // console.log(result.data);
@@ -250,6 +257,7 @@ export function groupWelfareAction(store) {
                 })
         },
         GET_YEAR() {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/group/welfare/year')
                 .then(function (result) {
                     store.dispatch({ type: 'GET_YEAR', payload: result.data })
@@ -262,6 +270,7 @@ export function groupWelfareAction(store) {
             var yearNow = new Date().getFullYear();
             // console.log(data);
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.put(`./group/welfare/approve`, data)
                 .then((result) => {
                     this.fire('toast', {
@@ -286,6 +295,7 @@ export function groupWelfareAction(store) {
             store.dispatch({ type: 'CLEAR_WELFARE_ID', payload: [] })
         },
         CLONE_DATA:function (year){
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/group/welfare/year/' + year)
             .then((result) => {
                 // console.log(result.data);
@@ -301,6 +311,7 @@ export function groupWelfareAction(store) {
         INSERT_CLONE_DATA:function(data){
             // console.log(data);
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.post(`./group/welfare/clone`, data)
                 .then((result) => {
                     // console.log(result);

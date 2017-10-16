@@ -64,6 +64,7 @@ export function conditionReadWelfareAction(store){
                 store.dispatch({type:'CONDITIONREADWELFARE_INSERT_VIEW',payload:data})
             },
             CONDITIONREADWELFARE_LIST(){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get('/conditions/list')
                 .then(res=>{
                     store.dispatch({type:'CONDITIONREADWELFARE_LIST',payload:res.data})
@@ -74,6 +75,7 @@ export function conditionReadWelfareAction(store){
             },
             CONDITIONREADWELFARE_TABLE_LIST(){
                 // console.log(1);
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get('/conditions/Table/')
                 .then(res=>{
                     store.dispatch({type:'CONDITIONREADWELFARE_TABLE_LIST',payload:res.data})
@@ -83,6 +85,7 @@ export function conditionReadWelfareAction(store){
                 })
             },
             CONDITIONREADWELFARE_FIEID_LIST(){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get('/conditions/Field/')
                 .then(res=>{
                     store.dispatch({type:'CONDITIONREADWELFARE_FIEID_LIST',payload:res.data})
@@ -95,6 +98,7 @@ export function conditionReadWelfareAction(store){
                 // console.log(data);
                 clearData(data,(newData)=>{
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`./conditions/insert`,newData)
                     .then(res=>{
                         this.CONDITIONREADWELFARE_LIST();
@@ -123,6 +127,7 @@ export function conditionReadWelfareAction(store){
                             clearData(data,(newData)=>{
                                 this.fire('toast',{status:'load'});
                                 newData.id = data.id
+                                axios.defaults.headers.common['Authorization'] = localStorage.token
                                 axios.put(`/conditions/update`,newData)
                                 .then(res=>{
                                     this.CONDITIONREADWELFARE_LIST();
@@ -147,6 +152,7 @@ export function conditionReadWelfareAction(store){
                     text:'ต้องการลบข้อมูลใช่หรือไม่ ?',
                     confirmed:(result)=>{
                         if(result == true){
+                            axios.defaults.headers.common['Authorization'] = localStorage.token
                             axios.delete(`./conditions/delete/id/${id}`)
                             .then(res=>{
                                 this.CONDITIONREADWELFARE_LIST();

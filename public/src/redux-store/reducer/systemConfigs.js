@@ -20,6 +20,7 @@ export function systemConfigsAction(store) {
         commonAction(), {
             GET_SYSTEM_CONFIG: function () {
                 // var user = store.getState().auth.user;
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get('/system/config')
                     .then(res => {
                         // console.log(res.data);
@@ -34,6 +35,7 @@ export function systemConfigsAction(store) {
                 this.fire('toast', { status: 'load' });
                 
                             this.fire('toast', { status: 'load' })
+                            axios.defaults.headers.common['Authorization'] = localStorage.token
                             axios.post('/system/config/update', data)
                                 .then(res => {
                                     this.fire('toast', {

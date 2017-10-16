@@ -32,6 +32,7 @@ export function fundAction(store) {
                 },
                 headers: { 'ref-path': 'fund.file' }
             };
+            // axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.post('./fund/upload', data, config)
                 .then((response) => {
                     // console.log(response.data);
@@ -51,6 +52,7 @@ export function fundAction(store) {
         },
         FUND_PREVIEW_DATA: function (data) {
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('./fund/getfile/name/' + data.name + '/sheet/' + data.sheet)
                 .then((result) => {
                     this.fire('toast', {
@@ -65,6 +67,7 @@ export function fundAction(store) {
         },
         FUND_INSERT: function (data) {
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.post('./fund/insert', data)
                 .then((response) => {
                     this.fire('toast', { 
@@ -78,6 +81,7 @@ export function fundAction(store) {
                 })
         },
         FUND_GET_SHEET: function (nameFile) {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('./fund/sheet/' + nameFile)
                 .then((result) => {
                     store.dispatch({ type: 'FUND_GET_SHEET', payload: result.data })

@@ -120,6 +120,7 @@ export function userWelfareAction(store) {
     return [commonAction(),
     {
         WELFARE_LIST_YEAR: function () {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('./group/welfare/year')
                 .then(function (result) {
                     // console.log(result.data);
@@ -131,6 +132,7 @@ export function userWelfareAction(store) {
         },
         WELFARE_LISTS: function () {
             // console.log(data);
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('./welfare/active/')
                 .then(function (result) {
                     result.data.map((item) => {
@@ -192,6 +194,7 @@ export function userWelfareAction(store) {
         // },
         USER_INSERT: function (data) {
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.post('./history/request/', data)
                 .then((response) => {
                     this.fire('toast', {
@@ -208,6 +211,7 @@ export function userWelfareAction(store) {
         },
         LIST_EMPLOYEE_WELFARE: function (data) {
             // console.log(data);
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('./employee/' + data)
                 .then(function (result) {
                     // console.log(result.data);
@@ -219,6 +223,7 @@ export function userWelfareAction(store) {
         },
         LIST_EMPLOYEES_WELFARE: function (data) {
             // console.log(data);
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('./employee/' + data)
                 .then(function (result) {
                     // console.log(result.data);
@@ -234,6 +239,7 @@ export function userWelfareAction(store) {
         },
         EMPLOYEE_GET_WELFARES: function (id) {
             // console.log(year);
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('./employee/' + id)
                 .then(res => {
                     // console.log(2);
@@ -259,6 +265,7 @@ export function userWelfareAction(store) {
             clearDatawelfare(data, (newData) => {
                 // console.log(newData);
                 this.fire('toast', { status: 'load' });
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`./history/approve`, newData)
                     .then(res => {
                         this.EMPLOYEE_GET_WELFARES(newData.emp_id);
@@ -321,6 +328,7 @@ export function userWelfareAction(store) {
         EMPLOYEE_USE_WELFARE_GROUP(data) {
             // console.log(data);
                 this.fire('toast', { status: 'load' });
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`./history/usegroup`, data)
                     .then(res => {
                         // this.EMPLOYEE_GET_WELFARES(newData.emp_id);
@@ -337,6 +345,7 @@ export function userWelfareAction(store) {
                     })
         },
         EMPLOYEE_HISTORY_WELFARE(data) {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`./history/list/welfare?`+ data)
                     .then(res => {
                         store.dispatch({ type: 'EMPLOYEE_HISTORY_WELFARE', payload: res.data })
@@ -346,6 +355,7 @@ export function userWelfareAction(store) {
                     })
         },
         EMPLOYEE_HISTORY_FUND(data) {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`./history/list/fund?`+ data)
                     .then(res => {
                         store.dispatch({ type: 'EMPLOYEE_HISTORY_FUND', payload: res.data })
@@ -355,6 +365,7 @@ export function userWelfareAction(store) {
                     })
         },
         EMPLOYEE_LIST_GROUP_FUND() {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`./history/list/group/fund?`)
                     .then(res => {
                         store.dispatch({ type: 'EMPLOYEE_LIST_GROUP_FUND', payload: res.data })
@@ -364,6 +375,7 @@ export function userWelfareAction(store) {
                     })
         },
         EMPLOYEE_HISTORY_SSO(data) {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`./history/list/sso?`+ data)
                     .then(res => {
                         store.dispatch({ type: 'EMPLOYEE_HISTORY_SSO', payload: res.data })
@@ -389,6 +401,7 @@ export function userWelfareAction(store) {
                 // this.fire('toast', { status: 'load' });
                 newData.id = data.id
                 // console.log(newData);
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put(`/employee/update`, newData)
                     .then(res => {
                         this.fire('toast', {
@@ -414,6 +427,7 @@ export function userWelfareAction(store) {
                 // this.fire('toast', { status: 'load' });
                 newData.id = data.id
                 // console.log(newData);
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put(`/employee/update`, newData)
                     .then(res => {
                         this.fire('toast', {
@@ -435,7 +449,8 @@ export function userWelfareAction(store) {
                 confirmed: (result) => {
                     if (result == true) {
                         clearData(data, (newData) => {
-                            console.log(newData);
+                            // console.log(newData);
+                            axios.defaults.headers.common['Authorization'] = localStorage.token
                             axios.post('./employee/insert', newData)
                                 .then(res => {
                                     this.fire('toast', {

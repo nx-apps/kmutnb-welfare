@@ -19,6 +19,7 @@ export function commonSystemAction(store){
         commonAction(),{
             COMMON_MODULE:function(data){
                 // var user = store.getState().auth.user;
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get('/common/module/')
                 .then(res=>{
                     store.dispatch({type:'COMMON_MODULE',payload:res.data})

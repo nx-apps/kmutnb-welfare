@@ -56,6 +56,7 @@ export function commonDataAction(store){
             
             //  COMMONDATA_DATA_ACADEMIC
             COMMONDATA_DATA_ACADEMIC:function(){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/academic`)
                 .then(res=>{
                     var newData = res.data.map((item)=>{
@@ -72,6 +73,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_ACADEMIC_INSERT:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`/common/academic/insert`,data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -87,6 +89,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_ACADEMIC_UPDATE:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put('/common/academic/update',data)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
@@ -102,6 +105,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_ACADEMIC_DELETE:function(del){
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.delete('/common/academic/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -117,6 +121,7 @@ export function commonDataAction(store){
             },
             // COMMONDATA_DATA_ACTIVE
             COMMONDATA_DATA_ACTIVE:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/active`)
                 .then(res=>{
                     // console.log(res.data);
@@ -133,6 +138,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_ACTIVE_INSERT:function(data){
                 // console.log(data)
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 this.fire('toast',{status:'load'}); 
                 axios.post(`/common/active/insert`,data)
                 .then((response)=>{
@@ -148,6 +154,7 @@ export function commonDataAction(store){
                 });
             },
             COMMONDATA_DATA_ACTIVE_UPDATE:function(data){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 this.fire('toast',{status:'load'}); 
                 axios.put('/common/active/update',data)
                 .then((response)=>{
@@ -164,6 +171,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_ACTIVE_DELETE:function(del){
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.delete('/common/active/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -179,6 +187,7 @@ export function commonDataAction(store){
             },
             // COMMONDATA_DATA_DEPARTMENT 
             COMMONDATA_DATA_DEPARTMENT:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/department`)
                 .then(res=>{
                     var newData = res.data.map((item)=>{
@@ -194,6 +203,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_DEPARTMENT_INSERT:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`/common/department/insert`,data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -209,6 +219,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_DEPARTMENT_UPDATE:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put('/common/department/update',data)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
@@ -224,6 +235,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_DEPARTMENT_DELETE:function(del){
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.delete('/common/department/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -239,6 +251,7 @@ export function commonDataAction(store){
             },
             // COMMONDATA_DATA_FACULTY
             COMMONDATA_DATA_FACULTY:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/faculty`)
                 .then(res=>{
                      var newData = res.data.map((item)=>{
@@ -254,6 +267,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_FACULTY_INSERT:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`/common/faculty/insert`,data)
                 .then((response)=>{
                     console.log(response);
@@ -270,6 +284,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_FACULTY_UPDATE:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put('/common/faculty/update',data)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
@@ -285,6 +300,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_FACULTY_DELETE:function(del){
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.delete('/common/faculty/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -299,6 +315,7 @@ export function commonDataAction(store){
                 });
             },
             COMMONDATA_DATA_GENDER:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/gender`)
                 .then(res=>{
                     var newData = res.data.map((item)=>{
@@ -314,6 +331,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_GENDER_INSERT:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`/common/gender/insert`,data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -329,6 +347,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_GENDER_UPDATE:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put('/common/gender/update',data)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
@@ -344,6 +363,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_GENDER_DELETE:function(del){
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.delete('/common/gender/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -358,6 +378,7 @@ export function commonDataAction(store){
                 });
             },
             COMMONDATA_DATA_EMPLOYEE:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/employee`)
                 .then(res=>{
                     store.dispatch({type:'COMMONDATA_DATA_EMPLOYEE',payload:res.data})
@@ -368,6 +389,7 @@ export function commonDataAction(store){
             },
             // COMMONDATA_DATA_MATIER
             COMMONDATA_DATA_MATIER:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/matier`)
                 .then(res=>{
                      var newData = res.data.map((item)=>{
@@ -383,6 +405,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_MATIER_INSERT:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`/common/matier/insert`,data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -398,6 +421,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_MATIER_UPDATE:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put('/common/matier/update',data)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
@@ -413,6 +437,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_MATIER_DELETE:function(del){
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.delete('/common/matier/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -428,6 +453,7 @@ export function commonDataAction(store){
             },
             // COMMONDATA_DATA_POSITION
             COMMONDATA_DATA_POSITION:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/position`)
                 .then(res=>{
                     var newData = res.data.map((item)=>{
@@ -443,6 +469,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_POSITION_INSERT:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`/common/position/insert`,data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -458,6 +485,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_POSITION_UPDATE:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put('/common/position/update',data)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
@@ -473,6 +501,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_POSITION_DELETE:function(del){
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.delete('/common/position/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -488,6 +517,7 @@ export function commonDataAction(store){
             },
             // COMMONDATA_DATA_PREFIXNAME
             COMMONDATA_DATA_PREFIXNAME:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/prefix`)
                 .then(res=>{
                     var newData = res.data.map((item)=>{
@@ -503,6 +533,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_PREFIXNAME_INSERT:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`/common/prefix/insert`,data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -518,6 +549,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_PREFIXNAME_UPDATE:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put('/common/prefix/update',data)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
@@ -533,6 +565,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_PREFIXNAME_DELETE:function(del){
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.delete('/common/prefix/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -548,6 +581,7 @@ export function commonDataAction(store){
             },
             // COMMONDATA_DATA_RELATION
             COMMONDATA_DATA_RELATION:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/relation`)
                 .then(res=>{
                     var newData = res.data.map((item)=>{
@@ -563,6 +597,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_RELATION_INSERT:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`/common/relation/insert`,data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -578,6 +613,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_RELATION_UPDATE:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put('/common/relation/update',data)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
@@ -593,6 +629,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_RELATION_DELETE:function(del){
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.delete('/common/relation/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',
@@ -608,6 +645,7 @@ export function commonDataAction(store){
             },
             // COMMONDATA_DATA_TYPE_EMPLOYEE
             COMMONDATA_DATA_TYPE_EMPLOYEE:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/common/type_employee`)
                 .then(res=>{
                     var newData = res.data.map((item)=>{
@@ -623,6 +661,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_TYPE_EMPLOYEE_INSERT:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`/common/type_employee/insert`,data)
                 .then((response)=>{
                     this.fire('toast',{status:'success',text:'บันทึกสำเร็จ',
@@ -638,6 +677,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_TYPE_EMPLOYEE_UPDATE:function(data){
                 this.fire('toast',{status:'load'}); 
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put('/common/type_employee/update',data)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'อัพเดทสำเร็จ',
@@ -653,6 +693,7 @@ export function commonDataAction(store){
             },
             COMMONDATA_DATA_TYPE_EMPLOYEE_DELETE:function(del){
                 this.fire('toast',{status:'load'});
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.delete('/common/type_employee/delete/id/'+del)
                 .then((response)=>{
                    this.fire('toast',{status:'success',text:'ลบข้อมูลสำเร็จ',

@@ -32,6 +32,7 @@ export function ssoAction(store) {
                 },
                 headers: { 'ref-path': 'sso.file' }
             };
+            // axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.post('./sso/upload', data, config)
                 .then((response) => {
                     // console.log(response.data);
@@ -51,6 +52,7 @@ export function ssoAction(store) {
         },
         SSO_PREVIEW_DATA: function (data) {
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('./sso/getfile/name/' + data.name + '/sheet/' + data.sheet)
                 .then((result) => {
                     // console.log(result);
@@ -77,6 +79,7 @@ export function ssoAction(store) {
         },
         SSO_INSERT: function (data) {
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.post('./sso/insert', data)
                 .then((response) => {
                     this.fire('toast', {
@@ -90,6 +93,7 @@ export function ssoAction(store) {
                 })
         },
         SSO_GET_SHEET: function (nameFile) {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('./sso/sheet/' + nameFile)
                 .then((result) => {
                     store.dispatch({ type: 'SSO_GET_SHEET', payload: result.data });

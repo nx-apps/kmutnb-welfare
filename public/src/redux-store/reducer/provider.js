@@ -24,6 +24,7 @@ export function providerAction(store){
     return [commonAction(),
         {
             PROVIDER_LIST:function(){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get('/providers')
                 .then(res=>{
                     store.dispatch({type:'PROVIDER_LIST',payload:res.data})
@@ -33,6 +34,7 @@ export function providerAction(store){
                 })
             },
             PROVIDER_SELECT:function(id){
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`/providers/provider/${id}`)
                 .then(res=>{
                     store.dispatch({type:'PROVIDER_SELECT',payload:res.data})

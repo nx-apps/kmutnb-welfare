@@ -23,6 +23,7 @@ export function dateDbAction(store){
         commonAction(),{
             GET_DATE:function(data){
                 // var user = store.getState().auth.user;
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get('/date/currentdate')
                 .then(res=>{
                     store.dispatch({type:'GET_DATE',payload:res.data})
@@ -33,6 +34,7 @@ export function dateDbAction(store){
             },
             GET_LIST_YEAR:function(data){
                 // var user = store.getState().auth.user;
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get('/date/listyear')
                 .then(res=>{
                     store.dispatch({type:'GET_LIST_YEAR',payload:res.data})

@@ -95,6 +95,7 @@ export function usersAction(store) {
     {
         USERS_LIST: function () {
             // console.log(1)
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('./employee/list')
                 .then(res => {
                     console.log(res.data)
@@ -107,6 +108,7 @@ export function usersAction(store) {
         USER_INSERT(data) {
             clearData(data, (newData) => {
                 this.fire('toast', { status: 'load' });
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`./employee/insert`, newData)
                     .then(res => {
                         this.USERS_LIST();
@@ -123,6 +125,7 @@ export function usersAction(store) {
             })
         },
         USER_SEARCH_PERSONAL_ID: function (pid) {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get(`./employee/search/${pid}`)
                 .then(res => {
                     // console.log(res.data)
@@ -156,6 +159,7 @@ export function usersAction(store) {
                 this.fire('toast', { status: 'load' });
                 newData.id = data.id
                 // console.log(newData);
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put(`/employee/update`, newData)
                     .then(res => {
                         this.USER_GET_WELFARES(newData.id, true);
@@ -180,6 +184,7 @@ export function usersAction(store) {
                 text: 'ต้องการลบข้อมูลใช่หรือไม่ ?',
                 confirmed: (result) => {
                     if (result == true) {
+                        axios.defaults.headers.common['Authorization'] = localStorage.token
                         axios.delete(`./employee/delete/${id}`)
                             .then(res => {
                                 this.USERS_LIST();
@@ -233,6 +238,7 @@ export function usersAction(store) {
 
                 this.fire('toast', { status: 'load' });
                 // newData.status = true;
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.post(`./history/request/`, newData)
                     .then(res => {
                         this.USER_GET_WELFARES(newData.emp_id, true);
@@ -263,6 +269,7 @@ export function usersAction(store) {
                 // });
                 // myFirstPromise.then((data) => {
                 //     // console.log(el);
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.put(`./history/update/approve`, data)
                     .then(res => {
                         console.log(res.data);
@@ -285,6 +292,7 @@ export function usersAction(store) {
             // clearDatawelfare(data, (newData) => {
             //     newData.id = data.id;
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             return axios.put(`./history/update/reject`, data)
                 .then(res => {
                     // this.dispatchAction('USERS_FALSE_LIST');
@@ -323,6 +331,7 @@ export function usersAction(store) {
             // clearDatawelfare(data, (newData) => {
             //     newData.id = data.id;
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             return axios.put(`./history/update/cancel`, data)
                 .then(res => {
                     // this.dispatchAction('USERS_FALSE_LIST');
@@ -343,6 +352,7 @@ export function usersAction(store) {
         },
         USERS_FALSE_LIST(data = '') {
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get(`./history/unapprove?` + data)
                 .then(res => {
                     // console.log(res)
@@ -360,7 +370,7 @@ export function usersAction(store) {
                 })
         },
         USERS_LIST_HISTORY_WELFARE(data = '') {
-
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get(`./history/search?` + data)
                 .then(res => {
                     // console.log(res)
@@ -372,6 +382,7 @@ export function usersAction(store) {
                 })
         },
         USER_RVP_FUND(pid) {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get(`./rvd/signup/pid/${pid}`)
                 .then(res => {
                     // console.log(res)
@@ -383,6 +394,7 @@ export function usersAction(store) {
         },
         USER_RVP_SIGNUP(data, pid) {
             this.fire('toast', { status: 'load' })
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.post(`./rvd/signup/`, data)
                 .then(res => {
                     if (res.data.insert_status) {
@@ -408,6 +420,7 @@ export function usersAction(store) {
 
         },
         USER_RVP_LEAVE_FUND(fid, pid) {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.put(`./rvd/signup/leave/`, fid)
                 .then(res => {
                     this.fire('toast', {
@@ -422,6 +435,7 @@ export function usersAction(store) {
                 })
         },
         USER_RVP_FUND_OUT(fid, pid) {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.put(`./rvd/signup/fund/out/`, fid)
                 .then(res => {
                     console.log(res)

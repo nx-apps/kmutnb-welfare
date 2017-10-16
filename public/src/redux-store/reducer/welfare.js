@@ -36,6 +36,7 @@ export function welfareAction(store) {
     return [commonAction(),
     {
         WELFARE_LIST: function () {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/welfare')
                 .then(function (result) {
                     // console.log(result.data);
@@ -59,6 +60,7 @@ export function welfareAction(store) {
             // console.log(data);
             var year = new Date().getFullYear();
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.post(`./welfare/insert`, data)
                 .then((result) => {
                     // console.log(result);
@@ -76,6 +78,7 @@ export function welfareAction(store) {
         },
         WELFARE_DELETE: function (data) {
             // console.log(data);
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.delete(`./welfare/delete/id/` + data.id)
                 .then((result) => {
                     // console.log(result);
@@ -94,6 +97,7 @@ export function welfareAction(store) {
             // console.log(data);
             var year = new Date().getFullYear();
             this.fire('toast', { status: 'load' });
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.put(`./welfare/update`, data)
                 .then((result) => {
                     // console.log(result);
@@ -114,6 +118,7 @@ export function welfareAction(store) {
             this.WELFARE_DATA_SELECT_CLEAR();
             // this.id = val
             // console.log(store.getState().welfare.condition);
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/welfare/' + val)
                 .then(function (result) {
                     // console.log(result.data);
@@ -158,6 +163,7 @@ export function welfareAction(store) {
             store.dispatch({ type: 'WELFARE_DATA_SELECT', payload: { condition: [] } })
         },
         CONDITION_LIST: function () {
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/conditions/list')
                 .then(function (result) {
                     // console.log(result.data);
@@ -169,6 +175,7 @@ export function welfareAction(store) {
         },
         WELFARE_LIST_EMPLOYEE: function (id) {
             // console.log(id);
+            axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/welfare/employee/' + id)
                 .then(function (result) {
                     // console.log(result.data);

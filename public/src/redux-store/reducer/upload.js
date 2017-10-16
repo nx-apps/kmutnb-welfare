@@ -23,6 +23,7 @@ export function uploadAction(store){
     return [commonAction(),{
       UPLOAD_DELETE(data){
         this.fire('toast',{status:'load',text:'กำลังบันทึกข้อมูล...'})
+        axios.defaults.headers.common['Authorization'] = localStorage.token
         axios.delete('/document/delete/'+data)
         .then( (response)=>{
             console.log(response);
