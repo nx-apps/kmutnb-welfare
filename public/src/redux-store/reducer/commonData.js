@@ -2,7 +2,6 @@ import axios from '../axios'
 import {commonAction} from '../config'
 
 const initialState = {
-    list:[],
     select:{},
     academic:[{id:0,academic:''}],
     active:[{id:0,active:''}],
@@ -20,8 +19,6 @@ const initialState = {
 export function commonDataReducer(state = initialState,action){
 
     switch (action.type) {
-        case 'COMMONDATA_LIST':
-            return Object.assign({},state,{list:action.payload});
         case 'COMMONDATA_SELECT':
             return Object.assign({},state,{select:action.payload});
         case  'COMMONDATA_DATA_ACADEMIC':
@@ -56,16 +53,7 @@ export function commonDataAction(store){
 
     return [commonAction(),
         {
-            COMMONDATA_LIST:function(){
-                console.log(1)
-                // axios.get('/providers')
-                // .then(res=>{
-                //     store.dispatch({type:'COMMONDATA_LIST',payload:res.data})
-                // })
-                // .catch(err=>{
-
-                // })
-            },
+            
             //  COMMONDATA_DATA_ACADEMIC
             COMMONDATA_DATA_ACADEMIC:function(){
                 axios.get(`/common/academic`)

@@ -114,21 +114,16 @@
 
             },
             _decodeJwt(data) {
-                console.log(data.hasOwnProperty('role'));
+                // console.log(data.hasOwnProperty('role'));
                 if (data.hasOwnProperty('role')) {
-                    console.log(data.role);
+                    // console.log(data.role);
                     let page = '/user-welfare'
                     if (data.role === 'admin')
-                        page = '/admin-import'
-                        this.fire('nylon-change-page', {
-                            path: page
-                        })
-                    // } else {
-                    //     this.fire('nylon-change-page', {
-                    //         path: '/user-welfare'
-                    //     })
-                    // }
-                    console.log(page);
+                        page = '/admin-dashboard'
+                    this.fire('nylon-change-page', {
+                        path: page
+                    })
+                    // console.log(page);
                 } else {
                     this.fire('nylon-change-page', {
                         path: '/'

@@ -148,48 +148,48 @@ export function userWelfareAction(store) {
 
                 })
         },
-        LIST_USER: function (id) {
-            // console.log(id);
-            axios.get('./employee/list/work')
-                .then(function (result) {
-                    // console.log(result.data);
-                    var newData = result.data.map((item) => {
-                        if (item.academic_name == "") {
-                            item.fullName = item.prefix_name + " " + item.firstname + " " + item.lastname
-                        }
-                        else {
-                            item.fullName = item.academic_name + " " + item.firstname + " " + item.lastname
-                        }
-                    })
-                    store.dispatch({ type: 'LIST_USER', payload: result.data })
-                })
-                .catch(err => {
+        // LIST_USER: function (id) {
+        //     // console.log(id);
+        //     axios.get('./employee/list/work')
+        //         .then(function (result) {
+        //             // console.log(result.data);
+        //             var newData = result.data.map((item) => {
+        //                 if (item.academic_name == "") {
+        //                     item.fullName = item.prefix_name + " " + item.firstname + " " + item.lastname
+        //                 }
+        //                 else {
+        //                     item.fullName = item.academic_name + " " + item.firstname + " " + item.lastname
+        //                 }
+        //             })
+        //             store.dispatch({ type: 'LIST_USER', payload: result.data })
+        //         })
+        //         .catch(err => {
 
-                })
-        },
-        LIST_USER_SERARCH: function (id) {
-            // console.log(id);
-            this.userSearch = id;
-            axios.get('./group/welfare/adminEmployee/' + id)
-                .then((response) => {
-                    //  console.log(JSON.stringify(response.data));
-                    var newData = response.data.map((item) => {
-                        if (item.academic_name == "") {
-                            item.fullName = item.prefix_name + " " + item.firstname + " " + item.lastname
-                        }
-                        else {
-                            item.fullName = item.academic_name + " " + item.firstname + " " + item.lastname
-                        }
-                        item.check = false;
-                        return item;
-                    })
-                    store.dispatch({ type: 'LIST_USER_SERARCH', payload: newData })
-                })
-                .catch((error) => {
-                    console.log('error');
-                    console.log(error);
-                });
-        },
+        //         })
+        // },
+        // LIST_USER_SERARCH: function (id) {
+        //     // console.log(id);
+        //     this.userSearch = id;
+        //     axios.get('./group/welfare/adminEmployee/' + id)
+        //         .then((response) => {
+        //             //  console.log(JSON.stringify(response.data));
+        //             var newData = response.data.map((item) => {
+        //                 if (item.academic_name == "") {
+        //                     item.fullName = item.prefix_name + " " + item.firstname + " " + item.lastname
+        //                 }
+        //                 else {
+        //                     item.fullName = item.academic_name + " " + item.firstname + " " + item.lastname
+        //                 }
+        //                 item.check = false;
+        //                 return item;
+        //             })
+        //             store.dispatch({ type: 'LIST_USER_SERARCH', payload: newData })
+        //         })
+        //         .catch((error) => {
+        //             console.log('error');
+        //             console.log(error);
+        //         });
+        // },
         USER_INSERT: function (data) {
             this.fire('toast', { status: 'load' });
             axios.post('./history/request/', data)
@@ -296,28 +296,28 @@ export function userWelfareAction(store) {
         //             })
         //     // })
         // },
-        EMPLOYEE_USE_REJECT_RVD(data) {
-            // console.log(data);
-            // clearDatawelfare(data, (newData) => {
-                // console.log(newData);
-                this.fire('toast', { status: 'load' });
-                axios.put(`./history/rejectrvd`, data)
-                    .then(res => {
-                        console.log(data);
-                        this.EMPLOYEE_GET_WELFARES(data.emp_id);
-                        this.fire('toast', {
-                            status: 'success', text: 'บันทึกสำเร็จ',
-                            callback: () => {
-                                // this.$$('panel-right').close();
-                                // this.$$('#welfare_budget').close()
-                            }
-                        });
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
-            // })
-        },
+        // EMPLOYEE_USE_REJECT_RVD(data) {
+        //     // console.log(data);
+        //     // clearDatawelfare(data, (newData) => {
+        //         // console.log(newData);
+        //         this.fire('toast', { status: 'load' });
+        //         axios.put(`./history/rejectrvd`, data)
+        //             .then(res => {
+        //                 console.log(data);
+        //                 this.EMPLOYEE_GET_WELFARES(data.emp_id);
+        //                 this.fire('toast', {
+        //                     status: 'success', text: 'บันทึกสำเร็จ',
+        //                     callback: () => {
+        //                         // this.$$('panel-right').close();
+        //                         // this.$$('#welfare_budget').close()
+        //                     }
+        //                 });
+        //             })
+        //             .catch(err => {
+        //                 console.log(err);
+        //             })
+        //     // })
+        // },
         EMPLOYEE_USE_WELFARE_GROUP(data) {
             // console.log(data);
                 this.fire('toast', { status: 'load' });
@@ -372,15 +372,15 @@ export function userWelfareAction(store) {
                         console.log(err);
                     })
         },
-        FACULTY_LIST() {
-            axios.get('./common/faculty')
-                .then((response) => {
-                    store.dispatch({ type: 'FACULTY_LIST', payload: response.data })
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
+        // FACULTY_LIST() {
+        //     axios.get('./common/faculty')
+        //         .then((response) => {
+        //             store.dispatch({ type: 'FACULTY_LIST', payload: response.data })
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
+        // },
         EMPLOYEE_UPDATE(data) {
             // console.log(data);
             this.fire('toast', { status: 'load' })

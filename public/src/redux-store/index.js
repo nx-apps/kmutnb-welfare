@@ -12,9 +12,7 @@ import {commonDataReducer,commonDataAction} from './reducer/commonData'
 import {usersReducer,usersAction} from './reducer/users'
 import {conditionReadWelfareReducer,conditionReadWelfareAction} from './reducer/conditionReadWelfare'
 import {uploadReducer,uploadAction} from './reducer/upload'
-import {fundRvdReducer,fundRvdAction} from './reducer/fundRvd'
 import {dateDbReducer,dateDbAction} from './reducer/dateDb'
-import {chartReducer,chartAction} from './reducer/chart'
 import {systemConfigsReducer,systemConfigsAction} from './reducer/systemConfigs'
 import {retierReducer,retierAction} from './reducer/retier'
 import {ssoReducer,ssoAction} from './reducer/sso'
@@ -33,9 +31,7 @@ const rootReducer = combineReducers({
     users:usersReducer,
     conditionReadWelfare:conditionReadWelfareReducer,
     upload:uploadReducer,
-    fundRvd: fundRvdReducer,
     dateDb: dateDbReducer,
-    chart: chartReducer,
     systemConfigs: systemConfigsReducer,
     retier:retierReducer,
     sso:ssoReducer,
@@ -59,9 +55,7 @@ window.commonDataAction = commonDataAction(storeApp);
 window.usersAction = usersAction(storeApp);
 window.conditionReadWelfareAction = conditionReadWelfareAction(storeApp);
 window.uploadAction = uploadAction(storeApp);
-window.fundRvdAction = fundRvdAction(storeApp);
 window.dateDbAction = dateDbAction(storeApp);
-window.chartAction = chartAction(storeApp);
 window.systemConfigsAction = systemConfigsAction(storeApp);
 window.retierAction = retierAction(storeApp);
 window.ssoAction = ssoAction(storeApp);

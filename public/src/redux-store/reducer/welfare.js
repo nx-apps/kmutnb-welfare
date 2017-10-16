@@ -45,16 +45,16 @@ export function welfareAction(store) {
 
                 })
         },
-        WELFARE_LIST_ID: function (data) {
-            axios.get('/welfare/' + data)
-                .then(function (result) {
-                    // console.log('*', result.data);
-                    store.dispatch({ type: 'WELFARE_LIST_ID', payload: result.data })
-                })
-                .catch(err => {
+        // WELFARE_LIST_ID: function (data) {
+        //     axios.get('/welfare/' + data)
+        //         .then(function (result) {
+        //             // console.log('*', result.data);
+        //             store.dispatch({ type: 'WELFARE_LIST_ID', payload: result.data })
+        //         })
+        //         .catch(err => {
 
-                })
-        },
+        //         })
+        // },
         WELFARE_INSERT: function (data) {
             // console.log(data);
             var year = new Date().getFullYear();
