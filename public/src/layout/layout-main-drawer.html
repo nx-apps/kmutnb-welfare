@@ -9,7 +9,7 @@
                 font-family: 'rsuregular', sans-serif;
                 -webkit-font-smoothing: antialiased;
             }
-            
+
             app-toolbar {
                 color: white;
                 background-color: #FF753F;
@@ -21,40 +21,41 @@
             -webkit-user-select: none;
             -ms-user-select: none;*/
             }
-            
+
             iron-image,
             iron-icon {
                 padding-right: 10px;
             }
-            
+
             paper-icon-item {
                 font-family: 'CSChatThaiUI', sans-serif;
             }
-            
+
             paper-icon-item:hover {
                 background-color: #F1F1F1;
                 cursor: pointer;
                 font-weight: bold;
             }
-            
+
             paper-icon-item>div {
                 position: absolute;
                 top: 4px;
                 right: 10px;
             }
-            
+
             paper-icon-item[selected] {
                 background-color: #DDD;
             }
-            
+
             .mymask {
                 width: 32px;
                 height: 32px;
                 mask: url(#mymask);
                 -webkit-mask-box-image: url(/images/icon/welfare/32.png);
             }
+
             .submenu {
-                    margin-left: 30px;
+                margin-left: 30px;
             }
         </style>
         <div class="menu">
@@ -115,15 +116,15 @@
     <script>
         Polymer({
             is: 'layout-main-drawer',
-            behaviors: [ReduxBehavior],
+            behaviors: [ReduxBehavior, authAction],
             properties: {
                 user: {
                     statePath: 'auth.user'
                 },
                 role: {
-					type: String,
-					value: 'user'
-				},
+                    type: String,
+                    value: 'user'
+                },
                 listMenu: {
                     type: Array,
                     value: [
@@ -139,14 +140,14 @@
                             role: '',
                             submenu: []
                         },
-                        
+
                         // {
                         //     name: 'รายชื่อพนักงาน',
                         //     path: '/admin-employee',
                         //     role: '',
                         //     submenu: []
                         // },
-                        
+
                         // {
                         //     name: 'จัดการคำขอใช้',
                         //     path: '/admin-approve',
@@ -177,10 +178,10 @@
                         //     role: 'teacher'
                         // },
                         {
-                            name:'จัดการข้อมูลประกันสังคม/กองทุน',
-                            path:'/admin-import',
-                            role:'',
-                            submenu:[]
+                            name: 'จัดการข้อมูลประกันสังคม/กองทุน',
+                            path: '/admin-import',
+                            role: '',
+                            submenu: []
                         },
                         {
                             name: 'จัดการข้อมูล',
@@ -188,14 +189,14 @@
                             role: '',
                             submenu: []
                         },
-                        
+
                         // {
                         //     name: 'รายงานสวัสดิการ',
                         //     path: '/welfare-report',
                         //     role: '',
                         //     submenu: []
                         // },
-                        
+
                         // {
                         //     name: 'รายงาน',
                         //     path: '/admin-dsds',
@@ -236,7 +237,7 @@
             //     }
             // },
             selectPage: function (e) {
-                
+
                 // console.log(e.target.firstChild.nextSibling.icon='expand-more');
                 // console.log(e.currentTarget.data.submenu.length < 1);
                 if (e.currentTarget.data.submenu.length < 1) {

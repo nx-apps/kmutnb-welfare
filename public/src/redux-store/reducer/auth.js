@@ -90,12 +90,13 @@ export function authAction(store) {
 
         authLogout: function () {
             // return dispatch => {
-                localStorage.removeItem("token")
-                // Nylon.redirect('/')
-                store.dispatch({ type: 'authGetUser', payload: {} })
-                this.fire('nylon-change-page', {
-                    path: '/'
-                })
+            localStorage.removeItem("token")
+            // Nylon.redirect('/')
+            store.dispatch({ type: 'authGetUser', payload: {} })
+            this.fire('nylon-change-page', {
+                path: '/'
+            })
+            // console.log(66666);
             // }
 
         },

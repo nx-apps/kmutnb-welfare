@@ -9,7 +9,7 @@
 <link rel="import" href="nylon-init.html">
 
 <dom-module id="nylon-app">
-    <template>{{route}}///
+    <template>
         <app-location route="{{route}}"></app-location>
         <app-route
             route="{{route}}"
@@ -59,7 +59,7 @@
                 '_routePageChanged(routeData.page)'
             ],
             _routePageChanged: function(page) {
-                console.log(page);
+                // console.log(page);
                 this.page = page;
             },
             _pageChanged: function(page, oldPage) {

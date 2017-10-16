@@ -4,5 +4,6 @@ const settingAxios = create({
     baseURL:baseURL+'/api',
     // headers: headers.common['Authorization'] = localStorage.token
 });
-settingAxios.defaults.headers.common['Authorization'] = localStorage.token
+
+// settingAxios.defaults.headers.common['Authorization'] = localStorage.token
 export default settingAxios

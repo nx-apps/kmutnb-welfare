@@ -208,6 +208,7 @@ export function usersAction(store) {
             // console.log(typeof id );
             if (typeof id !== 'undefined' && id !== 'undefined' && id !== '') {
                 this.fire('toast', { status: 'load' });
+                axios.defaults.headers.common['Authorization'] = localStorage.token
                 axios.get(`./employee/${id}`)
                     .then(res => {
                         // console.log(res)

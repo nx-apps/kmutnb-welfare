@@ -103,8 +103,10 @@
 				// console.log(data);
 				if (this.user.id) {
 					if (data.role === 'admin') {
+						// console.log(data.role);
 						this.set('menuIsShow', true)
 					} else {
+						// console.log(data.role);
 						this.set('menuIsShow', false)
 					}
 					this.hidden = false;
@@ -112,6 +114,7 @@
 				else {
 					// this.fire('nylon-change-page',{path:'/login'})
 					this.hidden = true;
+					this.set('menuIsShow', false)
 				}
 			},
 
