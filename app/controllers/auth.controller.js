@@ -12,9 +12,13 @@ exports.login = (req, res) => {
     const body = req.body
     r.table('users').getAll([body.username, sha1(body.password)], { index: 'checkLogin' })
         .pluck('id', 'emp_id', 'username', 'role').coerceTo('array')
-        .eqJoin('emp_id', r.table('employee')).pluck('left', { right: ['prefix_name', 'firstname', 'lastname'] }).zip()
         .do(function (info) {
-            return r.branch(info.count().eq(0), { loginFailed: true }, info(0))
+            return r.branch(info.count().eq(0),
+                { loginFailed: true },
+                info(0)('role').eq('admin'),
+                info(0),
+                info.eqJoin('emp_id', r.table('employee')).pluck('left', { right: ['prefix_name', 'firstname', 'lastname'] }).zip()(0)
+            )
         })
         .run()
         .then((result) => {
