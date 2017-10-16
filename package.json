@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm-run-all --parallel nylon redux",
     "nylon": "nylon-cli serve",
+    "build": "cd public && polymer build",
     "redux": "webpack"
   },
   "author": "",

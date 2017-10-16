@@ -1,0 +1,29 @@
+{
+    "entrypoint": "index.html",
+    "shell": "src/nylon-app.html",
+    "fragments": [
+      "src/pages/page-401/page-401.html",
+      "src/pages/page-403/page-403.html",
+      "src/pages/page-404/page-404.html",
+      "src/pages/page-admin-dashboard/page-admin-dashboard.html",
+      "src/pages/page-admin-import/page-admin-import.html",
+      "src/pages/page-admin-manage/page-admin-manage.html",
+      "src/pages/page-admin-retire/page-admin-retire.html",
+      "src/pages/page-admin-welfare/page-admin-welfare.html",
+      "src/pages/page-back-end/page-back-end.html",
+      "src/pages/page-login/page-login.html",
+      "src/pages/page-user-welfare/page-user-welfare.html"
+    ],
+    "sources": [
+      "src/**/*",
+      "images/**/*",
+      "bower.json",
+      "fonts/**/*",
+      "bower_components/gl-font/**/*"
+    ],
+    "extraDependencies": [
+      "main.js",
+      "manifest.json",
+      "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+    ]
+  }
