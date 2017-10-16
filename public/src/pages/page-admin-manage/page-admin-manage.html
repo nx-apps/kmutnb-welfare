@@ -13,6 +13,7 @@
 <link rel="import" href="./components/history-rvd.html">
 <link rel="import" href="./components/admin-dialog-use-fund.html">
 
+<link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
 
 <link rel="import" href="../../../bower_components/gl-form/gl-form-panel.html">
 <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
@@ -421,25 +422,23 @@
                 // //console.log(this.changeTime(data, +7));
             },
             setVaadin() {
-                // this.async(() => {
-                // let data = {
-                //     personal_id: this.data.personal_id
-                // }
-                // this.dispatchAction('EMPLOYEE_HISTORY_WELFARE', this.genUrl(data))
                 try {
+                    if (this.data.personal_id === undefined) 
+                        return null
+                    
                     this.$$('#material').notifyResize()
-                    this.$$('#history-welfare').setTabel(e)
+                    this.$$('#history-welfare').setTabel()
                     let data = {
                         personal_id: this.data.personal_id
                     }
+                    // console.log(222222222222222);
                     this.dispatchAction('EMPLOYEE_HISTORY_SSO', this.genUrl(data))
                     this.dispatchAction('EMPLOYEE_HISTORY_FUND', this.genUrl(data))
                     this.dispatchAction('EMPLOYEE_HISTORY_WELFARE', this.genUrl(data))
                 } catch (e) {
-
+                    // console.log(e);
                 }
 
-                // }, 500);
             },
             changeTime: function (data, timeZone) {
                 let time
@@ -608,6 +607,8 @@
                                 this.$$('#welfare_budget').close()
                                 if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
                                     this.dispatchAction('EMPLOYEE_USE_WELFARE', newData);
+                                    // this.setVaadin()
+                                    // console.log(000000000000000000000000);
                                     this.GET_LIST_YEAR();
                                 }
                             }
