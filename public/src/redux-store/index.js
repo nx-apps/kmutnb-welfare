@@ -42,21 +42,23 @@ const storeApp = createStore(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-window.ReduxBehavior = [PolymerRedux(storeApp),dispatchActionBehavior()];
-window.dispatchActionBehavior = dispatchActionBehavior();
+window.preReduxBehavior = [PolymerRedux(storeApp),dispatchActionBehavior()];
+window.preDispatchActionBehavior = dispatchActionBehavior()
+window.dispatchActionBehavior = dispatchActionBehavior()
 window.axios = axios;
-window.commonSystemAction = commonSystemAction(storeApp);
-window.authAction = authAction(storeApp);
-window.providerAction = providerAction(storeApp);
-window.userWelfareAction = userWelfareAction(storeApp);
-window.welfareAction = welfareAction(storeApp);
-window.groupWelfareAction = groupWelfareAction(storeApp);
-window.commonDataAction = commonDataAction(storeApp); 
-window.usersAction = usersAction(storeApp);
-window.conditionReadWelfareAction = conditionReadWelfareAction(storeApp);
-window.uploadAction = uploadAction(storeApp);
-window.dateDbAction = dateDbAction(storeApp);
-window.systemConfigsAction = systemConfigsAction(storeApp);
-window.retierAction = retierAction(storeApp);
-window.ssoAction = ssoAction(storeApp);
-window.fundAction = fundAction(storeApp);
+
+window.precommonSystemAction = commonSystemAction(storeApp);
+window.preauthAction = authAction(storeApp);
+window.preproviderAction = providerAction(storeApp);
+window.preuserWelfareAction = userWelfareAction(storeApp);
+window.prewelfareAction = welfareAction(storeApp);
+window.pregroupWelfareAction = groupWelfareAction(storeApp);
+window.precommonDataAction = commonDataAction(storeApp); 
+window.preusersAction = usersAction(storeApp);
+window.preconditionReadWelfareAction = conditionReadWelfareAction(storeApp);
+window.preuploadAction = uploadAction(storeApp);
+window.predateDbAction = dateDbAction(storeApp);
+window.presystemConfigsAction = systemConfigsAction(storeApp);
+window.preretierAction = retierAction(storeApp);
+window.pressoAction = ssoAction(storeApp);
+window.prefundAction = fundAction(storeApp);

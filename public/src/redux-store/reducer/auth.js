@@ -60,6 +60,7 @@ export function authAction(store) {
         //         });
         // }
         authLogin: function (login) {
+            console.log(login);
             return axios.post('/auth/login', login)
             // .then(res => {
             //     localStorage.setItem("token", res.data.token)

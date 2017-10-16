@@ -9,6 +9,12 @@
 
 <link rel="import" href="../page-admin-import/page-admin-import.html">
 
+<link rel="import" href="../../action/redux-behavior.html">
+
+<link rel="import" href="../../action/authAction-behavior.html">
+
+<link rel="import" href="../../dispatchAction-behavior.html">
+
 <dom-module id="page-login">
     <template>
         <style include="page-style flex-style">
@@ -79,7 +85,7 @@
     <script>
         Polymer({
             is: 'page-login',
-            behaviors: [ReduxBehavior, authAction],
+            behaviors: [ReduxBehavior, authAction, dispatchAction],
             properties: {
                 formLogin: {
                     type: Object,
@@ -99,7 +105,7 @@
             },
             signin: function () {
                 // this.AUTH_LOGIN(this.formLogin);
-                this.authLogin(this.formLogin)
+                this.dispatchAction('authLogin', (this.formLogin))
                     .then(res => {
                         localStorage.setItem("token", res.data.token)
                         // console.log(res);

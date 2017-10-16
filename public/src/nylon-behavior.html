@@ -1,4 +1,10 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <script>
+    /**
+	 * dispatchAction
+	 * 
+	 * @polymerBehavior
+	 */ 
     nylonBehavior = {
         observers:['_checkPageActive(path,currentPath)'],
         _checkPageActive:function(route,currentRoute){
