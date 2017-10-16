@@ -114,16 +114,13 @@
             _decodeJwt(data) {
                 if (data.hasOwnProperty('emp_id')) {
                     // console.log(data);
-                    if (data.role === 'admin') {
-                        this.fire('nylon-change-page', {
-                            path: './admin-dashboard/'
-                        })
-                    } else {
-                        this.fire('nylon-change-page', {
-                            path: './user-welfare/'
-                        })
-                    }
+                    let page = './user-welfare/'
+                    if (data.role === 'admin')
+                        page = './admin-dashboard/'
 
+                    this.fire('nylon-change-page', {
+                        path: page
+                    })
                 } else {
                     this.fire('nylon-change-page', {
                         path: '/'

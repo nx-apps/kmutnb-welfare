@@ -14,7 +14,10 @@
 <link rel="import" href="../../../bower_components/gl-form/gl-form-dropdown-menu.html">
 <link rel="import" href="../../../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+
+<link rel="import" href="../../../bower_components/gl-form/gl-form-input.html">
+
+<!-- <link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html"> -->
 
 
 <dom-module id="page-admin-dashboard">
@@ -121,7 +124,8 @@
                     <div class="flex-2">
                         <div class="horizontal end-justified layout">
                             <div class="flex-3">
-                                <gl-form-dropdown-menu always-float-label label="{{localize('category')}}{{localize('report')}}" placeholder="{{localize('category')}}{{localize('report')}}" style="margin-top:15px;width:100%;">
+                                <gl-form-dropdown-menu always-float-label label="{{localize('category')}}{{localize('report')}}" placeholder="{{localize('category')}}{{localize('report')}}"
+                                    style="margin-top:15px;width:100%;">
                                     <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_id}}">
                                         <template is="dom-repeat" items={{typeReport}}>
                                             <paper-item value="[[item.report_id]]">[[item.report_name]]</paper-item>
@@ -130,7 +134,8 @@
                                 </gl-form-dropdown-menu>
                             </div>
                             <div class="flex" style="margin-left:5px;">
-                                <gl-form-dropdown-menu always-float-label label="{{localize('format')}}{{localize('report')}}" placeholder="{{localize('format')}}{{localize('report')}}" style="margin-top:15px;width:100%;">
+                                <gl-form-dropdown-menu always-float-label label="{{localize('format')}}{{localize('report')}}" placeholder="{{localize('format')}}{{localize('report')}}"
+                                    style="margin-top:15px;width:100%;">
                                     <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{report_type_seleted}}">
                                         <template is="dom-repeat" items={{report_type}}>
                                             <paper-item value="[[item.report_type_id]]">[[item.report_type]]</paper-item>
@@ -155,11 +160,15 @@
         <paper-dialog id="report" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
-                    <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_start}}"></vaadin-date-picker>
+                    <gl-form-input type="date" always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_start}}"></gl-form-input>
+
+                    <!-- <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_start}}"></vaadin-date-picker> -->
                 </div>
                 <div style="margin: 31px 10px;">{{localize('to')}}</div>
                 <div class="flex" style=" margin-right: 30px">
-                    <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_end}}"></vaadin-date-picker>
+                    <gl-form-input id="hospital" type="date" always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_end}}"></gl-form-input>
+
+                    <!-- <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_end}}"></vaadin-date-picker> -->
                 </div>
             </div>
             <div class="flex horizontal end-justified layout buttons">
@@ -171,7 +180,9 @@
         <paper-dialog id="RETIREMENT" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
-                    <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date}}"></vaadin-date-picker>
+                    <gl-form-input id="hospital" type="date" always-float-label label="{{localize('day')}}{{localize('at')}}" no-label-float
+                        value="{{data.date}}"></gl-form-input>
+                    <!-- <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date}}"></vaadin-date-picker> -->
                 </div>
             </div>
             <div class="flex horizontal end-justified layout buttons">
@@ -182,7 +193,7 @@
 
         <paper-dialog id="FUND" modal>
             <div class="flex">
-                <h2 id="welfare_name" >{{localize('report')}}{{localize('fund')}}</h2>
+                <h2 id="welfare_name">{{localize('report')}}{{localize('fund')}}</h2>
             </div>
             <paper-dialog-scrollable>
                 <div class="layout horizontal start-justified">
@@ -197,8 +208,8 @@
                         </gl-combo-box>
                     </div>
                     <div class="flex" style=" margin-right: 30px">
-                        <gl-combo-box id="year" label="{{localize('year')}}" placeholder="{{localize('all')}}" items="[[listYear.history_fund_year]]" value="{{data.year}}" item-label-path="year"
-                            item-value-path="year"> </gl-combo-box>
+                        <gl-combo-box id="year" label="{{localize('year')}}" placeholder="{{localize('all')}}" items="[[listYear.history_fund_year]]"
+                            value="{{data.year}}" item-label-path="year" item-value-path="year"> </gl-combo-box>
                     </div>
                     <!--</div>-->
                 </div>
@@ -218,7 +229,7 @@
         Polymer({
             is: 'page-admin-dashboard',
             behaviors: [ReduxBehavior, nylonBehavior, usersAction, userWelfareAction,
-                commonDataAction, MonthBehavior, dateDbAction,nylonLocalizeBehavior],
+                commonDataAction, MonthBehavior, dateDbAction, nylonLocalizeBehavior],
             created: function () {
                 this.nylonLocalizeImport('/i18n-page1.json');
             },
@@ -354,8 +365,6 @@
                 } catch (error) {
 
                 }
-
-
             },
             _insertEmployee: function () {
                 this.set('title', 'เพิ่มสมาชิก')
@@ -377,11 +386,7 @@
 
                 } catch (e) {
 
-                } finally {
-
                 }
-
-
             },
             _printRetire: function () {
                 // const data = JSON.parse(JSON.stringify(this.data.data))
