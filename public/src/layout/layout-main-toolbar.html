@@ -57,13 +57,14 @@
 
 			<template is="dom-if" if={{menuIsShow}}>
 				<paper-icon-button icon="menu" on-tap="toggleDrawer"></paper-icon-button>
-				<div style="background-color:#FFFFFF;margin-left: 20px;margin-top:3px;margin-right: 20px;" class="mymask"></div>
-				<svg height="0" width="0">
-					<mask id="mymask">
-						<image id="img" xlink:href="/images/icon/welfare/32.png" x="0" y="0" height="50px" width="50px" />
-					</mask>
-				</svg>
 			</template>
+			<div style="background-color:#FFFFFF;margin-left: 20px;margin-top:3px;margin-right: 20px;" class="mymask"></div>
+			<svg height="0" width="0">
+				<mask id="mymask">
+					<image id="img" xlink:href="/images/icon/welfare/32.png" x="0" y="0" height="50px" width="50px" />
+				</mask>
+			</svg>
+
 
 
 			<div main-title>ระบบสวัสดิการ</div>
@@ -74,10 +75,10 @@
 				<paper-icon-button icon="exit-to-app"></paper-icon-button>Logout
 			</div>
 
-			<div style="cursor: pointer" on-tap="login" hidden="{{!hidden}}">
+			<!-- <div style="cursor: pointer" on-tap="login" hidden="{{!hidden}}">
 				<paper-icon-button icon="power-settings-new"></paper-icon-button>
 				Log-in
-			</div>
+			</div> -->
 		</app-toolbar>
 	</template>
 	<script>
@@ -103,7 +104,7 @@
 				if (this.user.id) {
 					if (data.role === 'admin') {
 						this.set('menuIsShow', true)
-					}else {
+					} else {
 						this.set('menuIsShow', false)
 					}
 					this.hidden = false;

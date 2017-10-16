@@ -20,6 +20,8 @@ import {retierReducer,retierAction} from './reducer/retier'
 import {ssoReducer,ssoAction} from './reducer/sso'
 import {fundReducer,fundAction} from './reducer/fund'
 
+// axios.defaults.headers.common['Authorization'] = localStorage.token
+
 const rootReducer = combineReducers({
     commonSystem:commonSystemReducer,
     auth:authReducer,
