@@ -275,27 +275,27 @@ export function userWelfareAction(store) {
                     })
             })
         },
-        EMPLOYEE_USE_RVD(data) {
-            // console.log(data);
-            // clearDatawelfare(data, (newData) => {
-                // console.log(newData);
-                this.fire('toast', { status: 'load' });
-                axios.post(`./history/rvd`, data)
-                    .then(res => {
-                        // this.EMPLOYEE_GET_WELFARES(data.emp_id);
-                        this.fire('toast', {
-                            status: 'success', text: 'บันทึกสำเร็จ',
-                            callback: () => {
-                                // this.$$('panel-right').close();
-                                // this.$$('#welfare_budget').close()
-                            }
-                        });
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
-            // })
-        },
+        // EMPLOYEE_USE_RVD(data) {
+        //     // console.log(data);
+        //     // clearDatawelfare(data, (newData) => {
+        //         // console.log(newData);
+        //         this.fire('toast', { status: 'load' });
+        //         axios.post(`./history/rvd`, data)
+        //             .then(res => {
+        //                 // this.EMPLOYEE_GET_WELFARES(data.emp_id);
+        //                 this.fire('toast', {
+        //                     status: 'success', text: 'บันทึกสำเร็จ',
+        //                     callback: () => {
+        //                         // this.$$('panel-right').close();
+        //                         // this.$$('#welfare_budget').close()
+        //                     }
+        //                 });
+        //             })
+        //             .catch(err => {
+        //                 console.log(err);
+        //             })
+        //     // })
+        // },
         EMPLOYEE_USE_REJECT_RVD(data) {
             // console.log(data);
             // clearDatawelfare(data, (newData) => {

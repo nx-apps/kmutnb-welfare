@@ -11,7 +11,7 @@
 <link rel="import" href="./../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
 <link rel="import" href="./components/history-sso.html">
 <link rel="import" href="./components/history-rvd.html">
-<link rel="import" href="./components/admin-dialog-use-fund.html">
+<!-- <link rel="import" href="./components/admin-dialog-use-fund.html"> -->
 
 <link rel="import" href="../../../bower_components/paper-dialog/paper-dialog.html">
 
@@ -618,45 +618,45 @@
 
 
             },
-            getrvd() {
+            // getrvd() {
 
-                if (this.$$('#admin-dialog-use-fund').validateForm('.required')) {
-                    this.fire('toast', {
-                        status: 'openDialog',
-                        text: 'กรุณายืนยันการทำรายการ ?',
-                        confirmed: (result) => {
-                            if (result == true) {
-                                let date = new Date()
-                                let data = {
-                                    "com_con": 0,
-                                    "com_ear": 0,
-                                    "emp_con": 0,
-                                    "emp_ear": 0,
-                                    "personal_id": this.dataDialog.personal_id,
-                                    "policy_code": this.dataDialog.policy_code,
-                                    "total": 0,
-                                    "fund_name": "",
-                                    "fund_company": "",
-                                    "emp_name": "",
-                                    "fund_date": `${date.getDay()}/${date.getMonth()}/${Number(date.getFullYear()) + 543}`,
-                                    // 31/03/2560
-                                    "fund_month": new Date().getMonth(),
-                                    "fund_year": new Date().getFullYear(),
-                                    "welfare_id": this.dataDialog.welfare_id,
-                                    "group_id": this.dataDialog.group_id,
-                                }
+            //     if (this.$$('#admin-dialog-use-fund').validateForm('.required')) {
+            //         this.fire('toast', {
+            //             status: 'openDialog',
+            //             text: 'กรุณายืนยันการทำรายการ ?',
+            //             confirmed: (result) => {
+            //                 if (result == true) {
+            //                     let date = new Date()
+            //                     let data = {
+            //                         "com_con": 0,
+            //                         "com_ear": 0,
+            //                         "emp_con": 0,
+            //                         "emp_ear": 0,
+            //                         "personal_id": this.dataDialog.personal_id,
+            //                         "policy_code": this.dataDialog.policy_code,
+            //                         "total": 0,
+            //                         "fund_name": "",
+            //                         "fund_company": "",
+            //                         "emp_name": "",
+            //                         "fund_date": `${date.getDay()}/${date.getMonth()}/${Number(date.getFullYear()) + 543}`,
+            //                         // 31/03/2560
+            //                         "fund_month": new Date().getMonth(),
+            //                         "fund_year": new Date().getFullYear(),
+            //                         "welfare_id": this.dataDialog.welfare_id,
+            //                         "group_id": this.dataDialog.group_id,
+            //                     }
 
-                                // console.log(data);
-                                // this.$$('#welfare_budget').close()
-                                // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
-                                this.dispatchAction('EMPLOYEE_USE_RVD', data);
-                                this.$$('#rvd_budget').close()
-                                // }
-                            }
-                        }
-                    })
-                }
-            },
+            //                     // console.log(data);
+            //                     // this.$$('#welfare_budget').close()
+            //                     // if (this.$$('#admin-dialog-use-welfare').validateForm('.required')) {
+            //                     this.dispatchAction('EMPLOYEE_USE_RVD', data);
+            //                     this.$$('#rvd_budget').close()
+            //                     // }
+            //                 }
+            //             }
+            //         })
+            //     }
+            // },
             checkOnce(status) {
                 if (status)
                     return 'ครั้งเดียว'
