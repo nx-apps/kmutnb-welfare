@@ -10,7 +10,7 @@
 <dom-module id="page-login">
     <template>
         <style include="page-style flex-style">
-            paper-material {
+        paper-material {
                 margin-top: 3%;
                 width: 50%;
                 height: auto;
@@ -36,6 +36,14 @@
             .title {
                 text-align: center;
             }
+
+            .loginFaile {
+                font-size: 20px;
+                text-align: center;
+                color: red;
+                font-weight: bold;
+            }
+        }
         </style>
         <div class="xcontainer container flex-center-justified">
             <paper-material elevation="1">
@@ -44,6 +52,11 @@
                         <img src="./../../../images/icon/welfare/128.png"></img>
                     </div>
                     <div class="title gl-default">ระบบสวัสดิการ</div>
+
+                    <template is="dom-if" if={{!loginScuess}}>
+                        <div class="loginFaile">ไม่สามารถเข้าสู่ระบบได้เนื่องจากข้อมูลไม่ถูกต้อง</div>
+                    </template>
+
                     <paper-input label="E-mail" value="{{formLogin.username}}">
                         <div prefix>
                             <iron-icon icon="social:person"></iron-icon>&nbsp;&nbsp;
@@ -77,6 +90,10 @@
                     statePath: 'auth.user',
                     observer: '_decodeJwt'
                 },
+                loginScuess: {
+                    type: Boolean,
+                    value: true
+                }
             },
             signin: function () {
                 // this.AUTH_LOGIN(this.formLogin);
@@ -85,17 +102,28 @@
                         localStorage.setItem("token", res.data.token)
                         // console.log(res);
                         this.authGetUser(res.data.token)
+                        this.set('loginScuess', true)
                     })
                     .catch(err => {
-                        console.log(err);
+                        // console.log(err);
+                        // console.log(1111);
+                        this.set('loginScuess', false)
                     })
 
             },
             _decodeJwt(data) {
                 if (data.hasOwnProperty('emp_id')) {
-                    this.fire('nylon-change-page', {
-                        path: './user-welfare/'
-                    })
+                    // console.log(data);
+                    if (data.role === 'admin') {
+                        this.fire('nylon-change-page', {
+                            path: './admin-dashboard/'
+                        })
+                    } else {
+                        this.fire('nylon-change-page', {
+                            path: './user-welfare/'
+                        })
+                    }
+
                 } else {
                     this.fire('nylon-change-page', {
                         path: '/'

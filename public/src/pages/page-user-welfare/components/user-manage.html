@@ -3,6 +3,8 @@
 <link rel="import" href="../../../../bower_components/gl-form/gl-combo-box.html">
 <link rel="import" href="../../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
 
+<link rel="import" href="../../components/nylon-date-picker/nylon-date-picker.html">
+
 
 <dom-module id="user-manage">
     <style include="page-style iron-flex iron-flex-factors iron-flex-alignment">
@@ -102,7 +104,9 @@
                             <label for="birthdate">{{localize('birthdate')}}  :</label>
                         </div>
                         <div class="flex-2">
-                            <gl-form-input id="hospital" type="date" no-label-float  value="{{data.birthdate}}"disabled="[[disabled]]" class="required" required></gl-form-input>
+                            <!-- <nylon-date-picker id="hospital" no-label-float selected="{{data.birthdate}}" show-bc  disabled="[[disabled]]" class="required" required></nylon-date-picker> -->
+                            <gl-form-input id="hospital" type="date" no-label-float value="{{data.birthdate}}" disabled="[[disabled]]" class="required"
+                                required></gl-form-input>
                             <!--<vaadin-date-picker style="width:200px;" id="birthdate" always-float-label value="{{data.birthdate}}" disabled="[[disabled]]"
                                 ></vaadin-date-picker>-->
                         </div>
@@ -132,13 +136,13 @@
                         </div>
                     </div>
                     <div class="flex layout horizontal">
-                            <!--<div class="flex label">
+                        <!--<div class="flex label">
                                 <label for="start_work_date">{{localize('start_work_date')}} :</label>
                             </div>
                             <div class="flex-2">
                                 <vaadin-date-picker always-float-label value="{{data.start_work_date}}" disabled="[[disabled]]" class="checkValidate" required></vaadin-date-picker>
                             </div>-->
-                        </div>
+                    </div>
                 </div>
                 <div class="from layout horizontal">
                     <div class="flex layout horizontal">
@@ -146,7 +150,10 @@
                             <label for="start_work_date">{{localize('start_work_date')}} :</label>
                         </div>
                         <div class="flex-2">
-                            <gl-form-input id="hospital" type="date" no-label-float  value="{{data.start_work_date}}"disabled="[[disabled]]" class="required" required></gl-form-input>
+                                <!-- <nylon-date-picker style="width: 170px;"
+                                 id="hospital" no-label-float selected="{{data.start_work_date}}" show-bc  disabled="[[disabled]]" class="required" required></nylon-date-picker> -->
+                            <gl-form-input id="hospital" type="date" no-label-float value="{{data.start_work_date}}" disabled="[[disabled]]" class="required"
+                                required></gl-form-input>
                             <!--<vaadin-date-picker always-float-label value="{{data.start_work_date}}" disabled></vaadin-date-picker>-->
                         </div>
                     </div>
@@ -155,13 +162,15 @@
                             <label for="end_work_date">{{localize('end_work_date')}} :</label>
                         </div>
                         <div class="flex-2">
-                            <gl-form-input id="hospital" type="date" no-label-float  value="{{data.end_work_date}}"disabled="[[disabled]]" ></gl-form-input>
+                                <!-- <nylon-date-picker id="hospital" no-label-float selected="{{data.end_work_date}}" show-bc  disabled="[[disabled]]" ></nylon-date-picker> -->
+                            <gl-form-input style="width: 170px;" 
+                            id="hospital" type="date" no-label-float value="{{data.end_work_date}}" disabled="[[disabled]]"></gl-form-input>
                             <!--<vaadin-date-picker id="end_work_date" always-float-label value="{{data.end_work_date}}" disabled></vaadin-date-picker>-->
                         </div>
                     </div>
                 </div>
                 <div class="from layout horizontal">
-                    
+
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="active_id">{{localize('active')}}  :</label>
@@ -181,7 +190,7 @@
 
                 </div>
                 <div class="from layout horizontal">
-                    
+
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="position">{{localize('position')}}  :</label>
@@ -201,7 +210,7 @@
 
                 </div>
                 <div class="from layout horizontal">
-                    
+
                     <div class="flex layout horizontal">
                         <div class="flex label">
                             <label for="academic">{{localize('academic')}}  :</label>
