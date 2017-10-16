@@ -1,4 +1,3 @@
-
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
@@ -11,8 +10,7 @@
 <dom-module id="page-login">
     <template>
         <style include="page-style flex-style">
-
-            paper-material{
+            paper-material {
                 margin-top: 3%;
                 width: 50%;
                 height: auto;
@@ -20,37 +18,38 @@
             }
 
             @media screen and (max-width: 800px) {
-                paper-material{
+                paper-material {
                     width: 60%;
                 }
             }
 
             @media screen and (max-width: 500px) {
-                paper-material{
+                paper-material {
                     width: 100%;
                 }
             }
-            
-            paper-button{
+
+            paper-button {
                 width: 100%;
             }
-            .title{
+
+            .title {
                 text-align: center;
             }
         </style>
-            <div class="xcontainer container flex-center-justified">
-                <paper-material elevation="1">   
+        <div class="xcontainer container flex-center-justified">
+            <paper-material elevation="1">
                 <div class="container bgWhite">
                     <div class="container flex-center-justified">
                         <img src="./../../../images/icon/welfare/128.png"></img>
                     </div>
                     <div class="title gl-default">ระบบสวัสดิการ</div>
-                    <paper-input label="E-mail" value="{{formLogin.user}}">
+                    <paper-input label="E-mail" value="{{formLogin.username}}">
                         <div prefix>
                             <iron-icon icon="social:person"></iron-icon>&nbsp;&nbsp;
                         </div>
                     </paper-input>
-                    <paper-input label="Password" type="Password" value="{{formLogin.pass}}">
+                    <paper-input label="Password" type="Password" value="{{formLogin.password}}">
                         <div prefix>
                             <iron-icon icon="lock"></iron-icon>&nbsp;&nbsp;
                         </div>
@@ -59,24 +58,49 @@
                         <paper-button class="gl-bg-primary" on-tap="signin" raised>เข้าสู่ระบบ</paper-button>
                     </div>
                 </div>
-                </paper-material>
-            </div>
+            </paper-material>
+        </div>
     </template>
     <script>
         Polymer({
             is: 'page-login',
-            behaviors: [ReduxBehavior,authAction],
-            properties:{
-                formLogin:{
-                    type:Object,
-                    value:{
-                        user:'admin@gmail.com',
-                        pass:'123456'
+            behaviors: [ReduxBehavior, authAction],
+            properties: {
+                formLogin: {
+                    type: Object,
+                    value: {
+                        username: '1130100527080',
+                        password: '1234'
                     }
-                }
+                },
+                user: {
+                    statePath: 'auth.user',
+                    observer: '_decodeJwt'
+                },
             },
-            signin:function(){
-                this.AUTH_LOGIN(this.formLogin);
+            signin: function () {
+                // this.AUTH_LOGIN(this.formLogin);
+                this.authLogin(this.formLogin)
+                    .then(res => {
+                        localStorage.setItem("token", res.data.token)
+                        // console.log(res);
+                        this.authGetUser(res.data.token)
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+
+            },
+            _decodeJwt(data) {
+                if (data.hasOwnProperty('emp_id')) {
+                    this.fire('nylon-change-page', {
+                        path: './user-welfare/'
+                    })
+                } else {
+                    this.fire('nylon-change-page', {
+                        path: '/'
+                    })
+                }
             }
         });
     </script>

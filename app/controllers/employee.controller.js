@@ -68,6 +68,7 @@ exports.list = function (req, res) {
             }
         })
         .getField('emp')
+        .limit(12)
         .run()
         .then(function (result) {
             res.json(result);

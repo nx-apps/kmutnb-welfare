@@ -1,0 +1,412 @@
+<link rel="import" href="./../../components/format-number-behavior.html">
+<link rel="import" href="./../../components/common-logic.html">
+<link rel="import" href="./../../components/month-behavior.html">
+<link rel="import" href="./../../components/validateFormBehaviors.html">
+<link rel="import" href="./user-history-welfare.html">
+<link rel="import" href="./dialog-use-welfare.html">
+<link rel="import" href="./../../../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="./../../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
+<link rel="import" href="./../../page-admin-manage/components/history-sso.html">
+<link rel="import" href="./../../page-admin-manage/components/history-rvd.html">
+<dom-module id="user-welfare">
+    <style include="page-style gl-styles gl-size iron-flex iron-flex-factors iron-flex-alignment">
+         :host {
+            display: block;
+        }
+
+        .head-text {
+            font-size: var(--font-size-h4);
+            margin: 15px 15px 15px 15px;
+        }
+
+        table.gl-table-default {
+            width: 98%;
+            border: 1px solid #ddd;
+            /*margin: 15px;*/
+        }
+
+        .label,
+        .inpit {
+            font-size: var(--font-size-h5)
+        }
+
+        .label {
+            text-align: right;
+            padding-right: 5px;
+        }
+
+        .left {
+            text-align: left;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        fieldset {
+            margin: 15px;
+        }
+
+        main {
+            /*min-width: 320px;*/
+            /*max-width: 1000px;*/
+            padding: 5px;
+            margin: 0 auto;
+        }
+
+        section {
+            display: none;
+            /*padding: 20px 0 0;*/
+            border-top: 1px solid #ddd;
+        }
+
+        input {
+            display: none;
+        }
+
+        label {
+            display: inline-block;
+            margin: 0 0 -1px;
+            padding: 15px 25px;
+            font-weight: 600;
+            text-align: center;
+            color: #bbb;
+            border: 1px solid transparent;
+            background: #D5D8DC;
+        }
+
+        label:before {
+            font-family: fontawesome;
+            font-weight: normal;
+            margin-right: 10px;
+        }
+        /*label[for*='1']:before { content: '\f1cb'; }
+            label[for*='2']:before { content: '\f17d'; }*/
+
+        label:hover {
+            color: #888;
+            cursor: pointer;
+        }
+
+        input:checked+label {
+            color: #555;
+            border: 1px solid #ddd;
+            border-top: 3px solid orange;
+            border-bottom: 1px solid #fff;
+            background: #fff;
+        }
+
+        #tab1:checked~#content1,
+        #tab2:checked~#content2,
+        #tab3:checked~#content3,
+        #tab4:checked~#content4 {
+            display: block;
+        }
+
+        user-history-welfare,
+        vaadin-grid {
+            /*margin-top: 15px;*/
+            width: 98%;
+            margin: 10px;
+        }
+
+        .history {
+            margin: 30px 15px;
+            font-size: 25px;
+        }
+
+        paper-dialog {
+            /*position: fixed;*/
+            /*top: 16px;*/
+            /*right: 16px;*/
+            width: 800px;
+            /*height: 300px;*/
+            overflow: auto;
+        }
+
+        vaadin-grid {
+            /*margin-top: 15px;*/
+            height: 480px;
+        }
+    </style>
+    <template>
+
+        <main>
+            <input id="tab1" type="radio" name="tabs" checked on-click="setVaadin">
+            <label for="tab1">{{localize('welfare')}}{{localize('at')}}{{localize('get')}}{{localize('right')}}</label>
+
+            <input id="tab2" type="radio" name="tabs" on-click="setVaadin">
+            <label for="tab2">{{localize('history')}}การ{{localize('use')}}{{localize('welfare')}}</label>
+            <!--<template is="dom-if" if={{data.sso_open}}>-->
+            <input id="tab3" type="radio" name="tabs">
+            <label for="tab3">{{localize('social_security')}}</label>
+            <!--</template>-->
+            <template is="dom-if" if={{data.fund_open}}>
+                <input id="tab4" type="radio" name="tabs">
+                <label for="tab4">{{localize('fund')}}</label>
+            </template>
+            <section id="content1">
+                <gl-form-panel-body label="" set-padding="10px" set-border="1px">
+                    <br>
+                    <div class="content horizontal end-justified layout">
+                        <paper-button raised on-tap="getWelfareHave">
+                            <iron-icon icon="print" style="margin-right: 10px;"></iron-icon> {{localize('welfare')}}{{localize('at')}}{{localize('get')}}{{localize('right')}}
+                        </paper-button>
+                    </div>
+                    <br>
+                    <div class="content horizontal center-justified layout">
+                        <vaadin-grid id="material" items={{data.group_welfares}}>
+                            <vaadin-grid-column width="50px" flex-grow="0">
+                                <template class="header ">
+                                    <div class="text-center">{{localize('order')}}</div>
+                                </template>
+                                <template>
+                                    <div class="text-center">[[_Obindex(index)]]
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+
+                            <vaadin-grid-column width="500px" flex-grow="0" resizable>
+                                <template class="header ">{{localize('firstname')}}
+                                </template>
+                                <template>[[item.group_welfare_name]] [[item.welfare_name]]
+                                    <!--[[checkOnce(item.onetime_use)]]-->
+                                    <!--[[checkVoluntary(item.voluntary_status)]]-->
+                                    [[checkGroup(item.group_use)]]
+                                    <!--[[checkTypeGroup(item.type_group)]]-->
+                                </template>
+                            </vaadin-grid-column>
+
+                            <!--<vaadin-grid-column-group>
+                                <template class="header">
+                                    <div class="text-center">{{localize('number')}}{{localize('money')}} </div>
+                                </template>-->
+
+                            <vaadin-grid-column width="calc(15% - 5px)">
+                                <template class="header">
+                                    <div class="text-right" style="margin-left:10px">{{localize('part_of')}}{{localize('university')}}</div>
+                                </template>
+                                <template>
+                                    <div class="text-right">[[formatNumber(item.budget)]]</div>
+                                </template>
+                            </vaadin-grid-column>
+
+                            <vaadin-grid-column width="calc(15% - 10px)">
+                                <template class="header">
+                                    <div class="text-right">{{localize('part_of')}}{{localize('employee')}}</div>
+                                </template>
+                                <template>
+                                    <div class="text-right">
+                                        [[checkIsBudgetEmp(item.budget_emp,item.budget_emp)]]
+                                        <!--[[formatNumber(item.budget_emp)]]-->
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+
+                            <vaadin-grid-column width="calc(10% - 20px)">
+                                <template class="header">
+                                    <div class="text-right">{{localize('use')}}{{localize('right')}}</div>
+                                </template>
+                                <template>
+                                    <div class="text-right">[[formatNumber(item.budget_use)]]</div>
+                                </template>
+                            </vaadin-grid-column>
+                            <!--<vaadin-grid-column width="calc(10% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">{{localize('pay_person')}}</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">
+                                                        [[checkIsBudgetEmp(item.budget_emp,item.budget_emp_use)]]
+                                                    </div>
+                                                </template>
+                                            </vaadin-grid-column>-->
+
+                            <vaadin-grid-column width="calc(20% - 20px)">
+                                <template class="header">
+                                    <div class="text-right">{{localize('balance')}}</div>
+                                </template>
+                                <template>
+                                    <div class="text-right">[[formatNumber(item.budget_balance)]]</div>
+                                </template>
+                            </vaadin-grid-column>
+
+                            <!--<vaadin-grid-column width="calc(15% - 20px)">
+                                                <template class="header">
+                                                    <div class="text-right">{{localize('balance')}} ({{localize('employee')}})</div>
+                                                </template>
+                                                <template>
+                                                    <div class="text-right">
+                                                        [[checkIsBudgetEmp(item.budget_emp,item.budget_balance_emp)]]
+                                                </template>
+                                            </vaadin-grid-column>-->
+                            <!--</vaadin-grid-column-group>-->
+
+                            <vaadin-grid-column width="150px" flex-grow="0">
+                                <template class="header ">
+                                    <div class="text-center">{{localize('detail')}}</div>
+                                </template>
+                                <template>
+                                    <div class="text-center">
+                                        <paper-button class="gl-btn-primary gl-small" raised on-tap="detailwelfare" data="[[item]]">{{localize('detail')}}</paper-button>
+                                    </div>
+                                </template>
+                            </vaadin-grid-column>
+                        </vaadin-grid>
+                    </div>
+                </gl-form-panel-body>
+
+
+
+            </section>
+
+            <section id="content2">
+                <div class="content horizontal center-justified layout">
+                    <user-history-welfare data={{data}}></user-history-welfare>
+                </div>
+            </section>
+            <section id="content3">
+                <div class="content center-justified layout">
+                    <div class="history">{{localize('social_security')}}</div>
+                    <history-sso data={{data}}></history-sso>
+
+                </div>
+            </section>
+            <section id="content4">
+                <div class="content center-justified layout">
+                    <div class="history">{{localize('fund')}}</div>
+                    <history-rvd data={{data}}></history-rvd>
+                </div>
+            </section>
+        </main>
+        <paper-dialog id="welfare_budget" modal>
+            <paper-dialog-scrollable>
+                <dialog-use-welfare id="dialog-use-welfare" data="{{dataDialog}}" disabled="[[disabled]]"></dialog-use-welfare>
+
+            </paper-dialog-scrollable>
+            <div class="flex horizontal end-justified layout">
+                <paper-button raised class="gl-btn-default" dialog-dismiss>{{localize('close')}}</paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+    <script>
+        Polymer({
+            is: 'user-welfare',
+            behaviors: [ReduxBehavior, FormatNumberBehavior, commonLogic, MonthBehavior, nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
+            properties: {
+                // data:{
+                //     statePath:'users.select_welefares'
+                // },
+                usewelfareProp: {
+                    statePath: 'users.select_use_welefares',
+                    type: Object,
+                },
+                dataSelete: {
+                    type: Object,
+                    value: { budget: 0 }
+                },
+                // year :{
+                //     statePath:'userWelfare.list',
+                //     type:Number,
+                // },
+                disabled: {
+                    type: Boolean,
+                    value: false
+                },
+                year: {
+                    statePath: 'userWelfare.list',
+                    type: Number,
+                },
+            },
+            setVaadin() {
+                // this.async(() => {
+                // //console.log(this.$$('#material'));
+                this.$$('#material').notifyResize()
+                // }, 500);
+            },
+            checkOnce(status) {
+                if (status)
+                    return 'ครั้งเดียว'
+                return 'หลายครั้ง'
+            },
+            checkWelfareFull(data) {
+                try {
+                    if ((data.onetime_use && data.budget_use !== 0)
+                        || data.budget_balance <= 0)
+                        return true
+                } catch (e) {
+                    // //console.log(e);
+                }
+
+            },
+            checkGroup(group) {
+                try {
+                    if (group)
+                        return ' ( กลุ่ม )'
+                    // return 'เดี่ยว'
+                } catch (e) {
+
+                }
+            },
+            checkTypeGroup(typeGroup) {
+                if (typeGroup === 'fund') return 'เปอร์เซ็นต์'
+                return ''
+            },
+            checkZero(budget_emp_use) {
+                if (budget_emp_use <= 0)
+                    return '-'
+                return this.formatNumber(budget_emp_use)
+            },
+            checkVoluntary(voluntary) {
+                try {
+                    if (voluntary)
+                        return 'แบบสมัครใจ'
+                } catch (e) {
+
+                }
+            },
+            _Obindex(index) {
+                return index + 1
+            },
+            checkIsBudgetEmp(budget_emp, budget) {
+                if (budget_emp === 0) {
+                    return '-'
+                } else {
+                    return this.formatNumber(budget)
+                }
+                // console.log(budget_emp,budget);
+            },
+            downloadFile(e) {
+                // //console.log(e.currentTarget.data);
+                window.open('/api/file/download/' + e.currentTarget.data.id)
+            },
+            detailwelfare(e) {
+                let item = e.model.item
+                let data = {
+                    title: item.group_welfare_name + " " + item.welfare_name,
+                    emp_id: this.data.id,
+                    description: item.description,
+                    budget_cover: item.budget_balance,
+                    budget_emp_cover: item.budget_balance_emp,
+                    type_group: item.type_group
+                }
+
+                // console.log(data);
+
+                this.set('dataDialog', data)
+                this.$$('#welfare_budget').open()
+            },
+            getWelfareHave() {
+                // /api/report/emp_welfare?id=000183c1-23db-4af2-937f-3e359400e33c
+                let year = this.year[this.year.length - 1]
+                //console.log(year);
+                window.open('/api/report/emp_welfare?id=' + this.data.id + '&year=' + year.year);
+            }
+        });
+    </script>
+</dom-module>

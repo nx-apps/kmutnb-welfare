@@ -1,0 +1,175 @@
+<link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
+<link rel="import" href="./../../components/format-number-behavior.html">
+<link rel="import" href="./../../components/common-logic.html">
+<dom-module id="user-history-welfare">
+    <template>
+        <style include="page-style gl-styles">
+             :host {
+                display: block;
+            }
+
+            * {
+                font-family: 'CSChatThaiUI', sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            vaadin-grid {
+                height: 480px;
+            }
+        </style>
+        <list-year data="[[listYear.history_welfare_year]]" year="{{year}}"></list-year>
+        <vaadin-grid id="material" items="{{list_history}}">
+
+            <vaadin-grid-column width="50px" flex-grow="0">
+                <template class="header ">
+                    <div class="text-center">{{localize('order')}}</div>
+                </template>
+                <template>
+                    <div class="text-center">[[_Obindex(index)]]
+                    </div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="450px" flex-grow="0">
+                <template class="header">{{localize('welfare')}}{{localize('at')}}{{localize('use')}}</template>
+                <template>[[item.group_welfare_name]] ([[item.welfare_name]])  [[checkTypeGroup(item.type_group)]]</template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="200px" flex-grow="0">
+                <template class="header">
+                    <div class="text-right">{{localize('use')}}{{localize('right')}}
+                    </div>
+                </template>
+                <template>
+                    <div class="text-right">[[formatNumber(item.budget_use)]]
+                    </div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="200px" flex-grow="0">
+                <template class="header">
+                    <div class="text-right">{{localize('pay_person')}}
+                    </div>
+                </template>
+                <template>
+                    <div class="text-right">[[formatNumber(item.budget_emp)]]
+                    </div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column>
+                <template class="header">
+                    <div class="text-right">{{localize('day')}}{{localize('at')}}{{localize('use')}}{{localize('right')}} </div>
+                </template>
+                <template>
+                    <div class="text-center">[[toCCDate(item.date_use)]]
+                    </div>
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column>
+                <template class="header">
+                    <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('approve')}}</div>
+                </template>
+                <template>
+                    <div class="text-center">[[toCCDate(item.date_approve)]]
+                    </div>
+                </template>
+            </vaadin-grid-column>
+
+            <!--<vaadin-grid-column>
+                <template class="header">สถานะ</template>
+                <template>[[item.status]]</template>
+            </vaadin-grid-column>-->
+
+            <vaadin-grid-column width="350px" flex-grow="0" resizable>
+                <template class="header">{{localize('detail')}}
+                </template>
+                <template>
+                    [[item.description_detail]]
+                </template>
+            </vaadin-grid-column>
+
+            <vaadin-grid-column width="350px" flex-grow="0" resizable>
+                <template class="header">
+                    <div class="text-center">{{localize('attachment')}}</div>
+                </template>
+                <template>
+                    <div class="text-center">
+                        <template is="dom-if" if={{item.file}}>
+                            <template is="dom-repeat" items={{item.file}}>
+                                <a href="" on-tap=downloadFile data="[[item]]">[[item.name]]</a>
+                            </template>
+                        </template>
+                        <template is="dom-if" if={{_ObIsHave(item.file)}}>
+                            <div style="text-align: center;">-</div>
+                        </template>
+                    </div>
+                </template>
+            </vaadin-grid-column>
+
+        </vaadin-grid>
+    </template>
+    <script>
+        Polymer({
+            is: 'user-history-welfare',
+            behaviors: [ReduxBehavior, FormatNumberBehavior, nylonBehavior,
+                commonLogic, uploadAction, commonDataAction,
+                MonthBehavior, ValidateFormBehavior, nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
+            properties: {
+                listYear: {
+                    statePath: 'dateDb.listYear',
+                    // observer: 'setYear'
+                },
+                year: {
+                    type: Number,
+                    observer: 'setYear',
+                },
+                list_history: {
+                    statePath: 'userWelfare.list_history_welfare',
+                    observer: "setTabel"
+                }
+            },
+            observers: [
+                'initYear(listYear,data)'
+            ],
+            initYear(year, data) {
+                try {
+                    if (data.personal_id !== undefined) {
+                        let welfare_year = year.history_welfare_year
+                        this.set('year', welfare_year[welfare_year.legth - 1])
+                    }
+                } catch (e) {
+
+                }
+            },
+            setYear(e) {
+                try {
+                    let data = {
+                        year: e,
+                        personal_id: this.data.personal_id
+                    }
+                    this.dispatchAction('EMPLOYEE_HISTORY_WELFARE', this.genUrl(data))
+                } catch (e) {
+
+                }
+            },
+            checkTypeGroup(typeGroup) {
+                // console.log(typeGroup);
+                if (typeGroup === 'fund') return 'เปอร์เซ็นต์'
+                return ''
+            },
+            setTabel(e) {
+                this.$$('#material').notifyResize()
+            },
+            downloadFile(e) {
+                // //console.log(e.currentTarget.data);
+                window.open('/api/file/download/' + e.currentTarget.data.id);
+                // this.dispatchAction('UPLOAD_GET_FILE',e.currentTarget.data.id );
+            },
+        });
+    </script>
+</dom-module>

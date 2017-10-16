@@ -1,0 +1,102 @@
+<link rel="import" href="../../components/common-logic.html">
+<link rel="import" href="../../components/page-style.html">
+<link rel="import" href="../../../../bower_components/paper-material/paper-material.html">
+
+
+<dom-module id="user-list">
+    <style include="gl-styles iron-flex iron-flex-factors iron-flex-alignment page-style">
+         :host {
+            display: block;
+        }
+
+        paper-material {
+            background-color: #FFFFFF;
+            padding-top: 15px;
+            padding-bottom: 15px;
+        }
+
+        paper-material>div.head {
+            padding: 10px;
+            font-size: 35px;
+            /*margin-bottom: 25px;*/
+            text-align: center;
+            @apply(--layout-flex);
+        }
+
+        table.gl-table-default {
+            width: 98%;
+            border: 1px solid #ddd;
+            /*margin: 15px;*/
+        }
+    </style>
+    <template>
+
+        <paper-material elevation="1" class="vertical">
+            <div class="content horizontal center-justified layout">
+                <table class="gl-table-default ">
+                    <thead class="table-head">
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>{{localize('emp_no')}}</th>
+                            <!--<th>คำนำหน้าชื่อ</th>-->
+                            <th>ชื่อ</th>
+                            <th>นามสกุล</th>
+                            <th>ตำแหน่งงาน</th>
+                            <th>สถานภาพการทำงาน</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        <template is="dom-repeat" items=[[lists]] initial-count="20" >
+                            <tr data=[[item]] on-tap="userClick">
+                                <td>[[_Obindex(index)]]</td>
+                                <td>[[item.emp_no]]</td>
+                                <!--<td>[[item.prefixname]]</td>-->
+                                <td>[[item.prefix_name]] [[item.firstname]]</td>
+                                <td>[[item.lastname]]</td>
+                                <td>[[item.position_name]]</td>
+                                <td>[[item.active_name]]</td>
+                            </tr>
+                        </template>
+
+                        <template is="dom-if" if={{_ObIsHave(lists)}}>
+                            <tr>
+                                <td colspan="6" style="text-align: center">ไม่มี{{localize('data')}}</td>
+                            </tr>
+                        </template>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </paper-material>
+    </template>
+    <script>
+        Polymer({
+            is: 'user-list',
+            behaviors: [ReduxBehavior, commonLogic, nylonBehavior,
+                nylonLocalizeBehavior, nylonLocalizeBehavior],
+            created: function () {
+                this.nylonLocalizeImport('/i18n-page1.json');
+            },
+            properties: {
+                lists: {
+                    statePath: 'users.lists'
+                },
+            },
+            userClick(e) {
+                this.fire('_get-user', +e.currentTarget.data.id)
+                // //console.log(1111111111);
+                this.fire('nylon-change-page', { path: '/user-welfare/' + e.currentTarget.data.id })
+                // this.dispatchAction('USER_GET_WELFARES',e.currentTarget.data.id);
+
+                // //console.log(e.currentTarget.data.id)
+            },
+            _Obindex(index) {
+                return index + 1
+            },
+            nylonPageActive() {
+                // //console.log(12152);
+            }
+        });
+    </script>
+</dom-module>

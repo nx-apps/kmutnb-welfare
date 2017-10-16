@@ -97,7 +97,7 @@ export function usersAction(store) {
             // console.log(1)
             axios.get('./employee/list')
                 .then(res => {
-                    // console.log(res.data)
+                    console.log(res.data)
                     store.dispatch({ type: 'USERS_LIST', payload: res.data })
                 })
                 .catch(err => {

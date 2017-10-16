@@ -120,6 +120,10 @@
                 user: {
                     statePath: 'auth.user'
                 },
+                role: {
+					type: String,
+					value: 'user'
+				},
                 listMenu: {
                     type: Array,
                     value: [
@@ -232,6 +236,7 @@
             //     }
             // },
             selectPage: function (e) {
+                
                 // console.log(e.target.firstChild.nextSibling.icon='expand-more');
                 // console.log(e.currentTarget.data.submenu.length < 1);
                 if (e.currentTarget.data.submenu.length < 1) {
