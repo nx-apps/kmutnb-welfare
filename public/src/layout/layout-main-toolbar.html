@@ -9,6 +9,8 @@
 
 <link rel="import" href="../action/authAction-behavior.html">
 
+<link rel="import" href="../dispatchAction-behavior.html">
+
 
 <dom-module id="layout-main-toolbar">
 	<template>
@@ -90,7 +92,7 @@
 	<script>
 		Polymer({
 			is: 'layout-main-toolbar',
-			behaviors: [nylonLocalizeBehavior, ReduxBehavior, authAction],
+			behaviors: [nylonLocalizeBehavior, ReduxBehavior, authAction,dispatchAction],
 			properties: {
 				user: {
 					statePath: 'auth.user',
@@ -142,7 +144,9 @@
 
 				//if (this.user.none=="none") {
 				// oauth.Logout();
-				this.authLogout()
+				console.log(111);
+				this.dispatchAction('authLogout')
+				// this.authLogout()
 				//	} else {
 				//	oauth.Login(function (user) {
 				//console.log(window.location.search);

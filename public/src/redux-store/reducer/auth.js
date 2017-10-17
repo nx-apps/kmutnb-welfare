@@ -91,6 +91,7 @@ export function authAction(store) {
 
         authLogout: function () {
             // return dispatch => {
+            console.log(22222);
             localStorage.removeItem("token")
             // Nylon.redirect('/')
             store.dispatch({ type: 'authGetUser', payload: {} })
