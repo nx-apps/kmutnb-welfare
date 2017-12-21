@@ -18,7 +18,7 @@ exports.list = function (req, res) {
             }
         })
         .filter(function (f) {
-            return f('birthdate_cal').gt(60)
+            return f('birthdate_cal').eq(60)
         })
         .run()
         .then(function (result) {
