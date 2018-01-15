@@ -1,4 +1,4 @@
-var checkLogic = function (select, row) {
+var checkLogic = function (select, row,r) {
     return r.branch(
         select('logic').eq('=='),
         row(select('field_name')).eq(select('value')),
@@ -13,28 +13,28 @@ var checkLogic = function (select, row) {
         row(select('field_name')).ne(select('value'))
     )
 };
-var getEmployee = function (emp, con) {
+var getEmployee = function (emp, con,r) {
     var countCon = con.count();
     return r.branch(countCon.gt(1),
         con.reduce(function (left, right) {
             return r.branch(left.hasFields('data'),
                 {
                     data: left('data').filter(function (f) {
-                        return checkLogic(right, f)
+                        return checkLogic(right, f,r)
                     })
                 },
                 {
                     data: emp.filter(function (f) {
-                        return checkLogic(left, f)
+                        return checkLogic(left, f,r)
                     }).filter(function (f) {
-                        return checkLogic(right, f)
+                        return checkLogic(right, f,r)
                     })
                 }
             )
         })('data'),
         countCon.eq(1),
         emp.filter(function (f) {
-            return checkLogic(con(0), f)
+            return checkLogic(con(0), f,r)
         }),
         emp
     )
@@ -57,7 +57,7 @@ exports.report1 = function (req, res, next) {
     r.db('welfare').table('welfare').get(req.params.id)//.coerceTo('array')
         .merge(function (wel_merge) {
             var conditions = wel_merge('condition');
-            var employeeFilter = getEmployee(emps, conditions);
+            var employeeFilter = getEmployee(emps, conditions,r);
             return {
                 group_welfare_name: r.db('welfare').table('group_welfare').get(wel_merge('group_id')).getField('group_welfare_name'),
                 count_employee: employeeFilter.count(),
@@ -607,7 +607,7 @@ exports.welfare9 = function (req, res) {
         YEAR: req.query.year + '-01' + '-01'
     };
 
-    var checkLogic = function (select, row) {
+    var checkLogic = function (select, row,r) {
         return r.branch(
             select('logic').eq('=='),
             row(select('field_name')).eq(select('value')),
@@ -652,7 +652,7 @@ exports.welfare9 = function (req, res) {
                                             [group_merge('employees')],
                                             wel_merge('condition').map(function (con_map) {
                                                 return group_merge('employees').filter(function (f) {
-                                                    return checkLogic(con_map, f)
+                                                    return checkLogic(con_map, f,r)
                                                 })
                                                     .coerceTo('array').pluck('id')
                                             })
@@ -775,7 +775,7 @@ exports.emp_welfare = function (req, res) {
                 group: r.db('welfare').table('welfare').getAll(param.year, 9999, { index: 'year' }).coerceTo('array')
                     .merge(function (m) {
                         return {
-                            pass: getEmployee(me, m('condition')).ne([])
+                            pass: getEmployee(me, m('condition'),r).ne([])
                         }
                     })
                     .filter({ pass: true })
@@ -867,7 +867,7 @@ exports.welfare10 = function (req, res) {
 
         .concatMap(function (emp_con) {
             var conditions = emp_con('condition');
-            return getEmployee(emp, conditions)
+            return getEmployee(emp, conditions,r)
                 .merge(function (m) {
                     var data_his = his.filter({ emp_id: m('id') });
                     return r.branch(
@@ -923,7 +923,7 @@ exports.welfare10 = function (req, res) {
         });
 }
 exports.group_health = function (req, res) {
-    // var r = req.r
+    var r = req.r
 
     // // var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
     // // var date_end = req.query.date_end + "T00:00:00+07:00";
@@ -989,7 +989,7 @@ exports.group_health = function (req, res) {
 
         .concatMap(function (emp_con) {
             var conditions = emp_con('condition');
-            return getEmployee(emp, conditions)
+            return getEmployee(emp, conditions,r)
         })
         .merge(function (name_merge) {
             return {

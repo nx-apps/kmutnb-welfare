@@ -1,4 +1,4 @@
-var checkLogic = function (select, row) {
+var checkLogic = function (select, row,r) {
     return r.branch(
         select('logic').eq('=='),
         row(select('field_name')).eq(select('value')),
@@ -13,21 +13,21 @@ var checkLogic = function (select, row) {
         row(select('field_name')).ne(select('value'))
     )
 };
-var reduceCondition = function (emp, con) {
+var reduceCondition = function (emp, con,r) {
     var countCon = con.count();
     return r.branch(countCon.gt(1),
         con.reduce(function (left, right) {
             return r.branch(left.hasFields('data'),
                 {
                     data: left('data').filter(function (f) {
-                        return checkLogic(right, f)
+                        return checkLogic(right, f,r)
                     })
                 },
                 {
                     data: emp.filter(function (f) {
-                        return checkLogic(left, f)
+                        return checkLogic(left, f,r)
                     }).filter(function (f) {
-                        return checkLogic(right, f)
+                        return checkLogic(right, f,r)
                     })//.coerceTo('array')
                 }
             )
@@ -70,7 +70,7 @@ exports.list = function (req, res) {
                                     var condition = wel_merge('condition');
                                     return {
                                         countCon: condition.count(),
-                                        emp_budget: reduceCondition(emps, condition).pluck('id')
+                                        emp_budget: reduceCondition(emps, condition,r).pluck('id')
                                     }
                                 })
                                 .without('employees')
@@ -136,7 +136,7 @@ exports.listId = function (req, res) {
                                     var condition = wel_merge('condition');
                                     return {
                                         countCon: condition.count(),
-                                        emp_budget: reduceCondition(emps, condition).count()
+                                        emp_budget: reduceCondition(emps, condition,r).count()
                                     }
                                 })
                                 .without('employees')
@@ -511,6 +511,7 @@ exports.adminEmployee = function (req, res) {
 exports.cloneData = function (req, res) {
     var newyear = req.body.year;
     var cloneGroupid = req.body.cloneGroupid;
+    var r = req.r;
     r.expr(cloneGroupid).forEach(function (fe) {
         return r.db('welfare').table('group_welfare').insert(
             r.db('welfare').table('group_welfare').get(fe('id')).merge(function (m) {

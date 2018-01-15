@@ -49,7 +49,7 @@ exports.upload = function (req, res) {
     // var params = req.params
     var form = new multiparty.Form();
     form.parse(req, function (err, fields, files) {
-
+        const r = req.r
         var prefile = files.file[0];
 
         fs.readFile(prefile.path, function (err, data) {

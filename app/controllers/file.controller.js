@@ -71,7 +71,7 @@ exports.uploadFile = function (req, res) {
 exports.uploadFileadmin = function (req, res) {
     var r = req.r;
     var params = req.params;
-    console.log(req.body);
+    // console.log(req.body);
     var form = new multiparty.Form();
     form.parse(req, function (err, fields, files) {
 

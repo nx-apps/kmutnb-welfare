@@ -5,7 +5,7 @@ var stream = require('stream');
 exports.listFilePath = function (req, res) {
     var r = req.r;
     var params = req.params;
-    console.log(req.query);
+    // console.log(req.query);
     // console.log(req.query.welfare_id);
     r.db('welfare').table('document_file').getAll(req.query.emp_id, { index: 'emp_id' })
         .filter({ welfare_id: req.query.welfareId, file_status: true, doc_status: false })

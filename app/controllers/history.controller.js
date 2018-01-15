@@ -1,5 +1,5 @@
 exports.historyEmp = function (req, res) {
-
+    const r = req.r
     r.db('welfare').table('history_welfare').getAll(req.params.emp_id, { index: 'emp_id' })
         .filter({ status: true })
 
@@ -35,6 +35,7 @@ exports.historyEmp = function (req, res) {
         })
 }
 exports.unapprove = function (req, res) {
+    const r = req.r
     r.db('welfare').table('history_welfare')
         // .filter({status: false})
         .getAll('request', { index: 'status' })
@@ -447,7 +448,7 @@ exports.usegroup = function (req, res) {
                     var condition = em('condition');
                     return {
                         countCon: condition.count(),
-                        reduce: getEmployee(emps, condition).merge((budget) => {
+                        reduce: getEmployee(emps, condition,r).merge((budget) => {
                             return {
                                 budget_balance: 0,
                                 type_group: em('type_group'),
@@ -583,7 +584,7 @@ exports.listHistory = function (req, res) {
     //     .eqJoin('department_id', r.db('welfare_common').table('department')).pluck('left', { right: ['department_name'] }).zip()
     //     .eqJoin('faculty_id', r.db('welfare_common').table('faculty')).pluck('left', { right: ['faculty_name'] }).zip()
     //     .orderBy(r.desc('date_approve'))
-    var checkLogic = function (select, row) {
+    var checkLogic = function (select, row,r) {
         return r.branch(
             select('logic').eq('=='),
             row(select('field')).eq(select('value')),
@@ -678,7 +679,7 @@ exports.listHistory = function (req, res) {
                                     [group_merge('employees').pluck("id")],
                                     wel_merge('condition').map(function (con_map) {
                                         return group_merge('employees').filter(function (f) {
-                                            return checkLogic(con_map, f)
+                                            return checkLogic(con_map, f,r)
                                         }).coerceTo('array').pluck('id')
                                     })
                                 )
@@ -789,7 +790,7 @@ exports.listHistory = function (req, res) {
         })
 }
 
-var checkLogic = function (select, row) {
+var checkLogic = function (select, row ,r) {
     return r.branch(
         select('logic').eq('=='),
         row(select('field_name')).eq(select('value')),
@@ -804,30 +805,30 @@ var checkLogic = function (select, row) {
         row(select('field_name')).ne(select('value'))
     )
 };
-var getEmployee = function (emp, con) {
+var getEmployee = function (emp, con,r) {
     var countCon = con.count();
     return r.branch(countCon.gt(1),
         con.reduce(function (left, right) {
             return r.branch(left.hasFields('data'),
                 {
                     data: left('data').filter(function (f) {
-                        return checkLogic(right, f)
+                        return checkLogic(right, f,r)
                     })
                 },
                 {
                     data: emp
                         .filter(function (f) {
-                            return checkLogic(left, f)
+                            return checkLogic(left, f,r)
                         })
                         .filter(function (f) {
-                            return checkLogic(right, f)
+                            return checkLogic(right, f,r)
                         })
                 }
             )
         })('data'),
         countCon.eq(1),
         emp.filter(function (f) {
-            return checkLogic(con(0), f)
+            return checkLogic(con(0), f,r)
         }),
         emp
     )

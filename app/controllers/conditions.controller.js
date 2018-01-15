@@ -15,6 +15,7 @@ exports.read = function (req, res) {
         })
 }
 exports.listTable = function (req, res) {
+    const r = req.r
     r.db('welfare_common').tableList()
         .run()
         .then(function (result) {
@@ -25,6 +26,7 @@ exports.listTable = function (req, res) {
         })
 }
 exports.listField = function (req, res) {
+    const r = req.r
     r.db('welfare').table('employee')(0).keys()
         .run()
         .then(function (result) {
@@ -52,7 +54,7 @@ exports.insert = function (req, res) {
         })
 }
 exports.delete = function (req, res) {
-    console.log(req.body)
+    // console.log(req.body)
     var r = req.r;
     r.db('welfare').table('condition')
         .get(req.params.id)

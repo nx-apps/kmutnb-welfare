@@ -29,7 +29,7 @@ exports.signup = function (req, res) {
     }
     Object.assign(req.body, data)
 
-    console.log(req.body);
+    // console.log(req.body);
     // r.db('welfare').table('rvd_signup')
     //     .getAll(req.body.personal_id, { index: 'personal_id' })
     //     .merge((check)=>{
@@ -79,6 +79,7 @@ exports.signup = function (req, res) {
         })
 }
 exports.list = function (req, res) {
+    var r = req.r
     r.db('welfare').table('rvd_signup').getAll(req.params.status, { index: 'status' })
         .eqJoin('personal_id', r.db('welfare').table('employee'), { index: 'personal_id' })
         .without({ right: ['id'] })
@@ -126,6 +127,7 @@ exports.list = function (req, res) {
         })
 }
 exports.listAll = function (req, res) {
+    var r = req.r
     r.db('welfare').table('rvd_signup')
         .eqJoin('personal_id', r.db('welfare').table('employee'), { index: 'personal_id' })
         .without({ right: ['id'] })
@@ -262,6 +264,7 @@ exports.leave = function (req, res) {
         })
 }
 exports.fundOut = function (req, res) {
+    var r = req.r
     r.db('welfare').table('rvd_signup')
         .get(req.body.id)
         .update(

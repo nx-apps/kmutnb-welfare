@@ -30,6 +30,7 @@ exports.listyear = function (req, res) {
     //         .pluck('year')
     //         .coerceTo('array')
     // }
+    const r = req.r
     r.expr({
         history_welfare_year: r.db('welfare').table('history_welfare')
             .pluck('date_use')

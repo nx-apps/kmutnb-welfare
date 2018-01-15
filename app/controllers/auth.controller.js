@@ -10,6 +10,8 @@ const secret = require('../../config/secret')
 exports.login = (req, res) => {
     const r = req.r
     const body = req.body
+    console.log('--------------------------------------------');
+    console.log(121212);
     r.table('users').getAll([body.username, sha1(body.password)], { index: 'checkLogin' })
         .pluck('id', 'emp_id', 'username', 'role').coerceTo('array')
         .do(function (info) {

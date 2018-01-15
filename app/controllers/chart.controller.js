@@ -2,7 +2,7 @@ exports.day = (req, res) => {
     //  ดูเงินที่ใช้รายวัน อย่างเดียว
     let group_id = req.query.group_id
     let year = Number(req.query.year || new Date().getFullYear())
-    console.log(group_id, year);
+    // console.log(group_id, year);
     // r.db('welfare').table('history_welfare').filter(function (row) {
     //     return row('date_use').split('T')(0).eq(req.query.date_start)
     // }).filter({ status: 'approve', group_id: group_id })
@@ -26,6 +26,7 @@ exports.day = (req, res) => {
     date.push({
         id: req.query.date_start
     })
+    const r = req.r
     r.expr({
         date: date,
         emp: r.db('welfare').table('group_welfare').getAll(year, { index: 'year' })
@@ -194,7 +195,8 @@ exports.week = (req, res) => {
         date.push({ id: new Date(tomorrow.setDate(tomorrow.getDate() + 1)).toISOString().split('T')[0] })
     }
     let group_id = req.query.group_id
-    console.log(group_id);
+    // console.log(group_id);
+    const r = req.r
     r.expr({
         date: date,
         emp: r.db('welfare').table('group_welfare').getAll(year, { index: 'year' })
@@ -353,6 +355,7 @@ exports.month = (req, res) => {
     let date_start = year + "-" + month + "-01T00:00:00:000Z"
     let date_end = year + "-" + month + "-" + new Date(year, month, 0).getDate() + 'T23:59:59:999Z'
     // console.log(date_start, date_end);
+    const r = req.r
     r.db('welfare').table('group_welfare').getAll(req.query.year, { index: 'year' })
         .filter({ status_approve: true })
         .merge((get_con) => {
@@ -496,6 +499,7 @@ exports.year = (req, res) => {
     }
     let result = 1
     let group_id = req.query.group_id
+    const r = req.r
     r.expr({
         date: date,
         emp: r.db('welfare').table('group_welfare').getAll(year, { index: 'year' })

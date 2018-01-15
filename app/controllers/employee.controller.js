@@ -120,7 +120,7 @@ exports.insert = function (req, res) {
         })
 }
 exports.delete = function (req, res) {
-    console.log(req.body)
+    // console.log(req.body)
     var r = req.r;
 
     r.db('welfare').table('employee')

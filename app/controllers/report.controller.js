@@ -1,4 +1,4 @@
-var checkLogic = function (select, row) {
+var checkLogic = function (select, row, r) {
     return r.branch(
         select('logic').eq('=='),
         row(select('field_name')).eq(select('value')),
@@ -13,28 +13,28 @@ var checkLogic = function (select, row) {
         row(select('field_name')).ne(select('value'))
     )
 };
-var getEmployee = function (emp, con) {
+var getEmployee = function (emp, con, r) {
     var countCon = con.count();
     return r.branch(countCon.gt(1),
         con.reduce(function (left, right) {
             return r.branch(left.hasFields('data'),
                 {
                     data: left('data').filter(function (f) {
-                        return checkLogic(right, f)
+                        return checkLogic(right, f, r)
                     })
                 },
                 {
                     data: emp.filter(function (f) {
-                        return checkLogic(left, f)
+                        return checkLogic(left, f, r)
                     }).filter(function (f) {
-                        return checkLogic(right, f)
+                        return checkLogic(right, f, r)
                     })
                 }
             )
         })('data'),
         countCon.eq(1),
         emp.filter(function (f) {
-            return checkLogic(con(0), f)
+            return checkLogic(con(0), f,r)
         }),
         emp
     )
@@ -57,7 +57,7 @@ exports.report1 = function (req, res, next) {
     r.db('welfare').table('welfare').get(req.params.id)//.coerceTo('array')
         .merge(function (wel_merge) {
             var conditions = wel_merge('condition');
-            var employeeFilter = getEmployee(emps, conditions);
+            var employeeFilter = getEmployee(emps, conditions,r);
             return {
                 group_welfare_name: r.db('welfare').table('group_welfare').get(wel_merge('group_id')).getField('group_welfare_name'),
                 count_employee: employeeFilter.count(),
@@ -180,7 +180,7 @@ exports.report11 = function (req, res, next) {
     var query = r.db('welfare').table('employee');
     //.pluck('position_id','department_id','gender_id');
 
-    var checkLogic = function (select, row) {
+    var checkLogic = function (select, row,r) {
         return r.branch(
             select('logic').eq('=='),
             row(select('field_name')).eq(select('value')),
@@ -197,7 +197,7 @@ exports.report11 = function (req, res, next) {
     };
 
     query.filter(function (row) {
-        return checkLogic(r.expr({ field: "gender_id", logic: '=', value: "c16d1fba-6d2d-4300-8dc6-2b1582e230cd" }), row)
+        return checkLogic(r.expr({ field: "gender_id", logic: '=', value: "c16d1fba-6d2d-4300-8dc6-2b1582e230cd" }), row,r)
     })
         .eqJoin('active_id', r.db('welfare_common').table('active')).without({ right: 'id' }).zip()
         .eqJoin('department_id', r.db('welfare_common').table('department')).without({ right: 'id' }).zip()
@@ -333,7 +333,7 @@ exports.report3 = function (req, res, next) {
     // var month = req.query.month;//03
     var year = parseInt(req.query.year);//2017
     var month = parseInt(req.query.month);//03
-    console.log(year)
+    // console.log(year)
     var parameters = {
         CURRENT_DATE: new Date().toISOString().slice(0, 10),
         SUBREPORT_DIR: __dirname.replace('controller', 'report') + '\\' + req.baseUrl.replace("/api/", "") + '\\',
@@ -389,7 +389,7 @@ exports.report3 = function (req, res, next) {
                                             [group_merge('employees')],
                                             wel_merge('condition').map(function (con_map) {
                                                 return group_merge('employees').filter(function (f) {
-                                                    return checkLogic(con_map, f)
+                                                    return checkLogic(con_map, f,r)
                                                 })
                                                     .coerceTo('array').pluck('id')
                                             })
@@ -516,7 +516,7 @@ exports.report3_1 = function (req, res) {
                                             [group_merge('employees')],
                                             wel_merge('condition').map(function (con_map) {
                                                 return group_merge('employees').filter(function (f) {
-                                                    return checkLogic(con_map, f)
+                                                    return checkLogic(con_map, f,r)
                                                 })
                                                     .coerceTo('array')
                                             })
@@ -1259,7 +1259,7 @@ exports.list_year = function (req, res) {
     var r = req.r
     req.params.year = parseInt(req.params.year);
     // console.log(req.query.year)
-    var checkLogic = function (select, row) {
+    var checkLogic = function (select, row,r) {
         return r.branch(
             select('logic').eq('=='),
             row(select('field_name')).eq(select('value')),
@@ -1309,7 +1309,7 @@ exports.list_year = function (req, res) {
                                             [group_merge('employees')],
                                             wel_merge('condition').map(function (con_map) {
                                                 return group_merge('employees').filter(function (f) {
-                                                    return checkLogic(con_map, f)
+                                                    return checkLogic(con_map, f,r)
                                                 })
                                                     .coerceTo('array')
                                             })
@@ -1365,7 +1365,7 @@ exports.report_test = function (req, res, next) {
     var r = req.r
     req.params.year = parseInt(req.params.year);
 
-    var checkLogic = function (select, row) {
+    var checkLogic = function (select, row,r) {
         return r.branch(
             select('logic').eq('=='),
             row(select('field_name')).eq(select('value')),
@@ -1417,7 +1417,7 @@ exports.report_test = function (req, res, next) {
                                             [group_merge('employees')],
                                             wel_merge('condition').map(function (con_map) {
                                                 return group_merge('employees').filter(function (f) {
-                                                    return checkLogic(con_map, f)
+                                                    return checkLogic(con_map, f,r)
                                                 })
                                                     .coerceTo('array')
                                             })
@@ -1939,7 +1939,7 @@ exports.welfare8 = function (req, res) {
     //     })
     //     .pluck('date_use', 'welfare_name', 'budget_use', 'name')
     r.db('welfare').table('history_welfare')
-        .filter({ 'personal_id': param.personal_id,type_group: 'general' })
+        .filter({ 'personal_id': param.personal_id, type_group: 'general' })
         .filter(function (f) {
             return f('date_approve').date().during(
                 r.ISO8601(date_start),
@@ -2012,7 +2012,7 @@ exports.welfare9 = function (req, res) {
         YEAR: req.query.year + '-01' + '-01'
     };
 
-    var checkLogic = function (select, row) {
+    var checkLogic = function (select, row,r) {
         return r.branch(
             select('logic').eq('=='),
             row(select('field_name')).eq(select('value')),
@@ -2057,7 +2057,7 @@ exports.welfare9 = function (req, res) {
                                             [group_merge('employees')],
                                             wel_merge('condition').map(function (con_map) {
                                                 return group_merge('employees').filter(function (f) {
-                                                    return checkLogic(con_map, f)
+                                                    return checkLogic(con_map, f,r)
                                                 })
                                                     .coerceTo('array').pluck('id')
                                             })
@@ -2171,7 +2171,7 @@ exports.employee = function (req, res) {
 exports.emp_welfare = function (req, res) {
     var param = req.query;
     param.year = Number(param.year);
-
+    var r = req.r
     var me = r.db('welfare').table('employee').getAll(param.id, { index: 'id' }).coerceTo('array')
     me
         .merge(function (wel_merge) {
@@ -2180,7 +2180,7 @@ exports.emp_welfare = function (req, res) {
                 group: r.db('welfare').table('welfare').getAll(param.year, 9999, { index: 'year' }).coerceTo('array')
                     .merge(function (m) {
                         return {
-                            pass: getEmployee(me, m('condition')).ne([])
+                            pass: getEmployee(me, m('condition'),r).ne([])
                         }
                     })
                     .filter({ pass: true })
@@ -2222,7 +2222,7 @@ exports.retire = function (req, res) {
         //  return Math.abs(ageDate.year() - 1970);
         return ageDate.year().sub(1970)
     }
-    console.log(req.query.date)
+    // console.log(req.query.date)
     r.db('welfare').table('employee').getAll(time.date(), { index: 'end_work_date' })//.getAll('WORK', { index: 'active_id' })
         .merge(function (use) {
             return {
@@ -2272,7 +2272,7 @@ exports.welfare10 = function (req, res) {
 
         .concatMap(function (emp_con) {
             var conditions = emp_con('condition');
-            return getEmployee(emp, conditions)
+            return getEmployee(emp, conditions,r)
                 .merge(function (m) {
                     var data_his = his.filter({ emp_id: m('id') });
                     return r.branch(
@@ -2328,7 +2328,7 @@ exports.welfare10 = function (req, res) {
         });
 }
 exports.group_health = function (req, res) {
-    // var r = req.r
+    var r = req.r
 
     // // var date_start = req.query.date_start + "T00:00:00+07:00"; //year+"-"+month+"-01"
     // // var date_end = req.query.date_end + "T00:00:00+07:00";
@@ -2394,7 +2394,7 @@ exports.group_health = function (req, res) {
 
         .concatMap(function (emp_con) {
             var conditions = emp_con('condition');
-            return getEmployee(emp, conditions)
+            return getEmployee(emp, conditions,r)
         })
         .merge(function (name_merge) {
             return {
@@ -2403,7 +2403,7 @@ exports.group_health = function (req, res) {
                 age: calculateAge(name_merge('birthdate'))
             }
         })
-        .pluck('birthdate', 'department_name', 'faculty_name', 'gender_name', 'personal_id', 'name_employee','age')
+        .pluck('birthdate', 'department_name', 'faculty_name', 'gender_name', 'personal_id', 'name_employee', 'age')
         .group('faculty_name').ungroup()
         .merge(function (m) {
             return {
@@ -2444,6 +2444,7 @@ exports.group_health = function (req, res) {
         })
 }
 exports.fund01 = function (req, res) {
+    var r = req.r
     r.db('welfare').table('history_fund').getAll([year, month], { index: 'yearMonth' })
         .run()
         .then(function (result) {

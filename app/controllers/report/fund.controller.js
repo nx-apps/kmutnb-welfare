@@ -1,4 +1,4 @@
-var checkLogic = function (select, row) {
+var checkLogic = function (select, row,r) {
     return r.branch(
         select('logic').eq('=='),
         row(select('field_name')).eq(select('value')),
@@ -13,28 +13,28 @@ var checkLogic = function (select, row) {
         row(select('field_name')).ne(select('value'))
     )
 };
-var getEmployee = function (emp, con) {
+var getEmployee = function (emp, con,r) {
     var countCon = con.count();
     return r.branch(countCon.gt(1),
         con.reduce(function (left, right) {
             return r.branch(left.hasFields('data'),
                 {
                     data: left('data').filter(function (f) {
-                        return checkLogic(right, f)
+                        return checkLogic(right, f,r)
                     })
                 },
                 {
                     data: emp.filter(function (f) {
-                        return checkLogic(left, f)
+                        return checkLogic(left, f,r)
                     }).filter(function (f) {
-                        return checkLogic(right, f)
+                        return checkLogic(right, f,r)
                     })
                 }
             )
         })('data'),
         countCon.eq(1),
         emp.filter(function (f) {
-            return checkLogic(con(0), f)
+            return checkLogic(con(0), f,r)
         }),
         emp
     )

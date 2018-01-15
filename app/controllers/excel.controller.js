@@ -186,6 +186,7 @@ exports.sso = function (req, res) {
     //     .then(function (result) {
     //         res.json(result)
     //     })
+    const r = req.r
     r.db('welfare').table('history_sso').insert(datas)
         .run()
         .then(function (result) {
@@ -271,6 +272,7 @@ exports.wel2emp = function (req, res) {
         })
 }
 exports.emp2wel = function (req, res) {
+    const r = req.r
     var me = r.db('welfare').table('employee')
         .getAll('000183c1-23db-4af2-937f-3e359400e33c', { index: 'id' }).coerceTo('array');
     r.db('welfare').table('welfare')
