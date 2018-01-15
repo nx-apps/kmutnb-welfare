@@ -1,4 +1,5 @@
-var checkLogic = function (select, row,r) {
+var checkLogic = function (select, row,req) {
+    var r = req.r
     return r.branch(
         select('logic').eq('=='),
         row(select('field_name')).eq(select('value')),
@@ -13,28 +14,29 @@ var checkLogic = function (select, row,r) {
         row(select('field_name')).ne(select('value'))
     )
 };
-var reduceCondition = function (emp, con,r) {
+var reduceCondition = function (emp, con,req) {
+    var r = req.r
     var countCon = con.count();
     return r.branch(countCon.gt(1),
         con.reduce(function (left, right) {
             return r.branch(left.hasFields('data'),
                 {
                     data: left('data').filter(function (f) {
-                        return checkLogic(right, f,r)
+                        return checkLogic(right, f,req)
                     })
                 },
                 {
                     data: emp.filter(function (f) {
-                        return checkLogic(left, f,r)
+                        return checkLogic(left, f,req)
                     }).filter(function (f) {
-                        return checkLogic(right, f,r)
+                        return checkLogic(right, f,req)
                     })//.coerceTo('array')
                 }
             )
         })('data'),
         countCon.eq(1),
         emp.filter(function (f) {
-            return checkLogic(con(0), f)
+            return checkLogic(con(0), f,req)
         }),
         emp
     )
@@ -70,7 +72,7 @@ exports.list = function (req, res) {
                                     var condition = wel_merge('condition');
                                     return {
                                         countCon: condition.count(),
-                                        emp_budget: reduceCondition(emps, condition,r).pluck('id')
+                                        emp_budget: reduceCondition(emps, condition,req).pluck('id')
                                     }
                                 })
                                 .without('employees')
@@ -136,7 +138,7 @@ exports.listId = function (req, res) {
                                     var condition = wel_merge('condition');
                                     return {
                                         countCon: condition.count(),
-                                        emp_budget: reduceCondition(emps, condition,r).count()
+                                        emp_budget: reduceCondition(emps, condition,req).count()
                                     }
                                 })
                                 .without('employees')
@@ -331,7 +333,7 @@ exports.adminEmployee = function (req, res) {
                                 [group_merge('employees').pluck("id")],
                                 wel_merge('condition').map(function (con_map) {
                                     return group_merge('employees').filter(function (f) {
-                                        return checkLogic(con_map, f)
+                                        return checkLogic(con_map, f,req)
                                     }).coerceTo('array').pluck('id')
                                 })
                             )
