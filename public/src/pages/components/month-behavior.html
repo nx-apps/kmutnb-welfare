@@ -1,118 +1,137 @@
 <script>
-    MonthBehavior={
-        getMonthName:function(id){
-            let month = ['เดือน','มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม',
-            'มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+    MonthBehavior = {
+        getMonthName: function (id) {
+            let month = ['เดือน', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม',
+                'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
             return month[id];
         },
-        getMonth:function(){
+        getMonth: function () {
             return [
-                        {
-                            id: '1',
-                            name: 'มกราคม'
-                        },
-                        {
-                            id: '2',
-                            name: 'กุมภาพันธ์'
-                        },
-                        {
-                            id: '3',
-                            name: 'มีนาคม'
-                        },
-                        {
-                            id: '4',
-                            name: 'เมษายน'
-                        },
-                        {
-                            id: '5',
-                            name: 'พฤษภาคม'
-                        },
-                        {
-                            id: '6',
-                            name: 'มิถุนายน'
-                        },
-                        {
-                            id: '7',
-                            name: 'กรกฎาคม'
-                        },
-                        {
-                            id: '8',
-                            name: 'สิงหาคม'
-                        },
-                        {
-                            id: '9',
-                            name: 'กันยายน'
-                        },
-                        {
-                            id: '10',
-                            name: 'ตุลาคม'
-                        },
-                        {
-                            id: '11',
-                            name: 'พฤศจิกายน'
-                        },
-                        {
-                            id: '12',
-                            name: 'ธันวาคม'
-                        }
-                    ];
+                {
+                    id: '1',
+                    name: 'มกราคม'
+                },
+                {
+                    id: '2',
+                    name: 'กุมภาพันธ์'
+                },
+                {
+                    id: '3',
+                    name: 'มีนาคม'
+                },
+                {
+                    id: '4',
+                    name: 'เมษายน'
+                },
+                {
+                    id: '5',
+                    name: 'พฤษภาคม'
+                },
+                {
+                    id: '6',
+                    name: 'มิถุนายน'
+                },
+                {
+                    id: '7',
+                    name: 'กรกฎาคม'
+                },
+                {
+                    id: '8',
+                    name: 'สิงหาคม'
+                },
+                {
+                    id: '9',
+                    name: 'กันยายน'
+                },
+                {
+                    id: '10',
+                    name: 'ตุลาคม'
+                },
+                {
+                    id: '11',
+                    name: 'พฤศจิกายน'
+                },
+                {
+                    id: '12',
+                    name: 'ธันวาคม'
+                }
+            ];
         },
-        toThaiDate(date){
+        toThaiDate(date) {
             // //console.log(typeof date);
             try {
-                let year = parseInt(date.split('-')[0])+543,
-                month = date.split('-')[1],
-                day = date.split('-')[2];
-                 return day+'/'+month+'/'+year
+                let year = parseInt(date.split('-')[0]) + 543,
+                    month = date.split('-')[1],
+                    day = date.split('-')[2];
+                return day + '/' + month + '/' + year
             } catch (error) {
                 // //console.log(error);
             }
         },
-        toCCDate(date){
+        toCCDate(date) {
             // //console.log(typeof date);
             try {
                 let year = parseInt(date.split('-')[0]),
-                month = date.split('-')[1],
-                day = date.split('-')[2];
-                 return day+'/'+month+'/'+year
+                    month = date.split('-')[1],
+                    day = date.split('-')[2];
+                return day + '/' + month + '/' + year
             } catch (error) {
                 // //console.log(error);
             }
         },
-        genUrl(url){
+        genUrl(url) {
             let data = new String()
             let url_length = Object.getOwnPropertyNames(url).length
             let count = new Number()
             // //console.log(url);
             url = JSON.parse(JSON.stringify(url))
             for (var variable in url) {
-                if (url[variable] != ''){
-                    data = data+variable+"="+ url[variable];
-                    (count < url_length-1) ? data += '&'  :'';
+                if (url[variable] != '') {
+                    data = data + variable + "=" + url[variable];
+                    (count < url_length - 1) ? data += '&' : '';
                 }
                 count++
             }
             // //console.log(data);
             return data
         },
-        genUrlYearToThai(url){
+        genUrlYearToThai(url) {
             let data = new String()
             let url_length = Object.getOwnPropertyNames(url).length
             let count = new Number()
             // //console.log(url);
             url = JSON.parse(JSON.stringify(url))
             for (var variable in url) {
-                if (url[variable] != ''){
-                    (variable == 'year')? url[variable]= url[variable]-543:''; 
-                    data = data+variable+"="+ url[variable];
-                    (count < url_length-1) ? data += '&'  :'';
+                if (url[variable] != '') {
+                    (variable == 'year') ? url[variable] = url[variable] - 543 : '';
+                    data = data + variable + "=" + url[variable];
+                    (count < url_length - 1) ? data += '&' : '';
                 }
                 count++
             }
             // //console.log(data);
             return data
-        } 
+        },
+        cloneData(data) {
+            return JSON.parse(JSON.stringify(data))
+        },
+        addHours(date, hours = 7) {
+            date = this.cloneData(date)
+            Date.prototype.addHours = function (h) {
+                this.setTime(this.getTime() + (h * 60 * 60 * 1000));
+                return this;
+            }
+            return new Date(date).addHours(hours).toISOString()
+        },
+        changeDate(date) {
+            // let time = new Date(date)
+            date = this.addHours(date)
+            date = date.split("T")[0]
+            // console.log(date);
+            
+            if (date.split('-')[0] !== '9999')
+                return `${date.split('-')[2]}/${date.split('-')[1]}/${Number(date.split('-')[0]) + 543}`
+            return date
+        },
     }
 </script>
-
-

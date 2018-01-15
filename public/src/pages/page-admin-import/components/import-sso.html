@@ -1,5 +1,14 @@
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
+
+<link rel="import" href="../../../../bower_components/gl-form/gl-form-dropdown-menu.html">
+
+<link rel="import" href="../../../../bower_components/paper-listbox/paper-listbox.html">
+
+<link rel="import" href="../../../../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../../components/month-behavior.html">
+
 <link rel="import" href="./../../components/validateFormBehaviors.html">
 <link rel="import" href="./../../components/format-number-behavior.html">
 <link rel="import" href="./../../components/page-style.html">
@@ -8,15 +17,18 @@
         .text-center {
             text-align: center;
         }
+
         .input-file {
             margin: 20px;
         }
+
         .text-center {
             text-align: center;
         }
+
         .text-empty {
-            text-align:right;
-            margin:30px 0px 30px 30px;
+            text-align: right;
+            margin: 30px 0px 30px 30px;
             font-size: h4;
             font-weight: bold;
         }
@@ -46,12 +58,30 @@
                     </template>
                 </vaadin-grid-column>
 
-                <vaadin-grid-column width="300px" flex-grow="0">
+                <vaadin-grid-column width="100px" flex-grow="0">
                     <template class="header">
-                        {{localize('firstname')}}-{{localize('lastname')}}
+                        คำนำหน้าชื่อ
                     </template>
                     <template>
-                        {{item.prefix_name}}{{item.first_name}}{{item.last_name}}
+                        {{item.prefix_name}}
+                    </template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">
+                        {{localize('firstname')}}
+                    </template>
+                    <template>
+                        {{item.first_name}}
+                    </template>
+                </vaadin-grid-column>
+
+                <vaadin-grid-column width="150px" flex-grow="0">
+                    <template class="header">
+                        {{localize('lastname')}}
+                    </template>
+                    <template>
+                        {{item.last_name}}
                     </template>
                 </vaadin-grid-column>
 
@@ -78,7 +108,7 @@
                         <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('issue')}}{{localize('card')}}</div>
                     </template>
                     <template>
-                        <div class="text-center">{{item.issued_date}}</div>
+                        <div class="text-center">{{changeDate(item.issued_date)}}</div>
                     </template>
                 </vaadin-grid-column>
 
@@ -87,7 +117,7 @@
                         <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('card')}}{{localize('expired')}}</div>
                     </template>
                     <template>
-                        <div class="text-center">{{item.expired_date}}</div>
+                        <div class="text-center">{{changeDate(item.expired_date)}}</div>
                     </template>
                 </vaadin-grid-column>
             </vaadin-grid>
@@ -100,7 +130,9 @@
         <template is="dom-if" if={{!_obData(list)}}>
             <vaadin-grid items="{{list_empty}}">
                 <vaadin-grid-column width="5%" flex-grow="0">
-                    <template class="header"><div class="text-center">{{localize('order')}}</div></template>
+                    <template class="header">
+                        <div class="text-center">{{localize('order')}}</div>
+                    </template>
                     <template></template>
                 </vaadin-grid-column>
 
@@ -111,7 +143,9 @@
 
                 <vaadin-grid-column width="20%" flex-grow="0">
                     <template class="header">{{localize('personal_id')}}</template>
-                    <template><div class="text-empty">[[item.name]]</div></template>
+                    <template>
+                        <div class="text-empty">[[item.name]]</div>
+                    </template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column width="20%" flex-grow="0">
@@ -120,13 +154,21 @@
                 </vaadin-grid-column>
 
                 <vaadin-grid-column width="15%" flex-grow="0">
-                    <template class="header"><div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('issue')}}{{localize('card')}}</div></template>
-                    <template><div class="text-center"></div></template>
+                    <template class="header">
+                        <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('issue')}}{{localize('card')}}</div>
+                    </template>
+                    <template>
+                        <div class="text-center"></div>
+                    </template>
                 </vaadin-grid-column>
 
                 <vaadin-grid-column width="15%" flex-grow="0">
-                    <template class="header"><div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('card')}}{{localize('expired')}}</div></template>
-                    <template><div class="text-center"></div></template>
+                    <template class="header">
+                        <div class="text-center">{{localize('day')}}{{localize('at')}}{{localize('card')}}{{localize('expired')}}</div>
+                    </template>
+                    <template>
+                        <div class="text-center"></div>
+                    </template>
                 </vaadin-grid-column>
             </vaadin-grid>
         </template>
@@ -135,7 +177,7 @@
     <script>
         Polymer({
             is: 'import-sso',
-            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior,nylonLocalizeBehavior],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior, nylonLocalizeBehavior,MonthBehavior],
             created: function () {
                 this.nylonLocalizeImport('/i18n-page1.json');
             },
@@ -152,8 +194,8 @@
                     observer: '_selectSheet'
                 },
                 list_empty: {
-                    type:Array,
-                    value: [{name:'ไม่มีข้อมูล'}]
+                    type: Array,
+                    value: [{ name: 'ไม่มีข้อมูล' }]
                 }
             },
             _Obindex: function (index) {
@@ -167,20 +209,24 @@
                     sheet: this.selectSheet
                 };
                 var check = this.validateForm('.checkValidate');
-                if(check === true){
-                    if(this.selectSheet !== undefined){
+                if (check === true) {
+                    if (this.selectSheet !== undefined) {
                         this.dispatchAction('SSO_PREVIEW_DATA', data);
                         // uploadDis.disabled = true;
                         // dropDis.disabled = true;
-                    }else{
-                        this.fire('toast',{status:'connectError',text:'กรุณาเลือกไฟล์ที่จะอัพโหลด',
-                        callback:() => {
-                        }})
+                    } else {
+                        this.fire('toast', {
+                            status: 'connectError', text: 'กรุณาเลือกไฟล์ที่จะอัพโหลด',
+                            callback: () => {
+                            }
+                        })
                     }
-                }else{
-                     this.fire('toast',{status:'connectError',text:'กรุณาเลือกชีท',
-                     callback: ()=> {
-                     }})
+                } else {
+                    this.fire('toast', {
+                        status: 'connectError', text: 'กรุณาเลือกชีท',
+                        callback: () => {
+                        }
+                    })
                 }
             },
             _insert: function () {
@@ -222,15 +268,15 @@
                     dropDis.disabled = true;
                 }
             },
-            _obData:function(data){
-                if(data.length > 0){
+            _obData: function (data) {
+                if (data.length > 0) {
                     return true
-                }else{
+                } else {
                     return false
                 }
             },
-            _selectSheet:function(e){
-                this.set('selectSheet',e[0]);
+            _selectSheet: function (e) {
+                this.set('selectSheet', e[0]);
             }
         })
     </script>

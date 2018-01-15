@@ -1,5 +1,12 @@
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid-column-group.html">
+
+<link rel="import" href="../../../../bower_components/gl-form/gl-form-dropdown-menu.html">
+<link rel="import" href="../../../../bower_components/paper-listbox/paper-listbox.html">
+
+<link rel="import" href="../../components/month-behavior.html">
+
+<link rel="import" href="../../../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="./../../components/validateFormBehaviors.html">
 <link rel="import" href="./../../components/format-number-behavior.html">
 <link rel="import" href="./../../components/page-style.html">
@@ -111,7 +118,7 @@
                         {{localize('day')}}{{localize('at')}}{{localize('calculate')}}
                     </template>
                     <template>
-                        {{item.fund_date}}
+                        {{changeDate(item.fund_date)}}
                     </template>
                 </vaadin-grid-column>
             </vaadin-grid>
@@ -160,7 +167,7 @@
     <script>
         Polymer({
             is: 'import-fund',
-            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior,nylonLocalizeBehavior],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior,nylonLocalizeBehavior,MonthBehavior],
             created: function () {
                 this.nylonLocalizeImport('/i18n-page1.json');
             },
