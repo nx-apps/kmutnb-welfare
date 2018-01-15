@@ -20,6 +20,8 @@ exports.list = function (req, res) {
         .filter(function (f) {
             return f('birthdate_cal').eq(60)
         })
+        .pluck(['personal_id','birthdate','birthdate_cal','prefix_name','firstname','lastname',
+        'type_employee_name','start_work_date','start_work_date_cal'])
         .run()
         .then(function (result) {
             res.json(result);
