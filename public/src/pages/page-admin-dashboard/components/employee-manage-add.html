@@ -169,8 +169,9 @@
                                 <label for="start_work_date">{{localize('start_work_date')}} :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-form-input id="hospital" type="date" no-label-float value="{{data.start_work_date}}" disabled="[[disabled]]" class="checkValidate"
-                                    required></gl-form-input>
+                                    <nylon-date-picker id="hospital" no-label-float selected="{{data.start_work_date}}" show-bc disabled="[[disabled]]"></nylon-date-picker>
+                                <!-- <gl-form-input id="hospital" type="date" no-label-float value="{{data.start_work_date}}" disabled="[[disabled]]" class="checkValidate" -->
+                                    <!-- required></gl-form-input> -->
                             </div>
                         </div>
                         <div class="flex layout horizontal">
@@ -178,7 +179,8 @@
                                 <label for="end_work_date">{{localize('end_work_date')}} :</label>
                             </div>
                             <div class="flex-2">
-                                <gl-form-input id="hospital" type="date" no-label-float  value="{{data.end_work_date}}"disabled="[[disabled]]" ></gl-form-input>
+                                    <nylon-date-picker id="hospital" no-label-float selected="{{data.end_work_date}}" show-bc disabled="[[disabled]]"></nylon-date-picker>
+                                <!-- <gl-form-input id="hospital" type="date" no-label-float  value="{{data.end_work_date}}"disabled="[[disabled]]" ></gl-form-input> -->
                             </div>
                         </div>
 

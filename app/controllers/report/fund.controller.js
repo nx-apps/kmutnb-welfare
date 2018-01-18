@@ -48,7 +48,8 @@ function monthDiff(d1, d2) {
 }
 var arr_month = ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 
-function getMonth(month) {
+function getMonth(month,req) {
+    var r = req.r;
     return r.expr(["", "มกราคม", "กุมภาพันธ์", "มีนาคม", 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'])(month)
 }
 
@@ -199,7 +200,7 @@ exports.fund02 = function (req, res) {
     r.expr({
         data: r.db('welfare').table('history_fund')
             .getAll([param.year, param.personal_id], { index: 'yearPID' })
-            .merge({ fund_month: getMonth(r.row('fund_month')) })//.orderBy('fund_month')
+            .merge({ fund_month: getMonth(r.row('fund_month'),req) })//.orderBy('fund_month')
             .coerceTo('array')
     })
         .merge(function (m) {
