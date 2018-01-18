@@ -7,7 +7,8 @@
     "start": "npm-run-all --parallel nylon redux",
     "nylon": "nylon-cli serve 3000",
     "build": "cd public && polymer build",
-    "redux": "webpack"
+    "redux": "webpack",
+    "polyserve": "polymer serve ./public/build/default --port 8086"
   },
   "author": "",
   "license": "ISC",
