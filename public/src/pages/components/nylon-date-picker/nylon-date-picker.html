@@ -48,19 +48,28 @@
       div {
         font-size: 10px
       }
-
+      label{
+        pointer-events: none;  
+        font-family: 'rsuregular' !important;
+        font-weight: bold !important;
+        font-size: 22px !important;
+      }
       paper-input-container {
         /* --paper-input-container-color: var(--my-toolbar-title-color); */
         --paper-input-container-underline: {
           border-bottom: var(--paper-input-border-success);
         }
+        --paper-input-container-disabled:{
+            opacity: 1;
+        }
+        --paper-input-container-underline-disabled:{
+            display: none;
+        }
       }
-
-
 
       paper-icon-button {
         color: #8d8d8d;
-        width: 34px;
+        width: 32px;
         -o-transition: color .2s ease-out;
         -ms-transition: color .2s ease-out;
         -moz-transition: color .2s ease-out;
@@ -101,11 +110,16 @@
         <input is="iron-input" bind-value="{{yearBe}}" class="inputDate" style="text-align: center;" maxlength="4" allowed-pattern="[0-9]" aria-label="Last 4 digits of year"
           on-focusout="checkYear" on-focus="_setSeleteValue">
       </div>
-      <paper-input-error>Date invalid!</paper-input-error>
-      <paper-icon-button suffix icon="nylon-data-icon:calendar" on-tap="openCalendar"></paper-icon-button>
+      <paper-input-error>รูปแบบวันที่ผิดพลาด!</paper-input-error>
+      
+      <template is="dom-if" if={{!disabled}}>
+          <paper-icon-button suffix icon="nylon-data-icon:calendar" hidden="{{!disabled}}" on-tap="openCalendar"></paper-icon-button>
+      </template>
+      
+      
     </paper-input-container>
 
-
+<!-- ปิดการเช็ควันออกไป ออกก่อน  -->
     <!-- [[selected]] /// [[showBc]]//
     <br> [[selectedBe]]// -->
 
@@ -132,9 +146,8 @@
         },
         selected: {
           type: String,
-          // observer: '_selectedChanged',
           notify: true,
-          value: '2017-9-15',
+          value: '2016-02-29',
           // value: new Date().toISOString()
           // 2017-1-15
         },

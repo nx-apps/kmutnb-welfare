@@ -17,6 +17,8 @@
 
 <link rel="import" href="../../../bower_components/gl-form/gl-form-input.html">
 
+<link rel="import" href="../components/nylon-date-picker/nylon-date-picker.html">
+
 <!-- <link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html"> -->
 
 
@@ -160,13 +162,15 @@
         <paper-dialog id="report" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
-                    <gl-form-input type="date" always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_start}}"></gl-form-input>
+                        <nylon-date-picker id="hospital" always-float-label label="{{localize('day')}}{{localize('at')}}" selected="{{data.date_start}}" show-bc ></nylon-date-picker>
+                    <!-- <gl-form-input type="date" always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_start}}"></gl-form-input> -->
 
                     <!-- <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_start}}"></vaadin-date-picker> -->
                 </div>
                 <div style="margin: 31px 10px;">{{localize('to')}}</div>
                 <div class="flex" style=" margin-right: 30px">
-                    <gl-form-input id="hospital" type="date" always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_end}}"></gl-form-input>
+                        <nylon-date-picker id="hospital" always-float-label label="{{localize('day')}}{{localize('at')}}" selected="{{data.date_end}}" show-bc ></nylon-date-picker>
+                    <!-- <gl-form-input id="hospital" type="date" always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_end}}"></gl-form-input> -->
 
                     <!-- <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date_end}}"></vaadin-date-picker> -->
                 </div>
@@ -180,8 +184,9 @@
         <paper-dialog id="RETIREMENT" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
-                    <gl-form-input id="hospital" type="date" always-float-label label="{{localize('day')}}{{localize('at')}}" no-label-float
-                        value="{{data.date}}"></gl-form-input>
+                    <!-- <gl-form-input id="hospital" type="date" always-float-label label="{{localize('day')}}{{localize('at')}}" no-label-float
+                        value="{{data.date}}"></gl-form-input> -->
+                        <nylon-date-picker id="hospital" always-float-label label="{{localize('day')}}{{localize('at')}}" selected="{{data.date}}" show-bc ></nylon-date-picker>
                     <!-- <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date}}"></vaadin-date-picker> -->
                 </div>
             </div>

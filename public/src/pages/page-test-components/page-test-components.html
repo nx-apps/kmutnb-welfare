@@ -1,0 +1,106 @@
+
+<link rel="import" href="../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
+้
+
+<link rel="import" href="../components/nylon-date-picker/nylon-date-picker.html">
+
+<dom-module id="page-test-components">
+    <template>
+        <style>
+            nylon-date-picker{
+                width: 160px;
+            }
+        </style>
+        <div class="container">
+            <div class="header"> page-test-components </div>
+            awewr
+            <!-- <date-picker></date-picker> -->
+            {{data}}
+            <!-- <vaadin-date-picker label="Birthday" i18n="{{i18n}}" value="{{car}}"></vaadin-date-picker> -->
+
+            <nylon-date-picker id="tesst" no-label-float selected="{{data}}" show-bc></nylon-date-picker>
+        </div>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'page-test-components',
+            behaviors: [nylonLocalizeBehavior],
+            properties: {
+                i18n: {
+                    type: Object,
+                    value: {
+                        // An array with the full names of months starting
+                        // with January.
+                        monthNames: [
+                            'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม',
+                            'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
+                            'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+                        ],
+
+                        // An array of weekday names starting with Sunday. Used
+                        // in screen reader announcements.
+                        weekdays: [
+                            'อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ',
+                            'พฤหัสบดี', 'ศุกร์', 'เสาร์'
+                        ],
+
+                        // An array of short weekday names starting with Sunday.
+                        // Displayed in the calendar.
+                        weekdaysShort: [
+                            'อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'
+                        ],
+
+                        // An integer indicating the first day of the week
+                        // (0 = Sunday, 1 = Monday, etc.).
+                        firstDayOfWeek: 0,
+
+                        // Used in screen reader announcements along with week
+                        // numbers, if they are displayed.
+                        week: 'Week',
+
+                        // Translation of the Calendar icon button title.
+                        calendar: 'Calendar',
+
+                        // Translation of the Clear icon button title.
+                        clear: 'ลบ',
+
+                        // Translation of the Today shortcut button text.
+                        today: 'วันนี้',
+
+                        // Translation of the Cancel button text.
+                        cancel: 'ยกเลิก',
+
+                        // A function to format given `Date` object as
+                        // date string.
+                        formatDate: function (d) {
+                            // returns a string representation of the given
+                            // Date object in 'MM/DD/YYYY' -format
+                        },
+
+                        // A function to parse the given text to a `Date`
+                        // object. Must properly parse (at least) text
+                        // formatted by `formatDate`.
+                        // Setting the property to null will disable
+                        // keyboard input feature.
+                        parseDate: function (text) {
+                            // Parses a string in 'MM/DD/YY', 'MM/DD' or 'DD' -format to
+                            // a Date object
+                        },
+
+                        // A function to format given `monthName` and
+                        // `fullYear` integer as calendar title string.
+                        formatTitle: function (monthName, fullYear) {
+                            console.log(typeof fullYear);
+                            return monthName + ' ' + Number(fullYear)+543;
+                        }
+
+                    }
+                },
+            },
+            created: function () {
+                this.nylonLocalizeImport('/404.json');
+            }
+        });
+    </script>
+</dom-module>

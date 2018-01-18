@@ -15,6 +15,8 @@
 <link rel="import" href="../../../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../../../bower_components/paper-button/paper-button.html">
 
+<link rel="import" href="../../components/nylon-date-picker/nylon-date-picker.html">
+
 
 <dom-module id="group-welfare-manage">
     <template>
@@ -94,10 +96,12 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <gl-form-input  type="date" class="checkValidate" required disabled="{{isEnable}}" label="{{localize('date')}}เริ่ม{{localize('use')}}{{localize('work')}} :" value="{{data.start_date}}"></vaadin-date-picker>
+                            <nylon-date-picker id="hospital" class="checkValidate" required disabled="{{isEnable}}" label="{{localize('date')}}เริ่ม{{localize('use')}}{{localize('work')}} :" selected="{{data.start_date}}" show-bc ></nylon-date-picker>
+                        <!-- <gl-form-input  type="date" class="checkValidate" required disabled="{{isEnable}}" label="{{localize('date')}}เริ่ม{{localize('use')}}{{localize('work')}} :" value="{{data.start_date}}"></vaadin-date-picker> -->
                     </gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <gl-form-input  type="date" disabled="{{isEnable}}" label="{{localize('date')}}{{localize('finished')}}{{localize('use')}}{{localize('work')}} :" value="{{data.end_date}}"></vaadin-date-picker>
+                            <nylon-date-picker id="hospital" disabled="{{isEnable}}" label="{{localize('date')}}{{localize('finished')}}{{localize('use')}}{{localize('work')}} :" selected="{{data.end_date}}" show-bc ></nylon-date-picker>
+                        <!-- <gl-form-input  type="date" disabled="{{isEnable}}" label="{{localize('date')}}{{localize('finished')}}{{localize('use')}}{{localize('work')}} :" value="{{data.end_date}}"></vaadin-date-picker> -->
                     </gl-grid-col>
                 </gl-grid-row>
                 
@@ -111,7 +115,8 @@
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                        <gl-form-input  type="date" disabled="{{isEnable}}" label="{{localize('date')}}{{localize('use')}}{{localize('calculate')}} :" value="{{data.cal_date}}"></vaadin-date-picker>
+                            <nylon-date-picker id="hospital" disabled="{{isEnable}}" label="{{localize('date')}}{{localize('use')}}{{localize('calculate')}} :" selected="{{data.cal_date}}" show-bc ></nylon-date-picker>
+                        <!-- <gl-form-input  type="date" disabled="{{isEnable}}" label="{{localize('date')}}{{localize('use')}}{{localize('calculate')}} :" value="{{data.cal_date}}"></vaadin-date-picker> -->
                     </gl-grid-col>
                 </gl-grid-row>
 

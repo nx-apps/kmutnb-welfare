@@ -147,7 +147,7 @@
 
                 span,
                 .n {
-                    cursor: pointer
+                    cursor: pointer;
                 }
             </style>
         </custom-style>
@@ -156,8 +156,12 @@
             <div class="calendar">
                 <div class="months">
                     <div class="month" data-date="2011.1">
-                        <div class="header"><span class="n" on-click="previousYear">&#60&#60</span>&nbsp;&nbsp;<span class="n" on-click="previousMonth">&#60</span>&nbsp;&nbsp;&nbsp;&nbsp;[[monthAndYear]]&nbsp;&nbsp;&nbsp;&nbsp;
-                            <span class="n" on-click="nextMonth">&#62</span>&nbsp;&nbsp;<span on-click="nextYear" class="n">&#62&#62</span></div>
+                        <div class="header">
+                            <span class="n year" on-click="previousYear">&#60&#60</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="n" on-click="previousMonth">&#60</span>&nbsp;&nbsp;&nbsp;&nbsp;[[monthAndYear]]&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="n" on-click="nextMonth">&#62</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span on-click="nextYear" class="n">&#62&#62</span>
+                        </div>
                         <div class="body">
 
                             <div class="day_names">
@@ -255,9 +259,9 @@
                 this.renderCalendar()
             },
             checkDayLimit(dayBe) {
-                // console.log('checkDayLimit');
-                if (Number(dayBe) > this._getlastDateOfCurrentMonth(Number(this.yearBe), Number(this.monthBe - 1))) {
-                    this.set('dayBe', this._getlastDateOfCurrentMonth(Number(this.yearBe), Number(this.monthBe - 1)));
+                let lastInMonth = this._getlastDateOfCurrentMonth(Number(this.yearBe) - 543, Number(this.monthBe - 1))
+                if (Number(dayBe) > lastInMonth) {
+                    this.set('dayBe', lastInMonth);
                 }
             },
             checkMonthLimit(monthBe) {
@@ -289,24 +293,26 @@
             },
             checkDateBe(dayBe, monthBe, yearBe) {
                 // console.log('checkDateBe');
-                
                 this.debounce('searchInput', () => {
                     if (dayBe !== undefined && dayBe <= 31 && dayBe !== ''
                         && monthBe !== undefined && Number(monthBe) <= 12 && monthBe !== ''
                         && yearBe !== undefined && yearBe !== ''
                         && !isNaN(dayBe) && !isNaN(monthBe) && !isNaN(yearBe)) {
-
+                        // console.log(11111);
                         dayBe = this.checkDay(dayBe)
                         monthBe = this.checkMonth(monthBe)
                         // console.log(dayBe, monthBe, yearBe);
-                        if (this.showBc) {
-                            this.set('selectedBe', dayBe + '/' + monthBe + '/' + yearBe)
-                        } else {
-                            this.set('selected', yearBe + '-' + monthBe + '-' + dayBe)
-                            // this.selected = (`${yearBe}-${monthBe}-${dayBey}`)
+                        if (Number(yearBe) > 543) {
+                            if (this.showBc) {
+                                this.set('selectedBe', dayBe + '/' + monthBe + '/' + yearBe)
+                            } else {
+                                this.set('selected', yearBe + '-' + monthBe + '-' + dayBe)
+                                // this.selected = (`${yearBe}-${monthBe}-${dayBey}`)
+                            }
                         }
+                        // console.log(this.selectedBe , this.selected);
                     }
-                }, 500)
+                }, 1)
             },
             // // end checkDate
             init() {
@@ -329,8 +335,6 @@
             },
 
             renderCalendar() {
-                // console.log('renderCalendar');
-                // console.log(this.currentYear, this.currentMonth);
                 this.calendar(this.currentYear, this.currentMonth)
             },
             _getfirstDayOfCurrentMonth(y, m) {
@@ -483,6 +487,7 @@
                 // this.selected = rawDate
                 // let date = this.selected
                 let date = rawDate
+                // console.log(date);
                 // console.log(date.split('-')[1])
                 // console.log(this.setZeroBefore(date.split('-')[1]));
                 this.set('dayBe', date.split('-')[2])
@@ -513,8 +518,10 @@
                 if (select[1] > 12) {
                     date = `${select[0]}/${thisMonth + 1}/${select[2]}`
                 }
-                if (select[0] > this._getlastDateOfCurrentMonth(select[2], select[1] - 1)) {
+                if (select[0] > this._getlastDateOfCurrentMonth(select[2] - 543, select[1] - 1)) {
                     date = `${thisDay}/${select[1]}/${select[2]}`
+                } else {
+                    date = `${select[0]}/${select[1]}/${select[2]}`
                 }
                 if (select[2] > 9998) {
                     date = `${select[0]}/${select[1]}/${thisYear + 543}`
@@ -525,6 +532,11 @@
                 return date
             },
             _checkDateDc(dates) {
+                if (dates === null)
+                    return
+                if (dates === undefined)
+                    return
+                // console.log(dates);
                 // console.log('_checkDateDc');
                 let select = dates.split('-')
                 let thisDay = new Date().getDate()
@@ -547,51 +559,30 @@
 
 
             },
-            _checkDatePassBc(select) {
-                // console.log('_checkDatePassBc');
-                if (select.length > 2) {
-                    return select[2].length >= 4 && select[2] < 9999 &&
-                        select[1].length >= 1 && select[1] < 13 &&
-                        select[0].length >= 1 && Number(select[0]) <= this._getlastDateOfCurrentMonth(select[2], select[1] - 1)
-                } else {
-                    return false
-                }
 
-            },
-            _checkDatePassDc(select) {
-                // console.log('_checkDatePassDc');
-                if (select.length > 2) {
-                    return select[0].length >= 4 && Number(select[0]) < 9999 &&
-                        select[1].length >= 1 && Number(select[1]) < 13 &&
-                        select[2].length >= 1 && Number(select[2]) <= this._getlastDateOfCurrentMonth(select[2], select[1] - 1)
-                } else {
-                    return false
-                }
-            },
+           
             _selectedChanged(selected) {
+                // console.log(selected);
+                if (selected === null || selected === undefined || selected === '')
+                    return
+                if (selected === undefined)
+                    return
                 // console.log('_selectedChanged');
-                //เช็คว่าค่าว่างมาไหม
+                // เช็คว่าค่าว่างมาไหม
                 // console.log(selected);
                 if (selected !== '' && selected !== undefined) {
+
                     selected = this._checkDateDc(selected)
                     var select = selected.split('-')
-                    // console.log(select);
-                    // console.log(this._checkDatePassDc(this.selected));
-                    if (this._checkDatePassDc(select)) {
-                        // console.log(parseInt(select[2]))
-                        this.selectData = {
-                            day: select[2],
-                            month: parseInt(select[1]) - 1,
-                            year: parseInt(select[0])
-                        }
-                        this.selectedBe = `${this.selectData.day}/${this.selectData.month + 1}/${this.selectData.year + 543}`
-                        this.currentYear = this.selectData.year
-                        this.currentMonth = this.selectData.month
-                        // console.log(this.selectedBe);
-                        this.renderCalendar()
-                        // } else {
-                        //     // this.set('selected', new Date().toISOString().split('T')[0])
+                    this.selectData = {
+                        day: select[2],
+                        month: parseInt(select[1]) - 1,
+                        year: parseInt(select[0])
                     }
+                    this.selectedBe = `${this.selectData.day}/${this.selectData.month + 1}/${this.selectData.year + 543}`
+                    this.currentYear = this.selectData.year
+                    this.currentMonth = this.selectData.month
+                    this.renderCalendar()
                 }
             },
 
@@ -599,10 +590,6 @@
                 // console.log('_selectedBeChanged');
                 selectedBe = this._checkDateBc(selectedBe)
                 var select = selectedBe.split('/')
-                // var select = selectedBe.split('/')
-                // console.log(select);
-                // this._checkDateBc(select)
-                // console.log(select[0]);
                 this.set('dayBe', select[0])
                 this.set('monthBe', select[1])
                 if (this.showBc) {
@@ -610,17 +597,13 @@
                 } else {
                     this.set('yearBe', Number(select[2]) - 543)
                 }
-                // console.log(this._checkDatePassBc(select));
-                // console.log(select);
-                if (this._checkDatePassBc(select)) {
-                    var selectData = {
-                        day: select[0],
-                        month: this.setZeroBefore(select[1]),
-                        year: parseInt(select[2] - 543)
-                    }
-                    this.selected = (`${selectData.year}-${selectData.month}-${selectData.day}`)
-                    // console.log(this.selected);
+                var selectData = {
+                    day: select[0],
+                    month: this.setZeroBefore(select[1]),
+                    year: parseInt(select[2] - 543)
                 }
+                this.selected = (`${selectData.year}-${selectData.month}-${selectData.day}`)
+
             }
         });
     </script>
