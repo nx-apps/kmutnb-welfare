@@ -234,12 +234,6 @@
                     text: 'ยืนยันการเกษียณใช่รึไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
-                            // //console.log(newArray);
-                            // console.log(newArray);
-                            // newArray.map((data) => {
-                            //     // console.log(data);
-                            //     this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
-                            // })
                             this.fire('toast', { status: 'load' });
                             this.dispatchAction('UPDATE_RETIREMENT_EMP', newArray);
                             this.async(() => {

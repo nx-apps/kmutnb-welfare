@@ -40,10 +40,6 @@ export function retierAction(store) {
             axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.put('/retier/update', emp)
                 .then((result) => {
-                    // console.log(result.data);
-                    // result.data.map((item) => {
-                    //     return item.check = true
-                    // })
                     this.fire('toast', {
                         status: 'success', text: 'โหลดข้อมูลสำเร็จ', callback: () => {
                             // store.dispatch({ type: 'RETIER_SEARCH', payload: result.data })
