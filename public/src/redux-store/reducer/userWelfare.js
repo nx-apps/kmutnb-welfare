@@ -420,28 +420,28 @@ export function userWelfareAction(store) {
                     })
             })
         },
-        EMPLOYEE_UPDATE_RETIREMENT(data) {
-            this.fire('toast', { status: 'load' })
-            clearData(data, (newData) => {
-                // console.log(newData);
-                // this.fire('toast', { status: 'load' });
-                newData.id = data.id
-                // console.log(newData);
-                axios.defaults.headers.common['Authorization'] = localStorage.token
-                axios.put(`/employee/update`, newData)
-                    .then(res => {
-                        this.fire('toast', {
-                            status: 'success', text: 'บันทึกสำเร็จ',
-                            callback: () => {
-                                console.log(111);
-                            }
-                        });
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    })
-            })
-        },
+        // EMPLOYEE_UPDATE_RETIREMENT(data) {
+        //     this.fire('toast', { status: 'load' })
+        //     clearData(data, (newData) => {
+        //         // console.log(newData);
+        //         // this.fire('toast', { status: 'load' });
+        //         newData.id = data.id
+        //         // console.log(newData);
+        //         axios.defaults.headers.common['Authorization'] = localStorage.token
+        //         axios.put(`/employee/update`, newData)
+        //             .then(res => {
+        //                 this.fire('toast', {
+        //                     status: 'success', text: 'บันทึกสำเร็จ',
+        //                     callback: () => {
+        //                         console.log(111);
+        //                     }
+        //                 });
+        //             })
+        //             .catch(err => {
+        //                 console.log(err);
+        //             })
+        //     })
+        // },
         EMPLOYEE_INSERT(data) {
             this.fire('toast', {
                 status: 'openDialog',

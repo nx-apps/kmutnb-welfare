@@ -1,6 +1,10 @@
 <link rel="import" href="./../../../../bower_components/vaadin-grid/vaadin-grid.html">
 <link rel="import" href="../../../../bower_components/vaadin-grid/vaadin-grid-column.html">
 
+<link rel="import" href="../../../../bower_components/paper-fab/paper-fab.html">
+
+<link rel="import" href="../../../../bower_components/paper-tooltip/paper-tooltip.html">
+
 
 <dom-module id="list-employees-retire">
 
@@ -192,7 +196,11 @@
                     let check = inverted != selected;
                     this.list_employees[index].check = inverted != selected
                     let emp = this.list_employees.find((item) => item.check === true)
+                    // console.log(emp);
+                    // console.log( typeof emp);
+                    
                     this.set('paperFab', typeof emp === 'undefined')
+                    // console.log(this.paperFab);
                     return check
                 } catch (e) {
 
@@ -219,18 +227,21 @@
                     // item.type_employee_name = type_employee.type_employee_name
                     return item
                 })
+                
                 // console.log(type_employee);
                 this.fire('toast', {
                     status: 'openDialog',
-                    text: 'กรุณายืนยันการเกษียณใช่รึไม่ ?',
+                    text: 'ยืนยันการเกษียณใช่รึไม่ ?',
                     confirmed: (result) => {
                         if (result == true) {
                             // //console.log(newArray);
                             // console.log(newArray);
-                            newArray.map((data) => {
-                                // console.log(data);
-                                this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
-                            })
+                            // newArray.map((data) => {
+                            //     // console.log(data);
+                            //     this.dispatchAction('EMPLOYEE_UPDATE_RETIREMENT', data);
+                            // })
+                            this.fire('toast', { status: 'load' });
+                            this.dispatchAction('UPDATE_RETIREMENT_EMP', newArray);
                             this.async(() => {
                                 this.dispatchAction('RETIER_SEARCH', this.calDate);
                                 window.open('./api/report/retire?date=' + this.calDate);

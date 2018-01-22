@@ -5,6 +5,8 @@
 <link rel="import" href="../../../../bower_components/vaadin-date-picker/vaadin-date-picker.html">
 <link rel="import" href="../../../../bower_components/paper-button/paper-button.html">
 
+<link rel="import" href="../../components/nylon-date-picker/nylon-date-picker.html">
+
 
 
 
@@ -23,7 +25,10 @@
         <gl-grid-row width="{{getWidth}}">
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
-                <vaadin-date-picker label="{{localize('day')}}{{localize('at')}}{{localize('search')}} :" value="{{calDate}}"></vaadin-date-picker>
+                    <!-- {{calDate.date}} -->
+                    <nylon-date-picker id="hospital" no-label-float selected="{{calDate}}" show-bc ></nylon-date-picker>
+
+                <!-- <vaadin-date-picker label="{{localize('day')}}{{localize('at')}}{{localize('search')}} :" value="{{calDate}}"></vaadin-date-picker> -->
             </gl-grid-col>
             <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,3]]">
                 <paper-button raised on-tap="_search">{{localize('search')}}</paper-button>
@@ -36,7 +41,7 @@
             is: 'search-setting-retire',
             properties:{
                 calDate:{
-                    value: new Date().toISOString().split('T')[0],
+                    
                     notify:true
                 }
             },
