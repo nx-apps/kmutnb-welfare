@@ -132,18 +132,20 @@ export function usersAction(store) {
                     // console.log(res.data.length);
                     // console.log(res.data.length > 0);
                     let newData = {}
-                    if (res.data.length > 0) {
-                        newData = res.data[0]
+                    if (res.data) {
+                        // newData = res.data[0]
+                        store.dispatch({ type: 'USER_SEARCH_PERSONAL_ID', payload: res.data })
                     } else {
                         this.fire('toast', {
                             status: 'error', text: 'ไม่พบข้อมล',
                             callback: () => {
                                 // this.$$('panel-right').close();
+                                store.dispatch({ type: 'USER_SEARCH_PERSONAL_ID', payload: {} })
                             }
                         });
                     }
 
-                    store.dispatch({ type: 'USER_SEARCH_PERSONAL_ID', payload: newData })
+                    
                 })
                 .catch(err => {
 

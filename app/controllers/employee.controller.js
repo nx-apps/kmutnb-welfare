@@ -84,6 +84,13 @@ exports.searchPid = function (req, res) {
         .filter(function (row) {
             return row("active_id").ne('WORK');
         })
+        .merge(date =>{
+            return {
+                birthdate: date('birthdate').toISO8601().split('T')(0),
+                end_work_date: date('end_work_date').toISO8601().split('T')(0),
+                start_work_date: date('start_work_date').toISO8601().split('T')(0),
+            }
+        })
         .orderBy(r.desc('date_update'))
         .run()
         .then((response) => {
@@ -91,9 +98,10 @@ exports.searchPid = function (req, res) {
             if (response.length > 0) {
                 newData.push(response[0])
             }
-            res.json(newData);
+            res.json(response[0]);
         })
         .error((err) => {
+            let result = {}
             result.message = err;
             res.json(result);
         })
