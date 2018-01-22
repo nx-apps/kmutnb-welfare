@@ -184,10 +184,7 @@
         <paper-dialog id="RETIREMENT" modal>
             <div class="layout horizontal start-justified">
                 <div class="flex" style=" margin-right: 30px">
-                    <!-- <gl-form-input id="hospital" type="date" always-float-label label="{{localize('day')}}{{localize('at')}}" no-label-float
-                        value="{{data.date}}"></gl-form-input> -->
-                        <nylon-date-picker id="hospital" always-float-label label="{{localize('day')}}{{localize('at')}}" selected="{{data.date}}" show-bc ></nylon-date-picker>
-                    <!-- <vaadin-date-picker always-float-label label="{{localize('day')}}{{localize('at')}}" value="{{data.date}}"></vaadin-date-picker> -->
+                    <nylon-date-picker id="hospital" always-float-label label="{{localize('day')}}{{localize('at')}}" selected="{{data.date}}" show-bc ></nylon-date-picker>
                 </div>
             </div>
             <div class="flex horizontal end-justified layout buttons">
@@ -246,8 +243,8 @@
                 data: {
                     type: Object,
                     value: {
-                        date_start: new Date().toISOString().split('T')[0],
-                        date_end: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0],
+                        date_start: '2018-01-01',
+                        date_end: '2018-01-08',
                         year: ''
                     }
                 },
@@ -381,11 +378,20 @@
             },
             _print: function (e) {
                 try {
+                    
+                    let date = {
+                        date_start: new Date().toISOString().split('T')[0],
+                        date_end: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0],
+                    }
+                    this.set('data',date)
+                    console.log(this.data);
                     if (this.report_id === 10) {
                         this.$$('#FUND').open()
                     } else if (this.report_id !== 8) {
                         this.$$('#report').open()
                     } else {
+                        
+                        this.set('data.date',this.data.date_start)
                         this.$$('#RETIREMENT').open()
                     }
 
