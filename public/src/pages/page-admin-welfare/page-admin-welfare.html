@@ -19,6 +19,8 @@
 <link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../../bower_components/gl-form/gl-form-input.html">
 
+<link rel="import" href="../../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+
 
 <dom-module id="page-admin-welfare">
     <template>
@@ -56,7 +58,7 @@
                 --paper-dialog: {
                     box-sizing: border-box;
                     width: 360px;
-                    height: 640px;
+                    min-height: 340px;
                 }
             }
 
@@ -64,6 +66,29 @@
                 --paper-dialog: {
                     width: 500px;
                 }
+            }
+
+            .circle {
+                display: block;
+                background: black;
+                border-radius: 100%;
+                height: 30px;
+                width: 30px;
+                margin: 0;
+                /* background: radial-gradient(circle at 10px 10px, #00ff00, #d6d6c2); */
+            }
+
+            .circle[status-approve-name="ใช้งาน"] {
+                background: radial-gradient(circle at 10px 10px, #00ff00, #d6d6c2);
+            }
+
+            .circle[status-approve-name="ไม่ใช้งาน"] {
+                background: radial-gradient(circle at 10px 10px, #ff0000, #ffe6e6);
+            }
+
+            .text-circle {
+                line-height: 30px;
+                margin-left: 15px;
             }
 
             .fix-head-table {
@@ -86,6 +111,8 @@
                         </paper-menu>
                     </gl-form-dropdown-menu>
                 </div>
+
+
                 <div class="flex horizontal end-justified layout">
                     <div>
                         <!--<paper-button raised style="margin: 20px 10px 20px 20px;" class="gl-btn-info" on-tap="_print">
@@ -97,6 +124,25 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="horizontal layout">
+                <div class="flex horizontal end-justified layout">
+                    <div>
+                        <div class="flex horizontal start-justified layout">
+                            <figure class="circle " status-approve-name="ใช้งาน"></figure>
+                            <div class="text-circle">
+                                คือ เปิดการใช้งานอยู่
+                            </div>
+
+                        </div>
+                        <div class="flex horizontal start-justified layout">
+                            <figure class="circle " status-approve-name="ไม่ใช้งาน"></figure>
+                            <div class="text-circle">
+                                คือ ปิดการใช้งานแล้ว
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="container">
                 <div class="table-detail">
@@ -129,7 +175,9 @@
                                         <td style="text-align:center">[[item.emp_use]]</td>
                                         <td style="text-align:right">[[formatNumber(item.value_budget)]]</td>
                                         <td style="text-align:right">[[formatNumber(item.value_use)]]</td>
-                                        <td style="text-align:left">[[item.status_approve_name]]</td>
+                                        <td style="text-align:left">
+                                            <figure class="circle " status-approve-name$="{{item.status_approve_name}}"></figure>
+                                        </td>
                                         <td style="text-align:center">
                                             <paper-icon-button data="[[item]]" icon="icons:create" on-tap="_edit" title="{{localize('edit')}}{{localize('welfare')}}"></paper-icon-button>
                                         </td>
@@ -157,14 +205,17 @@
             </panel-right>
 
             <paper-dialog id="clone_welfare" modal>
+                <div style="font-size:18px; font-style:bold; ">
+                    {{localize('choose')}}{{localize('year')}}{{localize('welfare')}}{{localize('at')}}{{localize('want')}}{{localize('copy')}}
+                </div>
+                <!-- <paper-dialog-scrollable> -->
                 <div class="container">
                     <div class="vertical layout">
-                        <div style="font-size:18px; font-style:bold;">{{localize('choose')}}{{localize('year')}}{{localize('welfare')}}{{localize('at')}}{{localize('want')}}{{localize('copy')}}</div>
                         [[_cloneData(year)]]
                         <gl-form-dropdown-menu label="{{localize('year')}}{{localize('welfare')}}" placeholder="{{localize('choose')}}{{localize('year')}}">
                             <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{year}}">
                                 <template is="dom-repeat" items={{list_year}}>
-                                    <paper-item value="[[item.year]]">[[item.year]]</paper-item>
+                                    <paper-item value="[[item.year]]">[[item.yearThai]]</paper-item>
                                 </template>
                             </paper-menu>
                         </gl-form-dropdown-menu>
@@ -194,6 +245,10 @@
                     </template>
                     {{_obChecked(data_clone.*)}}
                 </div>
+                <div style="margin: 15px;">
+                    * ขึ้นเฉพาะสวัสดิการที่เปิดใช้งานอยู่และไม่ใช่สวัสดิการที่เป็นการใช้งานต่อเนื่องหลายปี
+                </div>
+                <!-- </paper-dialog-scrollable> -->
                 <div class="buttons">
                     <paper-button dialog-dismiss autofocus>{{localize('cancel')}}</paper-button>
                     <paper-button autofocus class="gl-btn-primary" on-tap="_submitClone" hidden="{{isHidden}}">{{localize('copy')}}</paper-button>
@@ -261,10 +316,15 @@
             setYear(year) {
                 // console.log('setYear');
                 let lengthYear = year.length - 1
-                // console.log(lengthYear);
-                // console.log(year[lengthYear]);
+                let yearIN = new Date().getFullYear();
+
                 if (year[lengthYear]) {
-                    this.selectYear = year[lengthYear].year;
+                    if (year.find(e => e.year === yearIN)) {
+                        this.selectYear = yearIN;
+                    } else {
+                        this.selectYear = year[lengthYear].year;
+                    }
+
                 }
 
                 // this.nylonPageActive()
@@ -299,8 +359,8 @@
                 this.$$('panel-right').close();
             },
             clearData: function () {
-                console.log(1111);
-                console.log(this.selectYear);
+                // console.log(1111);
+                // console.log(this.selectYear);
                 var getYear = this.selectYear
                 let date = new Date().toISOString().split('T')[0]
                 this.data = {
@@ -396,8 +456,9 @@
                 var check = this.validateForm('.checkValidate');
                 if (check == true) {
                     var obj = {};
-                    obj.year = parseInt(this.yearClone.year);
+                    obj.year = parseInt(this.yearClone.year) - 543;
                     obj.cloneGroupid = this.cloneGroupid;
+                    // console.log(obj);
                     this.dispatchAction('INSERT_CLONE_DATA', obj);
                 } else {
                     this.fire('toast', {
@@ -417,6 +478,7 @@
                     this.data_clone.map((item, index) => {
                         this.set('data_clone.' + index + '.check', this.selectDataAll);
                     });
+                    // console.log(this.data_clone);
                 } catch (error) {
 
                 }
