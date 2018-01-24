@@ -110,12 +110,17 @@
                 //     this.set('page', 1)
                 //     this._getUser()
                 // }
-            },
-            _getUser() {
-                this.set('page', 1)
+                // console.log(1111);
                 this.dispatchAction('COMMONDATA_DATA_GENDER');
                 this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
                 this.dispatchAction('WELFARE_LIST_YEAR');
+            },
+            _getUser() {
+                // this.set('page', 1)
+                // console.log(5555);
+                // this.dispatchAction('COMMONDATA_DATA_GENDER');
+                // this.dispatchAction('COMMONDATA_DATA_PREFIXNAME');
+                // this.dispatchAction('WELFARE_LIST_YEAR');
                 // //console.log(222222);
             },
             _changePage_(e) {
