@@ -27,19 +27,23 @@
                 /*background-color: var(--gl-white-color);*/
                 padding: 0px;
             }
+
             * {
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
             }
+
             .table-detail {
                 margin: auto;
                 /*width: 80%;*/
                 padding: 20px;
             }
+
             table.gl-table-default {
                 width: 100%;
                 border: 1px solid #ddd;
             }
+
             .title-text {
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
@@ -47,19 +51,22 @@
                 margin-top: 35px;
                 font-size: 20px;
             }
+
             paper-dialog[id="clone_welfare"] {
                 --paper-dialog: {
-                box-sizing: border-box;
-                width: 360px;
-                height: 640px;
+                    box-sizing: border-box;
+                    width: 360px;
+                    height: 640px;
                 }
             }
+
             paper-dialog[id="dialogInput"] {
                 --paper-dialog: {
-                width: 500px;
+                    width: 500px;
                 }
             }
-            .fix-head-table{
+
+            .fix-head-table {
                 height: 450px;
                 overflow: auto;
                 position: relative;
@@ -74,7 +81,7 @@
                     <gl-form-dropdown-menu style="margin-left:20px;" label="{{localize('year')}}" placeholder="{{localize('choose')}}{{localize('year')}}">
                         <paper-menu class="dropdown-content" attr-for-selected="value" selected="{{selectYear}}">
                             <template is="dom-repeat" items={{list_year}}>
-                                <paper-item value="[[item.year]]">[[item.year]]</paper-item>
+                                <paper-item value="[[item.year]]">[[item.yearThai]]</paper-item>
                             </template>
                         </paper-menu>
                     </gl-form-dropdown-menu>
@@ -99,8 +106,10 @@
                                 <tr>
                                     <!--<th style="text-align:center; width:10%;">{{localize('year')}}</th>-->
                                     <th style="text-align:left; width:20%;">{{localize('firstname')}}{{localize('welfare')}}</th>
-                                    <th style="text-align:center">{{localize('number')}}<br>{{localize('people')}}{{localize('get')}}{{localize('right')}}</th>
-                                    <th style="text-align:center">{{localize('number')}}<br>{{localize('people')}}{{localize('use')}}{{localize('right')}}</th>
+                                    <th style="text-align:center">{{localize('number')}}
+                                        <br>{{localize('people')}}{{localize('get')}}{{localize('right')}}</th>
+                                    <th style="text-align:center">{{localize('number')}}
+                                        <br>{{localize('people')}}{{localize('use')}}{{localize('right')}}</th>
                                     <th style="text-align:center;width:15%;">{{localize('amount_can_use')}} ({{localize('bath')}})</th>
                                     <th style="text-align:center;width:15%;">{{localize('amount_use')}} ({{localize('bath')}})</th>
                                     <th style="text-align:left">{{localize('status')}}</th>
@@ -111,10 +120,10 @@
                                 <template is="dom-repeat" items="{{list}}">
                                     <tr style="cursor:pointer;">
                                         <!--<td style="text-align:center">[[item.year]]</td>-->
-                                        <td style="text-align:left">[[item.group_welfare_name]] 
+                                        <td style="text-align:left">[[item.group_welfare_name]]
                                             <template is="dom-if" if={{item.group_use}}>
                                                 ([[item.group_use_name]])
-                                            </template> 
+                                            </template>
                                         </td>
                                         <td style="text-align:center">[[item.emp_budget]]</td>
                                         <td style="text-align:center">[[item.emp_use]]</td>
@@ -126,13 +135,13 @@
                                         </td>
                                     </tr>
                                 </template>
-                                
+
                                 <template is="dom-if" if={{_ObIsHave(list)}}>
                                     <tr>
                                         <td colspan="7"> {{localize('no')}}{{localize('get')}}{{localize('data')}}</td>
                                     </tr>
                                 </template>
-                                
+
                             </tbody>
                         </table>
                     </paper-material>
@@ -146,7 +155,7 @@
                     </div>
                 </iron-pages>
             </panel-right>
-            
+
             <paper-dialog id="clone_welfare" modal>
                 <div class="container">
                     <div class="vertical layout">
@@ -162,22 +171,25 @@
                     </div>
                     <template is="dom-if" if={{_obData(data_clone)}}>
                         <div class="fix-head-table">
-                        <table class="gl-table-default">
-                            <thead class="table-head">
-                                <tr>
-                                    <th><paper-checkbox on-tap="_changeselectDataAll" checked="{{selectDataAll}}"></paper-checkbox>{{localize('choose')}}{{localize('all')}}</th>
-                                    <th>{{localize('firstname')}}{{localize('welfare')}}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="table-body">
-                                <template is="dom-repeat" items="{{data_clone}}">
-                                    <tr style="cursor:pointer;">
-                                        <td style="text-align:center"><paper-checkbox on-tap="_checkData" checked="{{item.check}}"></paper-checkbox></td>
-                                        <td style="text-align:left" on-tap="_clickCheckedData">[[item.group_welfare_name]]</td>
+                            <table class="gl-table-default">
+                                <thead class="table-head">
+                                    <tr>
+                                        <th>
+                                            <paper-checkbox on-tap="_changeselectDataAll" checked="{{selectDataAll}}"></paper-checkbox>{{localize('choose')}}{{localize('all')}}</th>
+                                        <th>{{localize('firstname')}}{{localize('welfare')}}</th>
                                     </tr>
-                                </template>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="table-body">
+                                    <template is="dom-repeat" items="{{data_clone}}">
+                                        <tr style="cursor:pointer;">
+                                            <td style="text-align:center">
+                                                <paper-checkbox on-tap="_checkData" checked="{{item.check}}"></paper-checkbox>
+                                            </td>
+                                            <td style="text-align:left" on-tap="_clickCheckedData">[[item.group_welfare_name]]</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
                         </div>
                     </template>
                     {{_obChecked(data_clone.*)}}
@@ -190,11 +202,12 @@
 
             <paper-dialog id="dialogInput" modal>
                 <div class="horizontal end-justified layout">
-                    <paper-icon-button icon="icons:close"  dialog-dismiss></paper-icon-button>
+                    <paper-icon-button icon="icons:close" dialog-dismiss></paper-icon-button>
                 </div>
                 <div style="font-size:18px; font-style:bold;">{{localize('copy')}}{{localize('are')}}{{localize('welfare')}}{{localize('year')}}</div>
-                <gl-form-input class="checkValidate" required label="{{localize('year')}}" allowed-pattern="[0-9]" 
-                maxlength="4" value="{{yearClone.year}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('year')}} {{localize('buddhist_era')}}"></gl-form-input><!--on-keyup="_insertClone"-->
+                <gl-form-input class="checkValidate" required label="{{localize('year')}}" allowed-pattern="[0-9]" maxlength="4" value="{{yearClone.year}}"
+                    placeholder="{{localize('are')}}{{localize('fill')}}{{localize('year')}} {{localize('buddhist_era')}}"></gl-form-input>
+                <!--on-keyup="_insertClone"-->
                 <div class="buttons">
                     <paper-button autofocus class="gl-btn-primary" on-tap="_insertClone">{{localize('save')}}</paper-button>
                 </div>
@@ -205,7 +218,7 @@
     <script>
         Polymer({
             is: 'page-admin-welfare',
-            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction, nylonLocalizeBehavior,commonLogic,nylonLocalizeBehavior],
+            behaviors: [ReduxBehavior, ValidateFormBehavior, FormatNumberBehavior, nylonBehavior, groupWelfareAction, welfareAction, nylonLocalizeBehavior, commonLogic, nylonLocalizeBehavior],
             created: function () {
                 this.nylonLocalizeImport('/i18n-page1.json');
             },
@@ -215,16 +228,17 @@
                     statePath: 'groupWelfare.list'
                 },
                 list_year: {
-                    statePath: 'groupWelfare.list_year'
+                    statePath: 'groupWelfare.list_year',
+                    observer: 'setYear'
                 },
-                data_clone:{
+                data_clone: {
                     statePath: 'groupWelfare.data_clone'
                 },
                 pages: {
                     type: Number,
                     value: 0
                 },
-                yearClone:{
+                yearClone: {
                     type: Object,
                     value: {}
                 },
@@ -233,23 +247,42 @@
                     value: false
                     // observer: '_changeselectDataAll'
                 },
-                isHidden:{
+                isHidden: {
                     type: Boolean,
                     value: true
                 }
             },
             listeners:
-            {
-                'closePanel': 'close_panel',
-                'refresh_group' : 'changeYear',
-                'edit_group' : '_edit'
+                {
+                    'closePanel': 'close_panel',
+                    'refresh_group': 'changeYear',
+                    'edit_group': '_edit'
+                },
+            setYear(year) {
+                // console.log('setYear');
+                let lengthYear = year.length - 1
+                // console.log(lengthYear);
+                // console.log(year[lengthYear]);
+                if (year[lengthYear]) {
+                    this.selectYear = year[lengthYear].year;
+                }
+
+                // this.nylonPageActive()
             },
             nylonPageActive: function () {
-                let year = new Date().getFullYear();
-                // var newYear = year + 543;
-                this.selectYear = year;
-                // this.WELFARE_LIST();
+                // let year = new Date().getFullYear();
                 this.GET_YEAR();
+                // var newYear = year + 543;
+                // console.log(this.list_year);
+                // if (this.list_year === undefined)
+                //     return ''
+                // if (this.list_year.lenght !== 0) {
+                //     // console.log(this.list_year);
+                //     this.selectYear = year;
+                //     // this.WELFARE_LIST();
+
+                // }
+
             },
             select_welfare: function (e) {
                 // //console.log(e.currentTarget.data);
@@ -266,13 +299,16 @@
                 this.$$('panel-right').close();
             },
             clearData: function () {
-                var getYear = new Date().getFullYear();
+                console.log(1111);
+                console.log(this.selectYear);
+                var getYear = this.selectYear
+                let date = new Date().toISOString().split('T')[0]
                 this.data = {
                     year: getYear,
                     group_welfare_name: '',
                     start_date: getYear + '-01-01',
                     end_date: getYear + '-12-31',
-                    cal_date: new Date().toISOString().split('T')[0],
+                    cal_date: getYear + '-' + date.split('-')[1] + '-' + date.split('-')[2],
                     group_use: false,
                     onetime_use: false,
                     voluntary_status: false
@@ -290,12 +326,12 @@
             },
             _edit: function (e) {
                 var data = e.currentTarget.data;
-                if(typeof data !== 'undefined'){
-                    if(typeof data.id !== 'undefined'){
+                if (typeof data !== 'undefined') {
+                    if (typeof data.id !== 'undefined') {
                         this.SELECT_DATA(data.id);
                         this.LIST_WELFARE_ID(data.id);
                         this.$$('panel-right').open();
-                    }else{
+                    } else {
                         this.SELECT_DATA(e.detail);
                         this.LIST_WELFARE_ID(e.detail);
                     }
@@ -306,108 +342,111 @@
                 this.set('title', this.title = "แก้ไขสวัสดิการ");
             },
             changeYear: function (e) {
-                if(typeof e.detail == 'undefined'){
+                if (typeof e.detail == 'undefined') {
                     var year = e;
                     this.LIST_WELFARE(year);
                 }
-                else{
+                else {
                     var year = e.detail;
                     this.selectYear = year;
                     this.LIST_WELFARE(year);
                 }
             },
-            _obYear:function(year){
+            _obYear: function (year) {
+                // console.log(year);
                 this.select_year = year;
             },
             _print: function () {
                 var year = this.select_year;
-                window.open('./api/report/welfare9?year='+year);
+                window.open('./api/report/welfare9?year=' + year);
             },
-            _openDialog:function(){
+            _openDialog: function () {
                 this.$.clone_welfare.open();
                 this.year = '';
                 this.data_clone = [];
             },
-            _cloneData:function(year){
-                if(year !== ''){
+            _cloneData: function (year) {
+                if (year !== '') {
                     this.CLONE_DATA(year);
                 }
             },
-            _submitClone:function(){
+            _submitClone: function () {
                 var arr = [];
                 var data = this.data_clone.filter((val) => {
-                    if(val.check == true){
-                        arr.push({id:val.id});
+                    if (val.check == true) {
+                        arr.push({ id: val.id });
                     }
                 })
                 this.cloneGroupid = arr;
                 this.$.dialogInput.open();
             },
-            _clickCheckedData:function(e){
+            _clickCheckedData: function (e) {
                 var index = e.model.index;
-                if(this.data_clone[index].check === undefined || this.data_clone[index].check === false){
-                    this.set(`data_clone.${index}.check`,!this.data_clone[index].check);
-                }else{
-                    this.set(`data_clone.${index}.check`,!this.data_clone[index].check);
+                if (this.data_clone[index].check === undefined || this.data_clone[index].check === false) {
+                    this.set(`data_clone.${index}.check`, !this.data_clone[index].check);
+                } else {
+                    this.set(`data_clone.${index}.check`, !this.data_clone[index].check);
                 }
-                if(this.data_clone[index].check === false)
+                if (this.data_clone[index].check === false)
                     this.set('selectDataAll', false)
-                
+
             },
-            _insertClone:function(e){
+            _insertClone: function (e) {
                 // if(e.code == 'Enter'){
                 var check = this.validateForm('.checkValidate');
-                if(check == true){
-                var obj = {};
+                if (check == true) {
+                    var obj = {};
                     obj.year = parseInt(this.yearClone.year);
                     obj.cloneGroupid = this.cloneGroupid;
-                    this.dispatchAction('INSERT_CLONE_DATA',obj);
-                }else{
-                    this.fire('toast',{status:'connectError',text:'กรุณากรอกข้อมูลให้ครบ',
-                    callback:function(){
-                    }})
+                    this.dispatchAction('INSERT_CLONE_DATA', obj);
+                } else {
+                    this.fire('toast', {
+                        status: 'connectError', text: 'กรุณากรอกข้อมูลให้ครบ',
+                        callback: function () {
+                        }
+                    })
                 }
                 // }
             },
-            _closeDialog:function(){
+            _closeDialog: function () {
                 this.$.clone_welfare.close();
                 this.$.dialogInput.close();
             },
-            _changeselectDataAll:function(val){
+            _changeselectDataAll: function (val) {
                 try {
-                    this.data_clone.map((item,index)=>{
-                        this.set('data_clone.'+index+'.check',this.selectDataAll);
+                    this.data_clone.map((item, index) => {
+                        this.set('data_clone.' + index + '.check', this.selectDataAll);
                     });
                 } catch (error) {
-                    
+
                 }
             },
-            _obData:function(data){
-                if(data.length > 0){
+            _obData: function (data) {
+                if (data.length > 0) {
                     this.set('selectDataAll', false)
                     return true
-                }else{
+                } else {
                     return false
                 }
             },
-            _checkData:function(e){
+            _checkData: function (e) {
                 var index = e.model.index;
-                if(this.data_clone[index].check === false){
+                if (this.data_clone[index].check === false) {
                     this.set('selectDataAll', false)
                 }
             },
-            _obChecked:function(data){
+            _obChecked: function (data) {
                 try {
                     var checkTrue = this.data_clone.filter((val) => {
-                                        return val.check == true
-                                    })
-                    if(checkTrue.length > 0){
+                        return val.check == true
+                    })
+                    if (checkTrue.length > 0) {
                         this.isHidden = false;
-                    }else{
+                    } else {
                         this.isHidden = true;
                     }
                 } catch (error) {
-                    
+
                 }
             }
         });

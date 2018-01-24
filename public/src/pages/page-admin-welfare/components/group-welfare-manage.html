@@ -26,22 +26,22 @@
             gl-combo-box {
                 margin-top: 15px;
             }
-            
+
             .label_condition {
                 font-weight: bold;
                 text-align: right;
                 margin-top: 35px;
                 font-size: 20px;
             }
-            
+
             .btn-bottom {
                 margin: 30px;
             }
-            
+
             paper-material {
                 background-color: var(--gl-white-color);
             }
-            
+
             paper-checkbox {
                 font-family: 'CSChatThaiUI', sans-serif;
                 -webkit-font-smoothing: antialiased;
@@ -62,12 +62,13 @@
                     </div>
                 </div>
             </template>
-            
+
             <template is="dom-if" if={{!data.type_continuous}}>
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                        <gl-form-input class="checkValidate" required disabled label="{{localize('year')}}" allowed-pattern="[0-9]" maxlength="4" value="{{data.year}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('year')}} {{localize('buddhist_era')}}"></gl-form-input>
+                        <gl-form-input class="checkValidate" required disabled label="{{localize('year')}}" allowed-pattern="[0-9]" maxlength="4"
+                            value="{{showYearBc(data.year)}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('year')}} {{localize('buddhist_era')}}"></gl-form-input>
                     </gl-grid-col>
                 </gl-grid-row>
             </template>
@@ -75,7 +76,9 @@
             <gl-grid-row width="{{getWidth}}">
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-dropdown-menu class="checkValidate" required disabled="{{isEnable}}" label="{{localize('format')}}{{localize('welfare')}}" placeholder="{{localize('are')}}{{localize('choose')}}{{localize('format')}}{{localize('welfare')}}" style="width:100%">
+                    <gl-form-dropdown-menu class="checkValidate" required disabled="{{isEnable}}" label="{{localize('format')}}{{localize('welfare')}}"
+                        placeholder="{{localize('are')}}{{localize('choose')}}{{localize('format')}}{{localize('welfare')}}"
+                        style="width:100%">
                         <paper-listbox class="dropdown-content" attr-for-selected="value" selected="{{data.type_group}}">
                             <paper-item value="general">{{localize('welfare')}}</paper-item>
                             <paper-item value="fund">{{localize('fund')}}</paper-item>
@@ -84,38 +87,42 @@
                     </gl-form-dropdown-menu>
                 </gl-grid-col>
             </gl-grid-row>
-            
+
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-input class="checkValidate" required disabled="{{isEnable}}" label="{{localize('firstname')}}{{localize('welfare')}}" value="{{data.group_welfare_name}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('firstname')}}{{localize('welfare')}}"></gl-form-input>
+                    <gl-form-input class="checkValidate" required disabled="{{isEnable}}" label="{{localize('firstname')}}{{localize('welfare')}}"
+                        value="{{data.group_welfare_name}}" placeholder="{{localize('are')}}{{localize('fill')}}{{localize('firstname')}}{{localize('welfare')}}"></gl-form-input>
                 </gl-grid-col>
             </gl-grid-row>
-
-            <template is="dom-if" if={{_obTypeGroup(data.type_group)}}>
+            <div hidden="{{!_obTypeGroup(data.type_group)}}">
+                <!-- <template is="dom-if" if={{_obTypeGroup(data.type_group)}}>2 -->
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <nylon-date-picker id="hospital" class="checkValidate" always-float-label  required disabled="{{isEnable}}" label="{{localize('date')}}เริ่ม{{localize('use')}}{{localize('work')}} :" selected="{{data.start_date}}" show-bc ></nylon-date-picker>
+                        <nylon-date-picker id="hospital" class="checkValidate" always-float-label required disabled="{{isEnable}}" label="{{localize('date')}}เริ่ม{{localize('use')}}{{localize('work')}} :"
+                            selected="{{data.start_date}}" show-bc></nylon-date-picker>
                         <!-- <gl-form-input  type="date" class="checkValidate" required disabled="{{isEnable}}" label="{{localize('date')}}เริ่ม{{localize('use')}}{{localize('work')}} :" value="{{data.start_date}}"></vaadin-date-picker> -->
                     </gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <nylon-date-picker id="hospital" always-float-label  disabled="{{isEnable}}" label="{{localize('date')}}{{localize('finished')}}{{localize('use')}}{{localize('work')}} :" selected="{{data.end_date}}" show-bc ></nylon-date-picker>
+                        <nylon-date-picker id="hospital" always-float-label disabled="{{isEnable}}" label="{{localize('date')}}{{localize('finished')}}{{localize('use')}}{{localize('work')}} :"
+                            selected="{{data.end_date}}" show-bc></nylon-date-picker>
                         <!-- <gl-form-input  type="date" disabled="{{isEnable}}" label="{{localize('date')}}{{localize('finished')}}{{localize('use')}}{{localize('work')}} :" value="{{data.end_date}}"></vaadin-date-picker> -->
                     </gl-grid-col>
                 </gl-grid-row>
-                
+
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,8]]">
                         <div style="margin-top:15px; font-size:16px; color:gray;">*{{localize('if')}}{{localize('no')}}{{localize('specify')}}{{localize('date')}}{{localize('finished')}}{{localize('defecation')}}{{localize('use')}}{{localize('work')}}{{localize('will')}}{{localize('are')}}{{localize('welfare')}}{{localize('model')}}{{localize('continuous')}}</div>
                     </gl-grid-col>
                 </gl-grid-row>
-                
+
                 <gl-grid-row>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
-                            <nylon-date-picker id="hospital" disabled="{{isEnable}}" always-float-label  label="{{localize('date')}}{{localize('use')}}{{localize('calculate')}} :" selected="{{data.cal_date}}" show-bc ></nylon-date-picker>
+                        <nylon-date-picker id="hospital" disabled="{{isEnable}}" always-float-label label="{{localize('date')}}{{localize('use')}}{{localize('calculate')}} :"
+                            selected="{{data.cal_date}}" show-bc></nylon-date-picker>
                         <!-- <gl-form-input  type="date" disabled="{{isEnable}}" label="{{localize('date')}}{{localize('use')}}{{localize('calculate')}} :" value="{{data.cal_date}}"></vaadin-date-picker> -->
                     </gl-grid-col>
                 </gl-grid-row>
@@ -126,22 +133,23 @@
                         <div style="margin-top:15px; font-size:16px; color:gray;">*{{localize('use')}}{{localize('for')}}{{localize('welfare')}}{{localize('at')}}{{localize('calculate')}}{{localize('people_age')}}</div>
                     </gl-grid-col>
                 </gl-grid-row>
-            </template>
-
+            </div>
             <gl-grid-row>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                 <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]">
-                    <gl-form-textarea disabled="{{isEnable}}" style="margin-top:15px;" label="{{localize('detail')}}" value="{{data.description}}" placeholder="{{localize('insert')}}{{localize('detail')}}"></gl-form-textarea>
+                    <gl-form-textarea disabled="{{isEnable}}" style="margin-top:15px;" label="{{localize('detail')}}" value="{{data.description}}"
+                        placeholder="{{localize('insert')}}{{localize('detail')}}"></gl-form-textarea>
                 </gl-grid-col>
             </gl-grid-row>
-            
-            <template is="dom-if" if={{_obTypeGroup(data.type_group)}}>
+
+            <div hidden={{!_obTypeGroup(data.type_group)}}>
+                <!-- <template is="dom-if" if={{_obTypeGroup(data.type_group)}}>3 -->
                 <gl-grid-row style="margin-top: 10px">
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,4]]"></gl-grid-col>
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                         <paper-checkbox disabled="{{isEnable_onetime}}" checked="{{data.onetime_use}}">{{localize('one_use')}}</paper-checkbox>
                     </gl-grid-col>
-                    [[checkSelect(data.group_use)]] 
+                    [[checkSelect(data.group_use)]]
                     <gl-grid-col width="[[getWidth]]" grid="[[300,12],[500,2]]">
                         <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.group_use}}">{{localize('welfare')}}{{localize('model')}}{{localize('group')}}</paper-checkbox>
                     </gl-grid-col>
@@ -152,8 +160,8 @@
                         <paper-checkbox disabled="{{isEnable_admin}}" checked="{{data.voluntary_status}}">{{localize('voluntary')}}</paper-checkbox>
                     </gl-grid-col>
                 </gl-grid-row>
-            </template>
-
+                <!-- </template> -->
+            </div>
             <div class="horizontal end-justified layout btn-bottom">
                 <div hidden="{{isEnable}}">
                     <paper-button raised class="gl-btn-danger" on-tap="cancle">{{localize('cancel')}}</paper-button>
@@ -166,7 +174,7 @@
     <script>
         Polymer({
             is: 'group-welfare-manage',
-            behaviors: [ReduxBehavior, FormatNumberBehavior, ValidateFormBehavior,nylonLocalizeBehavior],
+            behaviors: [ReduxBehavior, FormatNumberBehavior, ValidateFormBehavior, nylonLocalizeBehavior],
             created: function () {
                 this.nylonLocalizeImport('/i18n-page1.json');
             },
@@ -179,49 +187,54 @@
                 type_select: {
                     type: Boolean,
                     value: false
-                }
+                },
+                clone_data: Object
             },
-            _cloneData: function(val){
+            _cloneData: function (val) {
                 this.clone_data = JSON.parse(JSON.stringify(val));
+                // console.log(this.clone_data);
+            },
+            showYearBc(year){
+                return year + 543
             },
             save: function () {
                 var check = this.validateForm('.checkValidate');
 
-                if(this.data.description === undefined){
+                if (this.data.description === undefined) {
                     this.data.description = '';
                 }
-                
-                if(this.data.type_group == 'general'){
+
+                if (this.data.type_group == 'general') {
                     if (this.data.onetime_use != true) {
                         this.data.onetime_use = false;
                     }
                     if (this.data.group_use != true) {
                         this.data.group_use = false;
                     }
-                    if(this.data.cal_date === ''){
+                    if (this.data.cal_date === '') {
                         this.data.cal_date = null;
                     }
 
-                    if(this.data.end_date !== ''){
-                        if(this.data.end_date === null){
+                    if (this.data.end_date !== '') {
+                        if (this.data.end_date === null) {
                             this.data.end_date = null;
                             this.data.year = 9999;
                             this.data.type_continuous = true;
-                        }else{
-                            if(this.data.year == 9999){
+                        } else {
+                            if (this.data.year == 9999) {
                                 this.data.type_continuous = false;
                                 this.data.year = new Date().getFullYear();
-                            }else{
+                            } else {
                                 this.data.type_continuous = false;
                                 this.data.year = this.clone_data.year;
                             }
                         }
-                    }else{
+                    } else {
                         this.data.end_date = null;
                         this.data.year = 9999;
                         this.data.type_continuous = true;
                     }
-                }else{
+                } else {
                     this.data.start_date = new Date().toISOString().split('T')[0];
                     this.data.end_date = null;
                     this.data.cal_date = null;
@@ -229,7 +242,7 @@
                     this.data.year = 9999;
                 }
 
-                if(check == true){
+                if (check == true) {
                     if (typeof this.data.id !== 'undefined' && this.data.id !== '') {
                         this.fire('toast', {
                             status: 'openDialog',
@@ -257,10 +270,12 @@
                         })
                     }
                 }
-                else{
-                    this.fire('toast',{status:'connectError',text:'กรุณากรอกข้อมูลให้ครบ',
-                    callback:function(){
-                    }})
+                else {
+                    this.fire('toast', {
+                        status: 'connectError', text: 'กรุณากรอกข้อมูลให้ครบ',
+                        callback: function () {
+                        }
+                    })
                 }
             },
             delete_condition: function (e) {
@@ -288,10 +303,10 @@
                 }
             },
             checkSelect: function (e) {
-                if(this.isEnable === true){
+                if (this.isEnable === true) {
                     this.isEnable_onetime = true;
                     this.isEnable_admin = true;
-                }else{
+                } else {
                     if (typeof e != 'undefined' && e != undefined) {
                         if (e === true && typeof this.data.id === 'undefined') {
                             this.set('data.onetime_use', true);
@@ -348,12 +363,12 @@
                     this.dispatchAction('DELETE_WELFARE', detail.datas)
                 }
             },
-            _obTypeGroup: function(val){
-                if(val !== undefined){
-                    if(val == 'general'){
+            _obTypeGroup: function (val) {
+                if (val !== undefined) {
+                    if (val == 'general') {
                         this.data.voluntary_status = false;
                         return true
-                    }else{
+                    } else {
                         this.data.voluntary_status = true;
                         this.data.onetime_use = true;
                         this.data.group_use = true;

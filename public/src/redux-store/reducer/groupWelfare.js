@@ -72,18 +72,18 @@ export function groupWelfareAction(store) {
         INSERT_WELFARE: function (data) {
             var yearNow = new Date().getFullYear();
             // console.log(data);
-            let { year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous, voluntary_status, type_group} = data;
-            let newData = { year, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous, voluntary_status, type_group};
+            let { year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous, voluntary_status, type_group } = data;
+            let newData = { year, group_welfare_name, group_use, description, onetime_use, status_approve, type_continuous, voluntary_status, type_group };
             var tz = "T00:00:00+07:00";
             newData.start_date = data.start_date + tz;
-            if(data.cal_date === null){
+            if (data.cal_date === null) {
                 newData.cal_date = data.cal_date;
-            }else{
+            } else {
                 newData.cal_date = data.cal_date + tz;
             }
-            if(data.end_date === null){
+            if (data.end_date === null) {
                 newData.end_date = data.end_date
-            }else{
+            } else {
                 newData.end_date = data.end_date + tz;
             }
             // console.log(newData);
@@ -133,40 +133,40 @@ export function groupWelfareAction(store) {
         EDIT_WELFARE: function (data) {
             var yearNow = new Date().getFullYear();
             // console.log(data);
-            let { id, year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, type_continuous, voluntary_status, type_group} = data;
-            let newData = { id, year, group_welfare_name, group_use, description, onetime_use, type_continuous, voluntary_status, type_group};
+            let { id, year, start_date, end_date, cal_date, group_welfare_name, group_use, description, onetime_use, type_continuous, voluntary_status, type_group } = data;
+            let newData = { id, year, group_welfare_name, group_use, description, onetime_use, type_continuous, voluntary_status, type_group };
             var tz = "T00:00:00+07:00";
             newData.start_date = data.start_date + tz;
-            if(data.cal_date === null){
+            if (data.cal_date === null) {
                 newData.cal_date = data.cal_date;
-            }else{
+            } else {
                 newData.cal_date = data.cal_date + tz;
             }
-            if(data.end_date === null){
+            if (data.end_date === null) {
                 newData.end_date = data.end_date
-            }else{
+            } else {
                 newData.end_date = data.end_date + tz;
             }
             // console.log(newData);
             this.fire('toast', { status: 'load' });
             axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.put(`./group/welfare/update`, newData)
-            .then((result) => {
-                this.fire('toast', {
-                    status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
-                        this.LIST_WELFARE(yearNow);
-                        this.LIST_WELFARE_ID(data.id);
-                        this.SELECT_DATA(data.id);
-                        this.UPDATE_WELFARE(newData.id);
-                        // console.log('success');
-                    }
-                });
-            })
-            .catch((err) => {
-                // console.log(err);
-            })
+                .then((result) => {
+                    this.fire('toast', {
+                        status: 'success', text: 'บันทึกสำเร็จ', callback: () => {
+                            this.LIST_WELFARE(yearNow);
+                            this.LIST_WELFARE_ID(data.id);
+                            this.SELECT_DATA(data.id);
+                            this.UPDATE_WELFARE(newData.id);
+                            // console.log('success');
+                        }
+                    });
+                })
+                .catch((err) => {
+                    // console.log(err);
+                })
         },
-        UPDATE_WELFARE: function(id){
+        UPDATE_WELFARE: function (id) {
             axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/group/welfare/' + id)
                 .then((result) => {
@@ -177,22 +177,22 @@ export function groupWelfareAction(store) {
                     var con = result.data.type_continuous;
                     var one = result.data.onetime_use;
                     var tz = "T00:00:00+07:00";
-                    for(var i = 0; i < data.length; i++){
+                    for (var i = 0; i < data.length; i++) {
                         // console.log(data[i].condition);
-                        if(typeGroup == 'general'){
-                            if(con === true && one === true){
+                        if (typeGroup == 'general') {
+                            if (con === true && one === true) {
                                 data[i].round_use = true;
-                            }else if(con === true && one === false){
+                            } else if (con === true && one === false) {
                                 data[i].round_use = false;
-                            }else if(con === false && one === true){
+                            } else if (con === false && one === true) {
                                 data[i].round_use = true;
                             }
-                        }else{
+                        } else {
                             data[i].round_use = true;
                         }
                         var condition = data[i].condition;
                         var arr = [];
-                        for(var j = 0; j < condition.length; j++){
+                        for (var j = 0; j < condition.length; j++) {
                             var data2 = condition[j];
                             var search = data2.field_name.search('date');
                             var search_age = data2.field_name.search('age');
@@ -207,7 +207,7 @@ export function groupWelfareAction(store) {
                                     data2.logic = data2.logic_show.replace("<", ">");
                                 }
                             }
-                            else if(search_age != -1){
+                            else if (search_age != -1) {
                                 if (data2.logic_show.search(">") >= 0) {
                                     data2.value = parseInt(data2.value_show);
                                     data2.logic = data2.logic_show;
@@ -216,7 +216,7 @@ export function groupWelfareAction(store) {
                                     data2.logic = data2.logic_show;
                                 }
                             }
-                            else{
+                            else {
                                 data2.value = data2.value_show;
                                 data2.logic = data2.logic_show;
                             }
@@ -227,18 +227,18 @@ export function groupWelfareAction(store) {
                     }
                     // console.log(data);
                     var setWelfare = data.map((item) => {
-                                        let {budget, budget_emp, condition, group_id, id, round_use, welfare_name} = item;
-                                        let newitem = { budget, condition, group_id, id, round_use, welfare_name }
-                                        return newitem;
-                                    })
+                        let { budget, budget_emp, condition, group_id, id, round_use, welfare_name } = item;
+                        let newitem = { budget, condition, group_id, id, round_use, welfare_name }
+                        return newitem;
+                    })
                     // console.log(setWelfare);
                     axios.put(`./group/welfare/updateGroup`, setWelfare)
-                    .then((result) => {
-                        // console.log(result);
-                    })
-                    .catch((err) => {
-                        // console.log(err);
-                    })
+                        .then((result) => {
+                            // console.log(result);
+                        })
+                        .catch((err) => {
+                            // console.log(err);
+                        })
                 })
                 .catch(err => {
 
@@ -260,6 +260,11 @@ export function groupWelfareAction(store) {
             axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/group/welfare/year')
                 .then(function (result) {
+                    // console.log(result.data);
+                    result.data.map(el => {
+                        el.yearThai = el.year + 543
+                        return el
+                    })
                     store.dispatch({ type: 'GET_YEAR', payload: result.data })
                 })
                 .catch(err => {
@@ -294,21 +299,21 @@ export function groupWelfareAction(store) {
             // console.log(data);
             store.dispatch({ type: 'CLEAR_WELFARE_ID', payload: [] })
         },
-        CLONE_DATA:function (year){
+        CLONE_DATA: function (year) {
             axios.defaults.headers.common['Authorization'] = localStorage.token
             axios.get('/group/welfare/year/' + year)
-            .then((result) => {
-                // console.log(result.data);
-                result.data.map((val) => {
-                    return val.check = false
+                .then((result) => {
+                    // console.log(result.data);
+                    result.data.map((val) => {
+                        return val.check = false
+                    })
+                    var data = result.data.filter((item) => {
+                        return item.status_approve == true && item.year !== 9999
+                    })
+                    store.dispatch({ type: 'CLONE_DATA', payload: data })
                 })
-                var data = result.data.filter((item) => {
-                    return item.status_approve == true && item.year !== 9999
-                })
-                store.dispatch({ type: 'CLONE_DATA', payload: data })
-            })
         },
-        INSERT_CLONE_DATA:function(data){
+        INSERT_CLONE_DATA: function (data) {
             // console.log(data);
             this.fire('toast', { status: 'load' });
             axios.defaults.headers.common['Authorization'] = localStorage.token

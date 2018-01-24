@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm-run-all --parallel nylon redux",
     "nylon": "nylon-cli serve 3000",
+    "watch": "browser-sync start --proxy http://localhost:3000 --files 'public/**/*.*' 'index.html' '*.js'",
     "build": "cd public && polymer build",
     "redux": "webpack",
     "polyserve": "polymer serve ./public/build/default --port 8086"
